@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Firelit Lecture on the Fourth Dimension illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Firelit Lecture on the Fourth Dimension</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Firelit Lecture on the Fourth Dimension illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Firelit Lecture on the Fourth Dimension</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening unfolded in the peculiar warmth of the Time Traveller&#x27;s drawing room, where firelight danced against silver fixtures and champagne bubbles rose through crystal glasses like tiny planets ascending through space. We reclined in those remarkable patent chairs of his invention—chairs that seemed almost sentient in their comfort—while our host, his grey eyes glittering with barely contained excitement, prepared to overturn everything we thought we understood about the nature of existence itself.</p>
 <p>He began, as he so often did, with what appeared to be simple geometry, though nothing about his conclusions would prove simple at all. The mathematical abstractions we had all accepted without question in our schooldays—lines without thickness, planes without depth—these, he argued, were merely the beginning of a far grander deception. For if a cube required length, breadth, and thickness to exist, must it not also require *duration*? An instantaneous cube, he insisted, was no cube at all. Time, therefore, was nothing less than the Fourth Dimension.</p>
 <p>Filby, predictably, resisted with all the stubborn vigour one expects from argumentative men with red hair. The Provincial Mayor struggled valiantly to follow, his lips moving silently as though repeating an incantation. The Medical Man posed sensible objections about why we cannot move freely through Time as we move through Space, to which our host countered with observations about gravitation&#x27;s constraints upon vertical movement—before balloons, after all, mankind was similarly imprisoned.</p>
@@ -524,9 +627,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Glittering Model Vanishes Into Time illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Glittering Model Vanishes Into Time</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Glittering Model Vanishes Into Time illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Glittering Model Vanishes Into Time</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller produced his evidence that evening—a delicate contraption of glittering metal, ivory, and crystalline substance, scarcely larger than a small clock, yet wrought with extraordinary precision. He set it upon one of the octagonal tables before the fire, positioning the thing beneath the bright glow of a shaded lamp while candles illuminated the room from mantel and sconces alike. The assembled company drew close: the narrator in a low armchair nearest the flames, Filby peering over the inventor&#x27;s shoulder, the Medical Man and Provincial Mayor observing from the right, the Psychologist stationed at the left, and the Very Young Man hovering behind. All were watchful, alert to any possibility of deception, yet the conditions seemed to preclude trickery of any conceivable sort.</p>
 <p>The Time Traveller explained his model with the calm authority of a man who has laboured two years upon a single purpose. He drew attention to the curious askew quality of the device, the odd twinkling unreality of one particular bar, and demonstrated the function of two small levers—one to send the machine gliding into the future, the other to reverse its motion. Then, with deliberate showmanship, he invited the Psychologist to participate directly, guiding that gentleman&#x27;s finger to the lever so that no accusation of sleight-of-hand might follow.</p>
 <p>What happened next defied all rational expectation. The lever turned. A breath of wind stirred the room, the lamp flame leapt, and a candle guttered out upon the mantel. The little machine swung round, grew indistinct, flickered like a ghost of brass and ivory—and vanished utterly, leaving the table bare save for the lamp itself.</p>
@@ -537,9 +645,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Haggard Return From Beyond illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">A Haggard Return From Beyond</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Haggard Return From Beyond illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">A Haggard Return From Beyond</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>None of us truly believed him, not really—and perhaps that was the trouble with a man like the Time Traveller. He possessed that peculiar curse of being too clever by half, the sort of fellow whose very brilliance invited suspicion rather than confidence. One always sensed hidden chambers behind his apparent candour, some concealed machinery of wit turning just out of sight. Had simple Filby presented the same demonstration, we should have accepted it readily enough, for a pork-butcher&#x27;s motives are transparent things. But the Time Traveller carried whimsy in his blood, and what might have secured another man&#x27;s reputation seemed mere conjuring in his capable hands. It is, after all, a grave error to accomplish difficult things too easily.</p>
 <p>So the week passed with little spoken of time travel between us, though I suspect its strange possibilities haunted each man&#x27;s private thoughts—the plausibility of it warring with its utter practical impossibility, the delicious confusion of anachronism it promised. I confess I remained preoccupied with the mechanical trick of the vanishing model, discussing it with the Medical Man at the Linnæan on Friday. He mentioned having witnessed something similar at Tübingen, emphasising the business with the candle, though he could not explain how the deception was managed.</p>
 <p>The following Thursday found me returning to Richmond, arriving late to discover four or five gentlemen already gathered in the drawing-room—and no sign of our host. The Medical Man stood before the fire consulting his watch, a note in hand explaining that the Time Traveller had been unavoidably detained and requesting we begin dinner at seven without him. The Editor suggested we ought not let the meal spoil, and so we proceeded.</p>
@@ -553,9 +666,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Night and Day Like a Black Wing illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">Night and Day Like a Black Wing</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Night and Day Like a Black Wing illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Night and Day Like a Black Wing</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller resumed his account to his assembled guests, speaking now of concrete matters—of ivory bars cracked and brass rails bent, of a nickel bar that had proven exactly one inch too short and had cost him precious days in the remaking. These were the mundane delays that had kept him from his appointment with eternity, until at last, at ten o&#x27;clock that very morning, the machine stood complete.</p>
 <p>He had settled himself into the saddle with the peculiar calm of a man who holds his fate in his own hands, comparing his sensation to that of a suicide pressing a pistol to his skull—that exquisite wondering at what shall come next. The levers responded to his touch, and in the space of what seemed a single heartbeat, nearly five hours had vanished from the clock face. The thing worked. The impossible had become merely improbable, and then inevitable.</p>
 <p>With renewed determination, he threw himself forward through time. The laboratory dissolved into haziness; his housekeeper, Mrs. Watchett, shot across the room like a rocket on some errand she would never remember him witnessing. Night and day began their mad flapping dance, darkness falling like the turning out of a lamp, tomorrow arriving before he could properly bid farewell to today. The sensations proved excessively unpleasant—a helpless headlong motion, the perpetual anticipation of catastrophe, the switchback feeling of falling without end.</p>
@@ -569,9 +687,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Fragile Inheritors of a Faded World illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">Fragile Inheritors of a Faded World</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Fragile Inheritors of a Faded World illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Fragile Inheritors of a Faded World</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller found himself surrounded by creatures far stranger than any he had dared imagine. These fragile beings of the distant future approached him without fear, their delicate faces full of curiosity, their voices flowing in strange liquid syllables that seemed almost too sweet for human ears. When one reached out to touch his hand, and others pressed soft fingers against his shoulders and back, he understood they meant only to confirm his reality—this rough visitor from ages past.</p>
 <p>Yet even as he marvelled at their graceful gentleness, their childlike ease, the Time Traveller felt a prickle of unease. Their little pink hands wandered toward the machine itself, and with sudden presence of mind he removed the control levers and thrust them into his pocket. The machine now sat useless to any but himself—a precaution that would prove wise indeed.</p>
 <p>Examining these people more closely, he noted their peculiar beauty: uniformly curly hair ending sharply at the neck, faces entirely smooth, ears remarkably small, mouths delicate with thin red lips. Their eyes, large and mild, seemed strangely lacking in the keen intelligence he had expected. When he attempted to communicate through gesture—pointing to the sun, miming time itself—one pretty creature in chequered purple and white responded by imitating thunder. The implication struck him like a blow: did they think he had descended from the sun in a storm?</p>
@@ -584,9 +707,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Sunset of Mankind illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">The Sunset of Mankind</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Sunset of Mankind illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">The Sunset of Mankind</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller soon discovered a peculiar quality about his diminutive hosts—their utter want of sustained curiosity. Like children captivated by some novel plaything, they would crowd about him with eager cries of wonder, only to lose interest moments later and drift away toward fresher diversions. The dinner concluded and his first halting attempts at conversation exhausted, he found himself virtually abandoned, those who had gathered so enthusiastically now scattered to unknown pursuits. It struck him how swiftly he came to disregard these little people in turn, stepping out through the portal into the sunlit world the moment his hunger was satisfied.</p>
 <p>The calm of evening lay upon the land as he emerged, the scene bathed in the warm amber glow of a dying sun. Everything stood utterly transformed from the world he had known—even the flowers wore unfamiliar aspects. The great hall occupied a slope overlooking a broad river valley, though the Thames itself had shifted perhaps a mile from its present course. He resolved to climb a distant crest for a wider prospect of this strange Earth in the year Eight Hundred and Two Thousand Seven Hundred and One—for such was the date his machine&#x27;s dials recorded.</p>
 <p>As he walked, he searched for any impression that might illuminate the condition of ruinous splendour surrounding him. Partway up the hill stood a vast heap of granite bound with aluminium—precipitous walls and crumbled masses overgrown with beautiful pagoda-like plants, nettles perhaps, though wonderfully tinted and incapable of stinging. Some derelict structure, its original purpose lost to time. Here, he would later experience something strange indeed—the first intimation of a far stranger discovery.</p>
@@ -601,9 +729,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="The Time Machine Vanishes illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">The Time Machine Vanishes</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="The Time Machine Vanishes illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">The Time Machine Vanishes</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As the Time Traveller stood atop that distant hill, musing upon the strange perfection of this future age, the full moon rose gibbous and yellow out of a silver overflow of light in the northeast. The bright little figures far below ceased their movements, and a noiseless owl passed through the gathering darkness. He shivered against the chill and resolved to descend, to find some place of rest.</p>
 <p>His eye sought the familiar building, then travelled along to the figure of the White Sphinx upon its bronze pedestal, growing ever more distinct as moonlight brightened the landscape. The silver birch stood against it still, the rhododendron bushes tangled black in the pale illumination, and there—there was the little lawn. Yet something was wrong. A queer doubt crept through him, chilling his complacency. He told himself stoutly that this was not the same lawn, but the white leprous face of the sphinx was turned toward it, and the terrible conviction settled upon him with crushing weight: the Time Machine was gone.</p>
 <p>The possibility of losing his own age struck him like a lash across the face—the thought of being left helpless in this strange new world gripped his throat and stopped his breathing. In moments he was running with great leaping strides down the slope, falling headlong once and cutting his face, yet losing no time to stanch the blood. All the while he told himself they had merely moved it under the bushes, pushed it aside—yet with the certainty that sometimes accompanies excessive dread, he knew such assurance was folly.</p>
@@ -618,9 +751,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Mysterious Wells and Unanswered Questions illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Mysterious Wells and Unanswered Questions</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Mysterious Wells and Unanswered Questions illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Mysterious Wells and Unanswered Questions</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller&#x27;s explorations of this distant age revealed a world of breathtaking abundance—splendid buildings in endless variety crowning every hill, silver waters glinting beneath clustered evergreens, and blossom-laden trees stretching toward blue undulating horizons. Yet amid this pastoral magnificence, certain curious features demanded his attention. Scattered across the landscape stood deep circular wells, bronze-rimmed and sheltered by little cupolas, their shafts plunging into impenetrable darkness. Peering into these mysterious apertures, he could detect no water, no reflection from his matches—only a rhythmic thud-thud-thud rising from below, like the beating of some vast engine, and a steady current of air rushing downward. Connecting these wells to the tall towers flickering with heat upon the slopes, he surmised an extensive system of subterranean ventilation, though its true purpose eluded him.</p>
 <p>He confessed freely the limitations of his understanding. Like a Central African traveller returned to describe London&#x27;s railways and telegraphs, he grasped only fragments of this future civilisation. The mysteries multiplied: no signs of cremation or burial, no aged or infirm among the gentle Eloi, no machinery to produce their pleasant fabrics and metalwork sandals. These creatures spent their days in idle play, bathing, eating fruit, sleeping—yet somehow their world continued functioning through some invisible automatic organisation.</p>
 <p>The disappearance of his Time Machine into the pedestal of the White Sphinx haunted him, another piece of an inscription he could not fully read.</p>
@@ -635,9 +773,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Descent Into the Underworld&#x27;s Darkness illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">Descent Into the Underworld&#x27;s Darkness</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Descent Into the Underworld&#x27;s Darkness illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Descent Into the Underworld&#x27;s Darkness</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For two days the Time Traveller found himself paralysed by a most peculiar revulsion, unable to pursue the obvious course of action that lay before him. Those pallid Morlocks, with their worm-like pallor—the colour of specimens preserved in spirit jars at some zoological museum—filled him with an instinctive horror that seemed to seep into his very bones. Their flesh was filthily cold, and he began to understand why the Eloi shuddered at their existence.</p>
 <p>Sleep eluded him. Perplexity and nameless dread pressed upon his mind, and he found himself creeping into the great hall where the little people slumbered in the moonlight, seeking comfort in their presence. Weena lay among them, and her nearness brought him some measure of reassurance. Yet even as he watched them sleep, a darker thought intruded—the moon would soon wane, and in the coming blackness these whitened Lemurs, this new vermin of the earth, would surely multiply their appearances above ground. He knew with terrible certainty that his Time Machine lay somewhere in those subterranean depths, and that only by descending into mystery could he hope to reclaim it. But the prospect of that solitary descent into the well&#x27;s black throat filled him with dread. He had never felt quite safe at his back.</p>
 <p>His restlessness drove him to wander ever farther afield, and it was on one such expedition that he spied a remarkable structure in the distance—a vast edifice of pale bluish-green, its façade possessing the lustrous quality of Chinese porcelain. He named it in his mind the Palace of Green Porcelain and resolved to explore it, though he recognised this curiosity for what it truly was: another day&#x27;s postponement of the inevitable.</p>
@@ -650,9 +793,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Fear Returns With the Waning Moon illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Fear Returns With the Waning Moon</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Fear Returns With the Waning Moon illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Fear Returns With the Waning Moon</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller&#x27;s account grew darker now, heavier with dread. Where once he had felt merely impeded by circumstance—trapped in a pit, perhaps, but certain of eventual escape—a new and sickening understanding had settled upon him. The Morlocks were not simply an obstacle to be overcome through cleverness or patience. There was something altogether inhuman about them, something malign that stirred an instinctive loathing in his very bones. He no longer felt like a man who had stumbled into difficulty. He felt like prey.</p>
 <p>It was Weena who first planted the seed of his mounting terror, through scattered remarks about the Dark Nights that he had initially dismissed as incomprehensible. But comprehension came swiftly enough. The moon was waning, and with each passing evening the intervals of darkness stretched longer, deeper. The fear that gripped the Eloi after sunset was no mere superstition—it was survival instinct, however feeble and ineffectual. The Time Traveller now grasped what the coming moonless nights would bring, and the knowledge chilled him.</p>
 <p>His earlier theory lay in ruins. He had supposed the Eloi to be the descended aristocracy, the Morlocks their mechanical servants toiling below. But the old order had inverted itself across countless generations. The Morlocks still clothed and tended the Eloi, yes—but as a horse paws the ground from ancient habit, or as men hunt for sport what they no longer need. The beautiful Upperworld people had decayed into mere futility, possessing the sunlit earth only on sufferance. And now their Nemesis crept ever closer. The brother whom man had long ago thrust into darkness was returning, changed beyond recognition. Then, unbidden, a memory surfaced: the meat he had glimpsed in the Underworld. Its form nagged at him, familiar yet unplaceable, and he thrust the thought aside.</p>
@@ -666,9 +814,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Ruins of a Forgotten Museum illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">Ruins of a Forgotten Museum</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Ruins of a Forgotten Museum illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">Ruins of a Forgotten Museum</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The traveller and Weena approached the Palace of Green Porcelain around midday, finding it deserted and surrendering to slow ruin. Great sheets of its green facing had peeled away from corroded metal bones, and only ragged fragments of glass clung to the window frames. The structure commanded a high, grassy down, and before entering, he gazed north-eastward with some surprise at a vast estuary stretching where Wandsworth and Battersea had once stood—a fleeting thought crossing his mind about what strange transformations might have befallen the creatures of the sea, though he did not pursue it.</p>
 <p>The palace proved upon closer inspection to be constructed of genuine porcelain, its face bearing an inscription in characters utterly foreign to him. He entertained the foolish notion that Weena might interpret the writing, only to discover that the very concept of written language had never once entered her small, childlike mind. She seemed so human in her affection that he often forgot how far removed she truly was.</p>
 <p>Through broken doors they entered not a customary hall but a long gallery illuminated by side windows, and the traveller recognised it immediately for what it was: a museum. Dust lay thick upon the tiled floor, shrouding a remarkable collection of objects in grey silence. The skeletal remains of a Megatherium stood gaunt in the centre, its skull toppled beside it, and further along loomed the massive barrel-ribs of a Brontosaurus. Here was the ruined splendour of some latter-day South Kensington, a cathedral to knowledge now crumbling despite the near-extinction of decay&#x27;s agents. The Eloi had threaded fossils upon reeds like primitive ornaments, and the Morlocks had bodily removed certain cases—evidence of the twin degradations besetting this monument to intellect.</p>
@@ -680,9 +833,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Fire and Flight Through the Forest illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Fire and Flight Through the Forest</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Fire and Flight Through the Forest illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Fire and Flight Through the Forest</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller and Weena departed the Palace of Green Porcelain with the sun still lingering above the horizon, his mind fixed upon reaching the White Sphinx by the following morning. The woods that had turned him back before now lay directly in his path, and he resolved to press through them that very night, gathering sticks and dried grass as they walked, intending to build a fire whose protective glare would guard their sleep. But the burden of kindling slowed their progress considerably, and Weena grew tired, and exhaustion pulled at him too—for he had gone without sleep for a night and two days, his mind growing feverish and irritable with the weight of it all.</p>
 <p>By the time full darkness descended, they had only just reached the wood&#x27;s edge. Weena would have stopped there, fearful of the blackness ahead, but the Traveller sensed some terrible thing approaching and pressed onward. Behind them, crouching among the dim bushes, he glimpsed three figures. The forest stretched perhaps a mile across, and beyond it lay bare hillside—safer ground, he reasoned. But to light matches as he walked meant abandoning his firewood, and so, with reluctant ingenuity, he set the pile ablaze to frighten their pursuers. He would later recognise this as atrocious folly.</p>
 <p>Weena, who had never witnessed flame in her decadent age where fire-making had been forgotten, wanted desperately to touch the dancing red tongues. The Traveller restrained her and plunged into the darkness, carrying her upon his arm with the iron bar clutched in his free hand. The fire&#x27;s glow faded behind them as they moved deeper into the trees, and soon he heard it—the pattering of feet, the strange cooing voices of the Underworld. The Morlocks were closing in.</p>
@@ -693,9 +851,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="The Trap Sprung, The Escape Made illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">The Trap Sprung, The Escape Made</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="The Trap Sprung, The Escape Made illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">The Trap Sprung, The Escape Made</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Returning to the yellow metal seat where he had first surveyed this distant world, the Time Traveller found himself confronting the bitter irony of his earlier confidence. The landscape remained unchanged in its terrible beauty—the same lush foliage, the same crumbling palaces, the same silver river winding through fertile banks. The Eloi drifted among the trees in their bright garments, some bathing in the very spot where he had rescued Weena, and this sight pierced him with sudden grief. Yet now he understood what lurked beneath the pastoral surface, those cupolas dotting the landscape like dark stains, marking the passages to the Underworld. The beauty of the Eloi concealed their fate; they lived as pleasantly as cattle grazing in a field, and like cattle, they would meet the same end.</p>
 <p>Sitting in the warm sunlight, he mourned the suicide of human intellect. Mankind had pursued comfort and security with such relentless determination that it had finally achieved its paradise—and destroyed itself in the process. In that perfect world of eight hundred thousand years hence, all problems had been solved, all dangers eliminated. The wealthy had been assured their comforts, the labourers their purpose, and a great stillness had descended upon the earth. But nature, he reflected, grants intelligence only where change and danger demand it. An animal perfectly adapted to its environment becomes merely a perfect mechanism, requiring no thought, no adaptation, no growth. The Eloi had drifted toward their feeble prettiness while the Morlocks descended into mechanical industry below. When the systems that fed the Underworld eventually failed, Mother Necessity returned with terrible demands, and the Morlocks, retaining some vestige of initiative through their work with machinery, turned to forbidden meat.</p>
 <p>Exhausted by the terrors of recent days and heavy with grief, he allowed himself to sleep upon the turf, waking refreshed as the sun began its descent. Armed with his crowbar and matches, he approached the White Sphinx—only to discover its bronze panels standing open, revealing a small chamber within. There sat the Time Machine, carefully oiled and cleaned, clearly examined by curious Morlock hands.</p>
@@ -705,9 +868,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Earth&#x27;s Final Twilight illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">Earth&#x27;s Final Twilight</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Earth&#x27;s Final Twilight illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">Earth&#x27;s Final Twilight</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Time Traveller recounted how he had fled in desperate haste, seated improperly on his machine, clinging sideways to the saddle as it swayed and vibrated through the temporal currents. When at last he gathered himself to examine the dials, he discovered with astonishment that he had pulled the levers forward rather than reversing them—the thousands hand spinning like a watch&#x27;s second hand, carrying him not homeward but ever deeper into futurity.</p>
 <p>As he hurtled onward, the world transformed in ways both strange and terrible. The familiar grey pulsation of passing days grew darker, and the blinking alternation of light and dark stretched longer and longer until the days themselves seemed to span centuries. A perpetual twilight settled over the earth, broken only by the occasional flare of a comet streaking across the darkening heavens. The sun ceased its ancient journey across the sky; instead it hung motionless on the western horizon, swollen to a vast red dome that glowed with sullen heat and sometimes flickered toward extinction. The moon had vanished entirely, the stars crept rather than wheeled, and the Traveller understood that the tidal forces had at last completed their patient work—the earth had surrendered its rotation, turning one face forever toward its dying star, just as the moon had long ago yielded to the earth.</p>
 <p>He slowed cautiously, mindful of his previous headlong tumble, and brought the machine to rest upon a desolate beach. The sky above him was no longer blue but split between ink-black darkness studded with pale stars to the northeast and a deep Indian red overhead, brightening to glowing scarlet where the massive hull of the sun lay beached upon the horizon. Harsh reddish rocks surrounded him, their southeastern faces carpeted with intensely green vegetation—lichens and liverworts thriving in this perpetual twilight. The sea stretched away without wave or breaker, breathing only with a slight oily swell, its margins crusted thick with pink salt. The thin air burned his lungs, reminding him of mountain altitudes.</p>
@@ -717,9 +885,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Rewinding Through Time to Home illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">Rewinding Through Time to Home</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Rewinding Through Time to Home illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">Rewinding Through Time to Home</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>So the Time Traveller came back.</p>
 <p>For how long he lay insensible upon that mechanical saddle, slumped across the brass rails and ivory levers, he could not say. But gradually the world reasserted itself around him—the blinking succession of days and nights resumed their familiar rhythm, the sun warming from that dying ember glow back to proper gold, the sky reclaiming its honest blue. He breathed easier then, the air no longer carrying that strange thinness of the distant future. The landscape shifted and flowed beneath him as millennia unwound, the hands upon his dials spinning backward through the ages, rewinding time itself like thread upon a spool.</p>
 <p>At last came the dim shapes of houses, those first melancholy evidences of humanity in its long decline. These too flickered and changed, replaced by others and others still, civilisations rising and falling in reverse as he hurtled homeward through the centuries. When the million dial crept toward zero, he slackened his speed, watching with growing recognition as the architecture transformed into something familiar—the pretty, sensible buildings of his own era. The thousand dial wound back to its starting point, and the strobing of night and day grew slower, gentler, until finally the old walls of his laboratory materialised around him like a half-remembered dream.</p>
@@ -731,9 +904,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Doubt, Evidence, and Departure illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">Doubt, Evidence, and Departure</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Doubt, Evidence, and Departure illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">Doubt, Evidence, and Departure</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The tale concluded, silence settled upon the familiar room like dust upon forgotten things. The Time Traveller, pipe in hand, regarded his assembled guests with that peculiar mixture of weariness and defiance that marks a man who has seen too much and can prove too little. He offered them an escape—call it speculation, call it fiction, dismiss the whole affair as a dream hatched in the workshop. Yet even as he spoke these concessions, his eyes drifted to the withered white flowers upon the table, and to the half-healed scars across his knuckles.</p>
 <p>The Editor rose with a sigh and pronounced it a pity their host was not a writer of stories, that gentle condemnation which passes for polite disbelief. The Medical Man, ever the empiricist, busied himself examining the strange blossoms, confessing he could not place them within any natural order known to science. When he asked to keep them, the Time Traveller refused with sudden vehemence—they were Weena&#x27;s gift, pressed into his pocket when he had travelled into Time, and he would not surrender them to skepticism.</p>
 <p>Yet doubt crept even into the Traveller&#x27;s own mind. The atmosphere of every day, the friendly faces, the comfortable room—all conspired against memory. Had he truly built the machine, or merely dreamed it? In a moment of desperate need for confirmation, he seized the lamp and led his guests through the corridor to the laboratory. There it stood: squat, ugly, and undeniably real—brass and ebony and ivory stained with brown spots, bits of grass clinging to its lower parts, one rail bent awry from that final desperate escape. The Traveller ran his hand along the damaged metal and pronounced his story true.</p>
@@ -878,6 +1056,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

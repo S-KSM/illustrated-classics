@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="The Darlings Before the Adventure illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">The Darlings Before the Adventure</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="The Darlings Before the Adventure illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">The Darlings Before the Adventure</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>All children, except one, grow up—and from the moment little Wendy Darling plucked a flower at two years old and watched her mother&#x27;s heart break with the wish that she might stay small forever, she knew this truth as surely as any of us come to know it. Two is the beginning of the end, after all.</p>
 <p>The Darlings lived at Number 14, a household presided over by Mrs. Darling with her romantic mind like those puzzling Eastern boxes nested one inside another, always one more to discover, and her sweet mocking mouth that held a kiss in its right-hand corner that no one—not even Mr. Darling, who had won her by taking a cab while other suitors ran—could ever quite capture. Wendy thought perhaps Napoleon might have managed it, though one imagines him storming off in a passion when he failed. Mr. Darling was a man who knew about stocks and shares, or quite seemed to know, which amounts to much the same thing where respect is concerned. He was frightfully proud of his children—Wendy first, then John, then Michael—though each new arrival required his most rigorous calculations with pencil and paper, adding up expenses differently each time while Mrs. Darling looked on imploringly, until somehow the children just squeaked through with mumps reduced to twelve and six.</p>
 <p>Being poor from all the milk the children drank, yet determined to keep up with the neighbours, the Darlings engaged a nurse who happened to be a prim Newfoundland dog named Nana. She was a treasure, really—thorough at bath-time, up at the slightest cry, a believer in old-fashioned remedies and rhubarb leaf who made sounds of contempt at all the new-fangled talk about germs. No nursery could have been conducted more correctly, though Mr. Darling sometimes wondered uneasily whether the neighbours talked, and whether Nana quite admired him as Mrs. Darling insisted she did.</p>
@@ -526,9 +629,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Shadow Caught, a Family Undone illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Shadow Caught, a Family Undone</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Shadow Caught, a Family Undone illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Shadow Caught, a Family Undone</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mrs. Darling&#x27;s scream pierced the nursery air, and as though summoned by that very cry, Nana burst through the door—faithful Nana, home from her evening&#x27;s liberty. The great dog growled and lunged at the strange boy, who escaped through the window with the lightness of something not quite earthly. Mrs. Darling screamed again, though this time her heart clenched with fear for him, certain he must have plummeted to his death. She rushed to the street below, searching frantically for a small broken body, but found nothing at all. When she lifted her eyes to the heavens, she could make out only what might have been a shooting star streaking across the black night.</p>
 <p>Upon returning to the nursery, she discovered Nana clutching something peculiar in her mouth—the boy&#x27;s shadow, snapped clean off when the window slammed shut behind him. Mrs. Darling examined it thoroughly, turning it this way and that, but it proved to be quite an ordinary shadow, as shadows go.</p>
 <p>Nana, possessing the practical wisdom of her kind, hung it out the window straightaway, reasoning that the boy would surely return for it and ought to find it waiting. But Mrs. Darling could not abide the sight of it dangling there like Monday&#x27;s washing, lowering the tone of the whole house. She considered troubling Mr. Darling with the matter, but he sat absorbed in calculations for winter coats, a wet towel wrapped round his head to sharpen his thinking, and she knew precisely what he would say: *It all comes of having a dog for a nurse.* So she rolled the shadow carefully and tucked it away in a drawer, waiting for the proper moment.</p>
@@ -542,9 +650,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="The Night Peter Found His Shadow illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">The Night Peter Found His Shadow</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="The Night Peter Found His Shadow illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">The Night Peter Found His Shadow</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The night-lights beside the children&#x27;s beds burned on for only a moment after Mr. and Mrs. Darling departed for the evening—those dear, drowsy little flames that yawned themselves out one after another until the nursery fell dark. But darkness did not last, for something far brighter soon blazed through the room, darting into drawers and wardrobes with such frantic speed that one might have mistaken it for a shooting star gone terribly astray. This was no mere light, however, but a fairy called Tinker Bell—no taller than a hand, exquisitely dressed in a skeleton leaf cut fashionably low, and perhaps just slightly inclined to plumpness.</p>
 <p>Hard upon her arrival came Peter Pan himself, blown through the window on the breath of the little stars, his hands still shimmering with fairy dust. He had come for his shadow—that troublesome thing Wendy&#x27;s mother had rolled up and hidden away—and with Tink&#x27;s tinkling directions, he soon found it in the chest of drawers. But shadows, it seems, do not simply reattach themselves like drops of water meeting, no matter how desperately one might wish it. Peter tried soap. Peter failed. And then Peter—who would later insist he had never cried in all his life—sat upon the nursery floor and wept.</p>
 <p>His sobs roused Wendy, who sat up in bed with all the pleasant curiosity of a proper hostess discovering an unexpected guest. She was not frightened in the least; she was charmed. When Peter bowed to her with the grand manner he had learned at fairy ceremonies, she bowed right back from her pillow, and their strange acquaintance began in earnest.</p>
@@ -558,9 +671,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Journeying Through Skies and Uncertainty illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">Journeying Through Skies and Uncertainty</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Journeying Through Skies and Uncertainty illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Journeying Through Skies and Uncertainty</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>And so they flew—second to the right, and straight on till morning—though Peter had plucked those directions from thin air as carelessly as one might snatch a feather drifting past. No bird with map in claw could have charted such a course, for Peter, you see, simply said whatever tumbled into his head and thought nothing more of it.</p>
 <p>At first the children trusted him utterly, drunk as they were on the miracle of flight itself. They circled church spires for the pure joy of it, John and Michael racing whilst Wendy watched, all three marveling that only recently they had thought themselves terribly clever for managing a turn about the nursery. But how long ago had that been? They were sailing over their second sea, John reckoned, perhaps their third night, and time had grown slippery as wet soap.</p>
 <p>Peter fed them in his own peculiar fashion—chasing birds with morsels in their beaks, snatching the food away, then leading merry pursuits across miles of sky until both parties departed with cheerful farewells. It did not seem to occur to him that bread and butter might be obtained by other means, and Wendy noted this with gentle unease.</p>
@@ -575,9 +693,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Neverland Awakens to the Hunt illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">Neverland Awakens to the Hunt</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Neverland Awakens to the Hunt illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Neverland Awakens to the Hunt</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>With Peter winging his way home, the Neverland stirred and stretched itself awake—woke, not wakened, for that was how Peter always said it, and so that is how it was. In his absence, the island had grown drowsy and slow; the fairies lingered an hour longer in their morning beds, the beasts tended their young with unusual patience, and even the pirates and lost boys, when they crossed paths, did nothing more than bite their thumbs in half-hearted defiance. But now, with Peter&#x27;s return imminent, the whole island seethed with purpose once more.</p>
 <p>On this particular evening, a peculiar chase had begun—a great rotating circle of pursuit that wound through the trees and shadows. The lost boys searched for Peter, the pirates hunted the lost boys, the redskins stalked the pirates, and the beasts prowled after the redskins. Round and round they went, never meeting, for all moved at precisely the same pace, each party oblivious to the danger creeping up from behind.</p>
 <p>The lost boys numbered six, if one counted the twins as two, and they crept through the underbrush in bear skins, round and furry and forbidden by Peter to resemble him in any way. There was unfortunate Tootles, whose bad luck had sweetened rather than soured his nature; gay Nibs; conceited Slightly, who believed he remembered life before being lost; Curly, who confessed to crimes whether he had committed them or not; and the twins, who remained deliberately vague about themselves since Peter had never understood what twins were.</p>
@@ -592,9 +715,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="A Mother&#x27;s Arrival and Narrow Escape illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">A Mother&#x27;s Arrival and Narrow Escape</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="A Mother&#x27;s Arrival and Narrow Escape illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">A Mother&#x27;s Arrival and Narrow Escape</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Foolish Tootles stood over Wendy&#x27;s fallen body with all the pride of a conqueror, believing himself the hero of the hour—for had he not shot the great white bird that Peter surely wanted brought down? But when the other boys sprang armed from their trees and gathered round, a terrible silence fell upon the wood, the sort of silence that settles when something dreadful has been done and cannot be undone.</p>
 <p>Slightly was first to voice what they all dreaded. This was no bird. This was a lady—a lady Peter had been bringing to care for them at last—and Tootles had killed her with his bow. The boys whipped off their caps and turned from him in their grief, though they pitied him even as they mourned for themselves. Tootles, his face white as bone, confessed his crime with a strange new dignity: when ladies had come to him in dreams he had called them &quot;Pretty mother,&quot; yet when one had finally come in truth, he had shot her through the heart. He made to leave, trembling with fear of Peter, but before he could slip away, that familiar crowing sound rang through the trees.</p>
 <p>Peter dropped down among them, full of glorious tidings, demanding cheers for the mother he had brought. But the boys could only open their mouths in mournful silence. Tootles, braver than any of them, stepped forward and showed Peter what lay upon the ground.</p>
@@ -607,9 +735,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Wendy&#x27;s Enchanted Domestic Underground illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">Wendy&#x27;s Enchanted Domestic Underground</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Wendy&#x27;s Enchanted Domestic Underground illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Wendy&#x27;s Enchanted Domestic Underground</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Upon arriving in Neverland, Peter&#x27;s first proper duty was to measure the three Darling children for their hollow trees—those marvellous passages that led down into the home below. For one simply *must* fit one&#x27;s tree, you see, as snugly as a hand fits a glove, otherwise there could be no graceful ascending or descending. Wendy and Michael slipped into theirs beautifully on the first try, though John required a bit of alteration, and soon enough all three could travel up and down as gaily as buckets in a well.</p>
 <p>And what a home awaited them beneath the earth! It was a single sprawling room, rough and simple, the sort of dwelling baby bears might have fashioned for themselves. The floor was rich enough to dig through should one fancy fishing, and from it sprouted fat, charming mushrooms that served as stools. In the centre grew a persistent Never tree, sawed down each morning to the floor and sprouted again by tea-time to just the right height for a tabletop. An enormous fireplace could be lit wherever one pleased, and Wendy strung her washing lines across it. The bed tilted against the wall by day and dropped down at half-past six, whereupon all the boys packed themselves in like sardines—all save Michael, who, being the baby Wendy insisted upon having, swung overhead in a basket.</p>
 <p>Tucked into one wall sat a recess no larger than a birdcage: Tinker Bell&#x27;s private apartment. Though the fairy was quite contemptuous of the larger house, her own chamber was exquisitely furnished with fairy antiques—a genuine Queen Mab couch, a Puss-in-Boots mirror, a Pie-crust washstand—giving the space the unmistakable air of a nose turned permanently upward.</p>
@@ -620,9 +753,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Shadows Stir the Singing Waters illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Shadows Stir the Singing Waters</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Shadows Stir the Singing Waters illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Shadows Stir the Singing Waters</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>To glimpse the lagoon, one must close one&#x27;s eyes very tightly indeed—so tightly that the darkness blooms with pale, shapeless colors that threaten to catch fire behind the lids. Just before they do, there it is: the lagoon, that heavenly flash granted only to the luckiest dreamers on the mainland.</p>
 <p>The children spent countless summer days upon those enchanted waters, swimming and floating and playing at mermaid games, though one must not suppose the mermaids welcomed their company. It remained among Wendy&#x27;s lasting regrets that she never received a civil word from a single one of them. She might steal to the lagoon&#x27;s edge and spy them basking on Marooners&#x27; Rock, combing their hair with maddening laziness, or swim ever so carefully within a yard of them—only to be deliberately splashed by their tails as they vanished beneath the surface. Peter alone enjoyed their favor, chatting with them by the hour, even sitting upon their tails when they grew impertinent. He gave Wendy one of their combs as a gift.</p>
 <p>The most haunting hour to observe the mermaids was at the turn of the moon, when they uttered strange wailing cries—but the lagoon grew dangerous for mortals then, and Wendy had never seen it by moonlight. She kept strict rules about bedtime, you see. She often visited on sunny days after rain, however, when the mermaids surfaced in extraordinary numbers to bat their rainbow bubbles about like balls, trying to keep them aloft until they burst. The children longed to join these games, but the mermaids would never permit it—though John did leave his mark on Neverland by introducing a new way of hitting bubbles with one&#x27;s head, which the mermaids secretly adopted.</p>
@@ -641,9 +779,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A Desperate Rescue on the Lagoon illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">A Desperate Rescue on the Lagoon</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A Desperate Rescue on the Lagoon illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">A Desperate Rescue on the Lagoon</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As the waters of the lagoon crept ever higher about the rock where Peter Pan stood quite alone, the last sounds to reach his ears were the mermaids retiring to their bedchambers beneath the sea. He could not hear their doors shut, of course—he was much too far away for that—but every door in those coral caves rings a tiny bell when it opens or closes (as is the custom in all the nicest houses on the mainland), and these delicate chimes reached him across the darkening water.</p>
 <p>The tide rose steadily, nibbling at his feet with cold determination, and to pass the time until the waters should make their final gulp, Peter fixed his attention upon the only thing moving on the lagoon. At first he took it for a piece of floating paper—perhaps a remnant of the kite—and wondered idly how long it might take to drift ashore. But presently he noticed something rather odd about this scrap: it moved with purpose, fighting against the tide, and sometimes winning. When it won, Peter, who was always sympathetic to the weaker side in any contest, could not help clapping. It was such a gallant piece of paper.</p>
 <p>But it was not paper at all. It was the Never bird, paddling desperately toward Peter upon her nest, which had tumbled into the water some time ago. By working her wings in a manner she had taught herself since that unfortunate day, she could guide her strange craft to some extent, though by the time Peter recognized her she was thoroughly exhausted. She had come to save him—to give him her nest so that he might float to safety—though there were eggs in it, precious eggs she had been warming with her breast. One rather wonders at the bird, for while Peter had sometimes been kind to her, he had also tormented her on occasion. Perhaps, like Mrs. Darling and so many others, she was simply melted by the fact that he still had all his first teeth.</p>
@@ -654,9 +797,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Domestic Bliss Before the Storm illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Domestic Bliss Before the Storm</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Domestic Bliss Before the Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Domestic Bliss Before the Storm</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Following Peter&#x27;s daring rescue of Tiger Lily from the lagoon, the Piccaninny tribe had become devoted allies to the children of the underground home. Night after night, the braves kept faithful watch above, their keen eyes scanning for any sign of the pirate attack that loomed ever nearer on the horizon. By day they lingered about, smoking their pipes of peace with such peaceful contentment that one might suppose they were hoping for scraps from the table.</p>
 <p>Peter, naturally, reveled in their adoration. They called him the Great White Father and prostrated themselves before him—a display of reverence that pleased him tremendously and did him no good whatsoever. He would address them in the most lordly manner imaginable, speaking of himself as though he were some magnificent chief, and when he declared &quot;Peter Pan has spoken,&quot; all knew it meant they must hold their tongues. Tiger Lily, lovely creature that she was, pledged herself his faithful protector, though Wendy privately thought it rather beneath such a pretty girl to grovel so. Still, Wendy was far too loyal a housewife to voice complaints against father, even when the redskins insisted on calling her a squaw.</p>
 <p>And so we arrive at the evening destined to become known among them as the Night of Nights—though none yet suspected what adventures awaited them before dawn.</p>
@@ -670,9 +818,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="A Mother&#x27;s Window Left Unbarred illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">A Mother&#x27;s Window Left Unbarred</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="A Mother&#x27;s Window Left Unbarred illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">A Mother&#x27;s Window Left Unbarred</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Wendy settled into the role of storyteller with all the gravity a mother ought to possess, Michael curled at her feet and seven boys tucked into the bed before her. She meant to tell them about the Darlings—about the gentleman and the lady, about their three children and faithful Nana, about windows left open and mothers who wait. But telling a story to lost boys is rather like herding cats through a thunderstorm, and the children could not help themselves from interrupting at every turn.</p>
 <p>They wanted white rats instead of gentlemen. They wanted assurances that the lady was not dead. They wanted to know what descendants meant and whether they themselves might be ones. Through it all, Wendy persevered with sighs and gentle corrections, while Peter called for quiet from his corner—determined she should have fair play, however tiresome he privately found the tale.</p>
 <p>The story wound its way toward the heart of the matter: three children who flew to the Neverland, parents left behind with empty beds, and the sublime faith that a mother&#x27;s window would remain forever open. Wendy painted the happy ending with flourish—the fair Wendy returning as an elegant lady of uncertain age, John and Michael grown to noble portly manhood, all of them flying home to find the window waiting just as they knew it would be. The children received this conclusion with satisfaction, for it confirmed what they wished to believe: that one might skip away selfishly for years and return whenever convenient to find forgiveness and reward rather than punishment.</p>
@@ -685,9 +838,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Treachery at the Piccaninny Camp illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Treachery at the Piccaninny Camp</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Treachery at the Piccaninny Camp illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Treachery at the Piccaninny Camp</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The pirate attack came as a complete and devastating surprise—a thing that ought never to have happened, for by all the ancient, unwritten laws of savage warfare, it is the redskin who attacks, not the white man. The proper procedure was as fixed as the stars: the natives would creep through the long black night, wriggling snake-like through the grass without stirring a single blade, giving their wonderful imitations of lonely coyote calls while the inexperienced whites clutched their revolvers and trembled. The attack would come just before dawn, when pale courage runs at its lowest ebb. These customs were known to every soul on the island, Hook included—which meant his violation of them could claim no excuse of ignorance.</p>
 <p>The Piccaninnies had trusted implicitly in the pirate captain&#x27;s honour, conducting themselves with all the alertness and ceremony befitting their proud tribe. From the moment a pirate&#x27;s boot cracked a dry stick, they knew enemies had landed. Braves wearing their moccasins heel-forward scouted every foot of ground between Hook&#x27;s landing point and the home under the trees. They found the single hillock with a stream at its base where Hook must surely establish his position. With diabolical cunning, the main body of redskins folded their blankets and squatted above the children&#x27;s underground home, dreaming wide-awake of the exquisite tortures they would inflict come daybreak.</p>
 <p>But the treacherous Hook did not wait. He did not pause at the rising ground, though surely he saw it in the grey light. No thought of proper warfare visited his subtle mind—he simply pounded forward with no policy but destruction. The bewildered scouts could only trot helplessly after him, exposing themselves while giving pathetic utterance to their coyote cries.</p>
@@ -700,9 +858,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Capture, Secrets, and a Dark Descent illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">Capture, Secrets, and a Dark Descent</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Capture, Secrets, and a Dark Descent illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">Capture, Secrets, and a Dark Descent</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The horror descended upon the lost boys with brutal swiftness. From their trees they were plucked like so many parcels, tossed hand to hand among the pirates—Cecco to Smee to Starkey to Bill Jukes to Noodler—until each tumbled at last before the black pirate&#x27;s feet. But for Wendy, there awaited a different fate entirely. Hook, with that dreadful elegance of his, raised his hat and offered her his arm, and she—only a little girl, after all—found herself too fascinated by his frightful distinction to cry out. This momentary enchantment would prove costly, for had she unhanded him with proper contempt, Hook might never have been present for the tying of the children, and thus might never have stumbled upon Slightly&#x27;s terrible secret.</p>
 <p>The boys were trussed like roasted fowl, knees pressed to ears to prevent flight, but Slightly proved troublesome—a parcel that consumed all the string with nothing left to make a knot. While the pirates kicked at him in frustration, Hook&#x27;s cunning mind probed deeper, seeking not effects but causes. And he found them. Poor Slightly had grown so addicted to drinking water when he was hot that he had swelled considerably, and rather than slim himself to fit his tree, he had whittled the tree to fit him. A tree through which an average man might pass.</p>
 <p>Hook spoke no word of the dark design now forming in the caverns of his mind. He merely ordered the captives conveyed to the ship in the little house itself, borne upon pirate shoulders through the morass, while from its chimney rose a defiant little jet of smoke. This small courage dried whatever trickle of pity might have remained in Hook&#x27;s breast.</p>
@@ -718,9 +881,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="The Lonely Torment of Captain Hook illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">The Lonely Torment of Captain Hook</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="The Lonely Torment of Captain Hook illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">The Lonely Torment of Captain Hook</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The *Jolly Roger* lay anchored in the darkness near Kidd&#x27;s Creek, her hull foul and wretched, a vessel so steeped in terror that she needed no guard beyond the horror of her own name. The night wrapped the ship in silence, broken only by the peculiar whir of Smee&#x27;s sewing machine—pathetic Smee, industrious and commonplace, so touchingly unaware of his own pitifulness that even Hook himself had been moved to tears by the sight of him.</p>
 <p>While pirates sprawled about the deck at their cards and dice, and the four exhausted men who had carried Wendy&#x27;s little house slept with practiced vigilance against their captain&#x27;s wandering claw, Hook paced in solitary torment. This should have been his finest hour. Peter Pan was gone forever, the boys waited in chains to walk the plank, and yet no triumph swelled within him. He was profoundly, terribly alone.</p>
 <p>The truth of Hook—which could never be spoken aloud—was that he had once attended a famous public school, and its traditions haunted him still like ill-fitting garments he could not shed. Good form was everything to him, the only thing that truly mattered, and yet it tortured him ceaselessly. From somewhere deep within came that eternal question, tap-tap-tapping like a stern headmaster: *Have you been good form today?* He sweated and trembled under its weight. Was it good form to be distinguished? Was it bad form to think about good form at all? The paradox clawed at him worse than any iron hook.</p>
@@ -732,9 +900,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The Crocodile&#x27;s Tick Becomes Peter&#x27;s Weapon illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">The Crocodile&#x27;s Tick Becomes Peter&#x27;s Weapon</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The Crocodile&#x27;s Tick Becomes Peter&#x27;s Weapon illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">The Crocodile&#x27;s Tick Becomes Peter&#x27;s Weapon</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The strange way life unfolds itself became apparent that night when Peter, stealing across the island with his dagger ready and his finger pressed to his lips, noticed something peculiar about the crocodile slipping by—it had ceased its eternal ticking. The clock had simply wound down at last, and without pausing to consider what such a loss might mean to a creature so defined by that mechanical heartbeat, Peter saw only opportunity. He began to tick himself, superbly imitating that fatal sound, reasoning that wild beasts would mistake him for the crocodile and let him pass. What he hadn&#x27;t foreseen was that the crocodile itself heard this familiar rhythm and followed after him—whether hoping to reclaim its lost companion or simply believing it was ticking once more, no one could ever say, for the beast was a slave to its fixed idea and not terribly clever about such matters.</p>
 <p>Peter reached the shore and plunged into the water as naturally as any creature might, his legs quite unaware they had entered a new element, and swam toward the brig with one thought drumming through him: &quot;Hook or me this time.&quot; He had ticked so long by now that he continued without knowing it, and so when he scaled the ship&#x27;s side—believing himself silent as a mouse—he found the pirates cowering before him, Hook abject among them as though the crocodile itself had boarded. Only when Peter remembered the beast did he hear what he was doing, and in a flash understood his advantage. &quot;How clever of me!&quot; he thought, and signaled the boys to hold their applause.</p>
 <p>What followed was swift and merciless. The quartermaster emerged from the forecastle and met Peter&#x27;s blade true and deep. Four boys caught the falling body to muffle the thud while John clapped his hands over the dying groan, and the carrion was cast overboard with barely a splash. &quot;One!&quot; Slightly began his grim count, and Peter slipped into the cabin.</p>
@@ -747,9 +920,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Waiting Hearts and Open Windows illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">Waiting Hearts and Open Windows</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Waiting Hearts and Open Windows illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">Waiting Hearts and Open Windows</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>By three bells that morning, the motley crew aboard the captured pirate ship were all stirring their stumps beneath a big sea running. Tootles, now serving as bo&#x27;sun with a rope&#x27;s end in hand and tobacco in cheek, moved among them as they donned pirate clothes cut off at the knee, shaved smartly, and tumbled up with the true nautical roll, hitching their trousers in proper seafaring fashion. It need not be said who was captain—Peter had already lashed himself to the wheel, and after piping all hands, delivered a short address expressing hope they would do their duty like gallant hearties, though he knew them for the scum of Rio and the Gold Coast and would tear them if they snapped at him. The bluff strident words struck the note sailors understood, and they cheered him lustily before turning the ship round and nosing her for the mainland.</p>
 <p>The general feeling aboard was that Peter played honest captain merely to lull Wendy&#x27;s suspicions, particularly as she reluctantly fashioned him a new suit from Hook&#x27;s wickedest garments. It was afterwards whispered that on the first night he wore this suit, he sat long in the cabin with Hook&#x27;s cigar-holder in his mouth and one hand clenched, all but for the forefinger, which he bent and held threateningly aloft like a hook.</p>
 <p>But we must leave the ship and return to that desolate home from which three of our characters had taken heartless flight so long ago. Mrs. Darling would not blame us for our neglect—if we had returned sooner with sorrowful sympathy, she would have cried, &quot;Don&#x27;t be silly; do go back and keep an eye on the children.&quot; So long as mothers are like this, their children will take advantage of them, and they may lay to that.</p>
@@ -762,9 +940,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="The Promise of Spring Cleaning illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">The Promise of Spring Cleaning</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="The Promise of Spring Cleaning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">The Promise of Spring Cleaning</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The lost boys came up by the stair rather than the window, for they thought this would make a better impression, and they stood in a row before Mrs. Darling with their hats off, eyes silently pleading to be kept. Mrs. Darling agreed at once, of course, though Mr. Darling grew curiously depressed at the prospect of six additional mouths—a cloud hanging over him until he burst into tears and confessed he simply wished to be consulted rather than treated as a cypher in his own house. The boys assured him most earnestly that they thought him no cypher at all, and he was absurdly gratified, leading them dancing through the house crying &quot;Hoop la!&quot; in search of corners where they might all fit in.</p>
 <p>Peter brushed against the window one last time before flying away, and when Mrs. Darling offered to adopt him too, he inquired craftily about school and offices and becoming a man. The very thought of waking to find a beard upon his chin sent him recoiling in horror. He would live with Tink in the little house high among the tree tops, he declared, and no one would catch him and make him grow up. Mrs. Darling, seeing his mouth twitch when Wendy could not come, made her handsome offer: Wendy might visit him one week each year for spring cleaning. Peter flew away quite gay again, taking with him that kiss which had always belonged to no one else—the kiss at the corner of Mrs. Darling&#x27;s mouth.</p>
 <p>The boys went to school and saw what goats they had been not to remain on the island, though it was too late now. Gradually the power to fly left them, for they no longer believed. Michael held on longest, and was there when Peter came for Wendy at the end of the first year—Peter who had so many new adventures crowding his mind that he could not remember Captain Hook, could not remember Tinker Bell, could not remember that he had missed an entire year the next time spring cleaning came round.</p>
@@ -906,6 +1089,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

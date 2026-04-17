@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="Eastward Into the Land of Superstition illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">Eastward Into the Land of Superstition</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="Eastward Into the Land of Superstition illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Eastward Into the Land of Superstition</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The journal of Jonathan Harker opens with the methodical notations of an English solicitor bound for a business engagement in the eastern reaches of Europe—a journey that carries him, by degrees both geographical and spiritual, from the familiar securities of the West into territories where the maps grow uncertain and the superstitions multiply like shadows at dusk.</p>
 <p>Setting forth from Munich on the first of May, Harker traverses Vienna and Buda-Pesth, noting with characteristic precision the tardiness of trains and the gradual transformation of the landscape as he crosses into what he perceives as the Orient&#x27;s threshold. His passages through Klausenburgh and onward to Bistritz are punctuated by the small pleasures of the careful traveller: paprika hendl and mamaliga, local dishes whose recipes he memorises for his fiancée Mina, and ethnographic observations concerning the Saxons, Wallachs, Magyars, and Szekelys amongst whom he journeys. He has prepared himself admirably, having researched Transylvania at the British Museum, though he confesses he could light upon no map showing the exact locality of Castle Dracula—a detail he records without apparent alarm, attributing the gap to the region&#x27;s wildness rather than to anything more sinister.</p>
 <p>At Bistritz, Harker finds lodging at the Golden Krone Hotel, where a letter from Count Dracula awaits him, cordial in its welcome yet carrying undertones that trouble the reader if not the recipient. It is here that the first unmistakable warnings present themselves. The landlord and his wife grow evasive at the Count&#x27;s name, crossing themselves in evident fear. The elderly landlady, in considerable distress, implores Harker not to depart on the eve of St. George&#x27;s Day, when all evil things hold full sway. She presses upon him a crucifix—an object his Anglican sensibilities find somewhat idolatrous, yet which he accepts out of courtesy and now wears about his neck as he writes, confessing he feels not nearly so easy in his mind as usual.</p>
@@ -523,9 +626,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="Threshold of the Castle&#x27;s Master illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">Threshold of the Castle&#x27;s Master</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="Threshold of the Castle&#x27;s Master illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">Threshold of the Castle&#x27;s Master</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>I must have been asleep when we arrived, for I cannot account for my failure to notice the approach of such a remarkable place as Castle Dracula. The courtyard loomed vast in the darkness, and several dark passages led away under great round arches, though I have yet to see any of it by daylight. The driver—whose prodigious strength I had already marked—set down my luggage before a massive door studded with iron nails and carved with stone worn smooth by centuries, then vanished with his horses into one of those black openings before I could think to question him.</p>
 <p>I stood alone in the silence, uncertain what to do. There was no bell, no knocker, and through those frowning walls I doubted my voice could penetrate. In those endless moments, doubts and fears pressed upon me. What sort of grim adventure had I embarked upon? I confess I thought of Mina, and of my recent success in examination—I am now a full-blown solicitor, not merely a clerk—yet such professional pride seemed absurd standing before that ancient fortress in the Carpathians.</p>
 <p>At last I heard heavy footsteps and saw light flickering through the door&#x27;s chinks. Chains rattled, bolts drew back with the grinding protest of long disuse, and the great door swung open to reveal a tall old man clad entirely in black, holding an antique silver lamp. He bade me welcome with courtly formality—&quot;Enter freely and of your own will!&quot;—yet stood motionless as stone until I crossed the threshold, whereupon he seized my hand with a grip cold as death and strong as iron. The resemblance to the driver&#x27;s crushing handshake struck me at once, though I dared not pursue the thought.</p>
@@ -536,9 +644,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Prisoner in the Castle of Shadows illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">Prisoner in the Castle of Shadows</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Prisoner in the Castle of Shadows illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">Prisoner in the Castle of Shadows</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The full horror of his situation has now descended upon Jonathan Harker with the weight of certainty. Upon discovering himself a prisoner within the castle walls, he confesses to having behaved &quot;much as a rat does in a trap&quot;—rushing wildly from door to window, testing every possible egress—before the conviction of utter helplessness forced him into a grim and methodical calm. He resolves to keep his knowledge and his fears to himself, to watch, to wait, and above all to maintain the careful pretence of an unsuspecting guest before his captor.</p>
 <p>The evidence of his isolation mounts with each observation. The Count, he now perceives, performs all menial offices himself—making beds, laying tables—confirming that no servants inhabit this dreadful place. The implication chills him to the marrow: if the Count alone occupies the castle, then it was surely he who drove the coach through those wolf-haunted mountain passes, commanding the beasts with nothing more than a silent gesture of his pale hand. The gifts pressed upon him by the fearful peasants—crucifix, garlic, wild rose, mountain ash—take on new and terrible significance. That crucifix, which his Protestant sensibilities had taught him to regard as idolatrous, now offers inexplicable comfort; he resolves to examine this mystery when circumstances permit.</p>
 <p>That night, Harker draws the Count into conversation regarding Transylvanian history, and the old nobleman speaks with passionate intensity of wars and conquests, of the Szekelys and their fierce heritage, of Attila&#x27;s blood running in his veins. He speaks always in the plural *we*, as though he himself had witnessed the battles of centuries past—a peculiarity Harker notes but cannot yet comprehend. The following evening brings questions of another sort entirely: English law, shipping consignments, the arrangement of multiple solicitors for separate transactions. The Count&#x27;s acumen is remarkable, his foresight unsettling. He compels Harker to write letters declaring he shall remain a month longer, and the young solicitor, recognising the implicit threat behind those blazing eyes, can do nothing but comply. He writes only formal notes, reserving his true account for shorthand entries that might puzzle his captor&#x27;s scrutiny.</p>
@@ -548,9 +661,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="The Span of My Life illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">The Span of My Life</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="The Span of My Life illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">The Span of My Life</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>I awoke in my own bed with no certain memory of how I came to be there, though small evidences—my clothes folded in a manner not my own, my watch left unwound—suggested that the Count had carried me from that dreadful chamber where the three spectral women had meant to drain my very life. I could not prove it absolutely, yet I took comfort in one particular: my pockets remained intact, and with them this diary, which surely would have been destroyed had my captor discovered it. My room, once a place of such fear, has become a kind of sanctuary now, for nothing can be more dreadful than those awful women who wait—who *are* waiting—to drink my blood.</p>
 <p>When I returned by daylight to examine the room where I had encountered them, I found the door forced shut from within, the woodwork splintered by violence. It was no dream, then, and I must act upon this knowledge. Yet acting has proven difficult, for the Count holds me entirely in his power. He commanded me, in his suavest tones, to write three letters—one saying my work was nearly done, another that I was departing, a third that I had already arrived at Bistritz—and when he specified the dates, I understood with terrible clarity: June 12, June 19, June 29. I know now the span of my life. God help me.</p>
 <p>I placed my hope briefly in a band of Szgany encamped in the courtyard. These are gipsies peculiar to this region, fearless and lawless, who attach themselves to great nobles. I wrote letters home—one to Mr. Hawkins and one to Mina in shorthand, that she might know something of my situation without the full horror of it—and threw them from my window with a gold piece. But the Count intercepted them both. He burned Mina&#x27;s letter before my eyes, his face blazing with wicked anger at the strange symbols he could not read, though he returned Hawkins&#x27;s with mocking courtesy. After that, I found all my papers taken, my travelling clothes gone. He means to impersonate me, wearing my garments as he crawls down the castle wall to post my own death notices in the villages.</p>
@@ -562,9 +680,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Letters of Love and Longing illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">Letters of Love and Longing</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Letters of Love and Longing illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Letters of Love and Longing</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The narrative shifts from Jonathan Harker&#x27;s increasingly anxious journal to a series of intimate letters exchanged between two young women whose friendship runs as deep as sisterhood, their correspondence revealing lives poised on the cusp of transformation. Mina Murray writes first to her dearest Lucy Westenra, apologizing for her long silence with the excuse of an assistant schoolmistress&#x27;s demanding existence, though her words betray a mind far more occupied with romantic industry than pedagogical drudgery. She has been practising shorthand with tremendous dedication, keeping pace with Jonathan&#x27;s studies so that she might prove useful to him as wife and secretary both—transcribing his thoughts, typewriting his documents, making herself indispensable in the modern fashion of lady journalists who train themselves to capture every conversation, every observed detail. She mentions, almost in passing, that Jonathan writes from Transylvania and shall return in about a week, though one senses beneath her cheerful domesticity a certain unease at the distance between them, a longing that extends beyond mere geography.</p>
 <p>Lucy&#x27;s reply proves altogether more animated, for she has news that sets her pen racing across the page. She confesses, with the breathless candour that only exists between women who have shared beds and secrets since childhood, that she is in love—deeply, consumingly—with one Arthur Holmwood, though he has not yet spoken the words she longs to hear. Her subsequent letter, however, transforms confession into comedy and comedy into something approaching pathos: in a single day, she has received three proposals of marriage. The first comes from Dr. John Seward, the young superintendent of a vast lunatic asylum, a man of penetrating gaze and resolute demeanour who nonetheless nearly sits upon his hat in his nervousness and fidgets dangerously with a lancet while declaring his devotion. Lucy refuses him gently, and he departs with admirable dignity, though she weeps to see him go broken-hearted.</p>
 <p>The second proposal arrives from an American adventurer, Quincey P. Morris, whose colourful frontier slang and tales of far-flung travels have thoroughly charmed her. He asks her to &quot;hitch up alongside&quot; him in phrases more suited to the Texas prairie than an English drawing-room, yet beneath his jollity lies genuine feeling, and when she refuses him too, he takes it standing up, requesting only a kiss to keep off the darkness of his lonely road ahead. Lucy grants it, moved by his nobility toward the unknown rival who has claimed her heart.</p>
@@ -575,9 +698,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Whitby&#x27;s Ruins, Legends, and Old Sailors illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">Whitby&#x27;s Ruins, Legends, and Old Sailors</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Whitby&#x27;s Ruins, Legends, and Old Sailors illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Whitby&#x27;s Ruins, Legends, and Old Sailors</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mina Murray&#x27;s journal entries carry us to Whitby, that ancient seaside town where the River Esk winds through its deep valley and red-roofed houses pile upon one another like illustrations from some continental travel volume. Here she has reunited with her dearest Lucy, who appears sweeter and lovelier than ever, her cheeks flushed with a healthy rose-pink that has replaced the anæmic pallor of recent months. Mina documents the landscape with the careful eye of one who finds solace in observation—the noble ruin of the Abbey, the winding steps that lead from town to churchyard, the curious graveyard perched so precariously above the harbour that some graves have tumbled into the sandy pathway below.</p>
 <p>It is in this churchyard that Mina encounters Mr. Swales, a gnarled old sailor of nearly one hundred years who professes loud contempt for all manner of superstition and legend. He rails against the tombstones surrounding them, declaring them monuments to lies—for how many commemorate sailors whose bones lie scattered in the Greenland seas or upon distant shores? The old man&#x27;s irreverent sermonizing upon death and deception provides a dark sort of entertainment, though his mockery carries undertones that trouble both Mina and Lucy, particularly when he reveals that Lucy&#x27;s favoured seat rests upon the grave of a suicide whose pious mother had driven him to self-destruction.</p>
 <p>Yet even the sceptical Mr. Swales cannot maintain his bravado against the gathering storm. On the sixth of August, beneath grey skies and with the sea mist drifting inland, he comes to Mina transformed—gentle, confessional, seeking absolution for his harsh words about the dead. He speaks of the Angel of Death whose trumpet may sound for him at any moment, and gazes out at the tumbling sea with prophetic dread. Something in the wind, he says, tastes and smells like death.</p>
@@ -586,9 +714,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="The Storm-Tossed Ship at Whitby illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">The Storm-Tossed Ship at Whitby</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="The Storm-Tossed Ship at Whitby illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">The Storm-Tossed Ship at Whitby</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The storm that struck Whitby on that August night arrived with all the terrifying suddenness of divine wrath, though none who gathered on the East Cliff churchyard to admire the magnificent sunset could have anticipated the horrors it would bring to shore.</p>
 <p>The evening had been remarkably fine, the kind of summer day that draws holiday-makers to the coast in droves, filling the steamers and crowding the walks along the cliff. Yet certain old salts, those weathered prophets who read the sky as others read scripture, noted the mare&#x27;s-tails gathering to the north-west and spoke of what was coming. By midnight, an unnatural stillness had settled over the harbour—that oppressive, breathless calm that precedes thunder—and a foolhardy foreign schooner was spotted making westward with all sails set, her officers seemingly ignorant of their peril.</p>
 <p>When the tempest broke, it did so with a fury that defied comprehension. The glassy sea transformed within minutes into a roaring, devouring monster, white-crested waves battering the piers and sweeping the lighthouse lanthorns with their spume. Through the chaos of wind and fog and lightning, the searchlight operators caught sight of that same schooner, now rushing toward the harbour mouth with the wind at her back and certain doom before her. Yet by some miracle—*mirabile dictu*—she threaded between the piers at headlong speed and drove herself onto the sand heap at Tate Hill Pier. And there, lashed to the wheel with a crucifix clutched between his bound hands, was discovered the only soul aboard: a dead man, his flesh cut to the bone by the cords that held him to his post.</p>
@@ -599,9 +732,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Moonlit Search for the Sleepwalker illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Moonlit Search for the Sleepwalker</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Moonlit Search for the Sleepwalker illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Moonlit Search for the Sleepwalker</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In the days following the arrival of the Demeter, Mina Murray continued her journal with the diligence of duty, though weariness pressed upon her like the sea-fog that so often rolled in over Whitby. She recorded a pleasant walk with Lucy, an encounter with some inquisitive cows near the lighthouse that gave them both such a fright as to wipe clean whatever shadows had been gathering in Lucy&#x27;s mind, followed by a &quot;severe tea&quot; at Robin Hood&#x27;s Bay in a charming little inn overlooking the seaweed-strewn rocks. That evening brought the inevitable young curate to supper, and both girls fought valiantly against drowsiness—Mina noting with some asperity that bishops might do well to breed a new class of curates who know when young women are tired and decline invitations accordingly. Yet as she watched Lucy sleeping, flushed and sweet, Mina felt a happiness she had almost forgotten: Lucy seemed to have turned the corner at last, her troubles with dreaming perhaps behind her. If only there were news of Jonathan.</p>
 <p>But the night brought fresh horror. Mina awoke suddenly to an oppressive emptiness—Lucy&#x27;s bed was cold and vacant, her nightdress the only garment missing. The hall door stood ajar. With a heavy shawl clutched to her breast, Mina ran out into the moonlit town, across the harbour bridge, up the endless abbey steps to their favourite seat in the churchyard. There, bathed in silver light, Lucy lay half-reclining, and behind her—bent over her—something dark with gleaming red eyes. Mina cried out; the thing raised its head, then vanished as the clouds shifted. When Mina reached her, Lucy was alone, breathing in long, terrible gasps, her hand clutching instinctively at her throat. Mina wrapped her carefully in the shawl, fastening it with a safety-pin, and led the sleepwalking girl home through the silent wynds, her heart pounding with fear for Lucy&#x27;s health and reputation alike.</p>
 <p>By morning, Lucy seemed unharmed—indeed, better than she had looked in weeks—though Mina noticed two small red punctures at her throat where, she supposed, she had clumsily pricked her with the pin. The wounds were tiny, surely nothing to worry over. Yet as the days passed, though Mina locked their door each night and tied the key to her wrist, Lucy continued to rise in her sleep, drawn inexplicably to the window, where once Mina glimpsed something like a great bird beside her. Lucy grew paler, weaker, more languid, even as she ate and slept well. The little wounds on her throat refused to heal; if anything, they grew larger, their edges faintly white.</p>
@@ -611,9 +749,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Vows at the Bedside illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">Vows at the Bedside</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Vows at the Bedside illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Vows at the Bedside</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In a letter dated from Buda-Pesth, Mina Harker writes to her dearest Lucy of all that has transpired since their parting at the Whitby railway station, and the tale she tells is one of joy shot through with shadows. She recalls little of her journey—the boat to Hamburg, the train onward—for her mind was fixed wholly upon reaching Jonathan, and upon the sleep she would need to nurse him properly. What she found at the hospital, however, was not the man she knew but a mere wreck of himself, thin and pale and weak, all his quiet dignity vanished and his dear eyes emptied of resolution. He remembers nothing of what befell him, or so he wishes her to believe, and Mina resolves never to press him, for the terrible shock that wasted him might yet tax his poor brain beyond endurance. Sister Agatha, that good creature, confesses only that his ravings in fever spoke of dreadful things no mortal can treat of—though she assures Mina there was no wrongdoing on his part, nor any rival woman to fear. When Jonathan wakes, he gives Mina his notebook with solemn words, begging her to keep its secrets unless some stern duty should compel their revelation. They are married that very afternoon in the hospital, Jonathan sitting propped among pillows, and afterward Mina wraps the book in white paper and pale blue ribbon, sealing it with her wedding ring as an outward sign of their trust.</p>
 <p>Meanwhile, Lucy writes from Whitby in seemingly gay spirits, speaking of Arthur and their long walks and drives, her restored appetite and untroubled sleep—though already there are omens the reader cannot miss. By the twenty-fourth of August she has returned to Hillingham and begun keeping a diary in imitation of Mina, confessing vague fears, horrid dreams she cannot remember, and a weakness that drains her. There is scratching at her window at night, and her throat pains her, and she grows so pale and awful that Arthur, in desperation, summons his old friend Dr. John Seward.</p>
 <p>Seward&#x27;s examination reveals no functional cause for Lucy&#x27;s decline, yet she is woefully different—bloodless, lethargic, plagued by dreams and difficulty breathing. He writes at once to his old master, Professor Van Helsing of Amsterdam, who arrives, examines the patient, and departs again with grave reticence, saying only that this is no jest but life and death, perhaps more. The telegrams that follow chart Lucy&#x27;s condition with terrible brevity: better on the fourth, greatly improved on the fifth, then on the sixth a desperate cry—&quot;Terrible change for the worse. Come at once; do not lose an hour.&quot;</p>
@@ -622,9 +765,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="The Husbandman&#x27;s Patience illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">The Husbandman&#x27;s Patience</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="The Husbandman&#x27;s Patience illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">The Husbandman&#x27;s Patience</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The chapter opens with Dr. Seward&#x27;s letter to Arthur Holmwood, dated September 6th, bearing news both troubling and practical—Lucy has suffered a setback, though the situation has yielded one advantage: Mrs. Westenra&#x27;s concern has allowed Seward to bring his old master, Professor Van Helsing, into Lucy&#x27;s care without arousing undue alarm. This arrangement proves essential, for Mrs. Westenra&#x27;s weak heart makes any shock potentially fatal, and Lucy&#x27;s condition has grown increasingly grave.</p>
 <p>When Van Helsing arrives at Liverpool Street, he counsels Seward with characteristic riddles about patience and knowledge, speaking of unripened corn and careful husbandry—cryptic warnings that what he suspects must be allowed to mature before it can be spoken aloud. His manner is grave, his meaning obscure, but his urgency becomes plain enough when they reach Hillingham and find Lucy in a state of ghastly deterioration. She lies chalky pale, her lips bloodless, her breathing laboured—so depleted that Van Helsing declares she will die without immediate transfusion.</p>
 <p>Providence delivers Arthur to the door at this precise moment, having read between the lines of Seward&#x27;s letter, and the Professor seizes upon the young lover&#x27;s vigorous health and pure blood with barely concealed relief. Arthur gives willingly—*My life is hers*—and colour returns to Lucy&#x27;s wasted cheeks even as pallor claims his own. Yet when Van Helsing adjusts her pillow afterward, the narrow velvet band at her throat shifts to reveal something that arrests him mid-breath: a red mark, two small punctures over the external jugular, worn-looking at the edges. Seward examines them and can make nothing of them—such wounds could not account for her massive blood loss, for the bed would be drenched scarlet. Van Helsing offers no explanation, only departs abruptly for Amsterdam to consult his books, leaving Seward with a solemn warning: *Remember, she is your charge. If you leave her, and harm befall, you shall not sleep easy hereafter.*</p>
@@ -634,9 +782,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Garlic Removed, Darkness Returns illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">Garlic Removed, Darkness Returns</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Garlic Removed, Darkness Returns illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">Garlic Removed, Darkness Returns</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The chapter opens with Lucy Westenra&#x27;s diary entry of the twelfth of September, in which she writes with almost childlike gratitude of dear Dr. Van Helsing&#x27;s solicitous care—though she cannot quite fathom his fierce insistence upon those peculiar, strong-smelling flowers. She confesses she has grown rather fond of the garlic, finding peace in its odour, and likens herself to Ophelia adorned with maiden strewments as she settles into what she hopes will be restful sleep. The flapping at her window no longer fills her with such dread.</p>
 <p>Yet the reader&#x27;s relief is short-lived. The following morning, Dr. Seward accompanies Van Helsing to Hillingham, where Mrs. Westenra greets them with cheerful news: Lucy slept soundly, so soundly that the good mother thought it wise to remove those dreadful-smelling flowers and open the window a crack for fresh air. The effect upon Van Helsing is immediate and terrible. His face turns ashen grey, though he maintains composure until the lady withdraws—whereupon he breaks down in a manner Seward has never witnessed, beating his palms together in helpless despair, crying out against the cruel workings of fate. The poor mother, all unknowing, has undone his careful protections. They rush to Lucy&#x27;s room and find her pale as death once more, necessitating yet another transfusion—this time from Van Helsing&#x27;s own veins, for Seward has already given too much.</p>
 <p>Four days pass in relative peace. Lucy grows stronger, the garlic arrives daily from Haarlem, and Van Helsing maintains his watchful vigil. But he must depart briefly for Amsterdam, leaving Lucy unguarded on the night of the seventeenth—the very night fate conspires most wickedly against them.</p>
@@ -647,9 +800,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="A House of Death and Desperate Hope illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">A House of Death and Desperate Hope</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="A House of Death and Desperate Hope illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">A House of Death and Desperate Hope</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The eighteenth of September dawned with dread already gathering at the edges of Dr. Seward&#x27;s consciousness, though he could not yet know how thoroughly that dread would be justified before the day was spent. Arriving early at Hillingham, he found the house sealed in an ominous silence—no servant answered his increasingly frantic knocking, and a terrible fear began to coil about his heart. Was this desolation merely the laziness of household staff, or another link in that awful chain of doom drawing ever tighter around Lucy Westenra?</p>
 <p>Van Helsing arrived moments later, equally alarmed, and together they forced entry through a kitchen window, only to discover the servant-women collapsed upon the dining-room floor, their stertorous breathing and the acrid reek of laudanum revealing they had been drugged insensible. The two men ascended with white faces and trembling hands to Lucy&#x27;s chamber, where a scene of Gothic horror awaited them: Mrs. Westenra lay dead beneath a white sheet, her face frozen in an expression of terror, whilst Lucy herself lay deathly pale beside her, the protective garlic flowers displaced to her mother&#x27;s bosom and the familiar wounds upon her throat appearing more horribly white and mangled than ever before.</p>
 <p>Yet Lucy lived still—barely. Van Helsing worked with frenzied desperation, rubbing brandy upon her lips and wrists whilst Seward roused the befuddled maids to prepare hot water and fire. Providence delivered Quincey Morris to them at their moment of greatest need; he had come bearing Arthur Holmwood&#x27;s anxious telegram and offered himself immediately for yet another transfusion of blood. &quot;A brave man&#x27;s blood is the best thing on this earth when a woman is in trouble,&quot; Van Helsing declared, though the operation this time yielded diminished returns—Lucy&#x27;s body responding ever more feebly to treatment.</p>
@@ -660,9 +818,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Death&#x27;s Beauty and Dark Preparations illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">Death&#x27;s Beauty and Dark Preparations</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Death&#x27;s Beauty and Dark Preparations illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">Death&#x27;s Beauty and Dark Preparations</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The funeral arrangements proceeded with all the ghastly efficiency one might expect from an undertaker whose staff seemed to share in his obsequious professionalism—the woman attending to Lucy&#x27;s body even remarked upon what a privilege it was to work with so beautiful a corpse, assuring Dr. Seward that the deceased would &quot;do credit to their establishment.&quot; Such commentary, however well-intentioned, struck a discordant note against the solemnity of the occasion. Van Helsing remained ever watchful, never straying far from the proceedings, and took upon himself the examination of Lucy&#x27;s personal papers—not merely for legal propriety, but to ensure that nothing of her private thoughts might fall into strange hands. Among these documents he found letters, memoranda, and a newly begun diary, all of which he secured for safekeeping until Arthur might grant permission for their use.</p>
 <p>When Seward and Van Helsing visited the death-chamber that evening, they found Lucy transformed by the undertaker&#x27;s arts into a vision of serene beauty, surrounded by white flowers in a room made to resemble a small *chapelle ardente*. Yet something troubled the Professor deeply. He placed wild garlic among the blooms and hung his own gold crucifix over Lucy&#x27;s mouth before drawing the sheet back over her face. Later that night, he made a request that shook Seward to his core: he wished to cut off Lucy&#x27;s head and remove her heart. Though Seward protested—what purpose could such mutilation serve for a girl already dead?—Van Helsing pleaded for trust, reminding his friend of all the inexplicable measures he had taken throughout Lucy&#x27;s illness, measures which Lucy herself had blessed with her dying gratitude. Reluctantly, Seward agreed to assist.</p>
 <p>But morning brought an abrupt change. The crucifix had been stolen in the night by a servant who, thinking it valuable, had unknowingly undone whatever protection Van Helsing had intended. The Professor recovered the object but declared it was now &quot;too late—or too early&quot; to proceed with the operation. They must wait.</p>
@@ -672,9 +835,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Threads of Truth Begin to Weave illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">Threads of Truth Begin to Weave</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Threads of Truth Begin to Weave illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">Threads of Truth Begin to Weave</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The days that follow Jonathan&#x27;s return to Exeter prove a strange admixture of domestic comfort and mounting dread, for Mina Harker finds herself caught between her duties as a new wife and the terrible weight of her husband&#x27;s foreign journal, which she has at last read in its entirety. Jonathan himself seems improved by the demands of his professional responsibilities—grateful, perhaps, for any distraction from the horrors that continue to haunt him—yet Mina cannot help but wonder at the truth of what he recorded in those pages. Was it brain fever that produced such fantastic terrors, or did some genuine evil befall him in that distant castle? The question presses upon her all the more urgently now that she has witnessed Jonathan&#x27;s violent shock upon glimpsing a stranger in London, a man whose appearance sent her husband reeling into a near-collapse. She resolves to prepare herself for whatever solemn duty may arise, transcribing both their journals on the typewriter so that the evidence might be ready should others need to see it.</p>
 <p>Into this atmosphere of anxious waiting comes a letter from Amsterdam—from Professor Van Helsing himself, the learned man who attended poor Lucy in her final illness. He writes with urgency and curious formality, imploring Mina to meet with him regarding matters of grave importance, though he cannot yet reveal their nature. Mina agrees at once, half-hoping the professor might illuminate Jonathan&#x27;s condition and half-dreading what he might confirm about her dear friend&#x27;s death.</p>
 <p>The meeting itself proves extraordinary. Van Helsing arrives at the Harkers&#x27; residence with an air of scholarly intensity, his broad forehead and penetrating eyes suggesting both intellect and determination. He is deeply moved by Mina&#x27;s typewritten account of Lucy&#x27;s sleepwalking at Whitby, declaring it to be &quot;as sunshine&quot; in opening a gate to truths he has been pursuing. Yet it is the revelation of Jonathan&#x27;s journal that produces the most profound effect: after reading it through, the professor returns with a hand-delivered letter assuring Mina that everything her husband recorded is true. The Count exists. The horrors were real. And Jonathan, far from being mad, has proven himself a man of remarkable courage.</p>
@@ -683,9 +851,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The Bloofer Lady Revealed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">The Bloofer Lady Revealed</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The Bloofer Lady Revealed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">The Bloofer Lady Revealed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The chapter opens with Dr. Seward&#x27;s violent indignation at Van Helsing&#x27;s unspoken implications about Lucy—his rage so fierce that he strikes the table and accuses his old friend of madness. Yet the Professor&#x27;s tender, weary countenance calms him almost at once, and Van Helsing explains his careful, circuitous approach: he has sought to be gentle in breaking truths that no rational mind would readily accept. The proof he proposes is twofold—first to visit the child in hospital, then to spend the night in the churchyard where Lucy lies buried.</p>
 <p>At the North Hospital, the attending physician shows them puncture wounds on the child&#x27;s throat that bear unmistakable resemblance to those upon Lucy&#x27;s own neck. Dr. Vincent speculates about escaped bats or exotic specimens from the Zoological Gardens, mentioning in passing both a loose wolf and the local children&#x27;s strange fascination with the &quot;bloofer lady.&quot; Van Helsing cautions that the child must be kept indoors, for another night exposed would prove fatal.</p>
 <p>After dining at Jack Straw&#x27;s Castle amid oblivious bicyclists, the two men make their way through deepening darkness to the Westenra tomb. Inside, by the feeble glimmer of a candle, Van Helsing opens the coffin with turnscrew and fret-saw. Seward braces himself for the stench of week-old death—but finds instead an empty casket. His rational mind grasps desperately for explanations: body-snatchers, perhaps, or duplicate keys. Van Helsing only sighs and bids him wait.</p>
@@ -697,9 +870,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Empty Coffin&#x27;s Vigil illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">The Empty Coffin&#x27;s Vigil</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Empty Coffin&#x27;s Vigil illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">The Empty Coffin&#x27;s Vigil</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It was just quarter to twelve when the men—Seward, Van Helsing, Arthur, and Quincey Morris—scaled the low churchyard wall and made their way through the dark toward Lucy&#x27;s tomb. The night offered only fitful moonlight between the racing clouds, and each kept close to the other, drawing what comfort could be had from their grim fellowship. Van Helsing led them to the vault&#x27;s iron door, and finding none willing to enter first, solved the matter by stepping across the threshold himself. Inside, by the concentrated glow of his dark lantern, he directed their attention to the coffin and asked Seward to confirm what they had witnessed before: that Miss Lucy&#x27;s body had lain within. Seward confirmed it. Yet when the lid was removed and the leaden casing forced back, they found only emptiness—the coffin was void of its occupant.</p>
 <p>Quincey, ever practical, pressed the Professor for assurance that this was no trick of his own devising. Van Helsing swore upon all he held sacred that he had not touched her, recounting his previous vigils—the garlic laid upon the doors, the sighting of a white figure moving through the yews, the rescued child found among the graves. Tonight he had deliberately removed his protections, and so the Un-Dead had risen once more.</p>
 <p>They waited outside, concealed among the ancient yews and cypresses, while the Professor sealed the tomb&#x27;s crevices with crumbled Host worked into strips of putty—a measure that appalled and awed them in equal portion, for they understood that a man of Van Helsing&#x27;s reverence would not employ so sacred an instrument unless the danger were absolute. The night seemed to press upon them: tombs gleamed ghastly white, branches creaked with ominous meaning, and the distant howling of dogs sent shivers through their blood.</p>
@@ -710,9 +888,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Diaries, Phonographs, and Shared Secrets illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">Diaries, Phonographs, and Shared Secrets</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Diaries, Phonographs, and Shared Secrets illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Diaries, Phonographs, and Shared Secrets</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Upon their arrival at the Berkeley Hotel, Professor Van Helsing discovered a telegram from Mina Harker announcing her imminent arrival by train, with Jonathan remaining at Whitby to pursue important inquiries. The Professor, unable to stay owing to his own pressing business in the provinces, charged Dr. Seward with the task of meeting this &quot;pearl among women&quot; at the station and conveying her to the asylum, where accommodations were to be prepared forthwith. Before departing for Liverpool Street, Van Helsing pressed into Seward&#x27;s keeping a packet of papers—typewritten copies of Jonathan Harker&#x27;s extraordinary diary from abroad and Mrs. Harker&#x27;s own journal from Whitby—with solemn instructions to study them well, for they contained matter that might herald either their collective doom or the final knell of the Un-Dead who walk the earth.</p>
 <p>At Paddington, Seward encountered a sweet-faced, dainty-looking girl who identified him from poor dear Lucy&#x27;s description, and in that moment of mutual recognition—each blushing at the unspoken acknowledgment of their shared grief—a tacit understanding passed between them. Mrs. Harker arrived with her luggage and, notably, a typewriter, that instrument destined to prove invaluable to their cause. Though she knew the place was a lunatic asylum, Seward observed she could not repress a shudder upon entering its grounds.</p>
 <p>What followed was an exchange of remarkable delicacy and consequence. When Mina discovered that Seward kept his diary by phonograph, her curiosity was piqued—yet the doctor&#x27;s evident horror at the thought of her hearing his recorded account of Lucy&#x27;s death spoke volumes. The impasse was broken only when Mina, with characteristic directness and courage, offered to transcribe his cylinders in exchange for the trust he might place in her after reading the Harkers&#x27; own documents. Thus began a mutual unburdening: Seward absorbed Jonathan&#x27;s harrowing Transylvanian narrative whilst Mina, listening through the forked metal earpieces, learned the terrible truth of her dear friend&#x27;s death and unholy resurrection.</p>
@@ -721,9 +904,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="Renfield&#x27;s Unexpected Lucidity illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">Renfield&#x27;s Unexpected Lucidity</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="Renfield&#x27;s Unexpected Lucidity illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Renfield&#x27;s Unexpected Lucidity</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The thirtieth of September found Dr. Seward&#x27;s old house transformed at last into something resembling a home—a curious metamorphosis wrought, it would seem, by the domestic ministrations of Mrs. Harker, whose organizational genius had already rendered all their scattered diaries and letters into a single comprehensible chronicle. The assembled company—Godalming, Morris, and the Harkers—had studied these documents with the gravity befitting soldiers preparing for war, though what manner of war none could yet fully articulate.</p>
 <p>Mrs. Harker, displaying that particular blend of feminine curiosity and quiet determination which so characterized her, requested an audience with Renfield. The lunatic received her with unexpected ceremony, hastily consuming his collection of flies and spiders before her entrance—a grotesque tidying that spoke volumes of his peculiar jealousies. What followed proved most extraordinary: in her presence, this pronounced madman discoursed with the polish of a gentleman scholar, speaking of logical fallacies in Latin and discussing his former delusions with the clinical detachment of a philosopher examining another man&#x27;s case. His parting words to her, however, struck a dissonant chord: &quot;I pray God I may never see your sweet face again.&quot;</p>
 <p>Van Helsing arrived that evening with his characteristic vigour, though his pronouncements carried shadows. He praised Mrs. Harker effusively—&quot;She has man&#x27;s brain and woman&#x27;s heart&quot;—yet declared that after this night, she must be excluded from their terrible work. The proximity of Dracula&#x27;s Carfax property to the asylum itself occasioned the Professor considerable alarm, and one sensed beneath his philosophical resignation the bitter weight of what might have been prevented.</p>
@@ -734,9 +922,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="The Hunt Begins at Carfax illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">The Hunt Begins at Carfax</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="The Hunt Begins at Carfax illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">The Hunt Begins at Carfax</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On the first of October, in the small hours before dawn, I set out with our party to search the Count&#x27;s London lair, my mind more at ease than it had been in some considerable time. Mina appeared stronger and more well than I have seen her—so much so that I found myself genuinely relieved she had consented to remain behind while we men undertook this grim work. Her labour in compiling our disparate accounts into one coherent narrative has been invaluable, every point telling as if arranged by a solicitor preparing a brief, and I confess I am glad her part is now finished. The terrible business that lies ahead is no place for a woman, however capable.</p>
 <p>Before our departure, we had endured a most unsettling interview with Mr. Renfield, the poor madman whose connection to the Count remains disturbingly unclear. Mr. Morris remarked afterward that if Renfield was not attempting some manner of bluff, he was the sanest lunatic any of us had encountered—and there was something in his earnest pleading that troubled us all. Yet Dr. Seward was right to exercise caution; a man who has prayed with equal fervour for a cat and then attempted to tear out his keeper&#x27;s throat with his teeth cannot be trusted, however reasonable his philosophy may seem.</p>
 <p>At Carfax, Professor Van Helsing distributed our peculiar arsenal: silver crucifixes to be worn near the heart, wreaths of withered garlic blossoms, revolvers and knives for more mundane threats, small electric lamps, and—most sacred of all—portions of the Blessed Wafer. Thus armed against both spiritual and physical menace, we entered that dreadful house. The door yielded to Dr. Seward&#x27;s skeleton keys with a rusty clang that put me in mind of Lucy&#x27;s tomb, and we crossed the threshold with Van Helsing&#x27;s Latin prayer upon our lips.</p>
@@ -749,9 +942,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="The Hunt for Dracula&#x27;s London Lairs illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">The Hunt for Dracula&#x27;s London Lairs</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="The Hunt for Dracula&#x27;s London Lairs illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">The Hunt for Dracula&#x27;s London Lairs</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Jonathan Harker&#x27;s investigation into the Count&#x27;s London refuges continued with the dogged persistence one might expect of a professional man faced with an impossible adversary. On the first evening of October, I found Thomas Snelling at Bethnal Green entirely indisposed—the mere promise of beer in exchange for information had proved sufficient inducement for him to begin his celebrations prematurely, and the fellow was quite useless. His wife, however, a decent sort, directed me to Joseph Smollet at Walworth, who proved altogether more reliable. From a remarkable dog-eared notebook produced from some mysterious pocket about his person, Smollet provided the destinations of boxes removed from Carfax: six to Chicksand Street in Mile End New Town, another six to Jamaica Lane in Bermondsey. The systematic distribution across London&#x27;s geography suggested the Count intended to establish refuges throughout the city—east and south already accomplished, with north and west surely to follow.</p>
 <p>A half-sovereign&#x27;s worth of information led me to Sam Bloxam, though the man&#x27;s spelling on the scrap of paper—&quot;Korkrans&quot; for Corcoran&#x27;s, &quot;depite&quot; for deputy—required some interpretive effort at Potter&#x27;s Court. Bloxam, when finally located at a cold storage building in Poplar, confirmed what I had feared: he had transported nine boxes to a house in Piccadilly, near a white church, and the old gentleman who had assisted him possessed supernatural strength, lifting great boxes as though they were pounds of tea. The description of this thin old man with a white moustache who seemed unable to throw a shadow—how that phrase thrilled through me! The Count himself had been handling his earth-boxes, which meant our enemy could complete his distribution at any time of his choosing.</p>
 <p>The house in Piccadilly proved to be a dusty, long-untenanted mansion with encrusted windows and scaled paint. The estate agents, Mitchell, Sons &amp; Candy, were maddeningly circumspect until I invoked Lord Godalming&#x27;s name. Their letter confirmed the purchaser as a foreign nobleman—Count de Ville—who had paid in notes over the counter.</p>
@@ -761,9 +959,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="Renfield&#x27;s Final Testimony illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">Renfield&#x27;s Final Testimony</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="Renfield&#x27;s Final Testimony illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">Renfield&#x27;s Final Testimony</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The third of October brings with it such horror as I scarcely have the composure to record, yet record it I must, for in these dark days every detail may prove the difference between salvation and damnation.</p>
 <p>It began with Renfield—poor, wretched Renfield—whom I discovered lying in a glittering pool of his own blood, his face beaten beyond recognition, his spine shattered in ways that defied all rational explanation. The attendant stood bewildered, for how could a man break his own back whilst simultaneously dashing his face against the floor? Van Helsing arrived with surgical haste, and together we performed a trephining upon the dying man&#x27;s skull, hoping to relieve the pressure long enough for him to speak what we both dreaded to hear.</p>
 <p>And speak he did. In gasping, faltering breaths, Renfield confessed the terrible truth: the Count had come to him, promising lives upon lives—flies and rats and greater things still—if only he would invite him in. Like some dark parody of Scripture, the vampire had tempted him with dominion over crawling multitudes, and Renfield, that poor soul caught between madness and unholy appetite, had opened the window and called him &quot;Lord and Master.&quot; But when Renfield perceived that Mrs. Harker had been visited—when he noticed her pallor, her vitality drained &quot;like tea after the teapot had been watered&quot;—he had tried to stop the monster. He had grappled with the mist itself, seized the Count in his lunatic&#x27;s grip, and for one desperate moment believed he might prevail. But those burning eyes had turned his strength to water, and the vampire had flung him down like a rag doll before stealing away beneath the door.</p>
@@ -775,9 +978,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Living Must Not Die illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">The Living Must Not Die</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Living Must Not Die illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">The Living Must Not Die</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The third of October finds Jonathan Harker writing with desperate determination, his pen moving across the page as much from necessity as from purpose—for to cease writing would be to succumb to the madness that lurks at the edges of his overwrought mind. The preceding night has wrought terrible changes upon their company, and now they must act whilst daylight affords them protection against their supernatural adversary.</p>
 <p>The grim news of Renfield&#x27;s death opens their council. Dr. Seward relates how he and Van Helsing discovered the poor lunatic broken upon his cell floor, his face crushed and neck snapped—injuries far beyond what any fall from bed might occasion. The attendant speaks of hearing voices, or perhaps a single voice, and the patient&#x27;s desperate cries to God before the terrible silence fell. Seward determines to record the death as misadventure; the truth would never be believed, and an inquest must be managed with discretion.</p>
 <p>It is agreed that Mina shall no longer be kept in ignorance of their proceedings, for concealment has already cost them dearly. Yet when Van Helsing questions whether she fears what she might become—a danger to those she loves—Mina&#x27;s response chills them all with its quiet resolve. She would take her own life rather than harm another, and should no friend prove willing to grant her such mercy, she would manage the deed herself. Van Helsing, moved to tears, charges her upon her living soul that she must not die whilst the Count yet walks among the Un-Dead, for death now would make her as he is. Mina promises to endure, and in her courage the others find strength renewed.</p>
@@ -788,9 +996,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="The Monster&#x27;s Growing Mind illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">The Monster&#x27;s Growing Mind</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="The Monster&#x27;s Growing Mind illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">The Monster&#x27;s Growing Mind</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The waiting proved a terrible thing. Professor Van Helsing did his utmost to occupy our minds, though I caught his sidelong glances at poor Harker, whose transformation since yesterday defied belief. The man who had been young and vigorous now appeared ancient, his hair gone white overnight, his face hollowed by grief as though carved by some merciless sculptor. Only his energy remained—a living flame, Van Helsing called it—and perhaps that fierce burning might yet preserve him through this dark hour.</p>
 <p>To distract us, the Professor expounded upon the nature of our quarry, drawing from his researches and those of his learned friend Arminus of Buda-Pesth. In life, the Count had been soldier, statesman, and alchemist—a man who dared attend the Scholomance itself, whose mighty brain survived the physical death even as his memory remained incomplete. He had been experimenting, growing in knowledge and power, learning first to command others to move his earth-boxes, then daring to move them himself, scattering his lairs across London. Yet Van Helsing assured us this knowledge came too late for the monster—all but one of his refuges had been sterilised, and the final box would be dealt with before sunset.</p>
 <p>A telegram from Mrs. Harker interrupted our deliberations: the Count had been seen leaving Carfax, heading south. Harker&#x27;s response was fierce—he would sell his soul to destroy the creature—but Van Helsing cautioned patience. The vampire was limited to the powers of man until sunset, and we need only wait for Godalming and Morris to return from their work.</p>
@@ -802,9 +1015,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="The Hunt Turns Toward Transylvania illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">The Hunt Turns Toward Transylvania</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="The Hunt Turns Toward Transylvania illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">The Hunt Turns Toward Transylvania</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The chapter opens with Van Helsing&#x27;s recorded message to Jonathan Harker, delivered through the curious medium of Dr. Seward&#x27;s phonograph—that mechanical oracle through which so much of their strange chronicle has been preserved. The Professor&#x27;s voice carries both triumph and warning: the Count has fled England, retreating to his Transylvanian stronghold aboard some vessel bound for the Black Sea. It was, Van Helsing assures them, their enemy&#x27;s last desperate gambit—when Lucy&#x27;s tomb proved no sanctuary and his final earth-box lay vulnerable, the ancient creature made straight for the only refuge remaining to him. Yet in this retreat, the Professor finds cause for hope: a monster who required centuries to reach London has been driven out in mere days. They are strong, he insists, strong together.</p>
 <p>When Jonathan reads these words to Mina, her spirits lift considerably. The crisp autumn sunlight streaming through the windows makes the whole nightmare seem almost impossible to credit—until Jonathan&#x27;s gaze falls upon the red scar marking his wife&#x27;s white forehead, that terrible brand of the vampire&#x27;s baptism which permits no comfortable disbelief.</p>
 <p>The company reconvenes that evening, and Van Helsing recounts their investigations at Lloyd&#x27;s and Doolittle&#x27;s Wharf, where rough-spoken men of the docks—rendered cooperative by Quincey&#x27;s judicious distribution of coins and the universal solvent of ale—described the Count&#x27;s hurried arrangements. A tall, pale man in an incongruous straw hat had come asking after Black Sea passage, had driven his great box to the *Czarina Catherine* himself, lifting it with inhuman strength, and had argued with the polyglot-swearing captain about its placement. Then, most telling of all, a supernatural fog had descended upon the wharf alone, holding the ship until the Count had inspected his earth-box and departed unseen. The vessel now sails for Varna.</p>
@@ -816,9 +1034,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
 <section class="chapter" id="chapter-25" data-num="25">
-    <img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="Mina&#x27;s Solemn Oath of Sacrifice illustration" loading="lazy">
-    <div class="chapter-number">Chapter 25</div>
-    <h2 class="chapter-title">Mina&#x27;s Solemn Oath of Sacrifice</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="Mina&#x27;s Solemn Oath of Sacrifice illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">Mina&#x27;s Solemn Oath of Sacrifice</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On the evening of October 11th, the company gathered at Mrs. Harker&#x27;s request during that peculiar interval before sunset when her soul, for a brief span, remained free from the Count&#x27;s corrupting influence. There was constraint in her manner at first, the visible evidence of some fierce internal struggle, but within moments she mastered herself and addressed them all with terrible solemnity. She spoke of poison in her blood—poison that must destroy her unless deliverance came—and implored them to understand that her very soul hung in the balance. Yet when Van Helsing pressed her to name the way out she would not take, she answered with unflinching clarity: death by her own hand or another&#x27;s before the greater evil could be wrought. She would not claim that easy escape, not whilst hope remained, not whilst the bitter task of destroying the Count still lay before them.</p>
 <p>What she demanded instead was harder still. She required an oath from each man present—even from her beloved Jonathan—that should she change beyond redemption, they would kill her without hesitation, drive the stake through her heart, sever her head, and grant her the peace they had given poor Lucy. One by one they knelt before her: Quincey Morris first, rough-spoken yet tender; then Van Helsing, Lord Godalming, and Seward himself. When at last Jonathan&#x27;s turn came, his face ashen and his hair seeming whiter still against his pallid cheeks, Mina urged him with infinite pity, reminding him that brave men throughout history had slain their own wives rather than let them fall into the hands of the enemy. Van Helsing swore again that should such mercy be required, it would be Jonathan&#x27;s loving hand that set her free.</p>
 <p>Then, with a strange smile of relief, Mina offered one final request: that the Burial Service be read over her, so that Jonathan&#x27;s voice speaking those sacred words might remain forever in her memory. He complied, though broken with emotion, and the little company knelt around her in a scene at once horrible and unutterably sweet. The solemnity of it comforted them all, and when the silence of Mina&#x27;s relapse descended, it seemed less full of despair than any had feared.</p>
@@ -829,9 +1052,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
 <section class="chapter" id="chapter-26" data-num="26">
-    <img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="The Race to Galatz illustration" loading="lazy">
-    <div class="chapter-number">Chapter 26</div>
-    <h2 class="chapter-title">The Race to Galatz</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_26.webp"><img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="The Race to Galatz illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">The Race to Galatz</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The twenty-ninth of October finds our company aboard the train from Varna to Galatz, each member having discharged his preparations as thoroughly as circumstance and forethought would allow, yet all of us travelling in that peculiar agony of expectation which attends the hunter who knows his quarry moves but cannot see in which direction. Mrs. Harker&#x27;s hypnotic efforts grow ever more laboured—the trance comes slower now, requiring greater exertion from Van Helsing, and her utterances arrive with reluctance where once they flowed freely. Through her lips we learn that the Count&#x27;s vessel has reached harbour: she speaks of no waves, only the soft swirl of water against hawser, the creak of oars, tramping feet overhead, and then—a gleam of light, air moving upon her face. The coffin-box has been opened; the earth-chest approaches land.</p>
 <p>Van Helsing reasons keenly upon the matter. Should the Count fail to reach shore before dawn, he must lie concealed through the whole of the following day, boxed and vulnerable, perhaps discoverable by customs men with inconvenient questions about cargo. Our hopes rest upon such delay. Yet when Mrs. Harker&#x27;s morning trance yields only darkness, lapping water, and the creaking of wood, we are left to travel onward with nothing but fragmentary intelligence and mounting dread. Her evening words prove stranger still—something passing her like cold wind, the howling of wolves, fierce-falling water—and she wakes shuddering, exhausted, able to recall nothing.</p>
 <p>At Galatz we divide our forces with military precision. Jonathan, Van Helsing, and Dr. Seward call upon the shipping agents and board the *Czarina Catherine*, where Captain Donelson—a Scotsman of mingled superstition and commercial shrewdness—recounts his uncanny voyage: favourable winds that seemed the Devil&#x27;s own work, impenetrable fogs that lifted only when convenient, and Romanian crewmen who wished to heave a certain great box overboard rather than suffer whatever curse they sensed within it. The box was collected before sunrise by one Immanuel Hildesheim, acting upon instructions from London, and passed thence to a Slovak trader named Skinsky—who is found that same day with his throat torn open behind the churchyard wall of St. Peter, another life blotted out to conceal the Count&#x27;s trail.</p>
@@ -841,9 +1069,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
 <section class="chapter" id="chapter-27" data-num="27">
-    <img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="The Race to the Borgo Pass illustration" loading="lazy">
-    <div class="chapter-number">Chapter 27</div>
-    <h2 class="chapter-title">The Race to the Borgo Pass</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_27.webp"><img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="The Race to the Borgo Pass illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">The Race to the Borgo Pass</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In her journal, Mina Harker documents the race across the Carpathian landscape toward the Borgo Pass, a journey marked by swift exchanges of horses and the peculiar wariness of peasant folk who, glimpsing the scar upon her forehead, make ancient gestures against the evil eye and season her food with quantities of garlic she cannot abide. The country itself proves beautiful and wild, its people brave yet steeped in superstition, and Mina takes to wearing hat and veil to avoid their fearful scrutiny. Dr. Van Helsing, tireless and resolute even in sleep, hypnotises her at sunset; she speaks of darkness, lapping water, creaking wood—their enemy still upon the river. Though she writes that she feels no fear for Jonathan or herself, a strange heaviness settles over them both as they ascend into the mountains, the great spurs of the Carpathians gathering ever closer.</p>
 <p>Van Helsing&#x27;s memorandum to Dr. Seward takes up the narrative thread as the journey darkens in ways beyond weather. Mina sleeps excessively, loses her appetite, and cannot be roused; the Professor&#x27;s hypnotic power wanes daily until it fails altogether. Nearing the castle at sunset, she grows alarmingly bright, refuses food yet claims she has already eaten, and watches him through the night with luminous eyes—symptoms that fill Van Helsing with dread he dare not voice. He draws a ring of sacred Wafer around her, and when the spectral forms of the three vampire women materialise in the snow, calling Mina &quot;sister,&quot; he is gladdened to see terror and repulsion in her face: her soul remains safe, though she cannot cross the consecrated boundary. The horses perish in the freezing night, yet dawn brings relief and purpose.</p>
 <p>Armed with blacksmith&#x27;s hammer and holy implements, Van Helsing enters the castle and descends into the old chapel. Jonathan&#x27;s diary serves as his guide, and despite the paralysing allure of the voluptuous Un-Dead women, Mina&#x27;s distant cry rouses him from enchantment. He performs the grim butcher-work—stake and severing blade—upon each of the three sisters, who crumble to dust as centuries of denied death reclaim them. In Dracula&#x27;s own great tomb he places the sacred Wafer, barring the King-Vampire&#x27;s return forever. When he steps back into the circle, Mina wakes, pale yet pure-eyed, urging him toward Jonathan, whose approach she knows by instinct.</p>
@@ -983,6 +1216,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

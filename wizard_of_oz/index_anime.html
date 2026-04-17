@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Gray Life Before the Storm illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Gray Life Before the Storm</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Gray Life Before the Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Gray Life Before the Storm</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>I appreciate you sharing this task, but I need to point out an issue: the text you&#x27;ve provided isn&#x27;t actually &quot;Chapter XXIV. Home Again&quot; from *The Wonderful Wizard of Oz*.</p>
 <p>What you&#x27;ve shared is L. Frank Baum&#x27;s **Introduction** to the book—his author&#x27;s preface dated April 1900, where he explains his philosophy for writing a &quot;modernized fairy tale&quot; without the frightening elements of older stories.</p>
 <p>The actual Chapter XXIV, &quot;Home Again,&quot; is the final chapter of the book where Dorothy uses the Silver Shoes to return to Kansas, discovers they fell off during her magical journey, and is reunited with Aunt Em on the farm.</p>
@@ -524,9 +627,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_anime/chapter_2.webp" alt="Gray Prairie, Rising Storm illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">Gray Prairie, Rising Storm</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="Gray Prairie, Rising Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">Gray Prairie, Rising Storm</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Dorothy lived at the very heart of the great Kansas prairies, in a world painted entirely in gray. Her home was a simple one-room house shared with Uncle Henry, a worn and solemn farmer, and Aunt Em, his equally weathered wife. The lumber for that modest dwelling had been hauled by wagon across miles of flat, sun-scorched earth, and it showed in every rough-hewn board. Inside stood only what necessity demanded: a rusty cookstove, a cupboard, a table, a few chairs, and the beds tucked into corners. Beneath the floor lay the cyclone cellar—a small, dark hole carved into the ground, reached by trap door and ladder, waiting for the day when the prairie winds would turn murderous.</p>
 <p>Everything Dorothy could see from her doorway stretched gray and endless to the horizon. The sun had long ago baked the land into a cracked, colorless mass. Even the grass had surrendered its green, burned to the same dull shade as the sky, the earth, and the house itself. This grayness had seeped into Aunt Em too, who had arrived years before as a young, pretty bride but had since been drained of all color and joy by the relentless sun and wind. She never smiled now, and Dorothy&#x27;s laughter still startled her like something foreign and strange. Uncle Henry fared no better—gray from beard to boot, he worked from dawn until dark without ever knowing what happiness felt like.</p>
 <p>Only Toto kept Dorothy from fading into the same colorless existence. The little black dog with his silky hair and twinkling eyes was her constant companion, her source of play and laughter in a world that had forgotten both.</p>
@@ -539,9 +647,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_anime/chapter_3.webp" alt="A Strange Land and Its Little People illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">A Strange Land and Its Little People</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="A Strange Land and Its Little People illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">A Strange Land and Its Little People</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Dorothy awoke with such a jolt that she caught her breath, wondering what on earth had happened, while Toto pressed his cold little nose against her face and whined most pitifully. But the house had stopped moving at last, and bright sunshine flooded through the window, so she sprang from her soft bed and ran to open the door, her little dog at her heels.</p>
 <p>What she saw made her cry out in pure amazement. The cyclone had set her farmhouse down—rather gently, for a cyclone—in the midst of a country more beautiful than anything Dorothy had ever seen in all her days on the dry, gray Kansas prairies. Lovely patches of green grass spread all about, dotted with stately trees heavy with luscious fruits. Gorgeous flowers bloomed on every side, and birds of brilliant plumage sang sweetly in the bushes. A sparkling brook rushed along between green banks, murmuring in a voice that seemed to welcome the little girl from that dusty, colorless land she had known.</p>
 <p>While Dorothy stood marveling at these wonders, she noticed a group of the queerest people approaching her. They were not tall like grown folks, yet not very small either—about Dorothy&#x27;s own height, though they looked many years older. Three were men dressed all in blue, with round pointed hats trimmed with tinkling bells and well-polished boots rolled at the top. The fourth was a little old woman whose face was covered with wrinkles, her white hair nearly matching her white gown sprinkled with glittering stars. She walked rather stiffly, but came right up to Dorothy while the others hung back, whispering nervously.</p>
@@ -554,9 +667,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_anime/chapter_4.webp" alt="A Friendly Witch Begins Her Journey illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">A Friendly Witch Begins Her Journey</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="A Friendly Witch Begins Her Journey illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">A Friendly Witch Begins Her Journey</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Left to her own devices in the little Munchkin house, Dorothy found herself practical and undaunted. Hunger sent her to the cupboard for bread and butter, which she shared with faithful Toto, and down to the sparkling brook for fresh water. When Toto scampered off to bark at birds in the nearby trees, Dorothy discovered delicious fruit hanging from the branches—a fine addition to her simple breakfast.</p>
 <p>With her belly satisfied, the girl turned her attention to preparing for the long journey ahead. She had but one other dress, a blue and white checked gingham somewhat faded from many washings, yet still pretty enough. Dorothy washed carefully, donned the clean frock, and tied her pink sunbonnet upon her head. She filled a little basket with bread, covering it neatly with a white cloth. But when she looked down at her worn leather shoes, she knew they would never survive the road to the Emerald City.</p>
 <p>It was then her eyes fell upon the silver shoes lying on the table—those very shoes that had belonged to the Wicked Witch of the East. They fit Dorothy perfectly, as though made for her feet alone, and she knew they would carry her far without wearing out.</p>
@@ -572,9 +690,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_anime/chapter_5.webp" alt="A Scarecrow&#x27;s First Days Alive illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">A Scarecrow&#x27;s First Days Alive</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="A Scarecrow&#x27;s First Days Alive illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">A Scarecrow&#x27;s First Days Alive</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The yellow brick road, which had carried Dorothy so smoothly from the land of the Munchkins, grew troublesome as the hours wore on. The bricks lay uneven and broken in places, with gaps where they had crumbled away entirely or gone missing, leaving holes that required navigating. Toto bounded over these obstacles with ease, and Dorothy stepped carefully around them, but the Scarecrow—possessing no brains to warn him of such hazards—walked straight into every hole and tumbled full length upon the hard surface. Yet he never suffered any hurt from these spills, and each time Dorothy helped him to his feet, they laughed together at his clumsiness as though it were the finest joke in all of Oz.</p>
 <p>The countryside grew lonelier as they traveled. The neat farms and pleasant orchards gave way to neglected land, fewer houses, and a creeping sense of desolation that settled over everything. When noon arrived, they rested beside a little brook, and Dorothy ate her bread while the Scarecrow explained why he could not join her—his painted mouth would need cutting to admit food, and then his straw stuffing would spill out and ruin the shape of his head entirely.</p>
 <p>Their conversation turned to Kansas, and Dorothy told her companion all about the gray prairies and the cyclone that had swept her away. The Scarecrow could not fathom why anyone would wish to leave beautiful Oz for such a dreary place, but Dorothy spoke a truth he could not comprehend: there is no place like home, no matter how gray or how plain. The Scarecrow admitted that perhaps if everyone&#x27;s heads were stuffed with straw, they would all choose beauty over belonging—and Kansas would stand empty.</p>
@@ -584,9 +707,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_anime/chapter_6.webp" alt="A Rusted Friend Joins the Journey illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">A Rusted Friend Joins the Journey</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="A Rusted Friend Joins the Journey illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">A Rusted Friend Joins the Journey</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Morning light filtered through the forest trees as Dorothy woke to find Toto already about his business of chasing birds and squirrels, while the Scarecrow stood patiently in his corner, ever watchful and waiting. The practical matter of water soon presented itself—Dorothy needed to wash away the road dust and wet her throat enough to manage the dry bread that remained. The Scarecrow, contemplating her needs with genuine curiosity, remarked on the inconvenience of being made of flesh, though he allowed that possessing brains made such bother worthwhile.</p>
 <p>They found a spring of clear water where Dorothy refreshed herself and took her breakfast, noting with quiet worry how little bread remained in her basket. She was grateful, at least, that her straw companion required no food.</p>
 <p>It was a deep groan that startled them both—a sound of such longing and weariness that they could not ignore it. Following the strange noise through the trees, Dorothy discovered something glinting in a shaft of sunlight: a man made entirely of tin, standing frozen beside a half-chopped tree, his axe raised high as if caught mid-swing. He had been groaning for more than a year, he told them, rusted solid and helpless, waiting for someone to hear him.</p>
@@ -599,9 +727,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_anime/chapter_7.webp" alt="A Cowardly King Joins the Journey illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">A Cowardly King Joins the Journey</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="A Cowardly King Joins the Journey illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">A Cowardly King Joins the Journey</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The journey through the thick woods grew ever more treacherous as Dorothy and her peculiar companions pressed onward along the yellow brick road, now nearly hidden beneath a carpet of dried branches and dead leaves. Few birds sang in this gloomy stretch of forest, for they preferred the open country where sunshine flowed freely, and in their place came only the deep, unsettling growls of wild creatures lurking unseen among the shadowed trees. Dorothy&#x27;s heart quickened at these sounds, though she knew not what made them. Little Toto, however, understood perfectly well, and he stayed pressed close against the girl&#x27;s side, too wise even to bark in reply.</p>
 <p>When Dorothy asked the Tin Woodman how much longer they must endure this dark passage, he could offer no certain answer, having never traveled to the Emerald City himself. Yet he spoke of his father&#x27;s long-ago journey and assured her that while the road remained dangerous, the country grew beautiful as one drew nearer to where Oz dwelt. He reminded her that she bore the Good Witch&#x27;s kiss upon her forehead as protection, and that neither he nor the Scarecrow could truly be harmed—though poor Toto, being flesh and blood, would require their vigilant care.</p>
 <p>No sooner had these words left his tin lips than a terrible roar shattered the forest stillness, and a great Lion bounded into the road before them. With one mighty swipe of his paw, he sent the Scarecrow spinning through the air, then turned his sharp claws upon the Tin Woodman, who clattered to the ground though his metal body remained unmarked. When brave little Toto rushed forward barking at this fearsome beast, and the Lion opened his tremendous jaws to bite, Dorothy threw all caution aside. She rushed at the Lion and slapped him soundly upon his nose, scolding him for his cruelty toward a poor little dog.</p>
@@ -612,9 +745,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_anime/chapter_8.webp" alt="Leaping Chasms in the Dark Forest illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Leaping Chasms in the Dark Forest</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Leaping Chasms in the Dark Forest illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Leaping Chasms in the Dark Forest</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Night fell upon the travelers before they could find proper shelter, and so they made their camp beneath the spreading branches of a great forest tree, its thick canopy serving well enough to shield them from the evening dew. The Tin Woodman proved his usefulness at once, chopping a fine pile of wood with his axe, and Dorothy built up a splendid fire that chased away the loneliness creeping into her heart. She and Toto shared the last of their bread between them, and the girl wondered with some worry what they might find for breakfast.</p>
 <p>The Lion, ever practical in his own way, offered to hunt a deer for Dorothy&#x27;s meal, remarking with some bemusement on her peculiar preference for cooked food. But the Tin Woodman begged him not to, confessing he would surely weep at the death of a poor deer, and then his jaws would rust again. So the Lion slipped away into the darkness to find his own supper—what it was, no one ever learned, for he kept the matter to himself. The Scarecrow, meanwhile, discovered a tree heavy with nuts and set about filling Dorothy&#x27;s basket, though his padded hands proved terribly clumsy for such delicate work. He dropped nearly as many as he gathered, yet he did not mind the slow going, for the task kept him safely distant from the fire and its dangerous sparks. When Dorothy lay down to sleep, he covered her tenderly with dry leaves, and she slumbered warm and snug until morning light.</p>
 <p>The new day began pleasantly enough, with Dorothy washing her face in a little brook before the companions set out once more toward the Emerald City. But this day would prove eventful indeed. Within an hour&#x27;s walk, they discovered a tremendous ditch cutting across the yellow brick road, so wide and deep and lined with jagged rocks that their journey seemed suddenly impossible. Dorothy&#x27;s heart sank as she asked what could be done, and even the Tin Woodman confessed he hadn&#x27;t the faintest idea.</p>
@@ -626,9 +764,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Scarecrow Stranded in the River illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">The Scarecrow Stranded in the River</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Scarecrow Stranded in the River illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">The Scarecrow Stranded in the River</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning dawned bright and promising for our little band of travelers, who rose from their rest refreshed and brimming with hope. Dorothy made a fine breakfast of peaches and plums plucked fresh from the trees along the riverbank, eating as contentedly as any princess might. The dark forest with all its discouragements now lay safely behind them, and ahead stretched a lovely, sun-drenched country that seemed to call them onward toward the Emerald City.</p>
 <p>Yet between them and that beautiful land flowed the broad river, cutting off their path. The Tin Woodman had nearly finished constructing their raft, and after fastening a few more logs together with wooden pins, they were ready to cross. Dorothy settled herself in the middle with Toto held close in her arms, while the Cowardly Lion&#x27;s great weight caused the raft to tip alarmingly when he stepped aboard. The Scarecrow and the Tin Woodman steadied things by standing opposite, each armed with a long pole to push them through the water.</p>
 <p>All went well enough at first, but midway across, the swift current caught hold of the raft and swept it downstream, carrying them ever farther from the road of yellow brick. The water deepened until even the long poles could not find bottom. Each companion voiced their fear of what failure would mean—no brains for the Scarecrow, no courage for the Lion, no heart for the Tin Woodman, and no return to Kansas for Dorothy. In his desperate effort to push them forward, the Scarecrow thrust his pole so firmly into the riverbed mud that when the raft swept away, he found himself stranded, clinging to that pole in the middle of the rushing water.</p>
@@ -640,9 +783,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_anime/chapter_10.webp" alt="Tiny Heroes Save the Cowardly Lion illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Tiny Heroes Save the Cowardly Lion</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="Tiny Heroes Save the Cowardly Lion illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Tiny Heroes Save the Cowardly Lion</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As the Scarecrow stood surveying the countryside beside Dorothy, he reckoned they could not be far now from the road of yellow brick, having traveled nearly as great a distance as the river had carried them astray. But before the Tin Woodman could offer his reply, a low growl reached his tin ears, and turning his head upon its well-oiled hinges, he beheld a fearsome sight bounding through the grass toward them.</p>
 <p>A great yellow Wildcat came racing across the field, its ears pressed flat against its skull, its mouth stretched wide to reveal two rows of wicked teeth, and its eyes burning red as twin balls of fire. Yet the Woodman quickly perceived that the beast was not hunting them at all—it was chasing a tiny gray field mouse that scurried desperately before it. Though the Tin Woodman possessed no heart within his hollow chest, he understood at once that it was wrong for such a terrible creature to destroy something so small and harmless.</p>
 <p>Without hesitation, he raised his sharp axe, and as the Wildcat bounded past, he delivered a swift blow that severed the beast&#x27;s head clean from its body. The creature tumbled at his feet in two pieces, and the little mouse, finding itself suddenly free from danger, stopped short and crept cautiously toward its rescuer.</p>
@@ -657,9 +805,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_anime/chapter_11.webp" alt="The Green Land and Its Mysteries illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">The Green Land and Its Mysteries</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="The Green Land and Its Mysteries illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">The Green Land and Its Mysteries</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Cowardly Lion slumbered long among the poppies, his great tawny body drinking in their poisonous perfume, but at last he awakened and rolled himself off the truck, blinking in wonder to find himself still among the living. When his companions told him how the tiny field mice had dragged him to safety, the Lion could not help but laugh at the strangeness of it all—that such small creatures should save one who had always thought himself so big and terrible, while mere flowers had nearly claimed his life.</p>
 <p>With the Lion restored to his full strength, the little band set off once more through the soft, fresh grass until they found their way back to the road of yellow brick. The country about them had grown beautiful beyond measure, and they rejoiced to leave the dark forest and its many dangers far behind. Soon they noticed that everything around them had taken on a decidedly green hue—the fences, the farmhouses, even the clothing of the people who peered at them from doorways but dared not approach on account of the great Lion padding alongside them.</p>
 <p>Dorothy declared this must surely be the Land of Oz, and they were drawing near their destination at last. Yet the Scarecrow observed that these folk seemed far less friendly than the Munchkins had been, and he worried they might find no shelter for the night. Dorothy, hungry for something more substantial than fruit, resolved to ask at the next farmhouse they passed.</p>
@@ -671,9 +824,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_anime/chapter_12.webp" alt="A City Bathed in Emerald Light illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">A City Bathed in Emerald Light</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="A City Bathed in Emerald Light illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">A City Bathed in Emerald Light</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Even with eyes shielded behind green spectacles, Dorothy and her companions found themselves quite dazzled by the brilliance that greeted them at every turn. The Emerald City lived up to its name in ways beyond imagining—green marble houses studded with sparkling gems lined streets paved in the same verdant stone, emeralds gleaming between every block. The window panes shone green, the very sky wore a green tint, and even the sun&#x27;s rays fell upon them in shades of green.</p>
 <p>The citizens, all dressed in green clothes with greenish skin, regarded the strangely assorted company with wondering eyes. Children fled behind their mothers at the sight of the Lion, though no one spoke a word to the travelers. Green candy and green popcorn, green shoes and green hats filled the shop windows, and at one stand a man sold green lemonade to children who paid with green pennies. There were no horses to be seen—only little green carts pushed by hand. Everyone appeared happy, contented, and prosperous in this remarkable place.</p>
 <p>The Guardian of the Gates led them to the Palace of Oz, a grand building standing exactly in the center of the City, where a soldier with a long green beard admitted them into a magnificent room of green carpet and emerald-studded furniture. The soldier disappeared to carry their message to the Wizard, and when he returned at last, he delivered curious news: Oz would see them, but only one visitor each day, and none had ever actually laid eyes upon him—the soldier himself had spoken to him only from behind a screen. The Wizard had shown particular interest upon hearing of Dorothy&#x27;s silver shoes and the mark upon her forehead.</p>
@@ -686,9 +844,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_anime/chapter_13.webp" alt="The Witch&#x27;s Wrath Unleashed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">The Witch&#x27;s Wrath Unleashed</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="The Witch&#x27;s Wrath Unleashed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">The Witch&#x27;s Wrath Unleashed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The soldier with the green whiskers led Dorothy and her companions back through the gleaming streets to the Guardian of the Gates, who unlocked their spectacles and returned them to his great box before politely opening the gate. When Dorothy inquired which road led to the Wicked Witch of the West, the Guardian offered a troubling reply: there was no road at all, for no one ever wished to go that way. Finding the Witch, he explained, would be easy enough—she would find them first and make them all her slaves. The Scarecrow declared their intention to destroy her instead, and the Guardian, surprised but cautious, warned them to keep to the West, where the sun sets, and take care, for the Witch was wicked and fierce.</p>
 <p>They bade him farewell and set off across fields of soft grass dotted with daisies and buttercups. Dorothy discovered that her pretty silk dress, once green in the Emerald City, had turned pure white, as had the ribbon around Toto&#x27;s neck. The landscape grew rougher and hillier as they traveled, with no farms or houses to be found. By afternoon, the sun beat hot upon their faces, and Dorothy, Toto, and the Lion lay down to sleep while the Woodman and the Scarecrow kept watch.</p>
 <p>Now the Wicked Witch of the West had but one eye, yet it was as powerful as a telescope and could see everywhere. From her castle door, she spied Dorothy sleeping with her friends and grew furious to find strangers in her country. She blew upon a silver whistle, summoning forty fierce wolves to tear them to pieces. But the Tin Woodman met them with his sharp axe and slew every last one. The next morning, the Witch saw her wolves lying dead and blew her whistle twice, sending a great flock of wild crows to peck out their eyes. The Scarecrow stood his ground and twisted the neck of every crow until all forty lay dead beside him.</p>
@@ -700,9 +863,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_anime/chapter_14.webp" alt="Reunited at the Yellow Castle illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">Reunited at the Yellow Castle</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="Reunited at the Yellow Castle illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">Reunited at the Yellow Castle</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>When word reached the Cowardly Lion that the Wicked Witch had been reduced to nothing more than a puddle by a simple bucket of water, his relief was immense. Dorothy wasted no time in unlocking the gate of his prison, and together they made their way into the castle, where the girl&#x27;s thoughts turned immediately to those who had suffered under the Witch&#x27;s cruelty. She gathered the yellow Winkies and delivered the news they had scarcely dared to dream: they were slaves no longer.</p>
 <p>The rejoicing that followed was extraordinary. These gentle folk had labored under the Witch&#x27;s harsh hand for more years than they cared to remember, and now they declared the day a holiday forevermore, filling the castle with feasting and dancing. Yet even amid such celebration, the Lion&#x27;s heart remained troubled. If only the Scarecrow and the Tin Woodman were with them, he said, his happiness would be complete.</p>
 <p>Dorothy, ever faithful to her friends, asked whether a rescue might be possible. The Lion thought they could try, and when they put the question to the Winkies, those grateful people declared they would do anything in their power for the girl who had freed them from bondage.</p>
@@ -716,9 +884,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_anime/chapter_15.webp" alt="Lost in Fields of Yellow Flowers illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">Lost in Fields of Yellow Flowers</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="Lost in Fields of Yellow Flowers illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">Lost in Fields of Yellow Flowers</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>With the Wicked Witch vanquished and the Golden Cap now in Dorothy&#x27;s possession, the four travelers set out to return to the Emerald City—yet they soon discovered that finding their way back proved far more difficult than the journey there had been. When they had first sought the Witch, she had spied them coming and sent her Winged Monkeys to carry them through the air. Now, walking on their own two feet (and four paws, in Toto&#x27;s case), they found themselves hopelessly turned about in the great fields of buttercups and yellow daisies that stretched endlessly before them.</p>
 <p>They knew they must travel east, toward the rising sun, and started off confidently enough. But when noon arrived and the sun hung directly overhead, they could no longer tell east from west, and so they wandered, lost among the sweet-smelling flowers. Night fell, the moon rose bright and silver, and they slept peacefully in the fragrant fields—all except the Scarecrow and the Tin Woodman, who needed no rest and kept silent watch.</p>
 <p>Morning brought clouds that hid the sun, yet still they pressed onward, trusting in Dorothy&#x27;s simple wisdom: &quot;If we walk far enough, I am sure we shall sometime come to some place.&quot; But days passed, and the scarlet fields offered no landmarks, no signs of the Emerald City. One by one, the companions began to despair. The Scarecrow grumbled about never receiving his brains; the Tin Woodman lamented that he could scarcely wait for his heart; the Cowardly Lion whimpered that he lacked the courage to tramp forever without arriving anywhere. Even little Toto, for the first time in his life, was too weary to chase a passing butterfly.</p>
@@ -731,9 +904,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_anime/chapter_16.webp" alt="The Man Behind the Screen illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">The Man Behind the Screen</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="The Man Behind the Screen illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">The Man Behind the Screen</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The four travelers returned to the great gate of Emerald City as conquering heroes, though they did not yet know the hollow nature of the victory that awaited them within the Palace walls. The Guardian of the Gates could scarcely believe his eyes when he saw them standing there, alive and whole, for who had ever visited the Wicked Witch of the West and returned to tell of it? When he learned that Dorothy had melted the terrible creature, he bowed so low before the little girl from Kansas that his nose nearly touched the ground.</p>
 <p>Word of their triumph spread through the city like wildfire, and a great crowd followed them to the Palace, yet the Great Oz himself remained strangely silent. One day passed, then another, and still no summons came from the Throne Room. The waiting grew tiresome and vexing, for had they not suffered hardships and slavery at the Wizard&#x27;s bidding? At last the Scarecrow sent a message of his own—if Oz would not receive them at once, they would call upon the Winged Monkeys to help them discover whether the great Wizard kept his promises. This threat worked wonderfully well, for Oz had met those creatures before and had no wish to meet them again.</p>
 <p>When they entered the Throne Room the following morning, they found it utterly empty, more dreadful in its stillness than any of the terrible forms they had seen before. A great Voice echoed from the dome above, claiming to be everywhere yet invisible, but the travelers would not be put off any longer. They demanded what had been promised them—brains, heart, courage, and passage home to Kansas.</p>
@@ -746,9 +924,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_anime/chapter_17.webp" alt="Bran, Silk, and Bottled Courage illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">Bran, Silk, and Bottled Courage</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="Bran, Silk, and Bottled Courage illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Bran, Silk, and Bottled Courage</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Morning came to the Emerald City, and with it arrived the hour the Scarecrow had long awaited. He gathered his companions together with an announcement that fairly trembled with anticipation—he was going to Oz at last, to receive the brains he had journeyed so far to obtain. When he returned, he declared, he would be as other men are.</p>
 <p>Dorothy, in her simple and honest way, told him she had always liked him just as he was. But the Scarecrow, though touched by her kindness, remained convinced that surely she would think more of him once she heard the splendid thoughts his new brain would produce. And so, with cheerful goodbyes upon his painted lips, he made his way to the Throne Room and rapped upon the door.</p>
 <p>Inside, he found the little man who was Oz sitting by the window, apparently lost in deep thought. The Scarecrow announced his purpose, and Oz, ever practical, explained that he would need to remove the Scarecrow&#x27;s head entirely to place the brains in their proper position. The Scarecrow agreed readily enough—what did he care about losing his head, so long as it came back better than before?</p>
@@ -760,9 +943,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_anime/chapter_18.webp" alt="Oz and Dorothy Build Their Escape illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">Oz and Dorothy Build Their Escape</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Oz and Dorothy Build Their Escape illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Oz and Dorothy Build Their Escape</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Three days of silence passed, and they were sad days indeed for Dorothy. While she waited and wondered, her friends found themselves quite content with their newfound gifts. The Scarecrow spoke of wonderful thoughts rattling about in his head, though he would share none of them, for he believed no one could possibly understand such brilliant ideas but himself. The Tin Woodman walked about with great satisfaction, feeling his heart knocking gently against his tin breast, and he declared to Dorothy that this new heart was far kinder and more tender than the flesh-and-blood one he had possessed so long ago. As for the Cowardly Lion, he feared nothing now—not an army of soldiers, not even a dozen of those terrible Kalidahs could make him tremble.</p>
 <p>And so each member of their little party was satisfied, each one except Dorothy, who longed more than ever for the Kansas prairies and the little farmhouse where Aunt Em would be waiting.</p>
 <p>On the fourth day, her patience was rewarded. Oz summoned her to the Throne Room, where he greeted her with welcome news: he believed he had found a way to carry her out of this strange country. Kansas itself he could not promise, for he hadn&#x27;t the faintest notion which direction it lay, but crossing the great desert—that was the first step, and after that, surely she could find her way home.</p>
@@ -777,9 +965,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_anime/chapter_19.webp" alt="A New Hope in the South illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">A New Hope in the South</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="A New Hope in the South illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">A New Hope in the South</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Dorothy&#x27;s heart grew heavy with the weight of lost hope as she watched her chance to return to Kansas float away with the Wizard&#x27;s balloon. Yet even through her bitter tears, she could not help but feel a quiet relief that she had not been swept up into the sky in that uncertain contraption. And though Oz had proven himself no true wizard at all, she felt sorry to see him go, as did her loyal companions.</p>
 <p>The Tin Woodman approached her with characteristic tenderness, declaring that he should be most ungrateful indeed if he failed to mourn the man who had bestowed upon him his lovely heart. He wished to weep, he said, if Dorothy would be so kind as to wipe away his tears before they caused him to rust. This she did with great care, watching each tear and catching it with a towel, and when he had finished his mourning, he oiled himself thoroughly with his jeweled oil-can to guard against any mishap.</p>
 <p>Meanwhile, the Scarecrow had assumed his new position as ruler of the Emerald City, and the people took great pride in him. &quot;There is not another city in all the world ruled by a stuffed man,&quot; they boasted, and so far as anyone knew, they were quite right in saying so.</p>
@@ -791,9 +984,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_anime/chapter_20.webp" alt="Journey South Through Enchanted Forests illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">Journey South Through Enchanted Forests</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="Journey South Through Enchanted Forests illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">Journey South Through Enchanted Forests</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning of departure dawned bright and clear as Dorothy kissed the pretty green girl farewell, and the little company—Scarecrow, Tin Woodman, Lion, and faithful Toto—shook hands with the soldier whose green whiskers had become so familiar to them during their time in the Emerald City. At the great gate, the Guardian expressed his wonder that anyone would willingly leave such a beautiful place to venture into unknown troubles, yet he dutifully unlocked and collected their green spectacles, returning them to their proper box, and sent them off with many good wishes.</p>
 <p>Before they departed, the Guardian reminded the Scarecrow of his new responsibility as ruler, urging him to return as soon as possible. The Scarecrow, ever loyal to his friends, agreed he would do so—but only after seeing Dorothy safely home to Kansas. Dorothy herself offered heartfelt gratitude for the kindness shown her in the lovely city, though the Guardian gently told her not to trouble herself with thanks. They would have gladly kept her among them, he said, but if her heart was set on Kansas, he hoped she would find her way.</p>
 <p>And so the outer gate swung open, and the travelers stepped forth into the sunshine, turning their faces toward the Land of the South where Glinda the Good was said to dwell. Their spirits soared with renewed hope. Dorothy felt certain she would reach home at last, while the Scarecrow and Tin Woodman took genuine pleasure in being useful to their dear friend. The Lion breathed deep the country air, whisking his tail in pure joy at leaving city life behind—for it had not agreed with him at all, and he was eager to prove his newfound courage to the wild beasts. Little Toto scampered about, chasing moths and butterflies, barking with unrestrained delight.</p>
@@ -805,9 +1003,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_anime/chapter_21.webp" alt="A Fragile Land of Living Porcelain illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">A Fragile Land of Living Porcelain</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="A Fragile Land of Living Porcelain illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">A Fragile Land of Living Porcelain</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>While the Tin Woodman busied himself constructing a ladder from forest timber, Dorothy surrendered to weariness and slept, the Lion curling beside her with faithful Toto nestled close. The Scarecrow, who had no need of rest, watched his friend work and puzzled aloud over the mysterious wall that blocked their path—what strange substance composed it, and what purpose it served. But the practical Woodman advised him not to strain his brains on the matter; they would discover what lay beyond once they had climbed over.</p>
 <p>The ladder, though clumsy in appearance, proved sturdy enough for their purposes. The Scarecrow ascended first, so awkward in his movements that Dorothy had to follow close behind to prevent him tumbling backward. When his stuffed head crested the wall&#x27;s top, he could only exclaim, &quot;Oh, my!&quot; Dorothy urged him onward, and when she too peered over, the same words escaped her lips. Toto scrambled up and immediately set to barking until Dorothy hushed him, and the Lion and Tin Woodman followed, each uttering that same astonished cry upon beholding the scene below.</p>
 <p>Spread before them lay a country unlike any they had encountered—a vast expanse with a floor smooth and white as the bottom of a fine platter. Dotted across this gleaming surface stood houses painted in the brightest colors imaginable, none reaching higher than Dorothy&#x27;s waist. Pretty barns enclosed by delicate fences contained cows, sheep, horses, pigs, and chickens, all fashioned entirely of china. Most wondrous of all were the inhabitants themselves: milkmaids and shepherdesses in brightly colored bodices with golden spots adorning their gowns, princesses resplendent in silver and purple, shepherds in striped knee breeches with golden buckles, princes wearing jeweled crowns and ermine robes, and clowns in ruffled costumes with round red spots upon their cheeks. Every last one of them—clothes and all—was made of china, the tallest standing no higher than Dorothy&#x27;s knee.</p>
@@ -818,9 +1021,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_anime/chapter_22.webp" alt="The Lion Claims His Forest Throne illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">The Lion Claims His Forest Throne</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_22.webp"><img class="chapter-image" src="images_anime/chapter_22.webp" alt="The Lion Claims His Forest Throne illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">The Lion Claims His Forest Throne</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>After descending from the china wall, the travelers found themselves trudging through a most disagreeable stretch of country—boggy marshlands choked with tall, rank grass that concealed treacherous muddy holes beneath their feet. They picked their way carefully, stepping with caution until at last they reached solid ground. Yet even then the wilderness seemed to grow wilder still, and after a long, tiresome push through tangled underbrush, they emerged into a forest unlike any they had encountered before. The trees here were ancient giants, bigger and older than any the companions had ever seen.</p>
 <p>The Lion surveyed his surroundings with unmistakable joy. &quot;This forest is perfectly delightful,&quot; he declared. &quot;Never have I seen a more beautiful place.&quot; The Scarecrow found it rather gloomy, but the Lion would hear none of it. He remarked upon the softness of the dried leaves underfoot, the rich green moss clinging to the old trees, and proclaimed that no wild beast could wish for a pleasanter home. Dorothy wondered aloud whether wild beasts might already inhabit such a place, and the Lion supposed there must be some, though none showed themselves just then.</p>
 <p>They walked on until darkness forced them to stop. Dorothy, Toto, and the Lion lay down to sleep while the Tin Woodman and Scarecrow kept their faithful watch. When morning came, they resumed their journey, and before long a low rumble reached their ears—the growling of many wild animals gathered together. Toto whimpered, but the others pressed forward until they came upon an opening in the wood where hundreds of beasts had assembled: tigers, elephants, bears, wolves, foxes, and creatures of every variety one might find in a natural history. Dorothy felt a moment&#x27;s fear, but the Lion recognized this as a meeting, and from the snarling and growling, he judged these animals were in considerable trouble.</p>
@@ -832,9 +1040,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_anime/chapter_23.webp" alt="Over the Hill to Glinda&#x27;s Castle illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">Over the Hill to Glinda&#x27;s Castle</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_23.webp"><img class="chapter-image" src="images_anime/chapter_23.webp" alt="Over the Hill to Glinda&#x27;s Castle illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">Over the Hill to Glinda&#x27;s Castle</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The forest released them at last, its shadows falling away behind as the four travelers emerged into open country—only to find their path blocked by a steep hill bristling with great hunks of rock from base to summit.</p>
 <p>&quot;That will be a hard climb,&quot; the Scarecrow observed, studying the rugged slope with his painted eyes, &quot;but we must get over the hill, nevertheless.&quot;</p>
 <p>He took the lead, as he often did now, and the others followed close behind. They had scarcely reached the first boulder when a rough voice rang out across the stones, commanding them to keep back. The Scarecrow demanded to know who spoke, and a head appeared above the rock—a strange, flat-topped head set upon a thick, wrinkled neck. The creature declared the hill belonged to his kind, and none were permitted to cross.</p>
@@ -850,9 +1063,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_anime/chapter_24.webp" alt="Glinda&#x27;s Gift and Farewell Blessings illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">Glinda&#x27;s Gift and Farewell Blessings</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_24.webp"><img class="chapter-image" src="images_anime/chapter_24.webp" alt="Glinda&#x27;s Gift and Farewell Blessings illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Glinda&#x27;s Gift and Farewell Blessings</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Before presenting themselves to the great Witch of the South, Dorothy and her companions took care to make themselves proper and presentable, as one ought to do when seeking an audience with so powerful a personage. Dorothy washed the dust of travel from her face and set her hair to rights, while the Lion gave his mane a mighty shake, the Scarecrow patted his straw into respectable shape, and the Tin Woodman polished his tin until it gleamed and oiled every joint until they moved without the slightest squeak.</p>
 <p>Thus prepared, they followed the soldier girl into a grand chamber where Glinda sat upon a throne fashioned entirely of rubies. She was beautiful and young, with rich red hair that tumbled in ringlets over her shoulders, and though her gown was white as snow, her eyes were the kindest blue as they rested upon the little girl from Kansas.</p>
 <p>Dorothy told her story from the very beginning—how the cyclone had swept her to this strange land, how she had gathered her dear companions along the Yellow Brick Road, and all the wonderful and terrible adventures that had befallen them since. Her greatest wish, she explained, was simply to return home, for surely Aunt Em would think something dreadful had happened to her, and unless the crops proved better than last year, Uncle Henry could hardly afford to put on mourning.</p>
@@ -996,6 +1214,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

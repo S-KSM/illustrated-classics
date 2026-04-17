@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Misanthropist&#x27;s Heaven Awaits illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Misanthropist&#x27;s Heaven Awaits</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Misanthropist&#x27;s Heaven Awaits illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Misanthropist&#x27;s Heaven Awaits</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The year is 1801, and Mr. Lockwood has just returned from paying his respects to his new landlord—a visit that proved as peculiar as it was unwelcoming. Having recently taken up residence at Thrushcross Grange, Lockwood finds himself delighted by the remote Yorkshire landscape, proclaiming it a perfect sanctuary for one who wishes to flee the tiresome bustle of society. His landlord, Mr. Heathcliff, strikes him as an ideal companion in solitude—a man whose suspicious black eyes and guarded manner speak of a reserve even deeper than Lockwood&#x27;s own.</p>
 <p>Upon arriving at Wuthering Heights, Lockwood receives a greeting that can scarcely be called hospitable. Heathcliff&#x27;s invitation to enter is uttered through clenched teeth, his entire bearing suggesting he would sooner send his visitor to perdition than across his threshold. Yet this very coldness piques Lockwood&#x27;s curiosity, and he accepts the grudging welcome with growing interest.</p>
 <p>The dwelling itself commands attention. Its name derives from the fierce winds that batter the moorland station, evidenced by the tortured posture of stunted firs and gaunt thorns bent perpetually toward the sun. The house stands defiant against the elements—narrow windows set deep in thick walls, corners fortified with jutting stones. Above the door, amid crumbling carvings of griffins and cherubs, Lockwood discerns the date 1500 and the name Hareton Earnshaw, though Heathcliff&#x27;s impatient stance forbids any inquiry into this history.</p>
@@ -524,9 +627,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Cold Welcome and Strange Company illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Cold Welcome and Strange Company</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Cold Welcome and Strange Company illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Cold Welcome and Strange Company</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The raw misery of a February afternoon nearly kept Lockwood fireside at Thrushcross Grange, but circumstances conspired against his comfort. A servant girl had invaded his study with her coal-scuttles and brushes, raising such clouds of dust and cinder that he found himself driven out into the cold. Thus began his four-mile trudge through gathering snow to Wuthering Heights, where he arrived just as the first white flakes began their descent upon that desolate hilltop.</p>
 <p>His reception proved even colder than the weather. The chain on the gate would not yield, and his knocking went so long unanswered that his knuckles ached and the dogs set up their infernal howling. Old Joseph, that vinegar-faced servant, offered nothing but surly directions and dialect-laden refusals, and it was only by chance that a coatless young man bearing a pitchfork led Lockwood through the wash-house into the warmth of that great kitchen.</p>
 <p>There he encountered the mistress—though not the mistress he had imagined. This young woman, scarcely past girlhood, possessed a face of remarkable beauty: golden ringlets, delicate features, small and fair. Yet her eyes held nothing of welcome; they hovered instead between scorn and a strange desperation. When Lockwood attempted pleasantries, she met him with silence or cutting remarks. He mistook a heap of dead rabbits for cats. He offered help she did not want. He inquired whether he had been asked to tea and received only cold confirmation that he had not.</p>
@@ -536,9 +644,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="The Secret Room and Catherine&#x27;s Ghost illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">The Secret Room and Catherine&#x27;s Ghost</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="The Secret Room and Catherine&#x27;s Ghost illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">The Secret Room and Catherine&#x27;s Ghost</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Guided upstairs by the servant, who urged silence and concealment of his candle—for the master harbored peculiar notions about this chamber and suffered no one to lodge there willingly—Lockwood found himself deposited in a room of sparse furnishing: a chair, a clothes-press, and a curious oak structure resembling a cabinet with coach-window squares cut near its top. Upon examination, this proved to be an antiquated enclosed bed, a little closet unto itself, with the ledge of a window serving as table. He slid inside, pulled the panels shut, and felt himself secure against Heathcliff and all the world.</p>
 <p>The window-ledge bore a few mildewed books and was covered with scratched writing—nothing but a name repeated in every manner of script: *Catherine Earnshaw*, varied here and there to *Catherine Heathcliff*, then again to *Catherine Linton*. The names swam before his drowsy eyes until white letters seemed to swarm like spectres in the darkness. His candle had tilted against one of the volumes, perfuming the air with roasted calf-skin. He snuffed the flame and examined the damaged book—a Testament inscribed with Catherine Earnshaw&#x27;s name and a date some quarter-century past. Her entire library proved similarly dilapidated, filled with pen-and-ink commentaries and diary entries scrawled in a childish hand, alongside a crude yet powerful caricature of Joseph.</p>
 <p>These faded hieroglyphics drew him in. Catherine&#x27;s diary recounted an awful Sunday: her father dead, her brother Hindley a detestable tyrant whose cruelty toward Heathcliff proved unconscionable. She and Heathcliff had been commanded to Joseph&#x27;s three-hour garret sermon while Hindley and his wife Frances basked by the fire. When Catherine and Heathcliff rebelled—hurling their religious texts into the dog-kennel—they were cast into the back-kitchen, where Catherine scratched her defiance into the margins of books while plotting escape to the moors. Another entry spoke of Hindley&#x27;s determination to reduce Heathcliff to his rightful place, forbidding the children to play together or even share meals.</p>
@@ -549,9 +662,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Nelly Dean Begins Her Tale illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">Nelly Dean Begins Her Tale</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Nelly Dean Begins Her Tale illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Nelly Dean Begins Her Tale</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>What fickle creatures we prove ourselves to be when solitude presses too heavily upon us. Here was Lockwood, who had arrived at Thrushcross Grange determined to enjoy his isolation, now finding himself desperate for company as dusk settled over the moors. His resolve crumbled entirely, and he summoned Mrs. Dean—the housekeeper—under the pretence of discussing household matters, though in truth he hoped she might enliven his dreary evening with conversation.</p>
 <p>At first she seemed no gossip at all, offering only brief responses to his inquiries about her years of service. But when Lockwood steered the talk toward Heathcliff and the inhabitants of Wuthering Heights, the floodgates opened. Mrs. Dean revealed that the young widow, Mrs. Heathcliff, was in fact Catherine Linton—daughter of her former master and not, as Lockwood briefly wondered, the ghostly Catherine of his strange encounter. The tangled family connections emerged piece by piece: young Cathy had married her own cousin, Heathcliff&#x27;s son, now dead. Hareton Earnshaw, that rough young man at the Heights, was the nephew of the elder Mrs. Linton and cousin to young Cathy as well. The ancient Earnshaw name carved above the door belonged to a family now reduced to this single heir, dispossessed in his own home.</p>
 <p>Lockwood, feverish and chilled from his ordeal on the moors, begged Mrs. Dean to tell him more. She obliged willingly, settling in with her sewing and a basin of gruel for her ailing tenant.</p>
@@ -562,9 +680,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="A Father&#x27;s Decline and Quiet Passing illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">A Father&#x27;s Decline and Quiet Passing</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="A Father&#x27;s Decline and Quiet Passing illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">A Father&#x27;s Decline and Quiet Passing</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As the seasons turned at Wuthering Heights, Mr. Earnshaw&#x27;s vigorous constitution began its slow and irreversible decline. The man who had once roamed the moors with tireless energy now found himself confined to the chimney-corner, his world shrinking to the width of the hearth. With his strength departed his patience, and he grew grievously irritable, seeing slights and offenses in the smallest provocations. Most particularly did he guard his foundling Heathcliff, growing painfully jealous over the boy, convinced that the household conspired against the child he loved. This fierce protectiveness proved a double-edged blessing, for the servants and family learned to humour the master&#x27;s partiality rather than fret him, and such indulgence only fed Heathcliff&#x27;s pride and darkening temper. Hindley&#x27;s open scorn for the favourite, displayed within earshot of their ailing father, drove the old man to fits of impotent rage—he would seize his stick to strike his own son, shaking with fury he could not act upon.</p>
 <p>At the curate&#x27;s counsel, Hindley was dispatched to college, and the household breathed easier for his absence. Yet peace remained elusive, disturbed by two persistent forces: Catherine&#x27;s wild spirit and Joseph&#x27;s relentless piety. The old servant had mastered the art of worming his way into Mr. Earnshaw&#x27;s fading confidence, ransacking scripture to flatter the master&#x27;s weaknesses whilst heaping blame upon the children—particularly Catherine, whom he painted as the chief source of household sin.</p>
 <p>And what a creature Catherine was in those days! Her spirits ran perpetually at high-water mark, her tongue never still, singing and laughing and plaguing everyone who would not match her mood. A wild, wicked slip of a girl, yet blessed with the bonniest eyes and sweetest smile in the parish. She meant no lasting harm, and when her mischief drew genuine tears, she would keep company in the sorrow she had caused. Her attachment to Heathcliff had grown absolute—separation from him became the severest punishment that could be devised. In play, she commanded him utterly, and he obeyed her bidding in everything, whilst following his adoptive father&#x27;s wishes only when inclination suited.</p>
@@ -574,9 +697,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Wild Freedom and Cruel New Order illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">Wild Freedom and Cruel New Order</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Wild Freedom and Cruel New Order illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Wild Freedom and Cruel New Order</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mr. Hindley returned to Wuthering Heights for his father&#x27;s funeral bearing a surprise that set every tongue in the neighbourhood wagging—a wife, of whom no one knew anything, neither her origins nor her fortune. The secrecy surrounding the match suggested she possessed neither money nor name worth boasting of, else Hindley would surely have informed his father whilst the old man lived.</p>
 <p>The new Mrs. Earnshaw proved a peculiar creature, delighting in every rustic detail of the house—the whitewashed floors, the great fireplace, the pewter and delft—with such childlike enthusiasm that Hindley abandoned his plans to refine their quarters. Yet beneath her bright eyes and fresh complexion lurked something fragile. She could not bear the funeral preparations, fleeing to her chamber in a state of hysterical terror at the mere sight of mourning black, trembling and weeping with an inexplicable dread of dying. The shallow cough, the breathlessness upon climbing stairs, the quivering at sudden noises—these signs went unheeded, for what did any of us know then of what such symptoms portended?</p>
 <p>Hindley himself had changed considerably during his three years&#x27; absence—grown sparer, paler, adopting new manners and dress. His first act as master was to banish Joseph and myself to the back-kitchen. His wife initially showed great affection toward Catherine, showering her with presents and sisterly attention, but this warmth cooled quickly. When peevishness replaced her enthusiasm, Hindley&#x27;s tyranny followed, and a few careless words against Heathcliff were sufficient to resurrect all his old hatred. He stripped the boy of his education, drove him from the family&#x27;s company to labour alongside the common farm hands, and reduced him to the status of a servant.</p>
@@ -587,9 +715,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Cathy&#x27;s Transformation and Heathcliff&#x27;s Humiliation illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">Cathy&#x27;s Transformation and Heathcliff&#x27;s Humiliation</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Cathy&#x27;s Transformation and Heathcliff&#x27;s Humiliation illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Cathy&#x27;s Transformation and Heathcliff&#x27;s Humiliation</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Cathy returned to Wuthering Heights after five weeks at Thrushcross Grange, her ankle healed and her wild nature considerably tamed. The mistress there had worked upon her with fine clothes and flattery, and the transformation proved remarkable—where once a hatless savage had bounded through doors, now descended from a handsome black pony a dignified young lady in brown ringlets, a feathered beaver hat, and a long cloth habit she must hold with both hands to sail indoors properly. Hindley pronounced her quite a beauty, scarcely recognisable, and his wife Frances agreed that Isabella Linton could not compare, though she warned Cathy must not grow wild again.</p>
 <p>Beneath the habit shone a grand plaid silk frock, white trousers, and burnished shoes. When the dogs bounded up to greet her, Cathy dared hardly touch them for fear of soiling her splendid garments. She kissed Nelly gently—the servant being covered in flour from the Christmas cake—then looked round for Heathcliff.</p>
 <p>He was difficult to find. If he had been careless and uncared for before Catherine&#x27;s absence, he had become ten times more so since. Nobody troubled to bid him wash but Nelly, and his clothes had seen three months&#x27; service in mire and dust, his hair thick and uncombed, his face and hands dismally beclouded. He skulked behind the settle, expecting his rough-headed counterpart, not this bright, graceful damsel.</p>
@@ -604,9 +737,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="A Birth, a Death, and Descent illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">A Birth, a Death, and Descent</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="A Birth, a Death, and Descent illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">A Birth, a Death, and Descent</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On a bright June morning, the last child of the ancient Earnshaw line came squalling into the world at Wuthering Heights—a beautiful boy named Hareton. Yet even as the household rejoiced over this bonny bairn, death cast its long shadow across the celebration. The physician Kenneth delivered his grim verdict: Frances Earnshaw, so long consumed by illness, would not see the winter through. The young mother, flushed with the delirium of new motherhood, refused to believe it, chattering gaily about watching her son grow to manhood. And Hindley, that desperate fool, clung to his denial with the ferocity of a man drowning. He cursed the doctor, insisted his wife improved daily, told her so himself—and she believed him, or pretended to. Poor soul! That gay heart never faltered until the very end. One night, as she leaned against her husband&#x27;s shoulder, speaking of rising from bed tomorrow, a cough seized her—a slight thing, barely worth notice—and in the span of a breath, with her hands clasped about his neck, Frances Earnshaw died.</p>
 <p>What followed was a household&#x27;s descent into chaos. Hindley surrendered himself utterly to reckless dissipation, cursing God and man alike, treating servants with such tyranny that only Nelly Dean and the self-righteous Joseph remained. The infant Hareton fell wholly into Nelly&#x27;s care, his father content so long as the child appeared healthy and never cried. Heathcliff, meanwhile, found grim satisfaction in watching Hindley&#x27;s degradation, growing daily more sullen and savage, while Catherine blossomed into a proud, headstrong creature of fifteen—the unrivaled queen of the countryside.</p>
 <p>It was during this period that young Edgar Linton began his visits to Wuthering Heights, drawn inexorably to Catherine despite his terror of Hindley&#x27;s wild reputation. Catherine had learned well the art of double character during her convalescence at Thrushcross Grange—presenting genteel courtesy to the Lintons while reserving her rough, unrestrained nature for home. She found herself caught between two worlds, unable to fully reconcile her fierce attachment to Heathcliff with her growing fascination with Edgar&#x27;s refinement.</p>
@@ -616,9 +754,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A Father&#x27;s Drunken Rage and Ruin illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">A Father&#x27;s Drunken Rage and Ruin</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A Father&#x27;s Drunken Rage and Ruin illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">A Father&#x27;s Drunken Rage and Ruin</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening began in chaos when Hindley Earnshaw burst through the door in a drunken fury, discovering Nelly Dean hiding young Hareton in the kitchen cupboard—a desperate measure to protect the child from his father&#x27;s volatile moods, which swung wildly between smothering affection and murderous rage. Hindley, raving and brandishing a carving knife, threatened Nelly with death, though she met his madness with wry defiance, remarking she&#x27;d rather be shot than swallow a blade that had been cutting red herrings. The danger escalated when Hindley carried the screaming Hareton upstairs and dangled him over the banister, only to drop the child when distracted by approaching footsteps. By cruel chance, Heathcliff arrived below at precisely that moment and instinctively caught the falling boy—a rescue that twisted his face into bitter anguish, for he had unwittingly saved the heir of his tormentor. Had darkness concealed the deed, Nelly knew, Heathcliff might well have dashed the child&#x27;s brains out himself.</p>
 <p>After Hindley retreated to his brandy, declaring his soul destined for perdition, Nelly settled by the fire to comfort Hareton while Heathcliff slipped unseen onto a bench in the shadows. There Catherine found them, her manner troubled and anxious. She confided to Nelly that Edgar Linton had proposed marriage that very day, and she had accepted—though her heart remained divided. When Nelly pressed her on the nature of her love for Edgar, Catherine&#x27;s answers revealed only shallow attractions: his handsomeness, his wealth, the status his wife would enjoy. Yet when she spoke of Heathcliff, her voice transformed entirely. She declared their souls were forged of the same substance, that her love for Edgar resembled seasonal foliage while her bond with Heathcliff was like the eternal rocks beneath—necessary, permanent, inseparable from her very being. &quot;I *am* Heathcliff,&quot; she proclaimed, believing she might use the Linton fortune to elevate him from degradation.</p>
 <p>But Heathcliff had heard only the wounding half of her confession—that marrying him would degrade her—before stealing away into the gathering storm. Catherine&#x27;s frantic search proved futile. She waited through the violent tempest that split a tree and sent stones crashing into the kitchen, standing drenched in the downpour until midnight passed and dawn arrived. By morning she had fallen dangerously ill with fever, and Heathcliff had vanished entirely from the moors.</p>
@@ -626,9 +769,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Heathcliff&#x27;s Return to Thrushcross Grange illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Heathcliff&#x27;s Return to Thrushcross Grange</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Heathcliff&#x27;s Return to Thrushcross Grange illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Heathcliff&#x27;s Return to Thrushcross Grange</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>What a charming introduction to a hermit&#x27;s existence—four weeks of misery, tossing about in illness, subject to bleak northern winds and bitter skies, impassable roads and dilatory country surgeons! And oh, the dearth of human company, made worse still by Kenneth&#x27;s dire pronouncement that there would be no venturing outdoors until spring. When Mr. Heathcliff honours me with a visit, bringing grouse as a peace offering (though the scoundrel bears some guilt in my present condition), I find myself too weak for books yet hungry for diversion. I summon Mrs. Dean to continue her tale, pushing aside her fussing about medicines and powders, and settle back to hear what became of Heathcliff after his mysterious three-year absence.</p>
 <p>She obliges, taking up the thread from Miss Catherine&#x27;s marriage to Edgar Linton. At Thrushcross Grange, to Nelly&#x27;s agreeable surprise, Catherine behaved infinitely better than expected—not the thorn bending to the honeysuckles, but the honeysuckles embracing the thorn. Edgar&#x27;s deep-rooted fear of ruffling her humour kept the gunpowder harmless as sand, and for half a year they possessed something approaching genuine happiness.</p>
 <p>But such peace could not endure. On a mellow September evening, as Nelly lingered in the courtyard beneath the rising moon, a deep foreign voice spoke her name from the shadows. There stood Heathcliff—transformed utterly from the degraded creature who had fled three years prior into a tall, athletic, dignified man with intelligent bearing, though a half-civilised ferocity still lurked in those deep-set eyes full of black fire. His return sent Catherine into wild, breathless ecstasy that bordered on calamity, while poor Edgar grew pale with annoyance at his wife&#x27;s unbridled joy.</p>
@@ -638,9 +786,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Ghosts of Childhood and Corruption illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">Ghosts of Childhood and Corruption</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Ghosts of Childhood and Corruption illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">Ghosts of Childhood and Corruption</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In the solitude of her own troubled thoughts, Nelly Dean has often risen in sudden terror, seized by the urge to visit Wuthering Heights and warn Hindley of the dark rumours swirling about his dissipated ways. Yet each time, recollecting his confirmed bad habits, she has shrunk from entering that dismal house, doubting whether any good could come of it.</p>
 <p>One bright frosty afternoon, while journeying to Gimmerton, Nelly passes the old stone guide-post where the highway branches toward the moor—a rough sand-pillar carved with the letters marking the way to the Grange, the Heights, and the village. The winter sun shines yellow upon its grey head, stirring within her a sudden gush of childhood sensations. She remembers how she and Hindley had loved this spot twenty years before, storing snail-shells and pebbles in a little hole near the stone&#x27;s base. So vivid is the memory that she fancies she sees young Hindley himself, bent over the withered turf, scooping earth with a piece of slate. The apparition vanishes in a twinkling, but it leaves Nelly gripped by superstitious dread—what if Hindley should be dead, or dying soon?</p>
 <p>Hastening toward Wuthering Heights, trembling in every limb, she discovers at the gate not a ghost but Hareton—her own nursling, now a wild, elf-locked boy with brown eyes and a ruddy countenance. When Nelly calls to him tenderly, he retreats and hurls a stone at her bonnet, following it with a string of curses delivered with practised emphasis that distorts his baby features into shocking malignity. Through coaxing and bribery with an orange, Nelly learns the source of the child&#x27;s corruption: Heathcliff has taught him to swear, encouraging him to defy his father and threatening violence against anyone—even the curate—who might educate the boy. When Nelly sends Hareton to fetch Hindley, it is Heathcliff who appears at the door instead, and she flees down the road as if she had raised a goblin.</p>
@@ -650,9 +803,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Fever Dreams and Feathers illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Fever Dreams and Feathers</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Fever Dreams and Feathers illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Fever Dreams and Feathers</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In the great house of Thrushcross Grange, three souls languished in separate miseries while Nelly Dean, ever practical, went about her duties convinced she alone possessed any sense within those walls. Miss Linton wandered the grounds in perpetual silence and tears; Edgar Linton buried himself among books he never read, waiting vainly for his wife&#x27;s repentance; and Catherine herself starved behind her locked door, fancying her husband desperate for her return when in truth he knew nothing of her true condition.</p>
 <p>On the third day, Catherine unbarred her chamber and demanded sustenance, declaring she was dying—though Nelly suspected theatrical exaggeration and brought only tea and dry toast. The mistress swung wildly between proclaiming she wished to die and insisting she would not give Edgar such satisfaction. When Nelly revealed that the master sat calmly among his books, Catherine&#x27;s distress transformed into something far more alarming. She caught sight of herself in the mirror and recoiled, unable to recognize the haggard creature staring back. Her mind began to fracture visibly—she tore at her pillow, sorting feathers by species while murmuring of lapwings and childhood memories with Heathcliff on the moors.</p>
 <p>The delirium deepened as Catherine mistook Nelly for an aged witch gathering elf-bolts, and screamed in terror at her own reflection, believing it a ghost. Between lucid moments and madness, she confessed that upon locking herself away, her mind had transported her back seven years—before her marriage, before the Grange, to a time when she and Heathcliff were inseparable. She lamented being torn from the Heights, transformed into Mrs. Linton, wife of a stranger, exile from her true world. She longed desperately for the wild moors, for the girl she once was.</p>
@@ -663,9 +821,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="A Bride&#x27;s Desperate Confession illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">A Bride&#x27;s Desperate Confession</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="A Bride&#x27;s Desperate Confession illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">A Bride&#x27;s Desperate Confession</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For two long months the fugitives—Heathcliff and Isabella—remained vanished from sight, and in that span of waiting and wondering, Mrs. Linton was struck down by what the physician Kenneth denominated a brain fever, a shock so violent it very nearly carried her off entirely. Edgar tended her with a devotion surpassing that of any mother nursing an only child, watching through every hour of day and night, enduring with saintly patience the torments her irritable nerves and shattered reason inflicted upon him. Kenneth warned that the wife he saved from the grave would only repay his care by becoming a source of constant future anxiety—that Edgar&#x27;s own health and strength were being sacrificed to preserve what amounted to a mere ruin of humanity—yet when Catherine&#x27;s life was at last declared out of danger, Edgar knew no bounds to his gratitude and joy. Hour after hour he sat beside her, tracing each small sign of returning bodily health, flattering himself with the fragile hope that her mind, too, would settle back to its proper balance and restore her entirely to her former self.</p>
 <p>The first time Catherine left her chamber came at the beginning of March. Edgar had placed upon her pillow a handful of golden crocuses—the earliest flowers at the Heights—and her eyes, long strangers to any gleam of pleasure, caught them upon waking and shone with childlike delight. Yet even as she gathered them eagerly, her thoughts turned dark and prophetic. She spoke of never returning to those moors but once more—and then to remain forever. Edgar lavished upon her the tenderest caresses and fondest words, but she only gazed vaguely at the flowers while tears streamed unheeded down her cheeks. They moved her to the parlour, hoping a change of scene might lift her despondency, and there was double cause to desire her recovery: upon her existence depended another life, for they cherished the hope that an heir would soon gladden Edgar&#x27;s heart and secure his lands from a stranger&#x27;s grasp.</p>
 <p>Meanwhile, Isabella sent word of her marriage to Heathcliff—a dry, cold note with a penciled apology beneath, entreating reconciliation. Edgar did not reply. A fortnight later, Ellen received a long letter from the new bride, and its contents revealed the full horror of Isabella&#x27;s situation. She wrote from Wuthering Heights, describing her arrival at that desolate place after dark, received by the malignant Joseph with his sneering contempt, threatened by young Hareton—now a ruffianly child with Catherine&#x27;s features but a savage tongue—and his half-bred bull-dog Throttler. She encountered Hindley Earnshaw, transformed into a gaunt, shaggy hermit consumed by madness and murderous hatred, who showed her a pistol with a spring-knife attached and confessed he tried Heathcliff&#x27;s door nightly, hoping to find it unlocked so he might kill him.</p>
@@ -674,9 +837,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="The Grange&#x27;s Cold Farewell to Isabella illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">The Grange&#x27;s Cold Farewell to Isabella</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="The Grange&#x27;s Cold Farewell to Isabella illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">The Grange&#x27;s Cold Farewell to Isabella</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Nelly Dean arrives at the Grange bearing Isabella&#x27;s letter, her heart heavy with the weight of the young woman&#x27;s desperate plea for reconciliation. She approaches Edgar Linton with news of his sister&#x27;s return to Wuthering Heights, her longing to see him, and her fervent hope for forgiveness. Yet the master&#x27;s response falls cold as January frost upon the moors. He claims there is nothing to forgive, yet refuses to write even a single line of comfort, declaring that all communication between his household and Heathcliff&#x27;s shall cease entirely. Though Nelly implores him, Edgar remains immovable, and she departs with a heavier burden than before—tasked now with softening words that carry no warmth.</p>
 <p>The journey to Wuthering Heights reveals a transformation most pitiful. The once-cheerful house has descended into dreary neglect, and Isabella herself appears diminished—wan, listless, her hair unkempt, her spirit broken. How strange that Heathcliff, of all creatures present, should seem the only decent figure, carrying himself with the bearing of a gentleman while his wife wastes into a shadow of her former self. When Isabella eagerly seeks the letter she expects, Nelly must deliver instead Edgar&#x27;s cold dismissal: no letter, no visit, only the severing of ties.</p>
 <p>Heathcliff seizes upon the moment to interrogate Nelly about Catherine&#x27;s illness, and here his true purpose emerges with terrifying clarity. He demands—nay, he insists—upon an interview with Catherine, threatening to haunt Thrushcross Grange night after night until he succeeds. His passion pours forth in torrents: he could never love as Edgar loves, for Edgar&#x27;s affection is but a shallow stream compared to the vast ocean of his own devotion. Catherine&#x27;s heart, he declares, could no more be contained by her husband than the sea could be held in a horse-trough.</p>
@@ -687,9 +855,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="A Final Embrace Before Death illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">A Final Embrace Before Death</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="A Final Embrace Before Death illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">A Final Embrace Before Death</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Another week has passed at Thrushcross Grange, and Lockwood continues to recover his health while piecing together the remainder of Nelly Dean&#x27;s tale. She resumes her account from that fateful Sunday when she finally delivered Heathcliff&#x27;s letter to Catherine—three days after she had received it, having waited until Edgar departed for church to avoid whatever storm its contents might unleash.</p>
 <p>The morning had dawned uncommonly warm, and Nelly took the liberty of setting the doors wide open, then sent the manservant off to the village on a fabricated errand for oranges. She knew well enough who would come calling. Upstairs, she found Catherine seated in the window recess, her figure draped in white, her long hair—thinned by illness—combed simply over her temples. There was something unearthly about her now: the old flash in her eyes had given way to a dreamy, melancholy softness, as though she gazed perpetually beyond the visible world. Her pallor and strange expression, though heartbreaking in their implications, lent her a haunting beauty that seemed to refute any hope of recovery. She was marked, unmistakably, as one doomed to decay.</p>
 <p>Catherine showed little interest in the letter at first, her attention so far removed from earthly matters that Nelly was obliged to read it aloud. But at the mention of Heathcliff&#x27;s name, recognition flickered across her face. Before any reply could be formed, the man himself had crossed the threshold—too impatient to wait, too bold to be denied—and in two strides he had Catherine in his arms.</p>
@@ -701,9 +874,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="A Birth, a Death, and Grief illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">A Birth, a Death, and Grief</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="A Birth, a Death, and Grief illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">A Birth, a Death, and Grief</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Around midnight, Catherine Linton breathed her last, never regaining enough consciousness to recognize either her husband Edgar or to call for Heathcliff. Two hours before her death, she delivered a frail, premature daughter—the young Catherine destined to grow up at Wuthering Heights. The infant entered the world unwelcomed and unattended, a poor orphan whom no one troubled over during those first desperate hours, so consumed were they by the dying mother and the devastated father. Edgar&#x27;s grief ran too deep for words, his sorrow sinking into him like poison that would show its effects for years to come.</p>
 <p>By morning, soft light crept through the blinds of the silent chamber, illuminating both the living and the dead with equal tenderness. Edgar lay with his head upon the pillow, his exhausted features nearly as still as Catherine&#x27;s own, though his was the stillness of spent anguish while hers spoke of perfect, eternal peace. Her brow was smooth, her expression serene—more beautiful than any angel, it seemed. In that holy quietude, the watcher could not help but feel the profound calm of divine rest, echoing Catherine&#x27;s own words: &quot;Incomparably beyond and above us all.&quot;</p>
 <p>Yet even as the household mourned, thoughts turned inevitably to Heathcliff. At sunrise, the faithful servant ventured outside, dreading yet compelled to deliver the terrible news. She found him beneath an old ash tree, drenched with dew, so motionless that birds had built their nest mere feet from where he stood. Before a single word could be spoken, he knew. &quot;She&#x27;s dead!&quot; he declared, his voice savage with grief. When pressed about Catherine&#x27;s final moments, he could scarcely form her name, his mouth compressing against waves of inward agony even as his eyes blazed with ferocious defiance.</p>
@@ -714,9 +892,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Isabella&#x27;s Flight Through the Storm illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">Isabella&#x27;s Flight Through the Storm</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Isabella&#x27;s Flight Through the Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Isabella&#x27;s Flight Through the Storm</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>That Friday marked the death of summer. By evening, the wind had wheeled from south to north-east, dragging rain behind it, then sleet, then snow—until the morrow crept in dreary and chill, burying primroses and crocuses beneath wintry drifts and striking the young leaves black upon the trees. The master kept to his room while Nelly claimed the lonely parlour for a nursery, rocking Catherine&#x27;s moaning infant and watching the snow build against the uncurtained window.</p>
 <p>The door burst open to reveal Isabella Heathcliff—breathless, laughing, half-wild with exhaustion. She had run the whole way from Wuthering Heights, her light silk frock clinging wet to her frame, her feet protected only by thin slippers, her hair streaming with snow and water. A deep cut beneath her ear had bled freely before the cold stanched it, and her white face bore scratches and bruises. She demanded a carriage to Gimmerton and clothes packed from her wardrobe, speaking with fevered haste about escape, about Heathcliff&#x27;s fury, about the gold ring she tore from her finger and smashed upon the coals.</p>
 <p>Once warmed and bandaged, Isabella unfolded her tale. Since Catherine&#x27;s death, Heathcliff had become a stranger in his own house, disappearing to haunt the Grange and returning only to lock himself away, praying to senseless dust and ashes. Hindley, meanwhile, had descended further into drink and despair. The previous night, the two men&#x27;s hatred had erupted into violence. Hindley had locked Heathcliff out in the storm, meaning to shoot him, but Isabella—though she wished Heathcliff dead—had warned him through the lattice. Heathcliff smashed through a window, wrenched the pistol from Hindley&#x27;s grasp, and beat him savagely, trampling and kicking until the man lay senseless. Come morning, Isabella had taunted Heathcliff in his grief, goading him until he flung a dinner-knife at her head. She fled through the kitchen, past young Hareton hanging puppies in the doorway, and ran across the moors toward the Grange like a soul escaped from purgatory.</p>
@@ -727,9 +910,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="A Sheltered Child&#x27;s Forbidden Longings illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">A Sheltered Child&#x27;s Forbidden Longings</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="A Sheltered Child&#x27;s Forbidden Longings illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">A Sheltered Child&#x27;s Forbidden Longings</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The twelve years following Catherine Linton&#x27;s death proved the happiest Nelly Dean had known, her only troubles being the ordinary ailments of childhood that visited young Cathy as they visit all children, whether born to privilege or poverty. The girl flourished like a larch tree, walking and speaking in her own fashion before the heath had blossomed twice over her mother&#x27;s grave. She became the very embodiment of sunshine in that desolate house—a true beauty possessing the Earnshaws&#x27; striking dark eyes alongside the Lintons&#x27; fair complexion and delicate features, crowned with curling yellow hair. Her spirit ran high without roughness, tempered by a heart almost excessive in its capacity for tender attachment. In this she recalled her mother, yet differed entirely: where the elder Catherine had burned fierce and wild, young Cathy possessed a dove&#x27;s gentleness, a pensive expression, and anger that never turned furious. Still, she harboured her faults—a propensity for sauciness and the perverse willfulness that spoiled children inevitably acquire.</p>
 <p>Edgar Linton devoted himself entirely to her education, making an amusement of instruction that her quick intellect eagerly absorbed. Until her thirteenth year, Cathy remained a perfect recluse who had never ventured beyond the park&#x27;s boundaries unaccompanied. Wuthering Heights and Heathcliff existed not at all in her sheltered world. Yet from her nursery window, she gazed upon Penistone Crags with mounting curiosity, questioning Nelly about those golden rocks that caught the setting sun long after shadow had claimed the valley below. The mention of a Fairy Cave turned her head completely, and she pestered her father ceaselessly about visiting, never knowing the road wound past the very place he could not bear to pass.</p>
 <p>When Isabella died of a slow fever and summoned Edgar to retrieve her son Linton, the opportunity for mischief presented itself. Left under Nelly&#x27;s care with strict orders to remain within the grounds, Cathy grew restless, then began her solitary rambles. One July morning, dressed as an Arabian merchant with her pony and dogs as caravan, she leapt the hedge and vanished toward her forbidden destination. By tea-time, Nelly&#x27;s alarm drove her walking mile after mile until she discovered her wayward charge seated perfectly at home on the hearth of Wuthering Heights itself, chattering gaily to eighteen-year-old Hareton Earnshaw.</p>
@@ -738,9 +926,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="A Fragile Cousin Arrives at Thrushcross illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">A Fragile Cousin Arrives at Thrushcross</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="A Fragile Cousin Arrives at Thrushcross illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">A Fragile Cousin Arrives at Thrushcross</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>A black-bordered letter brought the news Ellen had been dreading and expecting in equal measure—Isabella was dead, and the master was returning home with his young nephew in tow. She set about preparing mourning clothes for Catherine and readying a room for the boy, all while the girl herself ran wild through the house with unbridled anticipation. Poor thing, her aunt&#x27;s death had left no definite impression of sorrow upon her; she knew only that her father was coming home and bringing with him a &quot;real&quot; cousin, one whose flaxen lock of hair she had treasured in a little glass box, dreaming of the day she might meet its owner.</p>
 <p>The evening of their arrival found Catherine dragging Ellen through the grounds to meet the carriage, chattering all the while about Linton being just six months her junior, about what a delightful playfellow he would make. She ran ahead and back again, unable to contain herself, until at last the travelling carriage rolled into view and she shrieked with joy at the sight of her father&#x27;s face in the window.</p>
 <p>While father and daughter exchanged their tender reunion, Ellen peered into the carriage to glimpse the boy. What she found gave her pause—a pale, delicate, effeminate child wrapped in furs as though it were the dead of winter, bearing a striking resemblance to Edgar Linton himself, yet marred by a sickly peevishness the master had never possessed. He slept on, too fatigued from the journey to be disturbed.</p>
@@ -752,9 +945,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Father Claimed, a Home Lost illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">A Father Claimed, a Home Lost</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Father Claimed, a Home Lost illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">A Father Claimed, a Home Lost</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The early morning light had scarcely touched the valley when Mr. Linton issued his careful instructions: young Linton must be conveyed to Wuthering Heights with all haste, and Catherine must remain ignorant of his whereabouts. The deception was necessary, he reasoned, for the child could have no further association with his daughter, and knowledge of his proximity would only breed restlessness and longing in her heart. A simple falsehood would suffice—that his father had sent for him suddenly.</p>
 <p>The boy proved most reluctant to be roused at five o&#x27;clock, bewildered entirely by the notion that he possessed a father at all. His mother had never spoken of such a person, and the questions tumbled forth with childish persistence: Why had they not lived together? Why had she kept silent? How could he be expected to love a man he had never known? The explanations offered—business in the north, his mother&#x27;s health requiring southern climes—did little to satisfy his anxious mind. He clung stubbornly to his refusal, demanding that his uncle accompany him, until Mr. Edgar himself was summoned to coax the poor thing from his bed with promises that would prove hollow as autumn husks.</p>
 <p>Yet the heather-scented air and bright sunshine worked their gentle magic as they rode, and the boy&#x27;s spirits lifted enough to inquire about his new home with something approaching interest. When asked to describe Heathcliff, the honest answer came forth: younger than his uncle, yes, but dark-haired and stern, taller and altogether different in manner. The child mused upon this stranger with his black hair and eyes, wondering how he could be expected to love what he could not even imagine.</p>
@@ -764,9 +962,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="Linton&#x27;s Decline and Cathy&#x27;s Restless Wandering illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">Linton&#x27;s Decline and Cathy&#x27;s Restless Wandering</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="Linton&#x27;s Decline and Cathy&#x27;s Restless Wandering illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">Linton&#x27;s Decline and Cathy&#x27;s Restless Wandering</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The departure of young Linton Heathcliff brought sad work indeed to the Grange, for little Cathy rose that morning in high spirits, eager to join her cousin, only to be met with such bitter disappointment that her passionate tears and lamentations required Edgar himself to offer comfort. He promised the boy should return soon—if he could arrange it—though such hopes proved hollow. Time, that great healer, eventually dimmed Linton&#x27;s features in Cathy&#x27;s memory until she could scarcely have recognised him.</p>
 <p>Through occasional encounters with the housekeeper of Wuthering Heights, Nelly gathered intelligence of the young master&#x27;s condition. He lived as secluded as Catherine herself, perpetually weak and ailing, a tiresome inmate whom Heathcliff could hardly bear to look upon. The boy spent his days wrapped in furred cloaks by the fire, demanding milk and sweets while complaining of draughts and pipe smoke, growing ever more selfish from the utter lack of sympathy surrounding him.</p>
 <p>Time wore on pleasantly enough at the Grange until Miss Cathy reached sixteen. On the anniversary of her birth—that melancholy day which also marked her mother&#x27;s death—Edgar withdrew as always to his solitary vigil, leaving Catherine to her own devices. She persuaded Nelly to accompany her on a ramble across the moors, ostensibly seeking grouse nests, though her steps carried them ever further from home. Before Nelly could catch her, the girl had crossed onto Heathcliff&#x27;s land, where she stood arrested by the master himself and young Hareton.</p>
@@ -778,9 +981,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="A Lonely Blossom and Autumn Tears illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">A Lonely Blossom and Autumn Tears</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="A Lonely Blossom and Autumn Tears illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">A Lonely Blossom and Autumn Tears</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As summer faded into autumn and the harvest lingered late in the fields, a shadow crept over Thrushcross Grange. Mr. Linton, having stayed out too long among the reapers on a chill, damp evening, caught a cold that settled deep in his lungs and imprisoned him indoors for the whole of winter. Poor Cathy, already subdued since the forced abandonment of her secret correspondence with Linton, grew sadder still without her father&#x27;s companionship on their daily rambles. Nelly did what she could to fill the void, though she knew herself a poor substitute, able to spare only a few hours from her household duties to follow in the girl&#x27;s footsteps.</p>
 <p>On a fresh, watery afternoon in late October or early November—the kind of day when withered leaves rustle underfoot and grey clouds mount rapidly from the west, promising rain—Nelly reluctantly accompanied her young mistress on a walk to the bottom of the park. There was no running or bounding in Cathy now; she moved sadly, her hand rising often to brush tears from her cheek. When Nelly pointed out a lone bluebell trembling beneath twisted tree roots—the last survivor of summer&#x27;s abundance—hoping to distract her, Cathy refused to pluck it. &quot;It looks melancholy, does it not, Ellen?&quot; she remarked, her words heavy with unspoken grief.</p>
 <p>Unable to contain her fears any longer, Cathy confessed the terror haunting her thoughts: that her father would die, that Nelly too would leave her, and she would be left utterly alone in a dreary world. Nelly offered what comfort she could, reminding her that Mr. Linton was still young and might live another twenty years, that worry served no purpose, and that Cathy&#x27;s duty lay in keeping her father cheerful. But she also delivered a stern warning—that reckless behaviour or a foolish attachment to the son of a man who wished Edgar Linton dead could prove fatal to her father&#x27;s fragile health. Cathy, earnest and tearful, swore she loved her papa better than herself and would never do anything to vex him.</p>
@@ -789,9 +997,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="A Sickroom Visit and Bitter Truths illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">A Sickroom Visit and Bitter Truths</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="A Sickroom Visit and Bitter Truths illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">A Sickroom Visit and Bitter Truths</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The miserable drizzle of that dreary morning had soaked through to my very bones, leaving me cross and ill-tempered as we made our way to Wuthering Heights—a disposition that would prove prophetic of the troubles to come. Catherine and I entered through the kitchen, where old Joseph sat in his own private paradise before a roaring fire, utterly deaf to any summons that did not suit his pleasure. From the inner room came the petulant voice of young Linton Heathcliff, and upon entering, we found him reclined in a great chair, feverish and wretched, cursing his negligent attendants with all the venom his frail constitution could muster.</p>
 <p>The boy was a pitiful sight—coughing, shivering, and demanding attention with the imperious air of one who expects the world to bend to his whims. Catherine flew to him with all the tenderness of her generous heart, but Linton received her affections with complaints rather than gratitude. He chided her for writing letters instead of visiting, lamented the cold hearth and absent servants, and spoke bitterly of Hareton&#x27;s mockery and his father&#x27;s cruelty. Yet when Catherine asked if he was glad to see her, a faint smile broke through his misery—her voice, he admitted, was something new and welcome in that cheerless house.</p>
 <p>Their conversation turned to matters of love and marriage, as young people&#x27;s talk so often does. Linton, echoing his father&#x27;s scheming words, suggested Catherine might one day be his wife; she, in her innocent wisdom, countered that she would rather he were her brother, for brothers and sisters never hate one another as husbands and wives sometimes do. This careless observation sparked a quarrel between the cousins—Catherine citing Heathcliff&#x27;s treatment of her aunt Isabella, Linton retaliating with poisonous claims about Catherine&#x27;s own mother loving his father instead of hers.</p>
@@ -801,9 +1014,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Secret Rides to Wuthering Heights illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">Secret Rides to Wuthering Heights</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Secret Rides to Wuthering Heights illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Secret Rides to Wuthering Heights</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Three weeks had passed since my illness when I first found strength enough to leave my chamber and sit downstairs of an evening. I asked Catherine to read to me, my eyes being weak, but from the start she showed a strange reluctance—fidgeting, yawning, complaining of fatigue, until finally she fled to her room claiming a headache. Such peculiar behaviour pricked my suspicions, and on the third night, when she again excused herself, I resolved to seek her out. But Catherine was nowhere to be found—not upstairs, not below, not anywhere the servants had seen her.</p>
 <p>I waited by her window in the moonlight, the ground dusted white with snow, and there witnessed what I had begun to fear: a groom leading Miss&#x27;s pony across the grass, and my young mistress herself dismounting and slipping through the casement window like a ghost. When she discovered me watching, she stood petrified, and though I meant to scold her, the recent memory of her tender care during my sickness softened my tongue. Still, I pressed her for the truth, and at last, through tears and entreaties, she confessed everything.</p>
 <p>She had been riding to Wuthering Heights every day since I fell ill, bribing the groom Michael with books to keep her secret. There she visited Linton, her sickly cousin, and the tale she told me was one of such mingled happiness and misery as to wring the heart. She spoke of pleasant evenings by the fire with Linton, of their differing visions of heaven—his a drowsy stillness among the heather, hers a wild jubilee of wind and birdsong and sparkling motion. They had quarrelled over trifles, made peace, played at games, and planned summer adventures together.</p>
@@ -814,9 +1032,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
 <section class="chapter" id="chapter-25" data-num="25">
-    <img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="A Father&#x27;s Fading Hope and Fear illustration" loading="lazy">
-    <div class="chapter-number">Chapter 25</div>
-    <h2 class="chapter-title">A Father&#x27;s Fading Hope and Fear</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="A Father&#x27;s Fading Hope and Fear illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">A Father&#x27;s Fading Hope and Fear</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The events Mrs. Dean now relates belong to the previous winter—scarcely a year past—yet she pauses to marvel at the strangeness of sharing such intimate family history with a lodger. She teases Mr. Lockwood about his evident fascination with Catherine Linton, noting how his eyes brighten at the mere mention of the girl, how he has hung her portrait above his fireplace. But Lockwood deflects her insinuations with characteristic self-preservation; he is a creature of the busy world, he insists, and cannot risk his tranquillity by entertaining such temptations. He bids her continue.</p>
 <p>Catherine proved obedient to her father&#x27;s commands, for her love of Edgar remained the ruling force in her heart. Edgar, meanwhile, spoke to her not with anger but with the profound tenderness of a man preparing to leave his most precious treasure exposed to dangers he could not shield her from. His words, he knew, would be all he could bequeath to guide her through the perils ahead. He confided to Ellen his anxious wish that young Linton would write or visit, pressing her for an honest assessment of the boy&#x27;s character. Ellen answered plainly: Linton was frail, unlikely to reach manhood, yet he bore little resemblance to his father&#x27;s cruelty. Should Catherine have the misfortune to marry him, she might at least govern him—provided she did not prove foolishly indulgent. But there remained time, she reminded Edgar; years yet before Linton came of age.</p>
 <p>Edgar turned to the window and gazed toward Gimmerton Kirk, where the February sun cast dim light upon the scattered gravestones. He confessed that he had long prayed for death&#x27;s approach, yet now found himself shrinking from it. He had been happy with his little Cathy—she had been a living hope through winter nights and summer days. And yet he had also found peace lying upon her mother&#x27;s grave, yearning for the time when he might rest beside her. His torment lay not in Linton being Heathcliff&#x27;s son, nor even in the prospect of losing Catherine to the boy, if only Linton could console her. But should Linton prove merely a feeble instrument of his father&#x27;s schemes, Edgar could not abandon her to such a fate. Better, he murmured darkly, to lay her in the earth before him than leave her to that.</p>
@@ -827,9 +1050,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
 <section class="chapter" id="chapter-26" data-num="26">
-    <img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="A Fading Cousin on the Heath illustration" loading="lazy">
-    <div class="chapter-number">Chapter 26</div>
-    <h2 class="chapter-title">A Fading Cousin on the Heath</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_26.webp"><img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="A Fading Cousin on the Heath illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">A Fading Cousin on the Heath</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Summer had begun its slow descent toward autumn when Edgar Linton at last relented to the entreaties that had worn upon him, permitting Catherine and Nelly to venture forth on their first ride to meet young Linton Heathcliff. The day hung close and sultry, the sky neither bright nor threatening, merely dappled with haze as they made their way toward the guide-stone at the cross-roads. Yet their intended meeting place proved false—a herd-boy intercepted them with word that Master Linton waited nearer Wuthering Heights, requesting they come further on, in direct violation of Edgar&#x27;s strict injunction to remain on Grange land.</p>
 <p>When they found the boy, scarcely a quarter mile from his father&#x27;s door, the sight that greeted them was alarming indeed. Linton possessed no horse and lay prostrate upon the heath, rising only when they approached within a few yards. His pallor, his feeble movements, his hollowed eyes—all spoke of deterioration far beyond what Catherine had witnessed in winter. The joyful reunion she had anticipated transformed instantly to anxious inquiry, though Linton insisted, trembling and panting, that he was better, not worse, attributing his wretched appearance to the heat and his rapid growth.</p>
 <p>Catherine endeavored to resurrect their old intimacy, speaking of their once-shared dreams of paradise, of future excursions to the Grange Park, but her words fell upon ears that seemed not to comprehend. The change in Linton proved more troubling than mere physical decline. Gone was the pettish child whose ill temper might be coaxed into fondness—in his place sat a figure of listless apathy, self-absorbed in his invalidism, regarding any attempt at cheerfulness as insult rather than comfort. When Catherine, perceiving that her presence brought him punishment rather than pleasure, proposed they depart, Linton roused himself with fearful agitation, casting terrified glances toward the Heights and begging her to stay.</p>
@@ -839,9 +1067,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
 <section class="chapter" id="chapter-27" data-num="27">
-    <img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="A Trap Among the Heather illustration" loading="lazy">
-    <div class="chapter-number">Chapter 27</div>
-    <h2 class="chapter-title">A Trap Among the Heather</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_27.webp"><img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="A Trap Among the Heather illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">A Trap Among the Heather</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Seven days passed with terrible swiftness, each hour carving into Edgar Linton what months had wrought before. The master lay dying, and though they would have spared young Catherine the knowledge, her sharp spirit refused such comfort—she divined the dreadful truth and let it ripen within her into certainty. She had become a ghost herself, haunting the library and her father&#x27;s chamber, grudging every moment she was not bent over his pillow. When Thursday came, she had not the heart to mention her promised ride to the moors; Nelly mentioned it for her, and Edgar, hoping to spare his daughter complete solitude after his passing, gladly dismissed her—drawing comfort from the mistaken belief that his nephew Linton shared his own gentle character. Nelly, through pardonable weakness, let the dying man keep his illusions.</p>
 <p>The afternoon was golden with August light, every breath from the hills so full of life it seemed capable of reviving even the dying. Catherine&#x27;s face mirrored the landscape—shadows and sunshine chasing across it—though the shadows lingered longer, and her poor heart reproached itself for even fleeting moments of forgetfulness.</p>
 <p>At the Heights, they found Linton watching for them, but his animation was not joy—it was fear. He spoke in gasps, trembling, begging Catherine&#x27;s forgiveness while confessing himself a coward and traitor. He wept that his life was in her hands, that his father had threatened him, that he dared not speak. Catherine&#x27;s patience snapped at his enigmatic torment, and she demanded explanation with all the fire of her mother&#x27;s spirit.</p>
@@ -853,9 +1086,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
 <section class="chapter" id="chapter-28" data-num="28">
-    <img class="chapter-image" src="images_cinematic/chapter_28.webp" alt="The Captive Bride&#x27;s Bitter Inheritance illustration" loading="lazy">
-    <div class="chapter-number">Chapter 28</div>
-    <h2 class="chapter-title">The Captive Bride&#x27;s Bitter Inheritance</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_28.webp"><img class="chapter-image" src="images_cinematic/chapter_28.webp" alt="The Captive Bride&#x27;s Bitter Inheritance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">28</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 28</div>
+            <h2 class="chapter-title">The Captive Bride&#x27;s Bitter Inheritance</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On the fifth afternoon of Nelly Dean&#x27;s imprisonment at Wuthering Heights, deliverance arrived in an unexpected form—Zillah, the housekeeper, bearing her willow-basket and news from the village. The talk at Gimmerton held that Nelly and young Catherine had been swallowed by Blackhorse marsh, a rumour Heathcliff had done nothing to dispel. When Zillah delivered his message—that Catherine would return to Thrushcross Grange &quot;in time to attend the squire&#x27;s funeral&quot;—Nelly&#x27;s blood ran cold, though she quickly learned Edgar Linton yet clung to life, if only by the thinnest thread.</p>
 <p>Freed at last, Nelly descended to find the house bathed in sunshine and eerily quiet, save for the wretched figure of Linton Heathcliff sprawled upon the settle, sucking sugar-candy with the indolence of a pampered invalid. When pressed about Catherine&#x27;s whereabouts, the boy revealed the full measure of his corruption—parroting his father&#x27;s poisonous lies that Catherine wished him dead for his inheritance, declaring with spiteful satisfaction that everything she possessed now belonged to him. Yet even this heartless creature could not entirely suppress his conscience. Under Nelly&#x27;s pointed questioning, he confessed the horrors Catherine had endured: Heathcliff striking her so violently that her cheek split against her teeth, the wrenching away of her mother&#x27;s portrait, which he crushed beneath his boot. The boy spoke of Catherine sitting silent and pale, her face turned to the wall, and admitted he was afraid of her now.</p>
 <p>Nelly hastened to Thrushcross Grange, where she found Edgar Linton transformed—an image of sadness and resignation, looking far younger than his thirty-nine years as death approached. The news that Catherine lived and would soon return roused him briefly from his decline. Understanding now the full scope of Heathcliff&#x27;s scheme to claim both estate and fortune through Linton, Edgar moved swiftly to protect what he could, ordering his will altered to place Catherine&#x27;s inheritance in trust beyond Heathcliff&#x27;s grasping hands.</p>
@@ -865,9 +1103,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
 <section class="chapter" id="chapter-29" data-num="29">
-    <img class="chapter-image" src="images_cinematic/chapter_29.webp" alt="Heathcliff Claims His Bitter Inheritance illustration" loading="lazy">
-    <div class="chapter-number">Chapter 29</div>
-    <h2 class="chapter-title">Heathcliff Claims His Bitter Inheritance</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_29.webp"><img class="chapter-image" src="images_cinematic/chapter_29.webp" alt="Heathcliff Claims His Bitter Inheritance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">29</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 29</div>
+            <h2 class="chapter-title">Heathcliff Claims His Bitter Inheritance</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening following the funeral found Nelly and Catherine seated together in the library at Thrushcross Grange, their minds drifting between mournful reflection and anxious speculation about what dark days lay ahead. They had dared to hope—foolish as it seemed—that Catherine might be permitted to remain at the Grange with Linton brought to her, and Nelly kept on as housekeeper. Such modest dreams shattered the moment a servant rushed in to announce that devil Heathcliff was crossing the courtyard.</p>
 <p>There was no time to bar the door against him, nor would it have mattered. He entered as master, for master he now was, striding into the very room where he had first been received as a wretched guest eighteen years prior. The same moon illuminated the same autumn landscape beyond the windows; the portraits of the late Mrs. Linton and her husband gazed down from the walls. Time had scarcely touched Heathcliff—his dark face perhaps more sallow, his frame slightly heavier—but the man remained unchanged in his terrible essence.</p>
 <p>He had come to fetch Catherine home to Wuthering Heights, and he would brook no resistance. With cold satisfaction, he described how he had terrorised young Linton into submission without laying a finger on him—merely sitting with the frail boy for two hours until his presence became a haunting spectre that left Linton shrieking through the nights. Catherine must come, Heathcliff declared, for Linton was her concern now, and besides, she owed him service for her bread.</p>
@@ -878,9 +1121,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
 <section class="chapter" id="chapter-30" data-num="30">
-    <img class="chapter-image" src="images_cinematic/chapter_30.webp" alt="Alone Among Enemies illustration" loading="lazy">
-    <div class="chapter-number">Chapter 30</div>
-    <h2 class="chapter-title">Alone Among Enemies</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_30.webp"><img class="chapter-image" src="images_cinematic/chapter_30.webp" alt="Alone Among Enemies illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">30</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 30</div>
+            <h2 class="chapter-title">Alone Among Enemies</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The moors had yielded their secrets to Nelly Dean through the narrow-minded offices of Zillah, the housekeeper at Wuthering Heights, for Catherine Linton—now Catherine Heathcliff in name, though stripped of all else that name might confer—had become as unreachable as the dead themselves. Joseph, that grim sentinel, had barred the door against Nelly&#x27;s inquiries, and so it was through Zillah&#x27;s gossiping tongue that the tale of those dark weeks unfolded.</p>
 <p>Upon her arrival at the Heights, young Catherine had flown straight to Linton&#x27;s chamber, keeping vigil through that first terrible night. When morning came, she emerged trembling, begging that a doctor might be summoned, only to meet Heathcliff&#x27;s stony cruelty—his son&#x27;s life, he declared, was not worth a farthing of expense. Thus abandoned, Catherine nursed her dying husband alone, growing pale and hollowed by sleeplessness, sometimes wandering into the kitchen with wild, pleading eyes that Zillah steadfastly ignored. The housekeeper confessed to finding her weeping on the stairs at night, yet fear of the master sealed her lips and her door alike.</p>
 <p>The end came as Catherine had foretold. She burst into Zillah&#x27;s chamber announcing Linton&#x27;s imminent death, and though the housekeeper delayed, the sharp ringing of the bell soon summoned Heathcliff himself. He examined his son by candlelight, confirmed the boy&#x27;s passing with terrible calm, then turned to Catherine with a question that rang hollow: &quot;How do you feel?&quot; Her answer carried the bitter weight of her abandonment—she felt free, yet she felt like death itself, having struggled alone against it for so long.</p>
@@ -891,9 +1139,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
 <section class="chapter" id="chapter-31" data-num="31">
-    <img class="chapter-image" src="images_cinematic/chapter_31.webp" alt="Captive Beauty and Forbidden Books illustration" loading="lazy">
-    <div class="chapter-number">Chapter 31</div>
-    <h2 class="chapter-title">Captive Beauty and Forbidden Books</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_31.webp"><img class="chapter-image" src="images_cinematic/chapter_31.webp" alt="Captive Beauty and Forbidden Books illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">31</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 31</div>
+            <h2 class="chapter-title">Captive Beauty and Forbidden Books</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On a bright, frosty morning, Lockwood makes his way to Wuthering Heights, carrying a note from Ellen Dean to her young mistress. The gate stands chained as before, and Hareton Earnshaw—handsome despite his apparent efforts to diminish his own advantages—admits him with the sullen vigilance of a watchdog rather than the welcome of a host.</p>
 <p>Inside, Catherine busies herself with vegetables, her spirit noticeably dimmed since Lockwood&#x27;s earlier encounter with her. She offers no greeting, no acknowledgment of common courtesy, and when Lockwood attempts to slip Ellen&#x27;s letter to her unnoticed, she exposes his gesture aloud. Hareton seizes the letter, insisting Heathcliff must see it first, but something softens in him—he cannot maintain his cruelty and flings the paper to the floor beside her. Catherine reads it eagerly, her questions about her former home at the Grange revealing the depth of her longing. She gazes toward the distant hills and murmurs of riding her pony Minny, of climbing freely, confessing herself tired and *stalled*—a creature caged.</p>
 <p>When Lockwood presses her to send word back to Ellen, Catherine explains she has nothing with which to write. Heathcliff has destroyed her books, leaving her without even a page to tear. This revelation sparks a bitter exchange with Hareton, for Catherine has discovered his secret hoard of volumes—Latin, Greek, poetry, old tales—hidden in his room. She mocks his stumbling attempts at reading, his laboured pronunciation, the way he curses over the dictionary. Her contempt cuts deep, and though Lockwood attempts to defend the young man&#x27;s desire for self-improvement, Catherine persists in her cruelty, insisting that Hareton debases her treasured verses with his ignorance.</p>
@@ -903,9 +1156,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
 <section class="chapter" id="chapter-32" data-num="32">
-    <img class="chapter-image" src="images_cinematic/chapter_32.webp" alt="The Moors Transformed by Love illustration" loading="lazy">
-    <div class="chapter-number">Chapter 32</div>
-    <h2 class="chapter-title">The Moors Transformed by Love</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_32.webp"><img class="chapter-image" src="images_cinematic/chapter_32.webp" alt="The Moors Transformed by Love illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">32</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 32</div>
+            <h2 class="chapter-title">The Moors Transformed by Love</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It is September of 1802 when Mr. Lockwood finds himself unexpectedly within striking distance of that wild northern country he had so readily fled months before. A chance remark from an ostler about a cart of oats from Gimmerton stirs something in him—a sudden, impulsive desire to revisit Thrushcross Grange, that lonely tenant&#x27;s dwelling he had abandoned with such haste. The journey proves arduous, the road rough and wearying to his beasts, but by late afternoon he descends into the valley, where the grey church appears greyer still, the churchyard lonelier, and a solitary moor-sheep crops the turf upon the graves. The September warmth renders the landscape almost divine, those bluff swells of heath and secluded glens transformed by summer&#x27;s lingering grace into something approaching paradise.</p>
 <p>At the Grange, Lockwood discovers an unfamiliar housekeeper—an old woman smoking a meditative pipe—who informs him that Nelly Dean has gone to the Heights. The house lies unprepared for its master&#x27;s sudden arrival, but Lockwood dismisses the woman&#x27;s flustered apologies and sets out walking toward Wuthering Heights as twilight descends, the amber remnants of day fading behind him while a splendid moon rises ahead to illuminate every pebble and blade of grass upon his path.</p>
 <p>What greets him there astonishes him utterly. The gate yields without climbing or knocking. The fragrance of stocks and wallflowers perfumes the air. And through the open lattices, Lockwood beholds a scene of domestic tenderness that fills him with mingled curiosity and envy: a young man seated at a table, reading aloud from a book, while a beautiful young woman with light, shining ringlets bends over his shoulder, correcting his mistakes and rewarding his progress with kisses. It is Hareton Earnshaw and Catherine—and their easy intimacy, their playful affection, strikes Lockwood with sharp regret for chances he himself had thrown away.</p>
@@ -916,9 +1174,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
 <section class="chapter" id="chapter-33" data-num="33">
-    <img class="chapter-image" src="images_cinematic/chapter_33.webp" alt="Primroses and Defiance illustration" loading="lazy">
-    <div class="chapter-number">Chapter 33</div>
-    <h2 class="chapter-title">Primroses and Defiance</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_33.webp"><img class="chapter-image" src="images_cinematic/chapter_33.webp" alt="Primroses and Defiance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">33</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 33</div>
+            <h2 class="chapter-title">Primroses and Defiance</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning following that fateful Monday found Earnshaw confined to the house by his ailments, and with him so near at hand, I soon discovered the impossibility of keeping my young mistress within proper bounds. Before I could descend to my duties, Catherine had already stolen out to the garden where she discovered her cousin at some light labour, and by the time I sought them for breakfast, the pair had wrought considerable havoc upon Joseph&#x27;s beloved currant and gooseberry bushes—all in service of Catherine&#x27;s fancy for a flower bed transplanted from the Grange.</p>
 <p>The devastation struck me with terror, for those black-currant trees were nothing less than sacred to old Joseph, and I foresaw the tempest that must follow. Young Hareton, puzzled but steadfast, offered at once to take the blame upon himself—a gesture that spoke volumes of his shifting loyalties.</p>
 <p>At table, where I performed my customary duties as mistress of the tea and carving knife, Catherine abandoned all discretion. Despite my whispered warnings about Heathcliff&#x27;s watchful eye, she sidled close to Hareton and commenced her teasing, tucking primroses into his porridge until the poor young man nearly burst with suppressed laughter. The master&#x27;s attention snapped toward them like a striking snake, and his fury at Catherine&#x27;s defiant stare sent ice through my veins.</p>
@@ -930,9 +1193,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
 <section class="chapter" id="chapter-34" data-num="34">
-    <img class="chapter-image" src="images_cinematic/chapter_34.webp" alt="The Threshold of Heaven illustration" loading="lazy">
-    <div class="chapter-number">Chapter 34</div>
-    <h2 class="chapter-title">The Threshold of Heaven</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_34.webp"><img class="chapter-image" src="images_cinematic/chapter_34.webp" alt="The Threshold of Heaven illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">34</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 34</div>
+            <h2 class="chapter-title">The Threshold of Heaven</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In the days following the strange evening, Heathcliff withdrew from the household, shunning meals yet refusing to formally banish Hareton and Cathy from his presence. He ate perhaps once in a day, if that, and took to wandering the moors through the night hours. It was April, and the world had turned soft and green, the dwarf apple trees blooming against the southern wall, when Cathy came running back from the gate with a perplexed countenance, reporting that Heathcliff had spoken to her—and that he looked *different*. Not angry, not brooding, but bright. Almost cheerful. Wild and glad.</p>
 <p>Nelly found him at the open door, pale and trembling, yet with a strange joyful glitter in his eyes that transformed his entire aspect. When she pressed him about his night-walking, he answered cryptically: *Last night I was on the threshold of hell. To-day, I am within sight of my heaven. I have my eyes on it: hardly three feet to sever me!*</p>
 <p>What followed was a slow, terrible unwinding. Heathcliff ceased to eat, though not by any deliberate design—his body simply refused sustenance, his attention captured by something invisible, some presence that communicated both exquisite pleasure and anguish. His eyes pursued it with unwearied diligence, even as his fingers clenched before they could reach the bread Nelly pressed upon him. He paced through the nights, muttering Catherine&#x27;s name in tones wrung from the very depth of his soul, speaking as one would speak to a person present.</p>
@@ -1074,6 +1342,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

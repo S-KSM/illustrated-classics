@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_anime/chapter_1.webp" alt="Watched by Vast and Unsympathetic Minds illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">Watched by Vast and Unsympathetic Minds</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="Watched by Vast and Unsympathetic Minds illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Watched by Vast and Unsympathetic Minds</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In those final, drowsy years of the nineteenth century, humanity busied itself with the pleasant trivialities of empire and progress, wholly unaware that vast intelligences regarded our green and watered world with calculating envy. Across the gulf of space, minds as superior to ours as ours are to the beasts watched the Earth with instruments beyond human imagining—scrutinising us, perhaps, as a scientist might study the ephemeral creatures teeming in a droplet of water. With infinite complacency, men dismissed the very notion of life upon other worlds, or if they entertained it at all, imagined only primitive beings who might welcome missionaries. Such was the comfortable blindness of those departed days.</p>
 <p>Mars, that ancient and dying world, had long since begun its descent into frozen exhaustion. Its oceans had shrunk to mere thirds of their former glory, its atmosphere grown thin and bitter, its polar caps swelling and retreating with the slow rhythm of alien seasons. Where Earth remained lush with vegetation and teeming seas, Mars had become a world of desperate necessity—and necessity, as it so often does, had sharpened the intellects of its inhabitants into something cold and pitiless. Looking sunward, they beheld our planet as a morning star of hope, a refuge crowded with life they deemed inferior, ripe for conquest. To carry warfare toward the sun was their only salvation.</p>
 <p>Before we judge them too harshly, we might recall our own species&#x27; ruthless history—the vanished bison, the extinct dodo, the Tasmanians swept from existence by European settlers within fifty years. Are we such paragons of mercy that we might protest if the Martians acted in the same spirit?</p>
@@ -524,9 +627,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_anime/chapter_2.webp" alt="A Cylinder Unscrews at Dawn illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Cylinder Unscrews at Dawn</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="A Cylinder Unscrews at Dawn illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Cylinder Unscrews at Dawn</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The night brought with it a harbinger from the heavens—a falling star that blazed eastward over Winchester in the early morning hours, trailing a greenish phosphorescent streak that lingered momentarily against the darkness before fading into memory. Hundreds witnessed its descent, dismissing it as nothing more remarkable than a common meteorite. The authorities weighed in with their calculations: Denning, that preeminent scholar of celestial debris, estimated its first appearance at some ninety or one hundred miles above the earth, its trajectory carrying it to ground perhaps a hundred miles to the east.</p>
 <p>And yet, while this strangest of all arrivals from the void of space plummeted to earth, one man sat oblivious in his study, French windows thrown open to the night sky he so loved to contemplate, seeing nothing of the spectacle that passed before him. The irony was not lost—had he merely glanced upward at the precise moment, he would have witnessed the beginning of everything that was to follow.</p>
 <p>It fell to poor Ogilvy—that earnest astronomer—to make the discovery. Convinced that a meteorite lay waiting somewhere upon the common between Horsell, Ottershaw, and Woking, he rose with the dawn and set out to claim his prize. He found it soon enough, not far from the sand-pits, where an enormous crater had been gouged into the earth by the violence of impact. Sand and gravel lay scattered in great heaps visible from a mile and a half distant, and the heather smouldered eastward, sending thin blue smoke curling against the brightening sky.</p>
@@ -539,9 +647,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_anime/chapter_3.webp" alt="The Cylinder Draws a Crowd illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">The Cylinder Draws a Crowd</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="The Cylinder Draws a Crowd illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">The Cylinder Draws a Crowd</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The cylinder lay embedded in its pit like some vast iron seed planted by cosmic hands, the turf and gravel about it charred black from the violence of its arrival. When I first returned that morning, I found perhaps twenty souls gathered round the hole—a modest congregation of the curious, the idle, and the bewildered. Henderson and Ogilvy had departed for breakfast, having sensibly concluded that nothing could be done until the thing cooled. In their absence, a handful of boys had taken to perching on the pit&#x27;s edge, their legs swinging over the void as they hurled stones at the colossal mass below. I put a stop to that quickly enough, and they scattered into a game of touch among the bystanders.</p>
 <p>What a peculiar assembly we made that morning: cyclists and caddies, a gardener I sometimes employed, Gregg the butcher with his boy, a girl balancing a baby on her hip, and the usual assortment of loafers who congregate wherever something unusual promises to break the tedium of ordinary life. There was little conversation. Most of these common folk possessed only the vaguest notions of astronomy, and I suspect they had expected charred corpses or some spectacular horror—not this inert, rust-coloured bulk that might have been nothing more remarkable than an overturned carriage or a gasworks float tumbled from the sky.</p>
 <p>I clambered down into the pit myself and fancied I detected a faint stirring beneath my feet. The top had ceased its rotation. Only at such close proximity did the strangeness of the object reveal itself—the grey scaling unlike any common oxide, the unfamiliar yellowish-white metal gleaming in the crack between lid and cylinder. &quot;Extra-terrestrial&quot; held no meaning for my fellow observers, but I understood well enough that this Thing had journeyed from Mars. Still, I doubted it contained living creatures. I imagined instead manuscripts, coins, models—artifacts we might puzzle over for decades. Yet its sheer size unsettled such comfortable speculation.</p>
@@ -551,9 +664,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_anime/chapter_4.webp" alt="Humanity Meets Its Alien Terror illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">Humanity Meets Its Alien Terror</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="Humanity Meets Its Alien Terror illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Humanity Meets Its Alien Terror</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The sun hung low in a lemon-yellow sky when the narrator returned to the common, where the crowd had swelled to perhaps two or three hundred souls, all pressing and jostling about the pit in a black mass silhouetted against the fading light. Something had changed in the atmosphere—voices were raised, a struggle seemed underway, and a boy came running past with breathless warning: the thing inside was moving, screwing itself out from within.</p>
 <p>The crowd surged and swayed with restless energy. Ogilvy called out for help keeping the curious onlookers at bay, for no one yet knew what the confounded cylinder contained. A young shopman from Woking had been pushed by the press of bodies onto the cylinder itself and was struggling to climb free of the pit. All the while, a peculiar humming emanated from below, and nearly two feet of shining screw had emerged, turning steadily from some mechanism within.</p>
 <p>Then the lid fell away with a ringing concussion upon the gravel, and every eye fixed upon that circular opening, now perfectly black against the dying light. What emerged was nothing any of them had prepared themselves to witness. They had expected a man—perhaps strange and foreign to Earth, but recognizably human in essence. What rose instead from that shadowed cavity defied such comfortable assumptions.</p>
@@ -566,9 +684,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_anime/chapter_5.webp" alt="Death Leaping From Man to Man illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">Death Leaping From Man to Man</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Death Leaping From Man to Man illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Death Leaping From Man to Man</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Standing knee-deep in heather, frozen between terror and fascination, the narrator found himself unable to retreat from the pit where the Martians had emerged, yet equally unable to approach it directly. Instead, he traced a wide arc across the common, his eyes fixed upon the sand-heaps that concealed Earth&#x27;s unwelcome visitors. Strange movements caught his attention—thin black appendages, whip-like and horrible, flashed momentarily across the fading sunset before withdrawing into the pit. A jointed rod ascended, bearing at its tip a wobbling circular disk that spun with peculiar purpose.</p>
 <p>The scattered spectators shared his paralysis of will. Groups had formed at various distances—one cluster toward Woking, another near Chobham—all watching, all waiting. A neighbour approached, though the narrator knew him only by proximity, not by name. The man could manage nothing beyond a repeated exclamation of disgust at the creatures&#x27; appearance. Conversation proved impossible; instead, they stood together in the diminishing light, drawing what small comfort they could from shared company before drifting apart.</p>
 <p>As twilight deepened and the pit remained still, courage began to reassert itself among the watchers. New arrivals from Woking swelled the crowds, and gradually, figures began advancing toward the cylinder—cautious vertical shapes moving in twos and threes, forming a thin crescent that threatened to encircle the excavation. The narrator too felt drawn forward.</p>
@@ -582,9 +705,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_anime/chapter_6.webp" alt="Panic and Death on the Common illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">Panic and Death on the Common</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="Panic and Death on the Common illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Panic and Death on the Common</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>What instrument of death the Martians wielded that night remains, even now, incompletely understood. The prevailing theory suggests they generate heat of extraordinary intensity within some chamber of near-perfect insulation, then project it outward in a concentrated beam by means of a polished parabolic mirror—much as a lighthouse casts its warning light across dark waters. Yet whether this explanation holds true in every particular, none can say with certainty. What is certain, what was demonstrated with terrible clarity upon the common, is that the beam is heat made lethal—invisible heat that ignites whatever is combustible, that turns lead to flowing liquid, softens iron, and shatters glass. When it touches water, the water explodes at once into steam.</p>
 <p>Beneath the cold indifference of the stars, nearly forty bodies lay scattered about the pit that night, charred beyond all hope of recognition. The common stretching from Horsell to Maybury burned bright and deserted through the long dark hours.</p>
 <p>Word of the massacre spread to Chobham, Woking, and Ottershaw at roughly the same hour. In Woking, the shops had already shuttered for the evening when catastrophe struck, and so it happened that shopkeepers and their customers, drawn by the curious tales circulating through town, set out walking toward Horsell Bridge and along the hedgerow-lined road that opens eventually onto the common. One might easily picture them—young people especially, freshened up after their day&#x27;s labor, seizing upon this strange novelty as pretext for an evening stroll and innocent flirtation. The murmur of their voices carried through the gathering dusk.</p>
@@ -598,9 +726,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_anime/chapter_7.webp" alt="Flight Through Terror and Disbelief illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">Flight Through Terror and Disbelief</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="Flight Through Terror and Disbelief illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Flight Through Terror and Disbelief</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The flight from the common passed in fragments—a blur of heather and trees, the terror of that invisible heat-sword swinging through the darkness, promising death with every arc. Memory failed where panic took hold, and consciousness returned only near the bridge by the gasworks, where exhaustion had finally claimed its due. There, collapsed by the wayside, the weight of flight gave way to something stranger still: a peculiar calm, as though the horror had been shed like a sodden garment.</p>
 <p>Rising unsteadily, the bridge seemed an impossible incline. The collar had burst from its fastener, the hat vanished somewhere in that desperate scramble across the heath. Yet the mind, only moments before consumed by the immensity of night and the certainty of annihilation, had shifted without warning into ordinary rhythms. The flames, the screaming, the pitiless Martian machinery—all of it receded into the texture of dream. Could such things have truly happened? The question hung unanswered as a workman passed with his basket and boy, offering a pleasant good night that received only a mumbled reply.</p>
 <p>The world beyond the bridge insisted upon its normalcy with maddening persistence. A train thundered south over the Maybury arch, windows blazing, smoke billowing white against the darkness. At Oriental Terrace, neighbours gathered at their gates in easy conversation. The gasworks hummed with business; the electric lamps burned steady and bright. All of it so achingly familiar, so utterly mundane—while not two miles distant, death flew swift and terrible across the common.</p>
@@ -612,9 +745,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_anime/chapter_8.webp" alt="Life Continues as the Poison Spreads illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Life Continues as the Poison Spreads</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Life Continues as the Poison Spreads illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Life Continues as the Poison Spreads</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The most remarkable aspect of that Friday—amid all its strange and terrible occurrences—was the peculiar way ordinary life continued to flow alongside the beginning of catastrophe. Had one drawn a circle of five miles around the Woking sand-pits, scarcely a soul beyond its circumference would have felt their emotions or habits disturbed by our visitors from Mars, save perhaps some relation of poor Stent or of those cyclists and Londoners whose bodies now lay cooling on the common. The cylinder had been spoken of, certainly, discussed over dinner tables and in idle moments, but it caused no greater stir than might a curious astronomical footnote. An ultimatum to Germany would have provoked far more excitement.</p>
 <p>In London, Henderson&#x27;s telegram—that desperate account of the cylinder unscrewing—was dismissed as fabrication. His paper wired back demanding confirmation, and when no reply came (the man being dead), they declined to print a special edition. The great metropolis slumbered on, oblivious.</p>
 <p>Even within that five-mile radius, the great mass of humanity remained curiously inert. People dined and supped as they always had. Working men tended their gardens in the evening cool. Children were tucked into bed while young lovers wandered the darkening lanes. Students bent over their books, and the rhythm of eating, drinking, sleeping, working continued as it had for countless generations—as though no planet Mars hung in the heavens at all.</p>
@@ -627,9 +765,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_anime/chapter_9.webp" alt="Calm Before the Martian Storm illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">Calm Before the Martian Storm</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="Calm Before the Martian Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Calm Before the Martian Storm</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Saturday dawned as a day suspended between the ordinary and the unthinkable—a peculiar morning of oppressive heat and restless waiting, when the world seemed to hold its breath even as it went through its familiar motions. I had scarcely slept, though my wife had managed some rest, and I found myself in the garden before breakfast, straining to hear any sound from the direction of the common. There was nothing but a solitary lark.</p>
 <p>The milkman arrived with his usual clatter, bringing news that troops had encircled the Martians overnight and that guns were being brought up. The sound of a train running towards Woking provided a strange comfort—that reassuring rhythm of normalcy persisting against the impossible. My neighbour appeared at his gardening, cheerfully optimistic that the military would sort out the invaders by day&#x27;s end. He offered me strawberries across the fence while mentioning that a second cylinder had fallen near the Byfleet Golf Links, setting the pine woods ablaze. He laughed about the insurance costs, then grew sombre remembering poor Ogilvy.</p>
 <p>I walked toward the common after breakfast, finding soldiers at the railway bridge—sappers in their dirty red jackets—who barred passage across the canal. None had seen the Martians themselves, and they peppered me with questions when I described what I had witnessed. They debated tactics with rough good humour: whether to rush the creatures, dig trenches, or shell them outright. One dark little man called them octopuses, joking about fishers of men become fighters of fish.</p>
@@ -643,9 +786,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_anime/chapter_10.webp" alt="Midnight Journey Through Fire and Lightning illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Midnight Journey Through Fire and Lightning</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="Midnight Journey Through Fire and Lightning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Midnight Journey Through Fire and Lightning</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The twelve miles between Maybury Hill and Leatherhead passed through countryside achingly beautiful in its innocence—lush meadows heavy with the scent of hay, hedgerows festooned with dog-roses in their summer glory. The thunder of artillery that had accompanied their departure fell silent as abruptly as it had begun, and by nine o&#x27;clock the narrator had delivered his wife safely to her cousins, commending her to their care while the horse rested and he took supper.</p>
 <p>Throughout their journey, his wife had remained curiously silent, burdened by some dark presentiment she could not articulate. He had tried to reassure her, speaking of how the Martians were surely trapped by their own immense weight, capable of little more than crawling from their pit. She answered only in monosyllables, and when they parted, her face was deathly white. Had it not been for his promise to return the innkeeper&#x27;s horse and cart, she would have begged him to stay. How he would come to wish he had.</p>
 <p>But a strange fever burned in his blood that night—something very like war-madness, that peculiar excitement that sometimes seizes civilized men when violence draws near. In his heart, he was not sorry to be returning to Maybury. He wanted, he would later confess, to be in at the death.</p>
@@ -660,9 +808,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_anime/chapter_11.webp" alt="A World Transformed by Fire illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">A World Transformed by Fire</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="A World Transformed by Fire illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">A World Transformed by Fire</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The storm of terror had passed through him, leaving behind only the cold awareness of wet clothes and pooling water on the stair carpet. He rose mechanically, seeking whisky in the dining room, then dry garments—the small rituals of a life that had ceased to exist mere hours before. Some instinct drew him upstairs to his study, though he could not say why. The window there faced Horsell Common, left open in the chaos of their departure, and what it framed stopped him cold in the doorway.</p>
 <p>The Oriental College had vanished. The pine trees that once surrounded it were gone. In their place, lit by a vivid red glare, the common about the sand-pits stretched before him like a vision from some industrial hell. Huge black shapes moved busily to and fro across the light—grotesque, strange, impossibly purposeful. The whole country seemed ablaze, a broad hillside studded with tongues of flame that swayed and writhed in the dying storm&#x27;s gusts, throwing crimson reflections upon the clouds above. Smoke drifted across his view, and through it came the sharp, resinous tang of burning.</p>
 <p>He crept toward the window, and the panorama of destruction widened before him. The houses about Woking station glowed as ruins. The charred pine woods of Byfleet stretched black and skeletal. Below, near the railway arch, a wrecked train lay smashed and burning, its rear carriages still clinging absurdly to the rails. Between these centres of devastation—houses, train, and the burning county toward Chobham—lay irregular patches of dark country broken by intervals of smoking ground. It reminded him of nothing so much as the Potteries at night, that black expanse set with fire.</p>
@@ -677,9 +830,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_anime/chapter_12.webp" alt="Fleeing Through a Shattered Landscape illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Fleeing Through a Shattered Landscape</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="Fleeing Through a Shattered Landscape illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Fleeing Through a Shattered Landscape</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As dawn crept pale across the sky, we withdrew from the window where we had kept watch upon those terrible machines through the long night, and descended in whispered conversation to plan our escape. The artilleryman and I were of one mind: the house offered no sanctuary, and we must flee while chance permitted. He meant to strike out for London and rejoin his battery—No. 12 of the Horse Artillery—whilst I burned with a single desperate purpose: to reach Leatherhead, collect my wife, and carry her to Newhaven, out of England entirely. For I had seen enough to know with dreadful certainty that the country about London must become a theatre of catastrophic struggle before such creatures could be destroyed.</p>
 <p>Yet between us and Leatherhead lay the third cylinder, guarded by those towering giants. The artilleryman dissuaded me from crossing that deadly ground alone. &quot;It&#x27;s no kindness to the right sort of wife to make her a widow,&quot; he said, and I could not argue against such plain wisdom. We agreed to travel together northward through the woods as far as Street Cobham before parting.</p>
 <p>My companion, having served in active campaigns, knew better than to flee empty-handed. He ransacked the house for provisions—filling a flask with whisky, lining our pockets with biscuits and cold meat—before we crept out into the strange stillness of that abandoned morning. Maybury Hill lay deserted beneath us, save for the grim evidence of flight and death: charred bodies huddled where the Heat-Ray had found them, scattered belongings dropped in terror, a horseless cart heeled over on a broken wheel with a smashed cash box thrown beneath the debris.</p>
@@ -693,9 +851,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_anime/chapter_13.webp" alt="Escape and Encounter Amid Devastation illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">Escape and Encounter Amid Devastation</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="Escape and Encounter Amid Devastation illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">Escape and Encounter Amid Devastation</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Martians had learned caution. After tasting the sting of terrestrial artillery—that sudden, violent lesson dealt by human weapons—they withdrew to their original position upon Horsell Common, burdened with the wreckage of their fallen comrade. In their haste, they overlooked countless insignificant creatures like the narrator, small and stray amid the chaos. Had they pressed forward immediately, nothing stood between them and London save batteries of twelve-pounder guns, and they might have descended upon the capital as suddenly and catastrophically as the earthquake that had levelled Lisbon a century before.</p>
 <p>Yet urgency did not govern them. Every twenty-four hours, another cylinder streaked through the heavens, bringing reinforcement upon reinforcement. Meanwhile, the military authorities—now fully awakened to the terrible power they faced—worked with desperate energy. Gun after gun rolled into position until every copse and suburban villa along the slopes of Kingston and Richmond concealed an expectant black muzzle. Across twenty square miles of charred desolation surrounding the Martian encampment, scouts crawled through ruined villages and smoking pine spinneys, carrying heliographs to signal the invaders&#x27; approach. But the Martians had grown wise to human proximity; not a man dared venture within a mile of their cylinders without forfeiting his life.</p>
 <p>Through that afternoon, the giants laboured, transferring materials from their secondary landing sites to the original pit on Horsell Common. One stood sentinel above the blackened heather while the others descended to work deep into the night, sending up a towering pillar of dense green smoke visible from hills miles distant.</p>
@@ -711,9 +874,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_anime/chapter_14.webp" alt="London&#x27;s Calm Before the Storm illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">London&#x27;s Calm Before the Storm</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="London&#x27;s Calm Before the Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">London&#x27;s Calm Before the Storm</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>While the narrator fled through the burning countryside toward Leatherhead, his younger brother remained in London, consumed by the ordinary urgencies of a medical student preparing for examinations. The news of the Martian arrival reached him only on Saturday morning, filtered through the cautious language of telegraph dispatches and the comfortable speculation of newspaper leader-writers. The morning papers spoke of Martians trapped in their pit, presumably helpless against Earth&#x27;s stronger gravity—a reassuring assessment that allowed the biology students in his cramming class to discuss the matter with detached fascination rather than genuine alarm.</p>
 <p>Throughout that day, London carried on with its customary indifference to provincial catastrophe. The afternoon papers offered scraps of information beneath sensational headlines, reporting troop movements and burning pine woods, but nothing to suggest the true nature of what was unfolding in Surrey. When telegraphic communication ceased, the explanation offered was mundane: fallen trees across the lines. The brother, confident that the cylinder lay a safe two miles from his sibling&#x27;s house, dispatched a telegram that would never arrive and spent his evening at a music hall.</p>
 <p>At Waterloo station that night, he discovered only that some unspecified accident prevented trains from reaching Woking. The railway officials, understanding nothing of what had actually occurred, busied themselves rerouting theatre trains and Sunday excursions. A reporter mistook him for the traffic manager; few connected the service disruption with the creatures from Mars.</p>
@@ -726,9 +894,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_anime/chapter_15.webp" alt="The Martians Resume Their Deadly Advance illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">The Martians Resume Their Deadly Advance</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="The Martians Resume Their Deadly Advance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">The Martians Resume Their Deadly Advance</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>While the curate had babbled his frantic nonsense beneath the hedge near Halliford, and while the narrator&#x27;s brother had stood watching the desperate tide of humanity surge across Westminster Bridge, the Martians had stirred once more to terrible purpose. The greater part of them remained occupied within the Horsell pit until nine that evening, labouring upon some dread operation that sent vast billows of green smoke churning into the darkening sky. But three of their number emerged at eight o&#x27;clock, advancing with slow and deliberate menace through Byfleet and Pyrford toward Ripley and Weybridge, until at last they stood silhouetted against the dying sun, facing the waiting batteries.</p>
 <p>These three did not move as one body but spread themselves in a line, each separated from its fellows by perhaps a mile and a half, communicating through eerie, sirenlike howls that rose and fell across the scale. The Ripley gunners—untested artillery volunteers who ought never to have been trusted with such a position—fired a single wild and ineffectual volley before fleeing in panic through the empty village. The Martian strode serenely over their abandoned guns without deigning to employ his Heat-Ray.</p>
 <p>Yet the men at St. George&#x27;s Hill proved of sterner mettle. Concealed within a pine wood, they laid their guns with parade-ground precision and fired at a thousand yards. The shells burst around their target, and the great machine staggered and fell. But triumph proved fleeting—a second giant appeared above the trees, and both companions brought their Heat-Rays to bear upon the battery. The ammunition exploded, the pines erupted into flame, and scarcely a man escaped alive.</p>
@@ -739,9 +912,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_anime/chapter_16.webp" alt="London&#x27;s Collapse Into Chaos illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">London&#x27;s Collapse Into Chaos</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="London&#x27;s Collapse Into Chaos illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">London&#x27;s Collapse Into Chaos</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As Monday&#x27;s pale light crept over the greatest city in the world, terror swept through London like a roaring wave, rising swiftly into a torrent of humanity that lashed and foamed around the railway stations in a frenzy of desperate escape. By ten o&#x27;clock, the police had lost all semblance of order; by midday, even the railways themselves had begun to dissolve, softening and guttering away like candle wax in that swift liquefaction of civilized society.</p>
 <p>The scenes at the stations defied comprehension. At three in the morning, people were already being trampled in Bishopsgate Street, hundreds of yards from Liverpool Street station itself. Revolvers cracked in the darkness, knives flashed, and the very policemen sent to protect the fleeing masses found themselves breaking heads in exhausted fury. When engine drivers and stokers refused to return to the doomed city, the pressure of flight drove the multitudes away from the platforms and onto the northward roads in ever-thickening streams. A Martian had been spotted at Barnes, and that terrible black vapour crept along the Thames, cutting off all escape over the bridges.</p>
 <p>It was amid this chaos that my brother emerged from a fruitless struggle at Chalk Farm, where locomotives had ploughed through shrieking crowds and a dozen strong men fought to keep desperate masses from crushing the driver against his own furnace. Fortune favoured him briefly—he managed to be first into a cycle shop during its frantic looting, escaping with nothing worse than a punctured tire and a cut wrist. He struck out through Belsize Road, skirting the worst of the panic, and reached Edgware by seven o&#x27;clock, exhausted and hungry but ahead of the flood.</p>
@@ -754,9 +932,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_anime/chapter_17.webp" alt="Humanity&#x27;s Desperate Flight to the Sea illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">Humanity&#x27;s Desperate Flight to the Sea</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="Humanity&#x27;s Desperate Flight to the Sea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Humanity&#x27;s Desperate Flight to the Sea</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Had the Martians wished only destruction, they might have obliterated London entire that Monday—six million souls streaming outward through every road and lane like black ink spreading across blotting paper. From his brother&#x27;s account, the narrator paints a vision of exodus unprecedented in human memory: the legendary hordes of Goths and Huns would have been but a drop in this current of desperate humanity. This was no disciplined march but a stampede, gigantic and terrible, without order and without goal—the beginning of civilisation&#x27;s rout, the massacre of mankind.</p>
 <p>The Martians moved methodically through the southern hills, spreading their poison clouds, cutting telegraphs, wrecking railways. They were hamstringing mankind, content not with extermination but with complete demoralisation. The Pool of London became a scene of mad confusion—fugitives fighting for passage on steamers, some thrust off with boathooks to drown, boats jamming beneath Tower Bridge while desperate souls clambered down its very piers. When a Martian waded down the river an hour later, nothing but wreckage floated above Limehouse.</p>
 <p>Through Tuesday and into Wednesday, the narrator&#x27;s brother pressed eastward with Mrs. Elphinstone and her sister-in-law, the three fugitives hearing rumours of Martians at Epping, of the government gathering at Birmingham, of bread distributions that never materialised. Stars continued falling—the sixth at Wimbledon, the seventh upon Primrose Hill, witnessed by Miss Elphinstone herself. At Chelmsford, a Committee of Public Supply seized their pony for provisions, offering nothing but promises in return.</p>
@@ -768,9 +951,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_anime/chapter_18.webp" alt="Trapped by Smoke, Freed to Flee illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">Trapped by Smoke, Freed to Flee</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Trapped by Smoke, Freed to Flee illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Trapped by Smoke, Freed to Flee</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The narrator resumes his account from the empty house at Halliford, where he and the curate have been trapped since fleeing the Black Smoke. For two agonizing days—Sunday night and the day of the panic—they remain marooned in their small island of daylight, cut off from the rest of the world by that deadly vapour. The narrator&#x27;s thoughts turn ceaselessly to his wife at Leatherhead, and he tortures himself imagining her terror, her grief, perhaps already mourning him as dead. The curate&#x27;s constant whimpering and selfish despair grate upon his nerves until he retreats to a children&#x27;s schoolroom, then to a locked box room, seeking solitude for his aching miseries.</p>
 <p>By Monday, a Martian strides across the fields, laying waste to the Black Smoke with jets of superheated steam that shatter windows and scald the curate&#x27;s hand. When the two men finally peer outside, they behold a landscape transformed—blackened as if by some infernal snowstorm, with an unaccountable redness mingling with the scorched meadows near the river. The way of escape lies open at last, and the narrator resolves to press on toward Leatherhead, gathering supplies and preparing to leave the curate behind if necessary. In the end, the curate rouses himself to follow.</p>
 <p>Their journey through the devastated countryside proves harrowing. Dead bodies lie contorted in the roads, horses and men alike buried beneath that pall of cindery powder that recalls the destruction of Pompeii. They pass through Hampton Court, Bushey Park, Twickenham, and Richmond, encountering scattered survivors too frightened to speak and evidence everywhere of hasty flight. Near Kew, terror seizes them as a Martian fighting-machine looms overhead, and they watch in frozen horror as the towering thing pursues fleeing figures across a meadow—not destroying them with its Heat-Ray, but gathering them up and tossing them into a great metallic carrier. For the first time, the narrator comprehends that the Martians may have some purpose beyond mere destruction.</p>
@@ -780,9 +968,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_anime/chapter_19.webp" alt="Martians Revealed at the Pit&#x27;s Edge illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">Martians Revealed at the Pit&#x27;s Edge</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="Martians Revealed at the Pit&#x27;s Edge illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">Martians Revealed at the Pit&#x27;s Edge</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>From the wreckage of that buried scullery, with broken crockery crunching beneath every cautious movement, the narrator pieced together a vision of invasion such as no human eye had yet witnessed so intimately—nor perhaps ever wished to.</p>
 <p>The curate had stolen to the aperture first, shoulders hunched against the triangular gap in the debris, while that maddening rhythmic thud persisted like the heartbeat of some colossal engine. When touched, the man started with such violence that plaster cascaded outward, and both men froze in the terrible certainty that discovery meant death. Yet fortune held, and through the widened gap they beheld a transformation beyond reckoning. The fifth cylinder had obliterated the neighbouring house utterly—not merely destroyed it but *pulverised* it, the earth having splashed like mud beneath a hammer&#x27;s blow. Their own refuge hung now at the very lip of an immense circular excavation, with tons of soil sealing every escape save that awful view toward the pit itself.</p>
 <p>There, amid the chaos, worked a mechanism of such fluid perfection that the narrator&#x27;s mind at first refused to recognise it as machine at all. The handling-machine—a metallic spider-thing bristling with jointed tentacles—moved with living grace as it extracted components from the opened cylinder, depositing them with swift deliberation upon the churned earth. Artists would later attempt to capture these devices in pamphlets and illustrations, producing only stiff caricatures no more resembling the reality than a Dutch doll resembles breathing flesh.</p>
@@ -795,9 +988,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_anime/chapter_20.webp" alt="Trapped with Madness and Martians illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">Trapped with Madness and Martians</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="Trapped with Madness and Martians illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">Trapped with Madness and Martians</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Trapped within the ruins of a shattered house, the narrator and the curate existed in a state of perpetual terror, their refuge lying perilously close to the Martians&#x27; pit. The arrival of a second fighting-machine drove them deeper into hiding, for they feared those alien eyes might peer down and discover them cowering behind their makeshift barrier. Only later did they reason that to creatures standing in brilliant sunlight, their shadowed sanctuary would appear as impenetrable darkness. Yet this knowledge came slowly, and in those first dreadful hours, the merest suggestion of Martian approach sent them scrambling into the scullery, hearts pounding against their ribs.</p>
 <p>Strange it was, and the narrator recalls it now with a kind of wonder, that despite the twin horrors of starvation and a far more terrible death, both men found the temptation to peer through that gap in the rubble utterly irresistible. They would race across the kitchen in grotesque fashion, torn between desperate eagerness and the fear of making any sound, striking and kicking at one another for that horrible privilege of sight.</p>
 <p>The simple truth was that these two men possessed utterly incompatible dispositions. Confined together in darkness and danger, their differences grew monstrous. The narrator had already come to despise the curate&#x27;s helpless exclamations at Halliford, his stubborn rigidity of thought. Now the man&#x27;s endless muttering monologue poisoned every attempt at reasoned planning, driving his companion nearly to madness. The curate wept for hours without ceasing, apparently believing his weak tears might somehow prove efficacious. He ate and drank impulsively, taking heavy meals at irregular intervals while their meager supplies dwindled. When the narrator pointed out that their only hope lay in patient waiting until the Martians departed, his words fell on deaf ears. At last, loathing the necessity, he resorted to threats and then to blows to bring the man to reason.</p>
@@ -808,9 +1006,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_anime/chapter_21.webp" alt="Madness, Violence, and Martian Discovery illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">Madness, Violence, and Martian Discovery</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="Madness, Violence, and Martian Discovery illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">Madness, Violence, and Martian Discovery</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On the sixth day of their entombment within the ruined house, the fragile alliance between the narrator and the curate shattered entirely. What had been an uneasy coexistence gave way to open warfare when the narrator discovered his companion drinking in the scullery—guzzling their precious stores without thought for tomorrow. A brief, desperate struggle ensued in the darkness, ending with a bottle of burgundy smashed upon the floor and two men standing breathless, ready to tear each other apart.</p>
 <p>The narrator, recognizing that survival demanded discipline where instinct craved indulgence, positioned himself as guardian of their remaining provisions. He divided what food remained into rations calculated to sustain them for ten days, refusing to permit the curate another morsel until the following morning. What followed was a nightmarish vigil—the narrator sitting resolute and exhausted while the curate wept and pleaded and clawed at his own hunger. Hours stretched into what felt like eternities.</p>
 <p>For two days more they grappled in the darkness, their conflict conducted in undertones lest they draw the attention of the Martians outside. The narrator tried everything within his power—violence, persuasion, even bribery with the last bottle of burgundy—but nothing could penetrate the fog that had descended upon the curate&#x27;s mind. Slowly, terribly, the narrator came to understand that his companion had crossed beyond the threshold of reason into complete madness. The man who had once been a clergyman was now merely a creature of appetite and terror, incapable of the most basic precautions that might preserve their lives.</p>
@@ -823,9 +1026,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_anime/chapter_22.webp" alt="Emergence from the Martian Pit illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">Emergence from the Martian Pit</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_22.webp"><img class="chapter-image" src="images_anime/chapter_22.webp" alt="Emergence from the Martian Pit illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">Emergence from the Martian Pit</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For three days, he existed in a state of wretched suspension between life and death, entombed in the darkness of the scullery while his body slowly consumed itself. The pantry yielded nothing—the Martians had stripped it bare the previous day—and this discovery shattered what little hope remained. On the eleventh and twelfth days, he took neither food nor water, sitting in the black silence as his strength drained away and his thoughts circled endlessly around the single, maddening subject of eating.</p>
 <p>The silence itself became its own torment. The mechanical sounds from the pit—those terrible, industrious noises he had grown grimly accustomed to—had ceased entirely. He wondered if perhaps his senses were failing him, if deafness had crept upon him like another symptom of his slow decay. He lacked even the strength to crawl to the peephole and confirm what his ears told him.</p>
 <p>By the twelfth day, thirst overcame caution. His throat burned so fiercely that he risked the creaking protest of the rain-water pump, drawing up two glasses of foul, blackened water. The liquid revived him somewhat, and when no questing tentacle came to investigate the noise, a fragile boldness took root. Through the haze of his suffering, memories of the curate surfaced unbidden—the manner of his death, the horror of what had followed—mingling with fevered dreams of impossible feasts and desperate escapes. The grey light filtering into his prison had transformed, taking on a red cast that his disordered mind read as the colour of blood itself.</p>
@@ -836,9 +1044,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_anime/chapter_23.webp" alt="Dethronement Among the Red Weed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">Dethronement Among the Red Weed</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_23.webp"><img class="chapter-image" src="images_anime/chapter_23.webp" alt="Dethronement Among the Red Weed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">Dethronement Among the Red Weed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Emerging from that fetid refuge where I had cowered with thoughts bent only upon immediate survival, I found myself standing upon a mound, my legs unsteady beneath me, my mind wholly unprepared for the vision that awaited. I had anticipated ruin—the familiar made desolate—but what greeted my eyes was no earthly scene. It was as though I had stepped forth onto the surface of another world entirely.</p>
 <p>In that moment, I experienced a terror that transcended the ordinary fears of men, yet which the beasts we have so long dominated must know intimately. I felt precisely as a rabbit might feel, returning to its burrow only to discover a gang of navvies tearing up the earth for new foundations. A cold understanding crept over me then—a sense of dethronement so profound it would shadow my thoughts for many days hence. I was no longer master of this world. I had become merely an animal among animals, cowering beneath the Martian heel. To lurk, to watch, to flee and hide—this was now the lot of humanity. The empire of man had passed away.</p>
 <p>Yet such philosophic terror cannot long sustain itself against baser needs. The strangeness of my situation faded as swiftly as it had struck, supplanted by the ravening hunger of my long imprisonment. I spied, beyond a wall choked with red growth, a patch of garden yet unburied, and toward this I made my desperate way. The crimson weed rose knee-deep about me, sometimes to my very neck, yet its density afforded a curious comfort—a sense of concealment from whatever eyes might search for prey. I secured what poor vegetables I could find—young onions, gladiolus bulbs, carrots scarcely formed—and pressed on through that scarlet forest toward Kew. The trees themselves had been transformed, draped in creeping crimson, so that walking among them was like passing through an avenue of monstrous blood drops.</p>
@@ -849,9 +1062,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_anime/chapter_24.webp" alt="Refuge, Reflection, and Restless Dawn illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">Refuge, Reflection, and Restless Dawn</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_24.webp"><img class="chapter-image" src="images_anime/chapter_24.webp" alt="Refuge, Reflection, and Restless Dawn illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Refuge, Reflection, and Restless Dawn</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>After emerging from his entombment, the narrator spent his first night of proper rest in a deserted inn atop Putney Hill—though not without struggle. He broke in through unnecessary effort, ransacked every room for food, and found only a rat-gnawed crust, two tins of pineapple, and some stale biscuits to fill his empty pockets and emptier stomach. He lit no lamps, fearing the Martians might come hunting through the darkness, and sleep came fitfully, if at all.</p>
 <p>Yet in that restless night, his mind grew clear for the first time since those terrible days with the curate. Three matters wrestled for dominion over his thoughts: the killing of the curate, the whereabouts of the Martians, and the fate of his wife. The first stirred no horror in him, no remorse—only the cold acknowledgment of a thing done, an inevitable consequence of circumstances beyond any man&#x27;s control. He stood his own trial there in the silence, retracing every step of their doomed companionship, and set it all down honestly, leaving judgment to the reader. But when his thoughts turned to his wife, the night became terrible indeed. He found himself praying—truly praying, not the desperate mutterings of a man in extremity, but the steady pleading of one face to face with the darkness of God—praying that the Heat-Ray might have taken her swiftly, painlessly. Strange night! And stranger still that by morning he crept from the house like a rat, a creature beneath notice, scurrying beneath the dominion of new masters.</p>
 <p>The morning brought brightness, pink skies, golden clouds—and the scattered wreckage of human flight: an abandoned cart, a trampled hat, bloodstained glass about an overturned trough. With vague plans of reaching Leatherhead, the narrator wandered toward Wimbledon Common, where yellow gorse bloomed and little frogs swarmed in a swampy hollow, their determination to live offering him an unexpected lesson. Then, sensing eyes upon him, he turned to find a man crouching in the bushes—filthy, armed with a cutlass, and hauntingly familiar.</p>
@@ -862,9 +1080,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
 <section class="chapter" id="chapter-25" data-num="25">
-    <img class="chapter-image" src="images_anime/chapter_25.webp" alt="The Eerie Silence and Alien Wailing illustration" loading="lazy">
-    <div class="chapter-number">Chapter 25</div>
-    <h2 class="chapter-title">The Eerie Silence and Alien Wailing</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_25.webp"><img class="chapter-image" src="images_anime/chapter_25.webp" alt="The Eerie Silence and Alien Wailing illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">The Eerie Silence and Alien Wailing</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>After parting from the artilleryman, I descended the hill and made my way through Fulham, crossing a bridge half-strangled by the red weed—though even then its fronds showed patches of white where disease was claiming it. The journey revealed London in stages of ruin: a man blackened by dust, too drunk to speak, sprawled at a corner; bodies softened beneath blankets of black powder; a woman dead on a doorstep, her hand gashed, a shattered champagne bottle pooling beside her rusty dress.</p>
 <p>The deeper I pressed into the city, the more profound the stillness became—not the stillness of death alone, but of suspense, of a metropolis condemned and waiting for annihilation to sweep through its remaining streets. In South Kensington, the silence gave way to something else entirely: a wailing that crept upon my senses, a sobbing alternation of two notes rising and falling without end. *Ulla, ulla, ulla, ulla*—as though that mighty desert of houses had found a voice for its fear and solitude.</p>
 <p>The cry drew me northward through empty mansions toward Hyde Park, past an overturned bus and the picked-clean skeleton of a horse. The desolating sound worked upon my mind until the resolve that had sustained me crumbled. I grew weary, footsore, desperately thirsty. Why was I wandering alone through this city lying in state beneath its black shroud? I thought of poisons in chemists&#x27; shops, of the sodden wretches I had passed. At Oxford Street I broke into a public house, ate, drank, and collapsed upon a horsehair sofa.</p>
@@ -877,9 +1100,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
 <section class="chapter" id="chapter-26" data-num="26">
-    <img class="chapter-image" src="images_anime/chapter_26.webp" alt="The World Revives in Ruin illustration" loading="lazy">
-    <div class="chapter-number">Chapter 26</div>
-    <h2 class="chapter-title">The World Revives in Ruin</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_26.webp"><img class="chapter-image" src="images_anime/chapter_26.webp" alt="The World Revives in Ruin illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">The World Revives in Ruin</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>And so he returned—not as a hero, not as a conqueror, but as a wanderer whose mind had shattered beneath the weight of deliverance.</p>
 <p>The narrator recalls with strange clarity the moment he stood upon Primrose Hill, weeping and praising God at the sight of the fallen Martians. But then memory fails him utterly. Three days vanish into darkness, swallowed by a madness he cannot account for. He learns afterward that he was not the first to discover the Martian overthrow—another man had already reached St. Martin&#x27;s-le-Grand and telegraphed the joyful news to Paris. From there it had flashed across the world like wildfire, and a thousand cities that had cowered in ghastly apprehension erupted into frantic illumination. Church bells that had been silent for a fortnight pealed across England. Men on bicycles tore down country lanes, shouting deliverance to gaunt figures who had abandoned all hope. Ships laden with corn and bread and meat churned toward London from across the Channel, across the Irish Sea, across the Atlantic itself.</p>
 <p>But of this great rejoicing, the narrator remembers nothing. He had become a demented creature, wandering the streets of St. John&#x27;s Wood, weeping and raving, singing mad doggerel about being the last man left alive. Kind strangers—whose names he cannot share, though gratitude compels him to acknowledge them—took him in, sheltered him, and protected him from himself. When his mind returned, they broke to him gently what they had learned: Leatherhead had been destroyed two days after his imprisonment in the ruined house. A Martian had swept it out of existence without provocation, as a boy might crush an anthill in mere wantonness of power. Every soul within had perished.</p>
@@ -892,9 +1120,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
 <section class="chapter" id="chapter-27" data-num="27">
-    <img class="chapter-image" src="images_anime/chapter_27.webp" alt="Humanity&#x27;s Uncertain Future Among the Stars illustration" loading="lazy">
-    <div class="chapter-number">Chapter 27</div>
-    <h2 class="chapter-title">Humanity&#x27;s Uncertain Future Among the Stars</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_27.webp"><img class="chapter-image" src="images_anime/chapter_27.webp" alt="Humanity&#x27;s Uncertain Future Among the Stars illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">Humanity&#x27;s Uncertain Future Among the Stars</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As I bring this account to its close, I find myself contending with the peculiar frustration of unanswered questions—mysteries that shall perhaps vex philosophers and men of science for generations hence. I am no physiologist, merely a speculator in matters of abstract thought, yet I have accepted Carver&#x27;s hypothesis regarding the Martians&#x27; swift demise as near enough to proven fact. The invaders, it would seem, fell not to our cannons or our courage, but to the humblest of Earth&#x27;s inhabitants: bacteria, those microscopic agents of decay against which their Martian constitutions possessed no defence. That no foreign organisms were discovered within their examined corpses, that they left their dead unburied with apparent indifference to putrefaction—these observations lend weight to the conclusion, though certainty eludes us still.</p>
 <p>Much remains shrouded in ignorance. The composition of the Black Smoke, that suffocating instrument of massacre, defies complete analysis, though spectral examination hints at some unknown element mingling with argon to poison human blood. The Heat-Ray&#x27;s mechanism continues to baffle our finest minds, particularly after the catastrophic accidents at Ealing and South Kensington discouraged further inquiry. The brown scum that choked the Thames went unexamined, and now no samples survive.</p>
 <p>Yet these scientific puzzles pale beside the graver question that haunts my waking hours: shall they come again? Mars approaches opposition with each turning year, and I, for one, watch the heavens with mounting apprehension. We ought to prepare—to locate their launching positions, to destroy their cylinders before the creatures within can emerge, to stand ready with artillery and dynamite. They have squandered the advantage of surprise; perhaps they recognise this themselves.</p>
@@ -1037,6 +1270,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

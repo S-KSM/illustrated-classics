@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_anime/chapter_1.webp" alt="Curiosity Plunges Into the Unknown illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">Curiosity Plunges Into the Unknown</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="Curiosity Plunges Into the Unknown illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Curiosity Plunges Into the Unknown</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Alice was, it must be said, thoroughly and completely bored—the sort of boredom that settles upon a child on a hot afternoon like a particularly oppressive blanket. There she sat beside her sister on the riverbank, with nothing whatsoever to do, for the book her sister was reading contained neither pictures nor conversations, and what, Alice quite reasonably wondered, was the use of *that*? She was contemplating, in that drowsy half-hearted way one does when the summer heat makes thinking feel like wading through treacle, whether a daisy-chain might be worth the tremendous effort of standing up, when a White Rabbit with pink eyes came scurrying past.</p>
 <p>Now, a talking rabbit—for it was muttering rather anxiously about being late—did not strike Alice as particularly remarkable, though she would reflect afterwards that perhaps it ought to have done. But when the creature produced a watch from its waistcoat-pocket (for it wore a waistcoat, you see, which is not at all the usual thing for rabbits), Alice&#x27;s curiosity blazed up like a struck match, and she was on her feet and running before she had time to consider anything so dull as consequences. Down the rabbit-hole she tumbled after it, never once pausing to wonder how she might get out again.</p>
 <p>Down, down, down she fell—so slowly, or perhaps so deeply, that she had ample time to observe the curious furnishings of the well: cupboards and bookshelves lining the walls, maps and pictures hung upon pegs. She plucked an empty marmalade jar from a shelf as she passed and, being a considerate child who did not wish to brain anyone below, tucked it neatly into a cupboard further down. Her mind wandered pleasantly through calculations of miles fallen and half-remembered geography lessons—she was rather proud of knowing the earth&#x27;s centre was four thousand miles down, even if she hadn&#x27;t the faintest notion what Latitude or Longitude actually meant, except that they were wonderfully grand words. She amused herself imagining she might fall straight through to the Antipathies (she was privately relieved no one was listening to that particular muddle), and whether one ought to curtsey while plummeting through the air, and whether her cat Dinah would miss her, and whether cats ate bats or bats ate cats—until, growing quite drowsy with all this tumbling and wondering, she drifted into dreams, and *thump!* landed upon a heap of sticks and leaves.</p>
@@ -522,9 +625,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_anime/chapter_2.webp" alt="Growing and Shrinking Through Salty Tears illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">Growing and Shrinking Through Salty Tears</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="Growing and Shrinking Through Salty Tears illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">Growing and Shrinking Through Salty Tears</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>&quot;Curiouser and curiouser!&quot; cried Alice—and indeed, things were becoming precisely that, for she found herself shooting upward like the most extraordinary telescope imaginable, her poor feet receding to such alarming distances that she began to wonder who on earth would be responsible for putting on their shoes and stockings now. She resolved, in her characteristically practical way, to send them boots by carrier every Christmas, even going so far as to imagine the address: *Alice&#x27;s Right Foot, Esq., Hearthrug, near the Fender*—though she did acknowledge, upon reflection, that this was perhaps the most tremendous nonsense she had ever spoken.</p>
 <p>Her growth proved decidedly inconvenient, for when she had stretched to more than nine feet tall and seized the little golden key at last, the garden door—that tantalizing portal to the lovely garden—became more hopelessly out of reach than ever. Poor Alice could do nothing but lie upon her side and peer through with a single wistful eye, whereupon she sat down and commenced crying with such enthusiasm that her tears collected into a respectable pool some four inches deep.</p>
 <p>The White Rabbit&#x27;s return offered a glimmer of hope. He came trotting past in splendid attire, clutching white kid gloves and a fan while muttering anxiously about keeping the Duchess waiting. But when Alice ventured to address him—quite timidly, for she was feeling rather desperate—the creature startled violently, dropped his belongings, and skurried away into the darkness. Left with the abandoned fan and gloves, Alice fell into philosophical contemplation of her predicament. Had she been changed in the night? Was she still Alice, or had she perhaps become Mabel, or Ada, or someone else entirely? She attempted to verify her identity through multiplication tables and geography, but four times five came out twelve, London had somehow become the capital of Paris, and when she tried to recite &quot;*How doth the little*—&quot; the familiar verses transformed into something altogether peculiar about a crocodile with gently smiling jaws.</p>
@@ -535,9 +643,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_anime/chapter_3.webp" alt="Everybody Wins and All Get Prizes illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">Everybody Wins and All Get Prizes</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="Everybody Wins and All Get Prizes illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">Everybody Wins and All Get Prizes</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>What a bedraggled assembly it was that gathered upon the bank—birds with feathers drooping in sorry tangles, animals with fur plastered flat against their shivering bodies, and every creature among them dripping wet, thoroughly cross, and altogether uncomfortable. The question of how to get dry again naturally presented itself as the most pressing matter at hand, and after a brief consultation, Alice found herself chattering away with these peculiar strangers as though they had been lifelong acquaintances. She fell into quite a spirited dispute with the Lory, who grew sulky and retreated into that familiar refuge of those losing arguments: &quot;I am older than you, and must know better.&quot; Alice, being a sensible child, refused to accept this without proof of the Lory&#x27;s age, and as the Lory would not divulge it, the matter reached an impasse.</p>
 <p>The Mouse, who carried itself with an air of authority, commanded everyone to sit and listen, promising to make them dry enough. With great ceremony, it launched into the driest thing it knew—a passage of English history concerning William the Conqueror, earls and archbishops, conquest and submission. The recitation proved dry in entirely the wrong sense, for when Alice reported herself still as wet as ever, the Dodo rose solemnly to propose &quot;more energetic remedies.&quot; The Eaglet demanded plain English, and the Dodo obliged by suggesting a Caucus-race.</p>
 <p>Now, a Caucus-race, as the Dodo explained by demonstration, required neither a proper course nor a proper start nor a proper finish. Everyone simply ran about in a rough circle, beginning and stopping as they pleased, until the Dodo declared it over. When the inevitable question arose—&quot;But who has won?&quot;—the Dodo sat thinking in the posture one usually sees Shakespeare assume in portraits, finger pressed thoughtfully to forehead, before pronouncing that *everybody* had won and all must have prizes.</p>
@@ -549,9 +662,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_anime/chapter_4.webp" alt="Too Large for the Rabbit&#x27;s House illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">Too Large for the Rabbit&#x27;s House</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="Too Large for the Rabbit&#x27;s House illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Too Large for the Rabbit&#x27;s House</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It was the White Rabbit once more, trotting along in that anxious, fretful manner of his, muttering about the Duchess and executions and his precious fur and whiskers—all in a terrible state, you see, over a missing fan and pair of gloves. Alice, being a good-natured sort of child (though perhaps a rather curious one), set about hunting for these lost articles, only to discover that everything had changed since her swim in the pool of tears: the great hall, the glass table, the tantalizing little door—all vanished completely.</p>
 <p>But the Rabbit, upon noticing Alice, mistook her at once for his housemaid Mary Ann and sent her scurrying off to fetch his things from home. And Alice—though she knew perfectly well she was *not* Mary Ann—found herself running obediently toward a neat little house with &quot;W. RABBIT&quot; engraved upon a bright brass plate, wondering all the while how queer it was to be running errands for a rabbit. She supposed Dinah the cat might start ordering her about next, though she rather doubted the household would tolerate such behavior from a cat.</p>
 <p>Inside the Rabbit&#x27;s tidy room, Alice discovered the fan and gloves easily enough, but her eye fell upon a little bottle near the looking-glass—no &quot;DRINK ME&quot; label this time, but Alice had learned by now that eating or drinking *anything* in this place produced interesting results. She hoped it might make her grow large again, for she was quite tired of being such a tiny little thing.</p>
@@ -563,9 +681,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_anime/chapter_5.webp" alt="Questions of Size and Self illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">Questions of Size and Self</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Questions of Size and Self illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Questions of Size and Self</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Upon a mushroom sat a Caterpillar, languidly smoking a hookah, and for some considerable time it and Alice simply regarded one another in silence—the sort of silence that feels rather *pointed*, if you know what that means, and Alice was beginning to suspect she did not. At last the creature deigned to remove the hookah from its mouth and addressed her with a question that was, by any measure, not an encouraging opening for a conversation: &quot;Who are *you?*&quot;</p>
 <p>Now, this ought to have been the simplest question in the world, and yet poor Alice found herself quite unable to answer it properly. She hardly knew who she *was* just at present, for she had been so many different sizes since morning that her very identity seemed to have got muddled somewhere along the way. The Caterpillar, for its part, proved singularly unhelpful—contradicting everything Alice said in the most *vexing* short remarks, insisting it saw nothing confusing about changing sizes (though Alice rather thought it might feel differently when it became a chrysalis and then a butterfly, as caterpillars do), and repeatedly circling back to that impossible question of who she was, until Alice grew quite irritated and demanded to know who *it* was instead. &quot;Why?&quot; said the Caterpillar, and Alice could think of no good reason at all.</p>
 <p>When Alice turned to leave, the Caterpillar called her back with promises of something important—which turned out to be nothing more than &quot;Keep your temper,&quot; though eventually it did ask her to recite &quot;You are old, Father William.&quot; Alice folded her hands and began, but the poem came out *all wrong*, transforming into a delightfully absurd exchange between a young man and his eccentric father, who stood on his head, turned back-somersaults, devoured geese bones and all, and balanced eels on his nose—all thanks to having no brain, special ointment, a legally-strengthened jaw, and sheer irritability. The Caterpillar declared it wrong from beginning to end, which Alice could not entirely dispute.</p>
@@ -575,9 +698,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_anime/chapter_6.webp" alt="Chaos, Cheshire Grins, and Flying Crockery illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">Chaos, Cheshire Grins, and Flying Crockery</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="Chaos, Cheshire Grins, and Flying Crockery illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Chaos, Cheshire Grins, and Flying Crockery</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For a minute or two Alice stood contemplating the house before her, wondering what on earth to do next, when suddenly a footman in livery came running out of the wood—and she considered him to be a footman because he was in livery, for otherwise, judging by his face only, she would have called him a fish. He rapped loudly at the door, which was opened by another footman, this one with a round face and large eyes like a frog, and both footmen, Alice noticed, had powdered hair that curled all over their heads in the most ridiculous fashion. The Fish-Footman produced a great letter, nearly as large as himself, announcing an invitation from the Queen for the Duchess to play croquet, and when they both bowed low their curls got entangled together—which made Alice laugh so violently she had to run back into the wood for fear of being heard.</p>
 <p>When Alice approached the door herself, the Frog-Footman proved spectacularly unhelpful, explaining with maddening logic that there was no use in knocking when they were both on the same side of the door, and besides, the noise within was far too tremendous for anyone to hear. And certainly there *was* a most extraordinary racket—howling and sneezing and the crash of breaking dishes—but the Footman merely announced he would sit there till tomorrow, or perhaps the next day, even as a large plate came skimming out and grazed his nose. Alice, quite desperate, finally declared him perfectly idiotic and let herself in.</p>
 <p>The door led into a kitchen full of smoke and pepper, where the Duchess sat nursing a baby while a cook stirred a cauldron of soup and threw everything within reach at them both—fire-irons, saucepans, plates, and dishes. The Duchess took no notice even when they hit her, and when Alice cried out in terror for the baby&#x27;s precious nose, the Duchess merely growled that if everybody minded their own business, the world would go round a deal faster. Alice attempted to show off her knowledge about the earth&#x27;s rotation, but the Duchess, mishearing &quot;axis&quot; as &quot;axes,&quot; called for Alice&#x27;s head to be chopped off—though fortunately the cook was too busy with her soup to oblige.</p>
@@ -588,9 +716,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_anime/chapter_7.webp" alt="Riddles, Rudeness, and Endless Tea illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">Riddles, Rudeness, and Endless Tea</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="Riddles, Rudeness, and Endless Tea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Riddles, Rudeness, and Endless Tea</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>There was a table set out beneath a tree—a large table, mind you, quite capable of accommodating a respectable company—and yet the March Hare and the Hatter had crammed themselves together at one corner of it, with a Dormouse wedged between them, fast asleep and serving (rather inconsiderately, Alice thought) as a sort of living cushion upon which they rested their elbows. &quot;No room! No room!&quot; they cried out when Alice approached, though there was *plenty* of room, as Alice pointed out with some indignation before settling herself into an arm-chair at the table&#x27;s end.</p>
 <p>What followed was, without question, the most bewildering tea-party Alice had ever attended—and she had attended several in her young life. The March Hare offered wine where there was none; the Hatter remarked upon Alice&#x27;s hair wanting cutting (which was, Alice informed him with proper severity, very rude indeed); and no sooner had Alice been thoroughly affronted than the Hatter posed his famous riddle: &quot;Why is a raven like a writing-desk?&quot; Alice thought this rather promising, for she did enjoy riddles, but her enthusiasm dimmed considerably when, after much pondering, the Hatter confessed he hadn&#x27;t the slightest idea of the answer himself. Nor had the March Hare. The riddle, it seemed, was merely nonsense—though the party proved quite prepared to lecture Alice on the difference between saying what one means and meaning what one says, with the Dormouse contributing drowsily that breathing when one sleeps is not at all the same as sleeping when one breathes.</p>
 <p>The Hatter&#x27;s watch—a curious timepiece that told the day of the month but not the hour—proved two days wrong, a circumstance blamed upon butter in the works (the *best* butter, the March Hare insisted meekly, though that hardly seemed to help). And here Alice learned the melancholy truth: the Hatter had quarrelled with Time himself, ever since a concert for the Queen of Hearts where he had sung &quot;Twinkle, twinkle, little bat!&quot; and been accused of murdering the time. Now it was always six o&#x27;clock, always tea-time, and they moved perpetually round the table as cups were dirtied, with no time to wash up between whiles.</p>
@@ -599,9 +732,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_anime/chapter_8.webp" alt="Painted Roses and Royal Fury illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Painted Roses and Royal Fury</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Painted Roses and Royal Fury illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Painted Roses and Royal Fury</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Alice discovered, upon approaching the garden&#x27;s entrance, a most peculiar sight indeed—three gardeners busily painting white roses red upon a large rose-tree, and quarrelling amongst themselves in the manner of workmen everywhere, which is to say, with considerable blame-shifting and rather little actual work accomplished. These gardeners, you see, were playing cards—Two, Five, and Seven of spades, to be precise—and they explained to Alice in hushed, anxious tones that they had planted the wrong rose-tree altogether, and should the Queen discover their error, why, they should all have their heads cut off, which did seem a rather severe horticultural policy.</p>
 <p>Before Alice could properly consider this revelation, a great cry of &quot;The Queen! The Queen!&quot; sent the gardeners flat upon their faces, and there came marching the most extraordinary procession Alice had ever witnessed. First the soldiers (clubs, oblong and flat), then the courtiers (diamonds, walking two by two), then ten royal children (hearts, jumping merrily hand in hand—the little dears), then various guest Kings and Queens, among them the White Rabbit looking hurried and nervous as ever, then the Knave of Hearts bearing the crown, and finally, last of all this grand parade, THE KING AND QUEEN OF HEARTS themselves.</p>
 <p>Alice rather sensibly decided against lying face-down—for what, she reasoned, would be the use of a procession if nobody could see it?—and this independent thinking brought her immediately to the Queen&#x27;s furious attention. The Queen demanded her name, threatened her head, and was only silenced when Alice declared &quot;Nonsense!&quot; with such conviction that even this most volatile of monarchs found herself momentarily speechless. The gardeners fared less well; the Queen ordered their execution without a second thought, though Alice cleverly hid them in a flower-pot, and when the soldiers reported that &quot;their heads are gone,&quot; well, that satisfied everyone nicely.</p>
@@ -612,9 +750,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_anime/chapter_9.webp" alt="Morals, Mustard, and the Mock Turtle illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">Morals, Mustard, and the Mock Turtle</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="Morals, Mustard, and the Mock Turtle illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Morals, Mustard, and the Mock Turtle</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Alice found herself rather astonished—pleasantly so, for once—to encounter the Duchess in such remarkably agreeable spirits, the two of them walking arm in arm as though they were the dearest of old friends. Alice supposed, upon reflection, that perhaps it had been only the pepper in the kitchen that had made the Duchess so very savage before; and this thought led her, as thoughts so often do when one is walking and half-attending, into a most satisfying little reverie about condiments and temperaments. Pepper made people hot-tempered, she reasoned, and vinegar made them sour, and camomile bitter—and barley-sugar, naturally, must make children sweet. She was *quite* pleased with this new rule, though she had rather forgotten to share it with anyone.</p>
 <p>The Duchess, however, was not the sort of companion to let silence stand unmortalized. She pressed herself uncomfortably close—for she was *very* ugly, and possessed of an uncommonly sharp chin that she seemed determined to rest upon Alice&#x27;s shoulder—and proceeded to extract morals from every conceivable subject: love making the world go round, birds of a feather flocking together, mustard and flamingos and the mystifying relationship between mines and minerals. Alice attempted, with admirable patience, to point out that mustard was neither bird nor mineral but vegetable, though the Duchess only agreed more vigorously and offered increasingly incomprehensible maxims in return—one of which grew so tangled that Alice confessed she might understand it better written down, though she rather suspected she would not.</p>
 <p>But all moralizing ceased the instant the Queen appeared, frowning like a thunderstorm. The Duchess&#x27;s voice died mid-syllable, her arm trembled, and within moments she had vanished entirely—having been given fair warning that either she or her head must be off, and wisely choosing the former.</p>
@@ -624,9 +767,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_anime/chapter_10.webp" alt="Dancing with Lobsters by the Sea illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Dancing with Lobsters by the Sea</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="Dancing with Lobsters by the Sea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Dancing with Lobsters by the Sea</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Mock Turtle, having exhausted himself with the sorrows of his educational history, now drew a great sighing breath and wiped at his eyes with the back of one flapper—for all the world, as the Gryphon observed with characteristic delicacy, as if he had a bone stuck in his throat. There followed a good deal of shaking and thumping administered by the Gryphon, until at last the poor creature recovered sufficient voice to inquire whether Alice had ever been properly introduced to a lobster.</p>
 <p>Alice, it must be noted, very nearly admitted that she had once *tasted* one, but caught herself just in time and substituted &quot;No, never&quot;—a diplomatic revision that would have done credit to any young lady navigating the treacherous waters of Wonderland conversation. This tactful denial secured her an explanation of that most delightful of undersea entertainments: the Lobster Quadrille.</p>
 <p>What followed was a most energetic and thoroughly confusing description, delivered in breathless alternation between the two creatures, who interrupted each other at every turn and grew increasingly wild in their demonstrations. There were two lines of dancers—seals, turtles, salmon, and so forth—and lobsters for partners, and a great deal of advancing and retiring and throwing said lobsters out to sea and swimming after them and turning somersaults, all punctuated by the Gryphon&#x27;s enthusiastic shouts and bounds into the air. The description concluded as suddenly as it had begun, with both creatures sitting down very sadly and quietly, as though exhausted by the mere memory of such vigorous proceedings.</p>
@@ -638,9 +786,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_anime/chapter_11.webp" alt="A Courtroom of Nonsense and Tarts illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">A Courtroom of Nonsense and Tarts</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="A Courtroom of Nonsense and Tarts illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">A Courtroom of Nonsense and Tarts</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The King and Queen of Hearts sat upon their throne in considerable state, presiding over as curious an assembly as ever gathered for a trial—little birds and beasts of every description mingled with the whole pack of cards, all pressed together in what Alice supposed must be a court of justice. The Knave of Hearts stood before them in chains, a soldier stationed on either side, looking altogether wretched; and near the King stood the White Rabbit, clutching a trumpet in one hand and a scroll of parchment in the other, looking tremendously official. In the very middle of the court sat a table bearing a large dish of tarts, and they looked *so* good that Alice found herself quite distracted by hunger—&quot;I wish they&#x27;d get the trial done and hand round the refreshments!&quot; she thought, though there seemed precious little chance of that.</p>
 <p>Still, Alice was rather pleased with herself, for she had never been in a court of justice before and yet recognized nearly everything from her reading. That was the judge (the King, wearing his crown perched awkwardly atop his wig), and *that* was the jury-box, filled with twelve creatures—she was obliged to say &quot;creatures,&quot; you see, because some were animals and some were birds—all scribbling furiously on slates before a single word of testimony had been given. They were writing down their names, the Gryphon explained, for fear they should forget them before the trial&#x27;s end. &quot;Stupid things!&quot; Alice began indignantly, and was mortified to observe every juror dutifully recording her words, one of them even asking his neighbour how to spell &quot;stupid.&quot;</p>
 <p>The absurdity mounted swiftly. One juror&#x27;s pencil squeaked so dreadfully that Alice crept round and confiscated it—poor Bill the Lizard spent the remainder of the day writing with his finger, which left no mark at all. The White Rabbit read the accusation in verse (the Queen of Hearts had made some tarts; the Knave had stolen them quite away), and the King immediately demanded a verdict, only to be corrected by the Rabbit that there was a great deal to come before *that*.</p>
@@ -650,9 +803,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_anime/chapter_12.webp" alt="Alice Defies the Court&#x27;s Absurd Justice illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Alice Defies the Court&#x27;s Absurd Justice</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="Alice Defies the Court&#x27;s Absurd Justice illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Alice Defies the Court&#x27;s Absurd Justice</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>&quot;Here!&quot; cried Alice, quite forgetting—as children so often do in moments of flurry and excitement—that she had grown rather considerably in the last few minutes, and in her haste she jumped up so precipitously that her skirt caught the edge of the jury-box and sent all twelve jurymen tumbling down upon the heads of the crowd below. There they lay sprawling about in the most undignified fashion, reminding her very much of a globe of goldfish she had accidentally upset the week before—and so, naturally, she set about collecting them with great urgency, for she had a vague sort of idea that if they weren&#x27;t returned to their box at once, they would surely die.</p>
 <p>The King, looking quite grave about the whole business, insisted the trial could not proceed until every juryman was properly restored, and Alice discovered she had placed the unfortunate Lizard in head downwards, the poor creature waving its tail about in the most melancholy way. She righted him quickly enough, though she privately thought he would be quite as useful to the proceedings one way up as the other.</p>
 <p>What followed was a masterpiece of legal nonsense, for when the King demanded to know what Alice knew of the matter, she replied simply, &quot;Nothing&quot;—and this was solemnly recorded as either very important or very *un*important, depending on which juryman you asked. The King then produced Rule Forty-two, stating that all persons more than a mile high must leave the court—a rule Alice cleverly noted ought to be Number One if it were truly the oldest in the book, which turned the King quite pale indeed.</p>
@@ -796,6 +954,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

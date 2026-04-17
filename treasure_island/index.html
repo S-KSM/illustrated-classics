@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Scarred Stranger Seeks Refuge illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Scarred Stranger Seeks Refuge</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Scarred Stranger Seeks Refuge illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Scarred Stranger Seeks Refuge</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It is at the request of Squire Trelawney, Dr. Livesey, and other distinguished gentlemen that this account comes to be written—a full and honest reckoning of the affair of Treasure Island, holding back nothing save the precise bearings of that place, for there remains gold yet unhauled from its hiding. And so the pen takes up where memory begins: at the Admiral Benbow inn, kept by my father in those days, when a weather-beaten stranger first darkened our door and changed the course of all our lives.</p>
 <p>He arrived like something blown in from darker waters—a tall, heavy, nut-brown man with a tarry pigtail swinging over a soiled blue coat, his hands rough and scarred, his nails black and broken. Across one cheek ran a sabre cut, pale and livid against his sun-darkened skin. I can still see him surveying our lonely cove, whistling to himself before breaking into that cursed sea-song that would come to haunt us all: *&quot;Fifteen men on the dead man&#x27;s chest—Yo-ho-ho, and a bottle of rum!&quot;* His voice was cracked and tottering, as though worn down by years of bellowing orders against the wind.</p>
 <p>He called himself Captain and would answer to nothing else, tossing gold coins upon the threshold as payment and demanding only rum, bacon, eggs, and a clear view of passing ships. Though his clothes were ragged and his speech coarse, there was something in his bearing that spoke of command—a man accustomed to obedience, or else to violence.</p>
@@ -525,9 +628,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Stranger&#x27;s Sinister Ambush illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Stranger&#x27;s Sinister Ambush</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Stranger&#x27;s Sinister Ambush illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Stranger&#x27;s Sinister Ambush</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The first of those mysterious events that would ultimately free us from the captain—though by no means from the shadow of his affairs—came upon us during that bitter winter when the frosts lay long and hard upon the land. My poor father was sinking daily, and it was plain to all that he would never see the spring. The burden of the inn fell entirely upon my mother and me, leaving us little time or inclination to attend to our sullen, unwanted guest.</p>
 <p>I recall that January morning with perfect clarity—a pinching, frosty dawn when the cove lay grey beneath hoar-frost and the low sun touched only the hilltops, throwing its pale light far out to sea. The captain had risen earlier than his custom and set off down the beach, his cutlass swinging beneath that old blue coat, his brass telescope tucked under his arm. I watched his breath hang like smoke behind him as he strode away, and the last I heard was a great snort of indignation as he rounded the rock, his mind still churning, no doubt, over his quarrel with Dr. Livesey.</p>
 <p>I was laying the breakfast table when a stranger stepped into the parlour—a pale, tallowy creature missing two fingers of his left hand. Though he wore a cutlass, he had not the look of a fighter about him, and yet something of the sea clung to him all the same. He ordered rum, but before I could fetch it, he called me close with an unsettling leer and began asking after his &quot;mate Bill.&quot; When I described the captain—the cut on his cheek, his particular manner—the stranger&#x27;s face twisted into an expression most unpleasant. &quot;This&#x27;ll be as good as drink to my mate Bill,&quot; said he, and I knew then that whatever reunion lay ahead would bring no joy.</p>
@@ -544,9 +652,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Dying Man&#x27;s Desperate Warning illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">A Dying Man&#x27;s Desperate Warning</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Dying Man&#x27;s Desperate Warning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">A Dying Man&#x27;s Desperate Warning</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Around midday, I brought cooling drinks and medicines to the captain&#x27;s door, finding him weak yet agitated in his bed. He fixed me with desperate eyes and tried flattery first—reminding me of the silver fourpennies he&#x27;d given over the months—before begging outright for rum. When I mentioned the doctor&#x27;s orders, he cursed with feeble fury, declaring all physicians to be swabs who knew nothing of seafaring life. He&#x27;d survived Yellow Jack in tropical ports, lived through earthquakes that made the very land heave like ocean swells, and rum had been his salvation through it all—meat and drink, man and wife to him.</p>
 <p>His fingers trembled visibly, and he confessed to seeing old Flint&#x27;s ghost lurking in the corner, warning me that without his dram he&#x27;d soon have the horrors and raise Cain itself. When he offered a golden guinea for a single noggin, I found myself offended by the bribe and told him plainly I wanted none of his money—only what he owed my father. I fetched him one glass, no more, and he drank it with desperate greed.</p>
 <p>Yet even this small comfort couldn&#x27;t quiet his fears. When I told him the doctor ordered a week&#x27;s rest, he cried out in alarm—they&#x27;d have the black spot on him by then, those lubbers who wanted to nail what belonged to another. With tremendous effort he hauled himself upright, gripping my shoulder until I nearly cried out, his legs dragging like dead weight. The spirit of his words stood in pitiful contrast to the weakness of his voice. He managed only a sitting position before murmuring that the doctor had done for him and falling back into bed.</p>
@@ -558,9 +671,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Mother&#x27;s Courage and the Dead Man&#x27;s Key illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">A Mother&#x27;s Courage and the Dead Man&#x27;s Key</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Mother&#x27;s Courage and the Dead Man&#x27;s Key illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">A Mother&#x27;s Courage and the Dead Man&#x27;s Key</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>No sooner had the breath left the captain&#x27;s body than I told my mother everything—the whole terrible business I had kept too long to myself—and at once we found ourselves caught between necessity and danger. Some portion of the dead man&#x27;s money was surely owed us for his lodging, yet we knew too well that his shipmates, particularly those two villains I had already encountered, would never part willingly with their comrade&#x27;s effects. The captain&#x27;s dying command to ride for Doctor Livesey would have meant abandoning my mother alone and undefended, which neither of us could countenance. Yet remaining in that house had become unbearable; every falling coal, every tick of the clock set our nerves jangling. The captain&#x27;s corpse lay cold in the parlour while somewhere in the darkness that dreadful blind beggar waited, ready to return with his demands.</p>
 <p>We resolved at last to flee together and seek assistance in the neighbouring hamlet. Out we ran, bare-headed into the gathering dusk and frosty fog, making for the cluster of cottages that lay beyond the next cove—mercifully in the opposite direction from whence Pew had come. The yellow glow of candles in windows cheered my heart wonderfully when we arrived, but that comfort proved hollow indeed. Not a soul among those villagers would venture back with us to the Admiral Benbow. The name of Captain Flint—though strange to my ears—carried such weight of terror that men, women, and children alike clung to their hearths and bolted doors. Some had seen strangers lurking on the roads; others had spotted a lugger hiding in Kitt&#x27;s Hole. The short of it was this: they would gladly ride to summon Doctor Livesey, but defend our inn they would not.</p>
 <p>Then my mother shamed them all with a speech I shall never forget. She would not, she declared, lose money rightfully belonging to her fatherless boy. If these hulking, chicken-hearted men refused to help, then she and I would return alone and have that chest open though we died for it. They gave me a loaded pistol and promised horses should we need to flee, but not one man rose to accompany us.</p>
@@ -571,9 +689,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Blind Beggar&#x27;s Desperate Rage illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">The Blind Beggar&#x27;s Desperate Rage</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Blind Beggar&#x27;s Desperate Rage illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">The Blind Beggar&#x27;s Desperate Rage</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Curiosity proved stronger than terror, and I crept back to my vantage point behind a bush of broom, from where I might observe the road before our door. Scarcely had I settled into position when my enemies came running hard—seven or eight of them—their feet beating out of time along the road, with the man bearing the lantern some paces ahead. Three of them ran hand in hand, and even through the mist I could make out that the middle man of this strange trio was the blind beggar himself. His voice confirmed what my eyes suspected.</p>
 <p>&quot;Down with the door!&quot; he cried, and two or three answered him readily. A rush was made upon the Admiral Benbow, but I heard them pause at finding the door already open. Brief was their hesitation, for the blind man—Pew, as I soon learned his name—issued fresh commands, his voice pitched higher now, aflame with eagerness and rage. Four or five obeyed, plunging inside, while two remained on the road with their formidable leader.</p>
 <p>Then came a cry from within: &quot;Bill&#x27;s dead.&quot;</p>
@@ -588,9 +711,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Oilskin Packet Reveals Its Secrets illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">The Oilskin Packet Reveals Its Secrets</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Oilskin Packet Reveals Its Secrets illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">The Oilskin Packet Reveals Its Secrets</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>We rode hard through the night, the horses&#x27; hooves thundering beneath us until we drew up before Dr. Livesey&#x27;s darkened house. Mr. Dance bade me knock, and when the maid appeared, she informed us the doctor had gone to dine with the squire at the hall. So onward we pressed, and I ran alongside Dogger&#x27;s stirrup through the moonlit avenue, past great old gardens, until we reached the white line of the hall buildings gleaming in the darkness.</p>
 <p>Inside, we were shown into a magnificent library lined with bookcases topped with solemn busts, where the squire and Dr. Livesey sat before a bright fire, pipes in hand. I had never seen Squire Trelawney so near at hand—a tall man, well over six feet and broad in proportion, with a bluff, weathered face reddened by long travels, and black eyebrows that moved readily, giving him a look of quick temper.</p>
 <p>Mr. Dance stood straight as a soldier and told his tale like a lesson. How the two gentlemen leaned forward, forgetting their pipes in their surprise! When they heard how my mother had gone back to the inn for what was owed us, Dr. Livesey fairly slapped his thigh, and the squire cried &quot;Bravo!&quot; with such force that he broke his long pipe against the grate. By the story&#x27;s end, Mr. Trelawney was striding about the room in agitation, and the doctor had removed his powdered wig entirely, sitting there strange indeed with his close-cropped black poll.</p>
@@ -603,9 +731,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="A Crew of Old Salts Assembled illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">A Crew of Old Salts Assembled</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="A Crew of Old Salts Assembled illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">A Crew of Old Salts Assembled</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The wait proved longer than anyone anticipated. Before the *Hispaniola* could put to sea, the best-laid plans of our little company scattered like leaves in an autumn gale. Dr. Livesey departed for London to arrange a physician for his practice, while the squire threw himself into preparations at Bristol with characteristic vigor. As for me, I remained behind at the hall under the watchful eye of old Redruth, the gamekeeper—practically a prisoner, though my cage was filled with the most glorious visions of what lay ahead.</p>
 <p>Hour after hour I pored over the map, every inlet and contour burned into my memory. By the fire in the housekeeper&#x27;s room, I sailed to that island a thousand different ways, explored every acre of its mysterious surface, and climbed countless times to that commanding height marked as the Spy-glass, imagining the views that would greet me from its summit. In my fancies, the isle teemed with savages one moment, with dangerous beasts the next—yet none of my imaginings proved half so strange or terrible as what we would actually find.</p>
 <p>Then came the letter that changed everything. Addressed to Dr. Livesey but marked for Redruth or myself to open in his absence, it bore news from the squire at Bristol. The ship was bought and fitted—a sweet schooner of two hundred tons called the *Hispaniola*, ready for sea. But what caught my attention was the squire&#x27;s troubling admission that all of Bristol seemed to know our destination. He had been talking, despite his promises of secrecy.</p>
@@ -622,9 +755,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Black Dog Appears and Disappears illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Black Dog Appears and Disappears</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Black Dog Appears and Disappears illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Black Dog Appears and Disappears</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Following breakfast, young Jim Hawkins received from Squire Trelawney a note addressed to one John Silver, to be delivered at a tavern called the Spy-glass, marked by a great brass telescope hanging above its door. The boy set off through the bustling docks with keen pleasure, threading his way through the press of carts and cargo and weathered seamen until he found the place in question—a bright, tidy establishment with fresh paint on its sign and neat red curtains framing the windows, its floor clean-sanded and its low room hazy with tobacco smoke.</p>
 <p>The customers within were rough seafaring men whose loud talk made Jim hesitate at the threshold. But his attention was soon captured by a figure emerging from a side room—a very tall, strong man with a face as broad and plain as a ham, pale but intelligent, wearing a cheerful smile. His left leg was cut off close by the hip, and he moved about on a crutch with such wonderful dexterity that he seemed to hop like a bird, whistling merrily as he went, offering friendly words and hearty slaps on the shoulder to his favored guests. This, Jim knew at once, must be Long John Silver.</p>
 <p>Now the boy had harbored a private fear ever since the squire&#x27;s letter first mentioned Long John—a dread that this one-legged sailor might prove to be the same sinister figure old Billy Bones had warned him to watch for at the Admiral Benbow. But one look at this clean, pleasant-tempered landlord was enough to quiet such suspicions. Long John seemed nothing like the buccaneers Jim had encountered before—not Captain Flint&#x27;s former shipmates, not Black Dog, not blind Pew.</p>
@@ -636,9 +774,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A Captain&#x27;s Warning illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">A Captain&#x27;s Warning</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A Captain&#x27;s Warning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">A Captain&#x27;s Warning</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>We came alongside the *Hispaniola* at last, threading our way beneath the carved figureheads and round the sterns of a great many vessels at anchor, their cables scraping and swinging about us as we passed. The mate, Mr. Arrow, greeted us as we stepped aboard—a weathered, brown old sailor he was, with rings in his ears and a squint that gave him a roguish look. He and the squire fell to talking thick as thieves, but I saw quickly enough that between Mr. Trelawney and our captain, the air was considerably cooler.</p>
 <p>Captain Smollett proved to be a sharp-looking man, carrying about him an air of displeasure with everything aboard his ship, and he wasted no time in telling us why. We had scarcely settled into the cabin when he came to speak his mind, and speak it plain he did. He did not like the cruise, he said. He did not like the men. He did not like his officer. Short and sweet, as he put it—and very nearly sweet enough to set the squire&#x27;s blood boiling.</p>
 <p>What followed was a conference of some heat and consequence. The captain laid out his grievances one by one: that the crew knew more of our purpose than he did himself, that word of treasure had spread from bow to stern, and that the very position of the island we sought had become common gossip among the hands. The squire denied having breathed a word, though I could see neither the captain nor the doctor put much stock in his protestations—nor did I, knowing Mr. Trelawney&#x27;s loose tongue. Still, in this particular matter, I half believed him innocent.</p>
@@ -650,9 +793,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Setting Sail with Silver&#x27;s Song illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Setting Sail with Silver&#x27;s Song</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Setting Sail with Silver&#x27;s Song illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Setting Sail with Silver&#x27;s Song</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The night before departure brought a chaos young Hawkins had never known, not even in the busiest hours at the Admiral Benbow. Boats laden with the squire&#x27;s well-wishers—Mr. Blandly among them—came and went through the dark hours, while the crew stowed cargo and readied the ship for sea. By the time the boatswain&#x27;s pipe shrilled before dawn and men gathered at the capstan-bars, the boy was dog-tired yet utterly unable to tear himself from the deck. Everything enchanted him: the crisp commands, the whistle&#x27;s shrill cry, the sailors moving like shadows in the lantern-light.</p>
 <p>Then came a call for Long John Silver to sing them a stave—the old one—and that familiar voice rose up with crutch tucked beneath his arm: &quot;Fifteen men on the dead man&#x27;s chest—&quot; The whole crew thundered the chorus, driving the capstan round with a will at every &quot;Yo-ho-ho!&quot; The song carried Hawkins back to the inn, to old Captain Flint&#x27;s ruined voice croaking those same words. But nostalgia gave way to wonder as the anchor broke free, the sails caught wind, and the *Hispaniola* slipped past shore and shipping, bound at last for Treasure Island.</p>
 <p>The voyage itself proved prosperous enough—a sound ship, capable hands, a captain who knew his business—yet before they raised their destination, certain matters demanded attention. First among them was Mr. Arrow, the mate, who proved even more worthless than Captain Smollett had feared. He commanded no respect, and before long he appeared on deck glassy-eyed and red-cheeked, tongue stumbling over words, plainly drunk. Where he procured the drink remained the ship&#x27;s great mystery; no amount of watching revealed his source, and when confronted he only laughed or swore he touched nothing but water. One dark night, with a rough sea running, Arrow simply vanished—overboard, it was presumed. &quot;That saves the trouble of putting him in irons,&quot; the captain remarked dryly, and none mourned him much. Job Anderson, the boatswain, stepped into the mate&#x27;s duties, while the squire—himself an able seaman—took watches in fair weather. Israel Hands, the coxswain, proved wily and dependable at a pinch.</p>
@@ -662,9 +810,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Silver&#x27;s Dark Confession in the Hold illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">Silver&#x27;s Dark Confession in the Hold</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Silver&#x27;s Dark Confession in the Hold illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">Silver&#x27;s Dark Confession in the Hold</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Hidden in the darkness of the apple-barrel, young Jim Hawkins became unwilling witness to treachery most foul—a discovery that would shatter every illusion of safety aboard the *Hispaniola* and reveal the true nature of the man they called Long John Silver.</p>
 <p>The cook&#x27;s voice carried through the staves with easy confidence as he held court with the youngest hand aboard, spinning tales of his piratical past with the same smooth charm he had used on Jim himself. Silver had served as quartermaster under the infamous Captain Flint—the very same broadside that took his leg had claimed old Pew&#x27;s sight. He spoke of surgeons hanged at Corso Castle, of ships running red with blood and heavy with gold, of fortunes made and squandered by lesser men who lacked his cunning.</p>
 <p>Jim&#x27;s blood ran cold as he recognized the flattery Silver lavished upon the young sailor—the same honeyed words, the same calculating warmth the cook had shown him. Had Jim possessed the strength, he might have struck the villain dead through the barrel&#x27;s wooden walls. But he could only listen, frozen with horror, as Silver wove his web.</p>
@@ -677,9 +830,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Land Ho, Secrets Below illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Land Ho, Secrets Below</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Land Ho, Secrets Below illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Land Ho, Secrets Below</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>A great commotion swept across the deck as feet thundered overhead and below, men tumbling from cabin and forecastle alike in their haste. I slipped from my hiding place within that fateful apple barrel and made my way with all the cunning I could muster—doubling behind the fore-sail toward the stern before emerging onto the open deck, where I joined Hunter and Dr. Livesey in their rush toward the weather bow.</p>
 <p>There we found all hands already gathered, their eyes fixed upon a sight that seemed to shimmer before us like something from a fever dream. The fog had lifted almost in concert with the rising moon, revealing away to the south-west two low hills standing perhaps a couple of miles apart, with a third and higher peak rising behind, its summit still wrapped in mist. All three appeared sharp and conical against the night sky. I beheld this vision as one still half-asleep, for the horrid terror of what I had overheard from my barrel mere minutes before had not yet released its grip upon my heart.</p>
 <p>Captain Smollett&#x27;s voice rang out with orders, and the *Hispaniola* was brought a couple of points nearer the wind, set upon a course that would clear the island to the east. Then Silver spoke up, claiming knowledge of these waters from his days as a cook aboard a trader—naming the hills as sailors and pirates had named them: Foremast Hill, the Spy-glass, Skeleton Island. His voice carried the easy authority of experience, and when the captain produced a chart, Long John&#x27;s eyes burned with barely concealed eagerness. But this was no pirate map marked with red crosses—merely an accurate copy, and I watched Silver master his disappointment with terrible composure.</p>
@@ -690,9 +848,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="A Grim Arrival at Treasure Island illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">A Grim Arrival at Treasure Island</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="A Grim Arrival at Treasure Island illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">A Grim Arrival at Treasure Island</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning I came on deck to see Treasure Island for the first time, the world had changed utterly from the night before. Though the breeze had abandoned us completely, we had made considerable progress through the darkness and now lay becalmed perhaps half a mile from the island&#x27;s low eastern shore. I beheld a landscape that seemed to belong to some melancholy dream rather than to any treasure-seeker&#x27;s fancy—grey woods stretching across the surface like a pall, broken only by streaks of yellow sand in the lowlands and the occasional pine rising above its fellows. The hills thrust up beyond the treeline in naked spires of rock, strangely shaped every one, and the Spy-glass—tallest of them all by several hundred feet—rose sheer on nearly every side before cutting off flat at its summit, as though waiting for some giant&#x27;s statue that would never come.</p>
 <p>The *Hispaniola* rolled her scuppers under with each ocean swell, and I clung to the backstay while the world spun giddily about me. Though I could manage well enough when the ship had way on, this standing still and being tossed about like a bottle on the tide was another matter entirely—particularly on an empty stomach. Between the sickness and my first proper look at that grey, melancholy island with its wild stone peaks and the surf thundering against the steep beach, my heart sank clean into my boots. Despite the bright sun and the shore birds crying all around us, from that moment forward I hated the very thought of Treasure Island.</p>
 <p>A dreary morning&#x27;s work awaited us. With no wind to speak of, we manned the boats and warped the ship three or four miles round to the haven behind Skeleton Island. I volunteered for one of the boats, though I had no business there, and found the men grumbling fiercely in the sweltering heat. Anderson commanded our boat but did nothing to keep order—indeed, he complained louder than any. &quot;Well,&quot; he muttered with an oath, &quot;it&#x27;s not forever.&quot; Until that day the crew had worked briskly and willingly, but the sight of the island had loosened the cords of discipline like a knife through rope.</p>
@@ -705,9 +868,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="A Death Cry in the Marsh illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">A Death Cry in the Marsh</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="A Death Cry in the Marsh illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">A Death Cry in the Marsh</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Having slipped away from Long John Silver and the landing party, young Jim Hawkins found himself alone upon the island for the first time, and what had begun as an escape soon transformed into something far more exhilarating—the pure, unbridled joy of exploration. He crossed through marshland thick with willows and strange swampy growth, emerging at last onto an open stretch of sandy, undulating country dotted with pines and peculiar twisted trees that bore pale foliage like willows yet grew contorted as oaks. Before him rose one of the island&#x27;s hills, its twin craggy peaks gleaming sharp against the sun, and Jim felt as though he had stepped into a world entirely his own—uninhabited, wild, populated by nothing more threatening than birds and beasts. He wandered among flowering plants unknown to him, observed snakes sunning themselves upon rocks, and even encountered a rattlesnake that hissed its deadly warning, though Jim, in his innocence, mistook the sound for something harmless.</p>
 <p>His wandering carried him toward a long thicket of live-oaks that spread down from a sandy knoll to the edge of a broad, reedy fen, where the marsh steamed beneath the brutal sun and the distant outline of Spy-glass Hill trembled through the haze. Then came a sudden commotion among the bulrushes—wild ducks bursting skyward, followed by a screaming cloud of birds wheeling overhead. Jim knew at once that someone approached through the marsh, and when voices reached his ears, growing steadily louder, he dropped to the ground and crawled beneath the nearest tree, silent as prey.</p>
 <p>The voices belonged to Silver and another man, and though Jim could not make out their words, the tone was unmistakably fierce. Sensing both danger and duty, Jim crept closer through the crouching trees, using the alarmed birds overhead to guide him, until at last he found himself peering down into a small green dell where Long John Silver stood face to face with Tom, one of the ship&#x27;s honest hands.</p>
@@ -718,9 +886,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Ben Gunn&#x27;s Lonely Island Refuge illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">Ben Gunn&#x27;s Lonely Island Refuge</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Ben Gunn&#x27;s Lonely Island Refuge illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">Ben Gunn&#x27;s Lonely Island Refuge</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>A sudden cascade of gravel down the steep hillside seized my attention in an instant, and there—leaping behind a pine trunk with astonishing speed—was a figure of such dark and shaggy aspect that I could not determine whether I beheld bear, man, or some nameless creature of the woods. Terror rooted me to the spot, for I now found myself trapped between two perils: the murderers behind and this lurking apparition before.</p>
 <p>In that moment of dread, my mind made its calculation, and strange as it may seem, Long John Silver himself appeared the lesser evil when measured against this wild unknown. I turned upon my heel and began retracing my steps toward the boats—yet the creature would not suffer my escape. It reappeared, circling wide to cut off my retreat, flitting from trunk to trunk with the swiftness of a deer, running upright yet stooping almost double in a manner unlike any man I had ever witnessed. A man, however, it surely was—and this recognition, though it summoned thoughts of cannibals, brought with it a measure of reassurance.</p>
 <p>The memory of my pistol flashed upon me then, and with it came renewed courage. I set my face resolutely forward and walked briskly toward this man of the island. He must have marked the change in my bearing, for after much hesitation—advancing and retreating by turns—he threw himself upon his knees with clasped hands extended in supplication.</p>
@@ -732,9 +905,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Stockade and the Death Cry illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">The Stockade and the Death Cry</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Stockade and the Death Cry illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">The Stockade and the Death Cry</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>At three bells in the afternoon watch, the two boats departed from the *Hispaniola* carrying the bulk of the crew toward shore, leaving Captain Smollett, the squire, and the doctor conferring in the cabin with precious few options before them. Had fortune granted them even a whisper of wind, they might have turned upon the six mutineers remaining aboard, cut the cable, and made their escape to open sea. But the air hung dead and stagnant, and before they could settle upon any course of action, Hunter descended with news that struck them harder than any gale—young Jim Hawkins had slipped into one of the boats and gone ashore among the pirates.</p>
 <p>None among them doubted the boy&#x27;s loyalty, yet fear for his safety gripped them all. They rushed to the deck, where the tropical heat had set the pitch bubbling in the seams and filled the air with such a foul stench that the doctor&#x27;s medical instincts recognized it immediately as the breath of fever and dysentery waiting to claim them. The six remaining scoundrels sat grumbling beneath a sail in the forecastle while, on shore, the gigs lay beached with guards whistling &quot;Lillibullero&quot; in idle watch.</p>
 <p>The doctor resolved to reconnoiter, and he and Hunter took the jolly-boat toward the stockade marked upon Silver&#x27;s chart. The guards on shore stirred with uncertainty at their approach but, bound by their orders, remained at their posts and returned to their whistling. Rounding a bend that concealed them from view, the doctor landed and made haste inland, pistols primed and a silk handkerchief beneath his hat against the murderous heat.</p>
@@ -748,9 +926,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Desperate Crossing Under Enemy Fire illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">Desperate Crossing Under Enemy Fire</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Desperate Crossing Under Enemy Fire illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Desperate Crossing Under Enemy Fire</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The crossing that would deliver us to shore proved altogether different from those that preceded it—different in its perils, its close calculations, and the manner by which fortune, having smiled upon us these several trips, at last showed her other face.</p>
 <p>Our little gallipot of a boat rode dangerously low from the outset, groaning beneath the weight of five grown men, three of whom—Trelawney, Redruth, and the captain—stood well over six feet in their stockings. To this human cargo we had added powder, pork, and bread-bags until the gunwale lipped astern most alarmingly. We had not traveled a hundred yards before my breeches and coat-tails were soaked through from the water we shipped. The captain ordered us to trim the boat, and though we achieved a somewhat more even keel, none among us dared draw breath too deeply.</p>
 <p>The ebb tide compounded our difficulties, running westward through the basin with a strong rippling current that threatened to sweep us past our proper landing-place behind the point. Should we surrender to its pull, we would come ashore beside the gigs, where the pirates might descend upon us at any moment. I confessed to the captain that I could not hold our heading for the stockade, though I was steering whilst he and Redruth manned the oars. He counseled patience—we must bear upstream, he explained, until the current slackened and we might dodge back along the shore. Gray, sitting in the fore-sheets and already accepted among us as a trusted man despite his recent defection from the mutineers, confirmed that the current was easing.</p>
@@ -764,9 +947,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="The Flag Rises, Redruth Falls illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">The Flag Rises, Redruth Falls</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="The Flag Rises, Redruth Falls illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">The Flag Rises, Redruth Falls</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>We pressed on through the wood with all haste, the stockade now within reach yet still separated from us by that narrow strip of trees. With every stride the buccaneers&#x27; voices grew louder at our backs—their footfalls crashing through brush, branches snapping as they forced their way through the thicket. It was plain enough we should have a proper fight of it before this business was done, and I checked my priming with that knowledge heavy upon me.</p>
 <p>Seeing the situation clearly, I advised the captain to give his gun to Trelawney, whose own weapon had become useless. The squire, silent and steady as he had been throughout all the commotion, took the piece and paused just long enough to see it was ready for service. When I noticed Gray stood without a blade, I handed him my cutlass. It warmed our hearts to watch him spit in his palm, set his brows, and send that steel singing through the air. Every line of the man&#x27;s body told us plain: here was a hand worth his salt.</p>
 <p>Forty paces more and we broke from the trees to find the stockade before us, striking its southern side near the middle. At nearly the same instant, seven mutineers—Job Anderson the boatswain leading them—burst into view at the southwestern corner, running full tilt. They halted, caught off guard, and before they could recover themselves, the squire and I, along with Hunter and Joyce firing from the blockhouse, loosed a scattering volley. One pirate dropped dead; the rest fled into the woods without a second thought.</p>
@@ -780,9 +968,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="Ben Gunn&#x27;s Warning and the Bombardment illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">Ben Gunn&#x27;s Warning and the Bombardment</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="Ben Gunn&#x27;s Warning and the Bombardment illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">Ben Gunn&#x27;s Warning and the Bombardment</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Jim Hawkins resumes his tale from the moment Ben Gunn catches sight of the colours flying above the stockade, a sight that stops the castaway dead in his tracks. Where Jim suspects mutineers, Ben knows better—Silver and his ilk would fly the Jolly Roger without hesitation, not the Union Jack. The old flag means Jim&#x27;s friends have won the day, taking shelter in the very stronghold Captain Flint built years ago. Yet Ben refuses to accompany the boy. He is too fly for that, he insists, and will not show himself until a born gentleman gives his word of honour. With anxious repetition, he makes Jim memorise his conditions: whoever comes must carry a white thing in his hand, must come alone, and must understand that Ben Gunn has reasons of his own. Jim barely finishes confirming the terms when a cannonball tears through the trees, scattering both of them into the undergrowth.</p>
 <p>For the better part of an hour, the island shudders under bombardment. Jim darts from one hiding place to the next, each crash of shot driving him further east until the guns at last fall silent with the setting sun. The evening breeze rises, chilling him through his jacket as he creeps among the shore-side trees. Out in the anchorage, the Hispaniola rides at anchor beneath the black flag of piracy, her cannon smoke still drifting across the grey water. On the beach, mutineers hack apart the jolly-boat while others row back and forth to a great fire near the river mouth, their voices loud with rum-soaked revelry.</p>
 <p>Before making for the stockade, Jim spies a solitary white rock rising from the low spit near Skeleton Island—the very landmark Ben Gunn described—and files it away should a boat ever be wanted. Then he slips through the woods and is warmly received by the faithful party within the palisade.</p>
@@ -792,9 +985,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="Silver&#x27;s Parley at the Stockade illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">Silver&#x27;s Parley at the Stockade</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="Silver&#x27;s Parley at the Stockade illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">Silver&#x27;s Parley at the Stockade</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Dawn broke bitterly cold over the stockade, the kind of chill that seeps straight through to a man&#x27;s bones and settles there. The sky gleamed bright and cloudless, painting the treetops with rosy light, yet where the two figures stood beyond the fence, shadow still clung to them, and a low white vapour crept about their knees—mist that had crawled up from the swamp during the night. The sight of it told plainly enough what manner of place this island was: damp, feverish, unwholesome.</p>
 <p>One of the men waved a white cloth. The other stood placidly by, and there was no mistaking him—Long John Silver himself, come to parley.</p>
 <p>Captain Smollett kept himself carefully in the porch, well out of the way of any treacherous shot, and set us all to our stations. I was given the eastern loophole to watch, though I&#x27;ll confess I made a poor sentry of it, for my eyes kept drifting to the scene unfolding at the threshold. The captain hailed them sharply, demanding their business, and when Silver&#x27;s companion announced that &quot;Cap&#x27;n Silver&quot; wished to come aboard and make terms, Smollett let out a dry laugh. Captain, was it? Here was promotion indeed.</p>
@@ -809,9 +1007,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Stockade Under Siege illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">The Stockade Under Siege</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Stockade Under Siege illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">The Stockade Under Siege</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The moment Silver vanished into the trees, Captain Smollett wheeled about to inspect his men—and found every post abandoned save one. Gray alone stood at his loophole, steady as a ship&#x27;s timber. The captain&#x27;s fury broke over us like a squall.</p>
 <p>&quot;Quarters!&quot; he thundered, and we slunk back to our stations like whipped dogs, ears burning with shame. Gray earned his name in the log that day, while the rest of us—doctor, squire, and all—received a tongue-lashing that stung worse than salt in a wound. The captain reminded Dr. Livesey, with cutting precision, that if this was how he&#x27;d served at Fontenoy, he&#x27;d have been better off staying in his bunk.</p>
 <p>But there was no time for wounded pride. The captain had deliberately baited Silver with his refusal, knowing full well that within the hour we&#x27;d be boarded. He laid out our situation plain: outnumbered, yes, but fighting from shelter, and with discipline—if we could muster it. The log-house bristled with preparation. Two loopholes on the east and west walls, two on the south by the porch, and five on the dangerous north side. A score of muskets stood ready, arranged on makeshift tables of stacked firewood, cutlasses ranged in the middle for close quarters. The fire was doused and carried out, lest smoke blind us when we needed our eyes most.</p>
@@ -831,9 +1034,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="A Reckless Escape Into the Woods illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">A Reckless Escape Into the Woods</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="A Reckless Escape Into the Woods illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">A Reckless Escape Into the Woods</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The mutineers did not return that day, having received what the captain grimly called their rations, and we were left to tend to our wounded and prepare our dinner in a silence broken only by the dreadful groans of the dying. The squire and I cooked outside the stockade despite the danger, for the sounds within the block house were too terrible to bear—the doctor working over his patients while their cries rang out across the clearing.</p>
 <p>Of the eight men who had fallen in battle, only three yet drew breath: one of the pirates shot through the loophole, poor Hunter, and Captain Smollett himself. The first two were beyond all hope. The mutineer perished under the doctor&#x27;s knife, and Hunter, whose chest had been crushed and skull fractured in his fall, lingered through the day breathing loudly, much as the old buccaneer had done back at the Admiral Benbow. Sometime in the night, without word or sign, he slipped away to meet his Maker.</p>
 <p>The captain&#x27;s wounds, though grievous, would not prove fatal. Anderson&#x27;s ball had broken his shoulder-blade and grazed the lung, while the second shot had torn the muscles of his calf. He would recover, the doctor assured us, though he must neither walk nor move his arm nor speak for weeks to come. As for my own cut knuckles, Doctor Livesey patched them with plaster and boxed my ears for good measure.</p>
@@ -846,9 +1054,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="A Coracle&#x27;s Wild Drift to the Ship illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">A Coracle&#x27;s Wild Drift to the Ship</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="A Coracle&#x27;s Wild Drift to the Ship illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">A Coracle&#x27;s Wild Drift to the Ship</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The coracle proved a treacherous ally in those dark waters. Though Ben Gunn had fashioned her well enough—buoyant and seaworthy for one of my slight frame—she possessed a stubborn, contrary nature that defied all my efforts at command. She would go any direction save the one I intended, spinning and drifting broadside to the current like a leaf caught in an eddy. Had it not been for the tide itself, sweeping me steadily toward my quarry, I should never have reached the *Hispaniola* at all.</p>
 <p>But reach her I did. First she emerged from the blackness as little more than a darker shadow upon the night, then her spars and hull took shape before me, and in what seemed mere moments I found myself alongside her hawser, my fingers closing tight upon the rope. The cable stretched taut as a bowstring under the pull of the current, the water bubbling and chattering around the ship&#x27;s hull like a mountain brook. One slash of my sea-gully, I knew, and the schooner would drift free upon the tide.</p>
 <p>Yet even as I drew my knife, prudence stayed my hand. A hawser cut under such tension would snap back with terrible force—enough to knock both me and my little craft clean from the water. I waited, hardly daring to breathe, until fortune favored me once more. The wind, which had shifted round to the south-west after nightfall, sent a puff across the deck that pushed the *Hispaniola* up into the current and slackened the rope in my grasp. Seizing my chance, I sawed through strand after strand until only two remained, then lay quiet again, biding my time for another merciful gust.</p>
@@ -861,9 +1074,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Adrift Among Waves and Sea Lions illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">Adrift Among Waves and Sea Lions</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Adrift Among Waves and Sea Lions illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Adrift Among Waves and Sea Lions</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Dawn found young Jim Hawkins adrift in his tiny craft, tossing upon the swells at the south-west end of Treasure Island, with the great bulk of the Spy-glass hill rising between him and the morning sun. The rugged coastline of Haulbowline Head and Mizzenmast Hill loomed close at hand, and his first instinct was to make for shore at once. But that notion died swiftly—the breakers crashed and bellowed among the fallen rocks with such violence, sending spray flying high into the air, that he knew any attempt to land there would see him dashed to pieces upon the beetling crags. And as if the treacherous surf were not discouragement enough, the rocks themselves crawled with great slimy creatures—sea lions, though Jim knew them not—barking and tumbling into the water with tremendous splashes, their monstrous forms enough to disgust him thoroughly of that landing-place. He would sooner starve at sea than face such terrors.</p>
 <p>Yet fortune offered him a better prospect. To the north lay the Cape of the Woods, its tall green pines descending pleasantly to the water&#x27;s edge, and Jim remembered what Silver had spoken of—the current that sets northward along the island&#x27;s western coast. Already under its influence, he resolved to conserve his strength and let the sea carry him toward that kindlier shore.</p>
 <p>The swell ran smooth and great beneath him, the wind steady from the south, and Jim marvelled at how his light coracle rode the billows—bouncing and dancing like a bird, rising over blue summits that would have swamped a lesser vessel. Emboldened, he sat up to try his hand at paddling, but the little boat would not suffer interference. At his slightest movement she plunged headlong down a slope of water, burying her nose in spray and drenching him thoroughly. Terrified, he threw himself flat again, and the coracle settled back into her easy rhythm.</p>
@@ -875,9 +1093,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
 <section class="chapter" id="chapter-25" data-num="25">
-    <img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="Blood and Brandy on the Hispaniola illustration" loading="lazy">
-    <div class="chapter-number">Chapter 25</div>
-    <h2 class="chapter-title">Blood and Brandy on the Hispaniola</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="Blood and Brandy on the Hispaniola illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">Blood and Brandy on the Hispaniola</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The instant I gained my footing on the bowsprit, the flying jib cracked and filled with a sound like cannon-fire, and the *Hispaniola* shuddered stem to stern beneath me. I near tumbled headlong into the sea, but managed to crawl back along that narrow spar and drop myself onto the deck, breathless and trembling.</p>
 <p>What greeted me there was a scene of abandonment and ruin. Not a living soul stirred. The planks, unwashed since the mutiny began, showed the muddy prints of countless boots, and a broken bottle rolled in the scuppers like some restless creature. Then the ship swung hard into the wind—the jibs thundered, the rudder slammed, and the great main-boom came sweeping inboard to reveal what lay hidden on the after-deck.</p>
 <p>There were the two watchmen. Red-cap lay flat on his back, stiff as timber, arms flung wide in the manner of a crucifix, his dead grin fixed and horrible. Israel Hands sat propped against the bulwarks, chin sunk upon his chest, his weathered face gone white as tallow beneath its tan. Dark splashes of blood stained the planks around them both. It was plain enough what had happened—these two ruffians had murdered each other in some drunken quarrel.</p>
@@ -893,9 +1116,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
 <section class="chapter" id="chapter-26" data-num="26">
-    <img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="A Deadly Game of Wits illustration" loading="lazy">
-    <div class="chapter-number">Chapter 26</div>
-    <h2 class="chapter-title">A Deadly Game of Wits</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_26.webp"><img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="A Deadly Game of Wits illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">A Deadly Game of Wits</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The wind had shifted westward, a welcome change that would ease their passage from the island&#x27;s northeast corner to the mouth of the North Inlet. Yet with no power to anchor and no safe way to beach the *Hispaniola* until the tide rose higher, Jim Hawkins found himself trapped in uncomfortable idleness with the wounded coxswain, Israel Hands—sharing another meal in silence beside the body of the dead pirate O&#x27;Brien, whose presence grew more unsettling by the hour.</p>
 <p>It was Hands who broke the quiet, that unsettling smile playing about his lips as he suggested Jim heave the corpse overboard. When the boy refused, claiming weakness and distaste for the work, Hands turned philosophical—rambling about the unlucky nature of the ship, the many poor seamen who had met their end aboard her, and whether dead men might somehow return to trouble the living. Jim answered plainly enough: the body could be killed, but not the spirit, and O&#x27;Brien might well be watching them even now. This gave Hands only momentary pause before he dismissed such concerns and asked Jim to fetch him wine from the cabin, claiming the brandy was too strong for his head.</p>
 <p>But Jim was no fool. The coxswain&#x27;s hesitation rang false, and his preference for wine over brandy seemed utterly unconvincing. The whole request was plainly a pretext to get the boy below deck. Hands&#x27;s wandering eyes, his guilty manner, the way he kept glancing at the dead man and the sky—all betrayed some hidden purpose. Yet Jim concealed his suspicions, playing the willing servant. He descended the companion with deliberate noise, then slipped off his shoes and crept forward through the ship, popping his head up where Hands would never expect to see him.</p>
@@ -909,9 +1137,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
 <section class="chapter" id="chapter-27" data-num="27">
-    <img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="Jim&#x27;s Victory at Sea illustration" loading="lazy">
-    <div class="chapter-number">Chapter 27</div>
-    <h2 class="chapter-title">Jim&#x27;s Victory at Sea</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_27.webp"><img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="Jim&#x27;s Victory at Sea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">Jim&#x27;s Victory at Sea</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>From my precarious perch on the cross-trees, the vessel listing so drastically that I hung suspended over nothing but the bay itself, I watched Israel Hands meet his end below. He surfaced once in a froth of foam and blood, then sank to rest upon the clean bright sand in the shadow of the *Hispaniola&#x27;s* hull. Fish darted past his body, and the trembling water made him appear to stir, as though making one final attempt to rise—but he was dead enough, shot and drowned both, food for fishes in the very spot where he had meant to murder me.</p>
 <p>The certainty of his death brought no relief. Instead, sickness and terror swept through me like a cold tide. Hot blood ran down my back where the dirk had pinned my shoulder to the mast, burning like a brand, yet it was not the wound that troubled me most. What set my heart racing was the horror of falling from that height into the still green water to lie beside the coxswain&#x27;s corpse. I clung until my nails ached, eyes shut against the peril, until gradually my senses returned and I became master of myself once more.</p>
 <p>The dirk, mercifully, had barely caught me—a mere pinch of skin held it fast. When I shuddered violently, the blade tore free. I broke through my coat and shirt where they remained tacked to the mast and descended by the starboard shrouds, for nothing could have compelled me to venture upon those overhanging port lines from which Israel had fallen.</p>
@@ -927,9 +1160,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
 <section class="chapter" id="chapter-28" data-num="28">
-    <img class="chapter-image" src="images_cinematic/chapter_28.webp" alt="Pirates&#x27; Bargain and Silver&#x27;s Offer illustration" loading="lazy">
-    <div class="chapter-number">Chapter 28</div>
-    <h2 class="chapter-title">Pirates&#x27; Bargain and Silver&#x27;s Offer</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_28.webp"><img class="chapter-image" src="images_cinematic/chapter_28.webp" alt="Pirates&#x27; Bargain and Silver&#x27;s Offer illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">28</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 28</div>
+            <h2 class="chapter-title">Pirates&#x27; Bargain and Silver&#x27;s Offer</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The torchlight painted everything in shades of blood and shadow as Jim Hawkins stood facing his worst fears made manifest. The pirates had taken the blockhouse—every barrel of pork, every loaf of bread, the cognac cask that now served as Long John Silver&#x27;s throne. But what struck the boy&#x27;s heart cold was the absence of any prisoner, any sign of his companions. In that terrible moment, Jim could only believe them all dead, and the guilt of not having perished alongside them bit deep into his conscience.</p>
 <p>Six buccaneers remained—all that survived of that murderous crew. Five stood swaying on their feet, faces flushed and bloated from drink, dragged unwillingly from their stupor. The sixth lay propped on his elbow, deathly pale beneath a blood-soaked bandage, surely the same wretch who had fled wounded into the woods during the great assault. And there sat Silver himself, the parrot preening upon his shoulder, his fine broadcloth suit now torn and clay-daubed from the forest&#x27;s cruelties. Something harder had crept into that weathered face, something colder than Jim remembered.</p>
 <p>Silver greeted him with dangerous friendliness, speaking of pleasant surprises while filling his pipe, all the while watching Jim with those calculating eyes. The boy stood with his back pressed to the wall, wearing courage like a mask while despair coiled black within his chest. Silver spoke honeyed words of admiration, of seeing himself in the lad, of inevitable choices. He claimed the cabin party had abandoned Jim—called him an ungrateful scamp—and that his only hope lay in joining Captain Silver&#x27;s company.</p>
@@ -944,9 +1182,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
 <section class="chapter" id="chapter-29" data-num="29">
-    <img class="chapter-image" src="images_cinematic/chapter_29.webp" alt="The Pirates&#x27; Mutiny Fails illustration" loading="lazy">
-    <div class="chapter-number">Chapter 29</div>
-    <h2 class="chapter-title">The Pirates&#x27; Mutiny Fails</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_29.webp"><img class="chapter-image" src="images_cinematic/chapter_29.webp" alt="The Pirates&#x27; Mutiny Fails illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">29</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 29</div>
+            <h2 class="chapter-title">The Pirates&#x27; Mutiny Fails</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The pirates had been deliberating outside for some time when one returned to the blockhouse, requesting the torch with a salute that struck young Jim Hawkins as faintly mocking. Silver granted the loan readily enough, and the man departed, leaving captor and captive alone in darkness.</p>
 <p>&quot;There&#x27;s a breeze coming, Jim,&quot; Silver remarked, his tone having grown strangely friendly and familiar during their confinement together.</p>
 <p>Jim peered through the nearest loophole at the scene below. The great fire had burned low, reduced to dull embers that explained why the conspirators required the torch. Halfway down the slope toward the stockade, the mutineers had gathered in a tight cluster—one man holding the light aloft, another kneeling at the center of their circle with an open knife glinting in the mingled glow of moon and flame. The others hunched forward, watching intently. Jim glimpsed a book in the kneeling man&#x27;s hand alongside the blade, and puzzled over how such an incongruous object had come into their possession. When the figure rose and the whole party advanced toward the house, Jim stepped back from the loophole—it seemed beneath his dignity to be caught spying on them.</p>
@@ -965,9 +1208,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
 <section class="chapter" id="chapter-30" data-num="30">
-    <img class="chapter-image" src="images_cinematic/chapter_30.webp" alt="The Doctor&#x27;s Dangerous Visit illustration" loading="lazy">
-    <div class="chapter-number">Chapter 30</div>
-    <h2 class="chapter-title">The Doctor&#x27;s Dangerous Visit</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_30.webp"><img class="chapter-image" src="images_cinematic/chapter_30.webp" alt="The Doctor&#x27;s Dangerous Visit illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">30</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 30</div>
+            <h2 class="chapter-title">The Doctor&#x27;s Dangerous Visit</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning broke with a voice ringing clear from the wood&#x27;s edge—Dr. Livesey, arriving at first light to tend his unlikely patients. The sound brought both relief and shame flooding through me, for I could not forget my reckless conduct, my sneaking away from duty, and now here I stood among cutthroats and villains, forced to meet the good doctor&#x27;s eye.</p>
 <p>Silver greeted him with all his old charm, cheerful as a landlord welcoming a paying guest, announcing my presence as though I were some delightful surprise rather than a prisoner balanced on the knife&#x27;s edge of death. When the doctor heard my name, he stopped cold, and several heartbeats passed before he could bring himself forward. Yet when he entered that block house, he gave me but one grim nod and set straight to his work, rattling off medical observations with the calm authority of a physician making country rounds rather than a man surrounded by treacherous devils who might murder him on a whim.</p>
 <p>The pirates, somehow cowed by his professional manner, submitted to his examinations like chastened schoolboys. He diagnosed fevers and upturned livers, scolded them roundly for camping in pestilent bog-air, and reminded them—with pleasant poison in his words—that he served as their doctor only to preserve them for King George and the gallows. They swallowed that bitter medicine alongside their prescriptions.</p>
@@ -980,9 +1228,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
 <section class="chapter" id="chapter-31" data-num="31">
-    <img class="chapter-image" src="images_cinematic/chapter_31.webp" alt="The Uneasy Alliance Seeks Flint&#x27;s Gold illustration" loading="lazy">
-    <div class="chapter-number">Chapter 31</div>
-    <h2 class="chapter-title">The Uneasy Alliance Seeks Flint&#x27;s Gold</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_31.webp"><img class="chapter-image" src="images_cinematic/chapter_31.webp" alt="The Uneasy Alliance Seeks Flint&#x27;s Gold illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">31</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 31</div>
+            <h2 class="chapter-title">The Uneasy Alliance Seeks Flint&#x27;s Gold</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Silver drew Jim close the moment they found themselves alone, his voice low and urgent as he struck what bargain he could between them. He had marked the doctor&#x27;s signal for the boy to flee, had watched Jim refuse it, and this small act of loyalty—or perhaps merely of self-preservation—had kindled in the old sea-cook the first ember of hope since the failed assault on the stockade. Whatever sealed orders the doctor had left them, whatever mysteries hung over the treasure map now in pirate hands, Silver made plain that their fates were bound together. They would stand back to back, he declared, and save their necks in spite of all that fortune might hurl against them.</p>
 <p>A shout from the fire broke the moment. Breakfast awaited—biscuit and fried junk cooked over a blaze large enough to roast an ox. The pirates had prepared three times what any company might consume, and when they had eaten their fill, one fellow tossed the remainder into the flames with a careless laugh, sending sparks roaring into the morning air. Jim watched this profligate waste with growing unease. Sleeping sentries, squandered provisions—these were men fit for a single desperate brush but utterly unsuited to any prolonged campaign. Even Silver offered no rebuke, though his cunning had never seemed sharper. He spoke instead of strategy, reminding his mates that though the honest party held the ship, those who possessed the boats would command the upper hand once the treasure was found. As for the hostage, Silver added with a sidelong glance at Jim, the boy would be kept close—led on a line like so much gold against accidents—until such time as ship and treasure both were secured. Then, he promised, they would talk young Hawkins over and give him his share for all his kindness.</p>
 <p>Jim&#x27;s heart sank. The scheme was feasible, and Silver, already twice a traitor, would not hesitate to seize it. Yet even should circumstances force the cook to honour his bargain with the doctor, what then? The moment his followers&#x27; suspicions ripened into certainty, Jim and the crippled pirate would face five strong seamen alone. And still the mystery of the doctor&#x27;s parting words gnawed at him: *Look out for squalls when you find it.*</p>
@@ -992,9 +1245,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
 <section class="chapter" id="chapter-32" data-num="32">
-    <img class="chapter-image" src="images_cinematic/chapter_32.webp" alt="Flint&#x27;s Ghost Haunts the Hunt illustration" loading="lazy">
-    <div class="chapter-number">Chapter 32</div>
-    <h2 class="chapter-title">Flint&#x27;s Ghost Haunts the Hunt</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_32.webp"><img class="chapter-image" src="images_cinematic/chapter_32.webp" alt="Flint&#x27;s Ghost Haunts the Hunt illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">32</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 32</div>
+            <h2 class="chapter-title">Flint&#x27;s Ghost Haunts the Hunt</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The party halted upon the brow of the plateau, partly to steady their rattled nerves after the grim discovery of the skeleton, and partly to give rest to Silver and the ailing men. From this elevated perch, the world spread out before them in all directions—westward, the Cape of the Woods lay fringed with breaking surf; behind them, the anchorage and Skeleton Island fell away, with the open eastern sea glittering beyond the lowlands. The Spy-glass reared above them, spotted with lonely pines and scarred with black precipices. Save for the distant thunder of breakers and the chirping of insects, a profound silence held the island—not a man, not a sail broke the immense solitude.</p>
 <p>Silver took his bearings with the compass and pronounced the search child&#x27;s play now, with three tall trees standing in proper line from Skeleton Island. But the pirates had little stomach for celebration. Talk of Flint—his blue face, his terrible end, the rum that had killed him—crept among them in lowering whispers until their voices scarcely disturbed the stillness of the wood.</p>
 <p>Then, out of the trees ahead, a thin and trembling voice struck up that infamous refrain: *&quot;Fifteen men on the dead man&#x27;s chest—Yo-ho-ho, and a bottle of rum!&quot;*</p>
@@ -1011,9 +1269,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
 <section class="chapter" id="chapter-33" data-num="33">
-    <img class="chapter-image" src="images_cinematic/chapter_33.webp" alt="Ben Gunn&#x27;s Secret Revealed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 33</div>
-    <h2 class="chapter-title">Ben Gunn&#x27;s Secret Revealed</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_33.webp"><img class="chapter-image" src="images_cinematic/chapter_33.webp" alt="Ben Gunn&#x27;s Secret Revealed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">33</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 33</div>
+            <h2 class="chapter-title">Ben Gunn&#x27;s Secret Revealed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Never before had fortune reversed itself so completely, so cruelly. Six men stood at the edge of that ransacked pit, each one struck dumb as though by a physical blow. The treasure—Flint&#x27;s legendary hoard of seven hundred thousand pounds—was gone, the cache reduced to nothing more than scattered boards and a single two-guinea piece that Morgan plucked from the dirt with a torrent of oaths.</p>
 <p>Yet Silver, that remarkable villain, recovered almost before the others had drawn breath to curse. His mind had been fixed upon that money like a racer straining toward the finish, and though he was brought up dead in a single heartbeat, he found his footing with terrifying swiftness. Without a word of explanation, he pressed a double-barrelled pistol into young Hawkins&#x27;s hands and whispered for him to stand ready. Then, quiet as a shadow, he maneuvered northward until the hollow of the empty pit lay between the two of them and the five furious buccaneers.</p>
 <p>Jim could hardly stomach it—this constant turning of coats, this endless calculation. &quot;So you&#x27;ve changed sides again,&quot; he whispered, revolted by the man&#x27;s duplicity even as he accepted the weapon.</p>
@@ -1028,9 +1291,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
 <section class="chapter" id="chapter-34" data-num="34">
-    <img class="chapter-image" src="images_cinematic/chapter_34.webp" alt="Gold, Farewell, and Marooned Mutineers illustration" loading="lazy">
-    <div class="chapter-number">Chapter 34</div>
-    <h2 class="chapter-title">Gold, Farewell, and Marooned Mutineers</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_34.webp"><img class="chapter-image" src="images_cinematic/chapter_34.webp" alt="Gold, Farewell, and Marooned Mutineers illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">34</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 34</div>
+            <h2 class="chapter-title">Gold, Farewell, and Marooned Mutineers</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning following our discovery found us bent to the considerable labor of moving that vast fortune—a full mile overland to the beach, then three miles more by boat to the *Hispaniola*. Though we were but a small company of workmen, the three mutineers still skulking about the island troubled us little; a single watchman posted on the hillside proved sufficient guard against surprise, for we reckoned those villains had quite lost their appetite for fighting.</p>
 <p>So the work went briskly forward. Gray and Ben Gunn plied the boat whilst the rest of us heaped treasure upon the sand. Two gold bars slung together made burden enough for any man, and he was glad to carry them slowly. As for myself, being of little use at such heavy lifting, I spent my days in the cave, packing coined money into bread-bags—and never did I take greater pleasure in any task. What a strange collection it was, far surpassing even Billy Bones&#x27;s hoard in its wonderful variety: English and French and Spanish pieces, Georges and Louises, doubloons and double guineas and moidores and sequins, bearing the faces of a hundred years&#x27; worth of European kings. There were curious Oriental coins stamped with markings like wisps of string or spider&#x27;s web, round pieces and square, and some bored through the middle as if meant to be worn about the neck. Nearly every variety of money in the world must have found its place in that treasure, and for sheer number they were thick as autumn leaves, until my back ached from stooping and my fingers grew sore from the sorting.</p>
 <p>Day after day the work continued. Each evening saw a fortune stowed aboard, yet another fortune awaited the morrow—and through all this time we heard nothing of the surviving mutineers. Until the third night, when the doctor and I stood upon the hill overlooking the lowlands, and from the thick darkness below came a sound carried on the wind, somewhere between shrieking and singing.</p>
@@ -1174,6 +1442,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

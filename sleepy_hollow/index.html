@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Drowsy, Enchanted Valley&#x27;s Haunted Legacy illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Drowsy, Enchanted Valley&#x27;s Haunted Legacy</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Drowsy, Enchanted Valley&#x27;s Haunted Legacy illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Drowsy, Enchanted Valley&#x27;s Haunted Legacy</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Nestled within a broad expanse of the Hudson River, where Dutch navigators of old would shorten sail and invoke the protection of St. Nicholas upon crossing the Tappan Zee, lies the drowsy village of Tarry Town—so named, they say, for the tendency of local husbands to linger overlong at the tavern. Not two miles distant rests a sequestered glen, cradled among high hills, where a brook murmurs softly and the only sounds disturbing the profound stillness are the whistle of a quail or the tapping of a woodpecker. This enchanted hollow, home to descendants of the original Dutch settlers, has long borne the name Sleepy Hollow, for a dreamy influence pervades its very atmosphere, bewitching all who dwell there with visions, trances, and marvelous beliefs. Chief among the spectral inhabitants haunting this region is the Headless Horseman—said to be the ghost of a Hessian trooper who lost his head to a cannonball during the Revolutionary War and now rides nightly in furious quest of it.</p>
 <p>Into this spell-bound valley came Ichabod Crane, a lanky Connecticut schoolmaster whose angular frame and long snipe nose made him resemble nothing so much as a scarecrow eloped from a cornfield. Though he ruled his humble schoolhouse with the birch rod, Ichabod tempered justice with discrimination, reserving the severest corrections for the sturdiest Dutch urchins while showing leniency to the meek. His meager salary compelled him to board among the families of his pupils, rendering himself useful by assisting with farm labor and ingratiating himself with mothers by dandling their children. He served also as the neighborhood&#x27;s singing-master, and his nasal melodies echoing from the church gallery were a source of considerable personal vanity.</p>
 <p>Ichabod possessed an insatiable appetite for the marvelous, devouring Cotton Mather&#x27;s tales of witchcraft and spending long evenings with Dutch wives listening to stories of ghosts, goblins, and particularly the Galloping Hessian. Yet the terrors these tales conjured during his solitary walks home through the darkened countryside were as nothing compared to the perplexity visited upon him by a woman—Katrina Van Tassel, the coquettish daughter of a prosperous Dutch farmer whose abundant lands and groaning larder set Ichabod&#x27;s imagination aflame with visions of roasted pigs and juicy hams, of turning such wealth to cash and striking westward.</p>
@@ -522,9 +625,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Tale&#x27;s Moral Playfully Debated illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Tale&#x27;s Moral Playfully Debated</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Tale&#x27;s Moral Playfully Debated illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Tale&#x27;s Moral Playfully Debated</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The tale now committed to these pages came to the chronicler&#x27;s ears in very nearly the same fashion as it has been set down here—related aloud at a Corporation meeting in the venerable city of Manhattoes, where the most distinguished and sagacious burghers of that ancient place had gathered in their customary assembly. The gentleman who delivered the narrative was a figure of pleasant, if somewhat careworn, aspect: shabby in his pepper-and-salt attire, bearing a face that mingled sadness with good humor in equal measure, and carrying about him the unmistakable air of one whose purse had grown lighter than his spirits. Indeed, one could not help but suspect that his considerable efforts to amuse the company sprang from circumstances that made entertainment a necessity rather than a mere pastime.</p>
 <p>When at last the story reached its conclusion, laughter and approval rippled through the assembled worthies—most enthusiastically, it must be noted, from two or three deputy aldermen who had spent the better portion of the telling in peaceful slumber and therefore greeted the ending with the fresh delight of men who had missed everything preceding it. Yet not all present surrendered so readily to merriment. One gentleman in particular, tall and dry in his bearing, with eyebrows that beetled most formidably over a grave and rather severe countenance, remained unmoved throughout the general hilarity. He folded his arms, inclined his head, and fixed his gaze upon the floor with the deliberate air of a man turning some weighty doubt over in his mind. Here was one of those cautious souls who refuses to laugh except upon the firmest of grounds—when reason and law stand squarely on his side.</p>
 <p>Once the company&#x27;s mirth had run its course and silence settled once more upon the room, this skeptical gentleman assumed a posture of judicial inquiry, one arm resting upon the elbow of his chair, the other planted akimbo at his side. With a slight but exceedingly sage motion of his head and a pronounced contraction of his brow, he demanded to know what moral the story intended to convey and what, precisely, it went to prove.</p>
@@ -666,6 +774,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

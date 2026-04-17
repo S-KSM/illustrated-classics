@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Stranger Arrives in West Egg illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Stranger Arrives in West Egg</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Stranger Arrives in West Egg illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Stranger Arrives in West Egg</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In the spring of 1922, a young man named Nick Carraway came East from the Middle West, carrying with him his father&#x27;s measured advice about reserving judgment—a counsel born of the recognition that not everyone has had the same advantages in life. This habit of withholding condemnation had made Nick something of a confidant to troubled souls, though it had also subjected him to the unburdening of bores, and he confesses now, looking back after the summer&#x27;s events had closed, that his tolerance found its limit. He returned from the East wanting the world locked in moral attention forever, wanting no more glimpses into the riotous depths of the human heart. Only one figure remained exempt from this exhausted disillusionment—a man named Gatsby, whose extraordinary gift for hope, whose romantic readiness for life&#x27;s promises, set him apart from the foul dust that eventually floated in the wake of his dreams.</p>
 <p>Nick settled in West Egg, the less fashionable of two egg-shaped peninsulas jutting into Long Island Sound, renting a small weather-beaten bungalow wedged between the mansions of millionaires. His nearest neighbor inhabited a colossal imitation of a Norman château, complete with marble swimming pool and forty acres of lawn—this was Gatsby&#x27;s place, though Nick had not yet met the man. Across the bay glittered the white palaces of East Egg, and it was there, on a warm windy evening, that Nick drove to dine with his distant cousin Daisy and her husband Tom Buchanan.</p>
 <p>Tom had been a formidable presence at Yale, a national figure in football whose subsequent life savored of anticlimax, and now his enormous wealth expressed itself in polo ponies and restless discontent. His body remained cruel and powerful, his manner touched with paternal contempt. Their Georgian mansion overlooked the bay, its lawn seeming to leap and run toward the water, and inside Nick found Daisy and her friend Jordan Baker buoyed upon a couch like figures on an anchored balloon, their white dresses rippling in the breeze until Tom shut the windows and the caught wind died.</p>
@@ -523,9 +626,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_anime/chapter_2.webp" alt="The Valley of Ashes and Its Secrets illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">The Valley of Ashes and Its Secrets</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="The Valley of Ashes and Its Secrets illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">The Valley of Ashes and Its Secrets</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Somewhere between West Egg and New York, the motor road and railroad conspire briefly to skirt a desolate stretch of land—a valley of ashes, where the refuse of the city accumulates in grey ridges and grotesque hillocks, where even the men who labor there seem fashioned from the same powdery substance, crumbling as they move through air thick with industrial decay. Brooding over this wasteland, the faded eyes of Doctor T. J. Eckleburg gaze out from an enormous billboard—blue, gigantic, bespectacled, and utterly devoid of the face they ought to belong to. Some forgotten oculist erected this advertisement years ago and then vanished, leaving those painted eyes to keep their vigil over the solemn dumping ground like the eyes of a blind god surveying a kingdom of dust.</p>
 <p>It was this blighted geography, with its requisite halt for passing barges, that occasioned my first meeting with Tom Buchanan&#x27;s mistress—a woman whose existence was insisted upon wherever Tom was known, whose presence at popular restaurants his acquaintances resented even as they noted it with that peculiar fascination the wealthy reserve for open scandal. I had been curious about her in the abstract way one is curious about other people&#x27;s indiscretions, but I had no particular desire to make her acquaintance until Tom, tanked up from luncheon and possessed by that violent determination characteristic of his physical approach to the world, literally forced me from the train at the ash-heaps.</p>
 <p>The garage of George B. Wilson materialized from the grey waste—unprosperous, bare, containing only the dust-covered wreck of a Ford crouching in shadow. Wilson himself proved a spiritless, anaemic man, blond and faintly handsome, who greeted us with a damp gleam of hope in his pale eyes. But it was his wife Myrtle who commanded attention when she descended the stairs—thickish, faintly stout, yet carrying her flesh with a smouldering sensuality that contradicted her plain features. She walked through her husband as if he were a ghost, shook Tom&#x27;s hand while looking him flush in the eye, and within moments had arranged to meet us at the train station, leaving Wilson to his cement-colored obscurity.</p>
@@ -535,9 +643,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_anime/chapter_3.webp" alt="Whispers and Pretensions in the City illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">Whispers and Pretensions in the City</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="Whispers and Pretensions in the City illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">Whispers and Pretensions in the City</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The afternoon unraveled into evening in that cramped apartment above the ash heaps, and I found myself drawn unwillingly deeper into a world I had no business inhabiting. What had begun as an impromptu excursion with Tom now swelled into a grotesque little party, the rooms filling with characters who seemed to have materialized from the very smoke that hung perpetually in the air.</p>
 <p>Catherine arrived first—Myrtle&#x27;s sister, a worldly creature of about thirty whose appearance bore the unmistakable marks of careful artifice. Her red hair sat in a solid, sticky bob, her complexion powdered to a milky pallor, and her eyebrows, having been plucked into oblivion, were redrawn at angles that nature had never intended. She moved through the space with proprietary ease, her pottery bracelets clicking an incessant percussion against her wrists. The McKees followed from the flat below: he a pale, feminine photographer still wearing a spot of lather on his cheek like some badge of domestic haste; she shrill and languid and horrible all at once, proud to inform me that Chester had photographed her one hundred and twenty-seven times since their marriage.</p>
 <p>But it was Myrtle herself who commanded attention as the whisky flowed and the smoke thickened. She had changed into an elaborate cream-colored chiffon that rustled with every movement, and with that change of costume came an alarming transformation of manner. The vital, earthy woman from the garage had been replaced by something approaching grotesque hauteur. Her laughter grew more affected, her gestures more violent, until she seemed to expand while the room contracted around her, revolving on some noisy, creaking pivot through the haze.</p>
@@ -550,9 +663,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_anime/chapter_4.webp" alt="Gatsby&#x27;s Mysterious Past Revealed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">Gatsby&#x27;s Mysterious Past Revealed</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="Gatsby&#x27;s Mysterious Past Revealed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Gatsby&#x27;s Mysterious Past Revealed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Through the shimmering veil of summer nights, I observed from my modest cottage the magnificent theater of excess that was Gatsby&#x27;s estate. His blue gardens transformed into something almost mythological—men and women drifting like moths through champagne mist and starlight, his motorboats slicing the Sound into cataracts of white foam, his Rolls-Royce shuttling parties with the regularity of public transport. The machinery of his hospitality was awesome in its precision: pyramids of pulpless oranges testifying to Friday&#x27;s crates, armies of caterers draping canvas and colored lights until the grounds resembled nothing so much as a Christmas tree for giants, bars stocked with cordials so ancient they predated his female guests&#x27; memories entirely.</p>
 <p>I had been actually invited—a distinction I came to understand was exceedingly rare. Most guests simply materialized, borne by automobiles and rumors toward that glowing shore, conducting themselves with the cheerful abandon of visitors to an amusement park. Some departed without having glimpsed their host at all. But a chauffeur in robin&#x27;s-egg blue had crossed my lawn bearing a surprisingly formal invitation signed in a majestic hand: Jay Gatsby.</p>
 <p>I arrived in white flannels and found myself adrift among swirls of strangers, young Englishmen selling something with hungry eyes, cocktail trays floating through twilight like promises. My search for Gatsby proved futile and faintly embarrassing until Jordan Baker appeared on the marble steps, and I attached myself to her with grateful relief. We descended into the party&#x27;s depths together, settling at tables where the conversation turned inevitably toward our mysterious host. The whispers were delicious and contradictory—he had killed a man, he had been a German spy, he had served in the American army. The romantic speculation he inspired seemed testimony enough to his peculiar power.</p>
@@ -563,9 +681,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_anime/chapter_5.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On Sunday mornings, while church bells tolled their solemn hymns across the villages, the glittering world descended upon Gatsby&#x27;s estate to twinkle irreverently on his lawn. The young ladies drifted between cocktails and roses, spinning fantastic rumors—that he was a bootlegger, a murderer, perhaps even kin to the devil himself—all while accepting his hospitality with the peculiar tribute of knowing nothing whatever about their host.</p>
 <p>I once recorded the names of his guests upon an old timetable, now yellowed and disintegrating at its folds, dated July 5th, 1922. From East Egg came the Hornbeams and Willie Voltaires, the whole Blackbuck clan who gathered like goats in corners, Edgar Beaver whose hair turned cotton-white one winter afternoon for reasons no one could explain. From West Egg arrived movie people and gamblers, men connected to films and fluctuating stocks, including one Klipspringer who appeared so frequently he became known simply as &quot;the boarder.&quot; They arrived from everywhere—theatrical folk, divorcees, a prince we called Duke whose real name I never knew—all accepting Gatsby&#x27;s starlight as their due.</p>
 <p>Then came that disconcerting ride into the city, Gatsby&#x27;s cream-colored car lurching up my drive with its three-noted horn. He had seemed, in our previous conversations, disappointingly hollow—merely the proprietor of an elaborate roadhouse. But that morning, balancing on his dashboard with that peculiarly American restlessness, he began unspooling a biography so ornate I could scarcely contain my incredulous laughter. A wealthy orphan from San Francisco (which he called the Middle West), educated at Oxford, a young rajah collecting rubies across European capitals, then a decorated war hero—even Montenegro had honored him. The phrases were worn threadbare, evoking only a turbaned character leaking sawdust. Yet when he produced the medal, the photograph from Trinity Quad, the thing had an authentic look, and suddenly I saw tiger skins flaming in his palace on the Grand Canal.</p>
@@ -576,9 +699,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_anime/chapter_6.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The night I returned to West Egg, Gatsby&#x27;s mansion blazed with such ferocious illumination that for one bewildering instant I mistook the whole peninsula for a conflagration. Yet no revelry stirred within those luminous walls—only the restless proprietor himself, wandering through empty rooms, waiting for word of what I might arrange. When I told him I would telephone Daisy, his studied nonchalance fooled no one; he deflected with elaborate casualness, inquiring about the state of my grass, offering dubious business propositions through Wolfshiem&#x27;s network, all while that suppressed eagerness trembled beneath every word. I cut him off before the offer could become a debt I&#x27;d carry between us, and he retreated unwillingly into his blazing house while I fell into a sleep too deep to wonder how many hours he spent glancing into rooms.</p>
 <p>The appointed afternoon arrived waterlogged and grey. By then Gatsby&#x27;s preparations had achieved a kind of comic grandeur—a man dispatched in the pouring rain to shave my ragged lawn, a greenhouse&#x27;s worth of flowers overwhelming my modest cottage, and finally Gatsby himself, pale and sleepless in white flannel and gold tie, his nerves wound so tight he could neither see the grass he&#x27;d obsessed over nor sit still long enough to pretend calm. He started at every sound, stared blindly at economic texts, and threatened to abandon the entire enterprise minutes before Daisy&#x27;s motor turned into my lane.</p>
 <p>What followed bore all the hallmarks of exquisite disaster. Gatsby vanished the moment Daisy stepped inside, only to reappear at the front door—standing rigid in a puddle, pale as death, hands plunged like weights in his pockets—and stalk past me with the mechanical precision of a man on a wire. The initial reunion proved almost unbearably awkward: Gatsby reclining against the mantelpiece in fraudulent ease, his head tilted so far back it dislodged a defunct clock; Daisy perched frightened yet graceful on a stiff chair; and between them, five years of silence broken only by stilted pleasantries. When I escaped to the kitchen, Gatsby followed, whispering that the whole affair was a terrible mistake. I told him he was acting like a child and sent him back.</p>
@@ -588,9 +716,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_anime/chapter_7.webp" alt="The Invention of Jay Gatsby illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">The Invention of Jay Gatsby</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="The Invention of Jay Gatsby illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">The Invention of Jay Gatsby</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It was around this time that Gatsby&#x27;s mounting fame brought an ambitious young reporter to his door—a man operating on instinct and rumor, though his instinct proved shrewder than he knew. For Gatsby had become that curious thing: a figure perpetually on the verge of being news, his name circulating through offices and drawing rooms alike, accumulating legends as a ship&#x27;s hull accumulates barnacles. Tales of underground pipelines to Canada clung to him, and there persisted one particularly fanciful notion that he lived not in a house at all but aboard some nautical phantom that drifted secretly along the Long Island shore. Why such inventions should have satisfied James Gatz of North Dakota is difficult to say.</p>
 <p>James Gatz—that was the name, or at least the legal name. He had shed it at seventeen, at the precise moment when destiny materialized in the form of Dan Cody&#x27;s yacht dropping anchor over the treacherous flats of Lake Superior. The boy who borrowed a rowboat to warn the millionaire of dangerous winds was already somebody else entirely—Jay Gatsby, sprung from his own Platonic conception of himself, a son of God who must be about His Father&#x27;s business in service of a vast, vulgar, and meretricious beauty. His shiftless farm parents had never been real to him; his imagination had simply declined to accept them. And so he invented the sort of Jay Gatsby a seventeen-year-old boy would invent and remained faithful to that invention until the end.</p>
 <p>Before Cody, there had been the hardscrabble existence of a clam-digger and salmon-fisher along Superior&#x27;s south shore, the brown body hardening through half-fierce, half-lazy labor. There had been women who spoiled him into contempt, and nights when the most grotesque and fantastic conceits haunted his bed while moonlight soaked his tangled clothes on the floor. A universe of ineffable gaudiness spun itself out in his brain—reveries that hinted at the unreality of reality, promising that the rock of the world was founded securely on a fairy&#x27;s wing. A brief, disastrous attempt at St. Olaf&#x27;s College had ended in two weeks, the institution&#x27;s ferocious indifference to the drums of his destiny proving intolerable.</p>
@@ -599,9 +732,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_anime/chapter_8.webp" alt="The Hottest Day&#x27;s Simmering Tensions illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">The Hottest Day&#x27;s Simmering Tensions</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="The Hottest Day&#x27;s Simmering Tensions illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">The Hottest Day&#x27;s Simmering Tensions</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It was precisely when curiosity about Gatsby had reached its fevered peak that the lights of his mansion failed to illuminate the Saturday darkness—and so, as mysteriously as it had begun, his reign as Trimalchio drew to its close. The servants were dismissed, replaced by rough associates of Wolfshiem&#x27;s, all because Daisy had taken to visiting in the afternoons, and the whole glittering caravansary collapsed like a house of cards beneath the weight of her disapproval.</p>
 <p>The invitation to lunch at the Buchanans&#x27; arrived through Gatsby himself, though Daisy telephoned shortly after with an urgency that suggested something momentous brewing beneath the surface. The day that followed proved to be the most broiling of the summer, the kind of heat that confuses the senses and loosens whatever restraints civilization imposes upon its inhabitants. In the darkened parlor, Daisy and Jordan lay like silver idols upon an enormous couch while Tom conducted suspicious business on the telephone—his mistress calling, Jordan whispered, though he denied it.</p>
 <p>When Daisy kissed Gatsby openly and murmured her love, when she told him he always looked so cool, Tom Buchanan witnessed what he had perhaps long suspected but never believed. Something fundamental shifted in that sweltering room. His mouth opened in astonishment as he recognized his wife as someone he had known a long time ago, now revealed as a stranger.</p>
@@ -613,9 +751,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Long Secret Finally Revealed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">The Long Secret Finally Revealed</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Long Secret Finally Revealed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">The Long Secret Finally Revealed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>That final night I could not sleep—a foghorn moaning across the Sound, my own mind swinging between waking horror and nightmare, until at last I heard a taxi climbing Gatsby&#x27;s drive and knew I had to go to him. I found him leaning against a hall table, hollowed out with waiting, with watching Daisy&#x27;s window until four in the morning when she had appeared briefly, extinguished her light, and left him with nothing.</p>
 <p>We wandered his vast house hunting cigarettes, pushing through curtains like pavilions, stumbling over ghostly piano keys in the dark. Dust lay everywhere, the rooms musty and unaired, and when at last we found two stale cigarettes in a humidor, we sat by the open French windows smoking into the darkness. I urged him to leave—Atlantic City, Montreal, anywhere—but he would not abandon his vigil until Daisy declared herself.</p>
 <p>It was then, in that gray hour before dawn, that he told me everything. The persona of Jay Gatsby had shattered against Tom&#x27;s brutal revelations, and with nothing left to protect, he spoke freely of his youth, of Dan Cody, and above all of Daisy. She had been the first &quot;nice&quot; girl he ever knew, her Louisville house a palace of ripe mystery, bedrooms cooler and lovelier than any he had imagined, corridors humming with romances still fresh rather than laid away in lavender. He had come to her door wearing only the invisible cloak of his uniform, a penniless young officer trading on borrowed time, and he had taken her—ravenously, unscrupulously—because he had no right to touch her hand. He meant to leave, yet found he had committed himself instead to the following of a grail. On a cold autumn afternoon before he shipped overseas, they sat together by the fire, her cheek flushed, communicating more profoundly in silence than they ever had in words.</p>
@@ -627,9 +770,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Loneliness of the Aftermath illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">The Loneliness of the Aftermath</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Loneliness of the Aftermath illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">The Loneliness of the Aftermath</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>After two years the particulars have blurred, yet certain images remain fixed in memory with the permanence of grief: the endless procession of police and photographers streaming through Gatsby&#x27;s front door, the curious little boys clustering open-mouthed about the pool, a detective&#x27;s careless pronouncement of &quot;madman&quot; that would set the tone for every grotesque newspaper headline to follow. Catherine, Myrtle&#x27;s sister, surprised me with her determined silence at the inquest—she swore her sister had never seen Gatsby, had been perfectly happy with Wilson, and so the whole sordid business was reduced to its simplest form: a man deranged by grief, a senseless act. The case rested there, sealed in convenient lies.</p>
 <p>But all that official machinery seemed remote and unessential beside the terrible intimacy of what I had inherited. From the moment I telephoned news of the catastrophe, I found myself on Gatsby&#x27;s side, and utterly alone. Every practical question was referred to me—not because anyone cared, but because no one else did. I called Daisy within the hour; she and Tom had already fled, leaving no address, no word, nothing. I wanted desperately to find someone for him, to go into that room where he lay still and silent and promise him that he would not go through this alone.</p>
 <p>Meyer Wolfshiem&#x27;s name was not in the phone book. His written reply, when it finally came, was a masterwork of evasion—terrible shock, very important business, cannot get mixed up in this thing. The telephone brought only strangers: a panicked voice from Chicago inquiring about bonds, young Parke&#x27;s arrest, matters from that shadow world Gatsby had inhabited. When I explained that Mr. Gatsby was dead, there was only silence, then the sharp squawk of a severed connection.</p>
@@ -771,6 +919,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

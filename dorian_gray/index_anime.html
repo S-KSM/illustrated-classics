@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_anime/chapter_1.webp" alt="Art&#x27;s Beautiful and Useless Truth illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">Art&#x27;s Beautiful and Useless Truth</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="Art&#x27;s Beautiful and Useless Truth illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Art&#x27;s Beautiful and Useless Truth</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Before the curtain rises upon the story proper, the author steps forward to address his audience directly—not with the customary throat-clearing of Victorian preambles, but with a manifesto carved in marble and poison.</p>
 <p>The artist, we are informed, exists as a creator of beautiful things, yet the supreme achievement of art lies in revelation through concealment—the work must shimmer forth while its maker retreats into shadow. As for the critic, that curious species who hovers about galleries and circulates through drawing rooms pronouncing judgments, he is merely a translator, rendering his impressions into some new dialect or medium. And here the first paradox strikes like a match: all criticism, from the most exalted to the most debased, is nothing more than autobiography in disguise.</p>
 <p>The author proceeds to sort humanity into its essential categories with the precision of a botanist classifying orchids. Those unfortunate souls who discover ugliness lurking within beautiful things are pronounced corrupt—though not interestingly so, for they lack even the saving grace of charm. Those who perceive beauty within beauty constitute the cultivated, the elect, for whom aesthetic experience requires no moral translation. There exists hope for such refined creatures, whereas for the others there exists only vulgarity.</p>
@@ -524,9 +627,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_anime/chapter_2.webp" alt="The Seduction of a Beautiful Soul illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">The Seduction of a Beautiful Soul</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="The Seduction of a Beautiful Soul illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">The Seduction of a Beautiful Soul</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The studio lay heavy with fragrance—roses mingling with lilac and the pink-flowering thorn—while Lord Henry Wotton reclined upon a divan of Persian saddle-bags, wreathed in cigarette smoke, watching shadows of birds flit across the tussore-silk curtains like some transient Japanese painting. Outside, bees droned through unmown grass, and the distant murmur of London hummed beneath it all like an organ&#x27;s bourdon note. At the room&#x27;s centre stood a portrait of extraordinary beauty: a young man rendered in full length upon the canvas, before which the artist Basil Hallward sat transfixed, his pleasure giving way to something like fear as he pressed his fingers to his closed eyes, as though to imprison a dream he dared not lose.</p>
 <p>Lord Henry pronounced it Basil&#x27;s finest work, yet the painter refused to exhibit it—not at the Academy, not at the Grosvenor, not anywhere. He had put too much of himself into the thing, he confessed, though Harry dismissed such sentiment as vanity. The subject bore no resemblance to Basil whatsoever; this ivory-and-rose-leaf Adonis, this Narcissus in oils, possessed a beauty that transcended intellect, which Lord Henry declared the enemy of harmony in any face. The painter&#x27;s reluctance only deepened Harry&#x27;s curiosity, and at last the name escaped: Dorian Gray.</p>
 <p>The revelation prompted Basil to speak of secrecy as the sole remaining romance in modern life, while Harry countered with sardonic observations on marriage as institutionalized deception. They wandered into the garden, settling beneath a laurel bush where sunlight polished the leaves and daisies trembled in the grass, and there Lord Henry pressed his friend for the truth behind his reticence.</p>
@@ -536,9 +644,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_anime/chapter_3.webp" alt="Lord Henry&#x27;s Dangerous Philosophy Unveiled illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">Lord Henry&#x27;s Dangerous Philosophy Unveiled</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="Lord Henry&#x27;s Dangerous Philosophy Unveiled illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">Lord Henry&#x27;s Dangerous Philosophy Unveiled</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The fateful meeting unfolds in Basil Hallward&#x27;s studio, where Dorian Gray sits at the piano, leafing through Schumann&#x27;s &quot;Forest Scenes&quot; with the careless grace of youth, unaware that the afternoon will transform him utterly. Lord Henry Wotton enters, and from the first exchange of pleasantries—the witty deflection about Lady Agatha&#x27;s charitable concerts, the languid charm of his manner—something quickens in the atmosphere, some current of dangerous possibility.</p>
 <p>Basil attempts, with increasing futility, to dismiss his friend, sensing perhaps what influence this serpent-tongued aesthete might exert upon his beautiful sitter. But Dorian, willful and petulant as only the very young and very lovely can afford to be, insists Lord Henry remain. And so the painter returns to his canvas while Lord Henry, reclining upon the divan with deliberate indolence, begins his seduction—not of the body, but of the soul.</p>
 <p>His philosophy spills forth in honeyed paradoxes: all influence is immoral, for it robs a man of his authentic self; the aim of life is self-development, the realization of one&#x27;s nature; we are punished not for our sins but for our refusals; the only way to rid oneself of temptation is to yield to it. Dorian stands motionless upon the platform, lips parted, eyes strangely bright, as these ideas penetrate him like arrows finding their mark. Words, he realizes—mere words!—possess a terrible power to give form to formless things, to awaken what has slumbered unacknowledged in the depths of one&#x27;s being.</p>
@@ -549,9 +662,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_anime/chapter_4.webp" alt="A Lineage of Beauty and Tragedy illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">A Lineage of Beauty and Tragedy</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="A Lineage of Beauty and Tragedy illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">A Lineage of Beauty and Tragedy</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>At half-past twelve the following day, Lord Henry Wotton made his way to the Albany to call upon his uncle, Lord Fermor—that most English of specimens, a genial bachelor whom the world deemed selfish simply because it could extract nothing from him, yet whom Society judged generous for the singular virtue of feeding those who entertained him. The old gentleman had perfected what Lord Henry might have called the great aristocratic art of doing absolutely nothing, maintaining two town houses he never used, dining perpetually at his club, and excusing his sole concession to industry—the management of his collieries—on the grounds that coal enabled a gentleman the decency of burning wood upon his own hearth.</p>
 <p>Lord Henry had not come for money, that tedious necessity which only troubled those who paid their bills. He sought instead what he termed &quot;useless information&quot;—intelligence concerning the parentage of Mr. Dorian Gray. The name stirred something in Lord Fermor&#x27;s memory, and soon the tale unspooled: Dorian was the grandson of the late Lord Kelso, his mother the extraordinarily beautiful Margaret Devereux, who had scandalized Society by eloping with a penniless young subaltern. The romance had ended in tragedy—the young husband killed in a duel at Spa, rumored to have been orchestrated by Kelso himself through a paid Belgian adventurer. Margaret had returned to her father&#x27;s house, never spoke to him again, and died within the year, leaving behind the child who would become Dorian Gray.</p>
 <p>The story stirred Lord Henry profoundly as he walked toward his Aunt Agatha&#x27;s luncheon. Here was tragedy as the necessary shadow behind beauty—worlds in travail that the meanest flower might blow. He recalled how charming Dorian had been the evening before, how the boy&#x27;s face had wakened with wonder in the candlelight, how speaking to him was like playing upon an exquisite violin. The exercise of influence, Lord Henry mused, was perhaps the most satisfying joy remaining in their vulgar age—to project one&#x27;s soul into some gracious form, to hear one&#x27;s own views returned with the added music of youth and passion. Dorian possessed grace, the white purity of boyhood, beauty such as Greek marbles preserved. What could one not fashion from such material? Lord Henry resolved to be to Dorian what the boy was unconsciously to Basil—a shaping influence, a dominant force.</p>
@@ -561,9 +679,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_anime/chapter_5.webp" alt="Sibyl Vane and the Theatre of Love illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">Sibyl Vane and the Theatre of Love</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Sibyl Vane and the Theatre of Love illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Sibyl Vane and the Theatre of Love</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>One languid afternoon, a month removed from their first fateful meeting, Dorian Gray found himself draped across a luxurious arm-chair in Lord Henry&#x27;s Mayfair library—that exquisite little room where satinwood and Persian silk conspired with apricot London light to create an atmosphere of studied refinement. Harry, characteristically late on principle (for punctuality, he maintained, was the thief of time), had left his young friend to the monotonous tyranny of a Louis Quatorze clock and the restless turning of illustrated pages.</p>
 <p>Into this tableau of beautiful impatience fluttered Lady Henry—Victoria, that curious creature whose dresses seemed designed in rage and donned in tempest, who collected unrequited passions and illusions with equal fervor, and who adored Wagner precisely because his music was loud enough to permit uninterrupted conversation. The exchange between her and Dorian proved brief, nervous, and rich with the particular comedy of mismatched sensibilities, until Harry&#x27;s arrival sent her flitting away like a rain-bedraggled bird of paradise, trailing frangipanni in her wake.</p>
 <p>With his wife dispatched and a cigarette lit, Lord Henry turned to the business of extracting confessions. Dorian, it emerged, had fallen desperately in love—not with some creature of society, but with an actress, a girl named Sibyl Vane whom no one had yet heard of but whom everyone would someday worship. Harry received this intelligence with characteristic paradoxes about women, marriage, and the decorative nature of the fairer sex, but Dorian persisted, unfolding the tale of his discovery: how Harry&#x27;s own philosophy had sent him wandering eastward through monstrous London in search of sensation; how a tawdry theatre with its vulgar drop-scenes and grotesque Romeo had yielded up this treasure—Juliet herself, with her flowerlike face and voice that moved from mellow depth to the tremulous ecstasy of nightingales.</p>
@@ -573,9 +696,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_anime/chapter_6.webp" alt="A Sister&#x27;s Dangerous Prince Charming illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">A Sister&#x27;s Dangerous Prince Charming</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="A Sister&#x27;s Dangerous Prince Charming illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">A Sister&#x27;s Dangerous Prince Charming</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In the cramped, dingy sitting-room where poverty has taken up permanent residence, Sibyl Vane buries her radiant face in her mother&#x27;s lap and whispers of happiness—that dangerous, intoxicating happiness that only the young and newly beloved can know. Mrs. Vane, that faded theatrical relic with her bismuth-whitened hands and her mind perpetually calculating debts, can only speak of money owed to Mr. Isaacs, of fifty pounds advanced, of propriety and prudence. But Sibyl has ceased to hear such pedestrian concerns. A rose shakes in her blood; Prince Charming rules her world now, and what is money when one has discovered love?</p>
 <p>Into this scene of maternal anxiety and daughterly rapture enters James Vane—rough, thick-set, altogether less finely bred than his sister. He is departing for Australia, that distant colony where fortunes are supposedly made, and he wishes to walk with Sibyl one final afternoon. The siblings venture into the wind-blown sunlight of the Euston Road, she graceful as a flower, he lumbering beside her like a common gardener escorting a rose. While Sibyl prattles of gold nuggets and rescued heiresses, weaving elaborate fantasies for James&#x27;s colonial future, the lad broods silently over darker matters. He has heard whispers at the stage-door, caught rumors of a gentleman who visits nightly, and his instinct—that curious race-instinct he cannot name—tells him this nameless suitor means his sister no good.</p>
 <p>Their conversation in the park turns sharp. Sibyl speaks of Prince Charming with the fervor of worship; James demands to know his name, his intentions, his very existence. When a golden-haired figure passes in an open carriage—Dorian Gray himself, glimpsed and gone—James seizes his sister&#x27;s arm with fierce urgency. His vow cuts the air like a dagger: if this man ever wrongs her, he shall kill him. Sibyl can only laugh at such melodrama, dismissing her brother as a foolish boy who knows nothing of love&#x27;s transformative power.</p>
@@ -585,9 +713,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_anime/chapter_7.webp" alt="Love&#x27;s Sudden and Foolish Blossoming illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">Love&#x27;s Sudden and Foolish Blossoming</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="Love&#x27;s Sudden and Foolish Blossoming illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Love&#x27;s Sudden and Foolish Blossoming</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>That evening, in a small private dining room at the Bristol, Lord Henry delivered his news with characteristic languor: Dorian Gray had become engaged to marry an actress. Basil Hallward received the announcement with undisguised alarm, his artistic sensibilities recoiling at the prospect of his beautiful subject entangled with someone so far beneath his station. But Harry, sipping vermouth and orange-bitters with the air of a man perpetually amused by the follies of others, offered no such conventional dismay. Marriage, he mused, was hardly worth either championing or condemning—it was merely another experience, and every experience possessed its particular value. If Dorian chose to worship this girl passionately for six months before inevitably turning his fascinations elsewhere, he would prove a wonderful study indeed.</p>
 <p>When Dorian himself arrived, flushed with that particular radiance that only first love can bestow, he swept aside all reservations with the evangelical fervor of the newly converted. He spoke of Sibyl Vane as though she were not merely a woman but a living embodiment of Shakespeare&#x27;s heroines—Rosalind in her moss-colored velvet, Juliet with lips the poet himself had taught to speak. He had watched her transform a dingy theatre into an enchanted forest, had kissed her behind the scenes while she trembled like a white narcissus, and had pledged himself to her with all the reckless certainty of youth. The engagement remained secret; his guardians would surely object; none of it mattered. In less than a year he would come of age, and then he could do precisely as he wished.</p>
 <p>Throughout dinner, Lord Henry parried Dorian&#x27;s romantic declarations with his customary arsenal of paradoxes. Pleasure, he insisted, was Nature&#x27;s test of approval; to be good meant nothing more than to be in harmony with oneself; beautiful sins, like beautiful things, remained the privilege of the rich. Yet Dorian, intoxicated by love, dared to challenge his mentor&#x27;s philosophy. When with Sibyl, he confessed, all of Harry&#x27;s poisonous, delightful theories fell away. Her trust made him faithful; her belief made him good. He wanted the irrevocable vow of marriage precisely because it was irrevocable—a permanence to match the permanence of his devotion.</p>
@@ -597,9 +730,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_anime/chapter_8.webp" alt="The Night Sibyl Vane&#x27;s Art Died illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">The Night Sibyl Vane&#x27;s Art Died</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="The Night Sibyl Vane&#x27;s Art Died illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">The Night Sibyl Vane&#x27;s Art Died</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The theatre was stifling that evening, a cramped and vulgar temple in which Dorian Gray had promised to reveal his divinity. The fat Jewish manager, all oily smiles and jewelled gesticulations, ushered the three men to their box with pompous servility—a Caliban greeting those who sought Miranda, as Dorian bitterly observed. Lord Henry, ever perverse in his amusements, declared himself charmed by the creature, while Basil Hallward contented himself with studying the coarse faces in the pit below. The gallery youths had stripped to their shirtsleeves against the oppressive heat; tawdry girls shared oranges and shrill laughter cut through the discord of popping corks.</p>
 <p>When Sibyl Vane appeared at last, she was undeniably lovely—fawnlike in her shy grace, a faint rose-shadow of a blush upon her cheeks. Lord Henry murmured his appreciation; Basil leapt to applaud; Dorian sat motionless, entranced. Yet as the girl began to speak Juliet&#x27;s verses, something proved terribly, inexplicably wrong. Her voice, though exquisite in timbre, rang false in every colour and tone. The passion was hollow, the gestures absurdly artificial. By the balcony scene, even the common audience had grown restless, whistling their displeasure. The manager raged; the play collapsed into fiasco. Lord Henry suggested departure with characteristic detachment, but Dorian remained, pale and bitter, to witness the catastrophe through to its groaning conclusion.</p>
 <p>What awaited him in the greenroom defied all expectation. Sibyl stood radiant, triumphant, her eyes lit with exquisite fire. She had acted badly, she confessed—and she would always act badly now, for Dorian had shown her reality. Before him, the theatre had been her only truth; she had lived through Rosalind and Portia, believed the painted shadows real. But love—his love—had freed her soul from that prison of artifice. The hollowness of the stage stood revealed; she had grown sick of shadows.</p>
@@ -609,9 +747,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Portrait&#x27;s First Terrible Truth illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">The Portrait&#x27;s First Terrible Truth</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Portrait&#x27;s First Terrible Truth illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">The Portrait&#x27;s First Terrible Truth</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Dorian Gray woke well past noon, cocooned in the luxurious trappings of his existence—olive-satin curtains with shimmering blue linings, a cup of tea upon old Sèvres china, the inevitable cascade of invitations and bills that shower upon fashionable young men during the season. The morning felt suspended in unreality; what had transpired the night before possessed the insubstantial quality of a dream half-remembered. He bathed in his onyx-paved bathroom, breakfasted lightly by an open window where warm air hung laden with spices and a bee circled sulphur-yellow roses in a blue-dragon bowl. He felt, for a suspended moment, perfectly happy.</p>
 <p>Then his eye fell upon the screen concealing the portrait, and happiness fled.</p>
 <p>Alone at last—having dismissed his valet with studied casualness—Dorian locked both doors and confronted what he dreaded to confirm. The portrait had indeed altered; the cruel twist about the lips remained fixed in paint, a visible testament to his treatment of Sibyl Vane. With something approaching scientific fascination, he contemplated the impossible change, wondering at the subtle affinity between canvas and soul. Yet the sight stirred conscience rather than horror alone. He resolved upon reformation: he would marry Sibyl, transform his selfish passion into something nobler. The portrait would serve as his moral compass, an ever-present symbol of sin&#x27;s degradation. He wrote her a passionate letter of contrition, page after page of wild sorrow, discovering that luxury peculiar to self-reproach—for when we blame ourselves, we feel no one else retains the right.</p>
@@ -622,9 +765,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Art of Unfeeling illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">The Art of Unfeeling</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Art of Unfeeling illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">The Art of Unfeeling</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning after Sibyl Vane&#x27;s death finds Dorian Gray at breakfast, sipping pale-yellow wine from a delicate Venetian glass, when Basil Hallward arrives in a state of considerable agitation. The painter, having learned of the tragedy through a late edition of *The Globe*, has spent a dreadful evening imagining one horror following upon another, and he comes expecting to find his young friend shattered by grief. What he discovers instead chills him to the marrow: Dorian, looking dreadfully bored, speaks of having attended the opera the very night Sibyl&#x27;s body lay in some sordid lodging. He dismisses the subject with an airy paradox borrowed from Lord Henry—that expression alone gives reality to things, and therefore silence renders events as though they had never occurred.</p>
 <p>When Basil presses him, appalled that Dorian can speak of other women&#x27;s charms while Sibyl awaits burial, the young man leaps to his feet with a philosophy of emotional mastery that reveals how thoroughly Harry&#x27;s influence has taken root. He will not be at the mercy of his emotions; he means to use them, enjoy them, and dominate them. Sibyl&#x27;s death, he insists, is merely one of the great romantic tragedies of the age—her passage back into the sphere of art, complete with the pathetic uselessness of martyrdom. The painter perceives with growing horror that something fundamental has changed in the boy who once sat for him with such natural, unspoiled grace.</p>
 <p>Yet even as Dorian wounds Basil with his callousness, he confesses a distinction between his two mentors: Harry is clever and charming, but Basil is better, though too afraid of life. He begs the painter not to leave him, not to quarrel, insisting he is what he is. Moved despite himself, Hallward relents—until the conversation turns to the portrait. When Basil attempts to view his own work, hidden behind a screen, Dorian erupts in barely contained terror, threatening to end their friendship forever should the painter so much as touch the covering. His pallid rage, his trembling hands, his eyes like disks of blue fire—these alarm Hallward utterly.</p>
@@ -633,9 +781,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_anime/chapter_11.webp" alt="The Schoolroom&#x27;s Secret Burden illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">The Schoolroom&#x27;s Secret Burden</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="The Schoolroom&#x27;s Secret Burden illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">The Schoolroom&#x27;s Secret Burden</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Upon waking, Dorian Gray found himself gripped by a cold, calculating vigilance, his eyes tracking his servant Victor with the wary precision of one who guards a terrible secret. The man&#x27;s face betrayed nothing—a placid mask of servility reflected in the glass—yet Dorian could not shake the suspicion that those eyes had wandered toward the screen, toward the hidden canvas that now bore witness to his corruption. Such are the wages of sin: not merely guilt, but the endless exhaustion of concealment.</p>
 <p>With methodical care, Dorian set his plan in motion. From the aged Mrs. Leaf he procured the key to the old schoolroom—that dust-shrouded chamber at the top of the house, untouched since his grandfather&#x27;s death. The mention of Lord Kelso sent a wince through him, summoning hateful memories of a stern, distant figure who had built that very room to keep a despised grandson at arm&#x27;s length. How fitting, then, that this forgotten sanctuary should become the tomb for his soul&#x27;s corruption.</p>
 <p>Before the frame-maker&#x27;s men arrived, Dorian selected the portrait&#x27;s shroud: a magnificent purple satin coverlet, heavy with seventeenth-century Venetian gold embroidery, once perhaps a pall for the dead. Now it would conceal something worse than death—a corruption that would breed horrors yet never die. For a fleeting moment, regret pierced him; he thought of Basil, whose love had been noble and intellectual, untainted by mere physical admiration. Basil might have saved him from Lord Henry&#x27;s influence, from the poisonous impulses of his own temperament. But such thoughts were futile ornaments. The past could be annihilated through denial or forgetfulness, but the future remained inevitable, heavy with passions that would demand their terrible outlet.</p>
@@ -646,9 +799,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_anime/chapter_12.webp" alt="The Mirror and the Monster Within illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">The Mirror and the Monster Within</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="The Mirror and the Monster Within illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">The Mirror and the Monster Within</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For years beyond counting, the yellow book from Paris held Dorian Gray in its perfumed grip—though perhaps it would be more accurate to say he never wished to slip free. He acquired nine copies of the first edition, bound each in different colours to suit his kaleidoscopic moods, and found in its pages a prophecy of his own existence, as though his life had been written before he had troubled to live it. The novel&#x27;s hero, that strange Parisian in whom romance and science mingled like incense and ash, became a prefiguring type of himself—yet in one crucial particular, Dorian proved more fortunate. He never suffered the grotesque dread of mirrors that afflicted his literary counterpart, whose beauty had decayed. No: Dorian&#x27;s beauty remained immaculate, untouched, eternal.</p>
 <p>And so he moved through London like a living paradox. Rumours of unspeakable vice circulated through the clubs, yet men fell silent when he entered, rebuked by the purity of his face. Women who had defied convention for his sake grew pale with horror at his approach. His mysterious absences gave rise to whispered scandals—tales of brawling with foreign sailors in Whitechapel dens, consorting with thieves and coiners—yet his boyish smile and infinite grace seemed sufficient answer to every calumny. Society, after all, values manners above morals, and a good chef above irreproachable character.</p>
 <p>In secret, Dorian would steal to the locked room where Basil Hallward&#x27;s portrait hung behind its purple-and-gold curtain. There, holding a mirror beside the canvas, he would compare the fair young face reflected in polished glass against the hideous thing that aged and corrupted in his stead—the coarsening hands, the heavy sensual mouth, the lines of sin searing the painted forehead. The sharpness of the contrast quickened his pleasure. He grew enamoured of his own beauty and fascinated by the degradation of his soul.</p>
@@ -659,9 +817,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_anime/chapter_13.webp" alt="A Foggy Night&#x27;s Fatal Reckoning illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">A Foggy Night&#x27;s Fatal Reckoning</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="A Foggy Night&#x27;s Fatal Reckoning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">A Foggy Night&#x27;s Fatal Reckoning</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On the eve of his thirty-eighth birthday, Dorian Gray walked home through the November fog from Lord Henry&#x27;s house, wrapped in heavy furs against the cold. At the corner of Grosvenor Square, a figure passed swiftly through the mist—grey ulster collar turned up, bag in hand—and Dorian recognized him at once: Basil Hallward. A strange, inexplicable fear seized him, and he made no sign of recognition, quickening his pace toward home. But Basil had seen him, and within moments the painter&#x27;s hand was upon his arm.</p>
 <p>Basil had been waiting in Dorian&#x27;s library for hours, he explained, eager to see his old friend before departing for Paris on the midnight train. He intended to sequester himself in a studio abroad for six months, consumed by some great picture forming in his imagination. Yet it was not art that compelled this urgent encounter—it was Dorian himself. Languidly, with characteristic indifference, Dorian invited him inside, warning him against serious conversation. &quot;Nothing is serious nowadays,&quot; he declared. &quot;At least nothing should be.&quot;</p>
 <p>In the warm library, with its blazing fire and silver spirit-case, the two men settled into what began as pleasant triviality—talk of servants, brandy-and-soda, the fashionable absurdity of *Anglomanie* in Paris. But Basil would not be deflected. With grave purpose, he confessed that dreadful things were being whispered throughout London about Dorian Gray. Scandals clung to his name like shadows: gentlemen fled rooms upon his entrance; former friends spoke of him with undisguised horror; young men whose lives he had touched seemed invariably to meet ruin, disgrace, or death.</p>
@@ -673,9 +836,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_anime/chapter_14.webp" alt="The Soul Revealed in Canvas illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">The Soul Revealed in Canvas</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="The Soul Revealed in Canvas illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">The Soul Revealed in Canvas</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>They ascended through the lamplit darkness like conspirators, their footsteps instinctively hushed against the night, while wind rattled the windows and shadows writhed fantastically upon the walls. At the topmost landing of that forgotten chamber, Dorian Gray turned the key with a curious satisfaction, informing Basil Hallward that he alone was entitled to know everything—that the painter had shaped his life more profoundly than he could imagine. The room they entered was a mausoleum of neglect: dust shrouded every surface, mildew perfumed the air, and a mouse scuttled behind the wainscoting. Only a faded Flemish tapestry, an old Italian *cassone*, and a curtained picture disturbed the emptiness.</p>
 <p>&quot;You think only God sees the soul, Basil?&quot; Dorian murmured with cold cruelty. &quot;Draw back that curtain, and you will see mine.&quot;</p>
 <p>When Hallward refused, Dorian tore the drapery away himself, and there upon the canvas grinned the hideous testimony of corruption—a face that retained only vestiges of its former loveliness, now bloated with sin, leering with the eyes of a satyr, of a devil. The painter recognized his own brushwork, his own signature in bright vermilion, and felt his blood transform from fire to sluggish ice. Meanwhile, Dorian watched with the detached fascination of a theatre-goer observing some great performance, idly crushing a flower between his fingers.</p>
@@ -687,9 +855,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_anime/chapter_15.webp" alt="Sunlight on Blood-Stained Memory illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">Sunlight on Blood-Stained Memory</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="Sunlight on Blood-Stained Memory illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">Sunlight on Blood-Stained Memory</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning after the murder dawns with almost indecent beauty—a November sun streaming warm and bright through the shutters, mellow as May, while Dorian sleeps with the untroubled serenity of a boy exhausted by play. His servant must touch him twice before he wakes, and when he does, a faint smile passes across his lips, though he has dreamed nothing at all. Youth smiles without reason; it is one of its chiefest charms.</p>
 <p>Yet gradually the events of the preceding night creep with silent, blood-stained feet into his brain. The memory of what he has done—the corpse still sitting upstairs in the terrible sunlight—fills him with such revulsion that he resolves to drug the thought with poppies, to strangle it before it strangles him. He dresses with more than usual care, lingers elaborately over breakfast, sorts his correspondence with studied indifference. One letter from a woman he tears up with annoyance—&quot;That awful thing, a woman&#x27;s memory!&quot;—and then writes two notes of his own. One he pockets; the other he dispatches to a Mr. Alan Campbell.</p>
 <p>The waiting proves unbearable. Dorian attempts distraction through art, sketching idly, but every face he draws takes on a fantastic likeness to Basil Hallward. He turns to Gautier&#x27;s exquisite *Émaux et Camées*, losing himself in verses of Venice—the pink and pearl city, its green waterways, the autumn he had spent there with Basil, poor Basil, what a horrible way for a man to die! But the book falls from his hand as terror seizes him. What if Campbell refuses? What if he is out of England?</p>
@@ -700,9 +873,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_anime/chapter_16.webp" alt="A Mask of Grace and Guilt illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">A Mask of Grace and Guilt</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="A Mask of Grace and Guilt illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">A Mask of Grace and Guilt</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>That evening, Dorian Gray arrived at Lady Narborough&#x27;s drawing-room exquisitely dressed, a button-hole of Parma violets adorning his coat, his manner all graceful ease—though beneath that polished surface, his nerves throbbed with a maddened intensity. Perhaps, as he himself reflected, one never appears so perfectly at ease as when one must play a part. Certainly none who observed him that night could have fathomed that those finely shaped fingers had so recently clutched a knife for sin, nor that those smiling lips had cried out against God and goodness. For a moment, he felt the terrible pleasure of his double life with acute keenness.</p>
 <p>Lady Narborough—a clever woman possessed of what Lord Henry once described as the remains of really remarkable ugliness—had assembled rather a tedious party in some haste. Having dispatched her husband to a marble mausoleum of her own design and married off her daughters to rich, elderly men, she now devoted herself to the pleasures of French fiction, French cookery, and French *esprit*. The guests themselves proved an uninspiring collection: middle-aged mediocrities, overdressed women of thwarted ambition, and her own dowdy daughter accompanied by a husband whose inordinate joviality could not compensate for his utter lack of ideas.</p>
 <p>Dorian found some consolation only when Lord Henry arrived, lending charm to an insincere apology with his slow, musical voice. Yet at dinner, Dorian could not eat; plate after plate went untasted while champagne flowed freely. The conversation sparkled with the usual philosophical sparring—paradoxes about marriage, wickedness, and the mysteries of women who accumulate husbands like Madame de Ferrol, whose hair had turned quite gold from grief at her third husband&#x27;s passing. When Lady Narborough declared that Dorian was made to be good, that he *looked* so good, the bitter irony cut beneath his composed exterior.</p>
@@ -713,9 +891,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_anime/chapter_17.webp" alt="The Desperate Search for Oblivion illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">The Desperate Search for Oblivion</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="The Desperate Search for Oblivion illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">The Desperate Search for Oblivion</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Through streets slicked with cold rain, past the ghastly blur of lamp-light and the sordid clustering of broken souls at public-house doors, Dorian Gray reclined in his hansom, repeating Lord Henry&#x27;s poisoned wisdom like an incantation: &quot;To cure the soul by means of the senses, and the senses by means of the soul.&quot; The words rang hollow against the weight of what he carried—innocent blood upon his conscience, the memory of Basil&#x27;s accusations burning through him. Yet forgiveness was impossible; only forgetfulness remained, and he meant to purchase it in the opium dens where new sins might drown the old.</p>
 <p>The journey seemed interminable, the streets narrowing into a black web through which the hansom plodded while Dorian&#x27;s hunger for oblivion gnawed at him with hideous urgency. They passed lonely brickfields where bottle-shaped kilns breathed orange tongues of fire, then rattled through rough-paved streets where fantastic shadows moved like monstrous marionettes behind lamplit blinds. Ugliness—once so hateful to his refined sensibilities—now became dear to him precisely because it was real. The coarse brawl, the loathsome den, the crude violence of disordered life possessed an intense actuality that the gracious shapes of art could never match. They offered what he craved: forgetfulness.</p>
 <p>At last the hansom stopped near the docks, where black masts rose above jagged chimney-stacks and white mist clung to the yards like ghostly sails. Dorian made his way to a shabby house wedged between gaunt factories, entering a squalid chamber that had once been a third-rate dancing-saloon—now a wretched haven for Malays crouching over charcoal stoves, sprawling sailors, and haggard women mocking the desperate. In the darkened chamber above, where the heavy odour of opium hung thick as absolution, he encountered Adrian Singleton, a young man whose ruin whispered of Dorian&#x27;s own corrupting influence. The meeting troubled him; he could not stay where memory might find him.</p>
@@ -726,9 +909,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_anime/chapter_18.webp" alt="Paradox and Wit at Tea illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">Paradox and Wit at Tea</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Paradox and Wit at Tea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Paradox and Wit at Tea</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The gilded machinery of society continued to turn, indifferent to the shadows gathering at its edges, as Dorian Gray presided over a house-party at Selby Royal with all the studied grace of a man for whom pleasure had become profession. In the conservatory, where mellow lamplight played upon delicate china and hammered silver, the pretty Duchess of Monmouth held court over the tea service while her husband—a jaded specimen of sixty—droned elsewhere about Brazilian beetles to the politely suffering Lady Narborough. Lord Henry reclined in silk-draped wicker, observing the scene with his customary air of amused detachment, as young men in elaborate smoking-suits performed their choreographed duties among the guests.</p>
 <p>What followed was not conversation but intellectual fencing, that peculiar form of aristocratic combat where wit serves as weapon and paradox as armor. Lord Henry lamented the loss of lovely names, declaring that the man who could call a spade a spade should be compelled to use one—it being the only thing he was fit for. The Duchess, proving herself no mere ornament, dubbed him Prince Paradox, and the title stuck despite his theatrical protests. Their exchange spiraled through art, love, religion, and the English national character with the velocity of a verbal duel, each thrust met by parry, each epigram answered by its mirror.</p>
 <p>&quot;Art?&quot; she asked. &quot;It is a malady.&quot; &quot;Love?&quot; &quot;An illusion.&quot; &quot;Religion?&quot; &quot;The fashionable substitute for belief.&quot;</p>
@@ -741,9 +929,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_anime/chapter_19.webp" alt="Shadows of Conscience and Fatal Chance illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">Shadows of Conscience and Fatal Chance</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="Shadows of Conscience and Fatal Chance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">Shadows of Conscience and Fatal Chance</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For a full day following his encounter with the spectral face in the night, Dorian Gray remained imprisoned within his own chambers, consumed by a peculiar duality of sensation—a wild, animal terror of death warring against a profound indifference to the very life he so feared losing. Each flutter of tapestry, each whisper of dead leaves against the windowpanes, became a herald of vengeance; the sailor&#x27;s face seemed perpetually to hover at the mist-stained glass, horror laying its cold hand upon his heart. Yet reason intruded upon these phantoms: actual life, he reminded himself, was chaos without moral architecture—the wicked unpunished, the good unrewarded, success merely the birthright of the strong. Surely it had been imagination alone that summoned such hideous shapes, for Sibyl Vane&#x27;s brother could not possibly know him, and the mask of youth had been his salvation. Still, the thought that conscience might conjure such spectres—shadows peering from corners, whispers at feasts, icy fingers upon sleeping flesh—drove him to pale terror until Lord Henry found him weeping as one whose heart would break.</p>
 <p>By the third day, the pine-scented winter air restored something of his ardour, and Dorian&#x27;s finely wrought temperament revolted against excessive anguish as naturally as it had succumbed to pleasure. He joined a shooting party, delighting in the crisp frost, the blue metal sky, the aromatic wood—until a hare bolted from the bracken, and something in its grace compelled him to cry out against its death. Sir Geoffrey fired regardless; two cries pierced the air, one dreadful, one worse—a beater had been struck. They dragged a body from the thicket, and Dorian turned away, convinced that misfortune stalked his every footstep.</p>
 <p>Lord Henry dismissed the tragedy with characteristic languor—*ennui* being the sole unforgivable sin, omens mere superstition—yet Dorian confessed himself burdened by his own personality, longing to escape, to forget, feeling death&#x27;s monstrous wings wheeling in the leaden air. Even the Duchess&#x27;s presence and Lord Henry&#x27;s glittering repartee could not dispel the horror that seized him when Harry spoke casually of murder; Dorian nearly swooned and retreated to his room, ordering his things packed for the night-express to London.</p>
@@ -753,9 +946,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_anime/chapter_20.webp" alt="The Final Mask Shatters illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">The Final Mask Shatters</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="The Final Mask Shatters illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">The Final Mask Shatters</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It was a curious thing, this sudden passion for virtue that had seized Dorian Gray—curious, and to Lord Henry&#x27;s mind, entirely suspect. Over rose-water and seeded strawberries, in that languid hour when afternoon dissolves into evening, Dorian proclaimed his reformation with all the earnestness of a convert who has not yet learned that sincerity is merely the most dangerous form of self-deception.</p>
 <p>He had spared a girl, he said—a village creature named Hetty, wonderfully like Sibyl Vane in her peasant beauty, whom he had meant to ruin and then, at the final moment, abandoned to her orchard and her innocence. Lord Henry received this confession with the amused condescension one reserves for children who have discovered a new toy. The novelty of renunciation, he suggested, was simply another sensation to be collected, and Hetty would spend her remaining years despising whatever honest ploughman she married, forever haunted by the memory of loving above her station. Perhaps, he added with delicate cruelty, she was already floating in some mill-pond, garlanded with water-lilies like Ophelia.</p>
 <p>The conversation turned, as conversations between these two inevitably must, to Basil Hallward. Six weeks had passed since the painter&#x27;s disappearance, and London society—that organism which requires fresh scandal as the body requires air—still buzzed with speculation. Scotland Yard insisted Basil had departed for Paris; the French police declared he had never arrived. Lord Henry dismissed the matter with characteristic languor, professing distaste for death as the one vulgarity that resisted explanation.</p>
@@ -766,9 +964,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_anime/chapter_21.webp" alt="The Soul&#x27;s Final Reckoning illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">The Soul&#x27;s Final Reckoning</h2>
+    <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="The Soul&#x27;s Final Reckoning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">The Soul&#x27;s Final Reckoning</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The night air hung warm and gentle as Dorian Gray made his way homeward, his coat slung carelessly over one arm, a cigarette trailing smoke into the darkness. Two young men in evening dress passed him by, and he caught the whispered recognition of his name—&quot;That is Dorian Gray&quot;—yet where once such notice had thrilled him, now it wearied him utterly. How he had come to prefer the anonymity of the little village, where the girl he had lately been toying with believed him poor, believed him harmless, had laughed at his confession of wickedness as though evil were something belonging only to the old and hideous. Her laugh had been like a thrush singing. She had known nothing of the world, yet possessed everything he had squandered.</p>
 <p>Alone in his library, Dorian turned over the words Lord Henry had spoken to him and found himself seized by a desperate longing for the unstained purity of his boyhood—that rose-white boyhood now corrupted beyond recognition. He knew the catalogue of his sins: the minds he had poisoned, the lives he had ruined, the terrible joy he had taken in destruction. And he knew, too, the monstrous bargain struck in that moment of pride and passion when he had prayed for the portrait to bear the weight of his transgressions while he remained forever young. Better, he thought now, if each sin had brought its swift penalty upon his own flesh. There was purification in punishment, after all.</p>
 <p>Taking up the ornate mirror Lord Henry had given him years ago, Dorian gazed upon his unchanged beauty and remembered the idolatrous words once written to him: *The world is changed because you are made of ivory and gold.* Revulsion overcame him, and he dashed the mirror to the floor, grinding it to silver splinters beneath his heel. His beauty had been but a mask, his youth but a mockery—the very instruments of his ruin.</p>
@@ -911,6 +1114,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

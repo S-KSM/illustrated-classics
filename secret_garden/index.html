@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Sickly Child Left Behind illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Sickly Child Left Behind</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Sickly Child Left Behind illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Sickly Child Left Behind</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary Lennox was not a child anyone would have chosen to pity, nor one whose face invited tenderness. When she was sent away to live with her uncle at Misselthwaite Manor, all who saw her agreed she was the most disagreeable-looking creature imaginable—and they were quite right. Her face was thin and sallow, her body slight and sickly, her expression perpetually sour. She had been born in India, where the climate and illness had turned her complexion the color of old parchment, and where her parents had seen fit to ignore her almost entirely from the moment she drew breath.</p>
 <p>Her father, occupied with government duties and his own poor health, had no time for her. Her mother, a renowned beauty who lived for parties and admiration, had no desire for a child at all. The moment Mary arrived, squalling and unwanted, she was handed over to an Ayah with strict instructions to keep the child invisible. And so Mary grew—not in affection or warmth, but in tyranny. The servants gave her everything she demanded, if only to keep her quiet, until by age six she had become as spoiled and selfish a creature as ever drew breath. Governesses came and fled in quick succession, unable to bear her temper. Only her own stubborn curiosity saved her from complete ignorance of letters.</p>
 <p>Then came the morning everything changed—a morning thick with Indian heat and something far more sinister. Mary woke cross, as she always did, but crosser still when a strange servant stood where her Ayah should have been. The woman stammered and trembled but would not explain. The household moved in whispers and shadows, servants missing or hurrying about with ash-gray faces. No one would answer Mary&#x27;s demands, and so she was left alone, forgotten even in her fury.</p>
@@ -528,9 +631,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Contrary Child Bound for England illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Contrary Child Bound for England</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Contrary Child Bound for England illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Contrary Child Bound for England</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary Lennox had always admired her mother from afar, thinking her quite pretty in the way one might admire a painting glimpsed through a doorway. But knowing so little of the woman who had given her life, she could hardly be expected to mourn her passing with any great depth of feeling. Indeed, she did not miss her at all. Mary was a thoroughly self-absorbed child who had always given her entire thought to herself, and she saw no reason to change this habit now that she found herself orphaned. Had she been older, the terror of being left alone in the world might have seized her, but she was very young and had always been looked after. She simply assumed she always would be. Her only concern was whether her new guardians would be nice people—polite people who would give her her own way, as her Ayah and the native servants had always done.</p>
 <p>The English clergyman&#x27;s house where she was first deposited would not do at all. The man was poor, his five children wore shabby clothes and quarreled endlessly, snatching toys from one another with grubby hands. Mary hated their untidy bungalow and made herself so thoroughly disagreeable that within days no one would play with her. It was then that Basil, an impudent boy with blue eyes and an upturned nose, bestowed upon her a nickname that made her furious. He found her playing alone beneath a tree, making little heaps of earth for a pretend garden, and when she snapped at him to go away, he danced around her singing that old nursery rhyme: *Mistress Mary, quite contrary, how does your garden grow?* The other children took up the chant, and the crosser Mary became, the more they sang it.</p>
 <p>It was Basil who told her she was being sent to England, to live with an uncle called Mr. Archibald Craven—a hunchback, he said, who lived in a great desolate house where no one ever visited because he was so horrid and cross. Mary declared she did not believe him and stuck her fingers in her ears, but she thought about it a great deal afterward.</p>
@@ -541,9 +649,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Wild Drive Through Darkness illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">A Wild Drive Through Darkness</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Wild Drive Through Darkness illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">A Wild Drive Through Darkness</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary woke to find Mrs. Medlock had procured a lunchbasket from one of the stations—chicken, cold beef, bread and butter, and hot tea—while the rain continued its relentless streaming against the carriage windows. The world outside seemed draped in wet and glistening waterproofs, and the guard had lit the carriage lamps against the growing darkness. Mrs. Medlock, considerably cheered by her meal, ate heartily before falling asleep herself, her fine bonnet slipping comically to one side while Mary watched. Soon enough, the steady splashing of rain lulled the little girl back into sleep as well.</p>
 <p>When Mary next opened her eyes, night had fallen completely, and Mrs. Medlock was shaking her awake at Thwaite Station. A long drive still lay ahead of them. Mary stood and made no move to help gather the parcels—in India, native servants had always attended to such things, and it seemed perfectly proper that others should wait on her. The small station appeared deserted save for themselves, and a rough but good-natured station-master greeted Mrs. Medlock in broad Yorkshire speech that Mary would later come to recognize. A smart brougham waited outside, attended by a footman whose waterproof coat dripped with rain like everything else in that sodden landscape.</p>
 <p>Once settled in the cushioned carriage corner, Mary found herself too curious for sleep. She pressed her face to the window, watching the darkness unfold as they drove toward that queer house Mrs. Medlock had described—a hundred rooms nearly all shut up, standing on the edge of something called a moor. When Mary asked what a moor was, Mrs. Medlock told her simply to watch and wait. They passed through a tiny village of whitewashed cottages, past a church and vicarage, and then onto the highroad lined with hedges and trees. Gradually, everything fell away—the hedges, the trees, until only dense darkness surrounded them on all sides.</p>
@@ -555,9 +668,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Sturdy Yorkshire Maid Speaks Freely illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">A Sturdy Yorkshire Maid Speaks Freely</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Sturdy Yorkshire Maid Speaks Freely illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">A Sturdy Yorkshire Maid Speaks Freely</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary woke to the unfamiliar sounds of a young housemaid kneeling on the hearth-rug, raking cinders from the grate with cheerful noisiness. The room itself seemed a strange and gloomy place, its walls hung with tapestry showing a forest scene—fantastically dressed people beneath trees, hunters and horses and ladies, and in the distance the turrets of a castle. Through the deep window stretched an endless, dull, purplish expanse that looked rather like a sea without trees or any softness to it.</p>
 <p>&quot;That&#x27;s th&#x27; moor,&quot; said Martha, the housemaid, grinning good-naturedly when Mary asked. She spoke of it with such love—the growing things that smelled sweet, the gorse and broom and heather in flower, the honey-scented air and the high sky filled with the humming of bees and the singing of skylarks—that Mary could only listen with grave puzzlement. This servant was nothing like the obsequious natives she had known in India, who made salaams and called her &quot;protector of the poor&quot; and would never presume to speak as equals.</p>
 <p>Martha was round and rosy and sturdy in her way, and when Mary told her haughtily that she was a strange servant, the girl only laughed without offense. She explained that Misselthwaite was a funny sort of house—neither Master nor Mistress about except for the servants, and Mr. Craven nearly always away and not wishing to be troubled about anything when he was there. Mrs. Medlock had given Martha the position out of kindness, something that could never have happened in a proper grand house.</p>
@@ -571,9 +689,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Robin and the Hidden Wall illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">The Robin and the Hidden Wall</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Robin and the Hidden Wall illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">The Robin and the Hidden Wall</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In those first days at Misselthwaite Manor, Mary Lennox found each morning arriving much like the one before it—Martha kneeling at the hearth to build up the fire, breakfast taken in the cheerless nursery, and the vast purple moor stretching endlessly beyond her window, climbing toward the sky as though it might swallow the whole world. She did not know, this contrary little girl, that going out of doors was the very best thing she could have done for herself. She ran along the paths and down the avenue merely to keep warm, fighting against the great wind that swept down from the moor and roared at her face like some invisible giant determined to hold her back. Yet those rough gusts of heather-scented air were filling her thin lungs with something wholesome, whipping color into her sallow cheeks and brightness into her dull eyes, though she remained entirely unaware of the transformation taking root within her.</p>
 <p>After several days spent wandering the grounds, Mary woke one morning with a new sensation—hunger. She took up her spoon and ate her porridge without a single disdainful glance, much to Martha&#x27;s satisfaction. The Yorkshire girl declared it was the moor air giving her stomach for her food, and told Mary to keep playing outdoors if she wished to put flesh on her bones. But Mary insisted she did not play, for she had nothing to play with. Martha found this wonderfully strange, explaining that her own brothers and sisters played with nothing but sticks and stones, running about and shouting and simply looking at things. Mary did not shout, but she did look—for there was nothing else to do.</p>
 <p>She wandered the gardens and paths, sometimes seeking out Ben Weatherstaff, though the old gardener remained too busy or too surly to acknowledge her. One place drew her more often than any other: the long walk outside the walled gardens where ivy grew thick against the stones. At one stretch of wall, the dark green leaves hung more bushy and neglected than elsewhere, and Mary paused to wonder why. It was there the robin found her again—Ben Weatherstaff&#x27;s robin—perched upon the wall with his scarlet breast gleaming, tilting his small head as though inviting conversation.</p>
@@ -584,9 +707,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Rainy Days and Wandering Corridors illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">Rainy Days and Wandering Corridors</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Rainy Days and Wandering Corridors illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Rainy Days and Wandering Corridors</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Rain fell in sheets upon the moor, shrouding everything in gray mist and keeping Mary trapped within the vast, silent house. With nowhere else to turn, she found herself drawn into conversation with Martha, questioning how the Sowerby family passed such dreary days when fourteen souls crowded into four small rooms. Martha spoke of Dickon, who wandered out in any weather, discovering half-drowned fox cubs and young crows that he carried home against his warm chest to nurse back to life. One such crow, black as chimney soot, now hopped about wherever the boy went.</p>
 <p>Mary listened with genuine interest—a remarkable thing, for she had long since ceased to resent Martha&#x27;s plain, familiar manner of speaking. These stories of the moorland cottage, where children tumbled about like rough collie puppies and the mother somehow kept everyone fed and cheerful, held a warmth entirely foreign to the tales Mary&#x27;s Ayah had told in India. When Mary confessed she had nothing at all to play with, Martha suggested reading, and upon learning there were thousands of books in the library, something sparked within Mary&#x27;s restless mind.</p>
 <p>She would find that library herself. She would explore.</p>
@@ -599,9 +727,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Springtime&#x27;s Promise on the Moor illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">Springtime&#x27;s Promise on the Moor</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Springtime&#x27;s Promise on the Moor illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Springtime&#x27;s Promise on the Moor</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Two days after the wind had first called Mary to her explorations, she woke to a world utterly transformed. The rain had ceased its relentless siege upon the moor, and the heavy gray mists had been swept clean away as though they had never dared to linger. In their place hung a sky of such deep, brilliant blue that Mary sat bolt upright in bed, calling out to Martha in wonder. Never in all her years in India, beneath those hot and blazing heavens, had she imagined a sky could sparkle so—cool and fathomless as the waters of some enchanted lake, dotted here and there with small clouds white as snow-fleece. The moor itself had softened from its brooding purple-black to a gentle, almost welcoming blue.</p>
 <p>Martha, cheerful as ever among her black lead brushes, declared that spring was indeed on its way, distant though it remained. She painted pictures with her broad Yorkshire words of gorse blossoms golden as sunshine, purple bells of heather, butterflies fluttering by the hundreds, and skylarks soaring and singing—all of it waiting out there on the moor where her brother Dickon spent his days. Mary listened with a wistfulness she had never known before, and when she confessed she should like to see Martha&#x27;s cottage, something remarkable happened. Martha paused in her work and studied the small, plain face before her. It did not look quite so sour as it had that first morning. There was a softness to it now, a wanting.</p>
 <p>Before Martha departed for her day out, an exchange passed between them that would linger in Mary&#x27;s mind. When Mary declared that no one liked her, not even Dickon would, Martha asked a curious question: &quot;How does tha&#x27; like thysel&#x27;?&quot; Mary considered this honestly and admitted she did not like herself at all—but she had never thought of it before. It was her mother&#x27;s wisdom, Martha explained, the kind that could bring a person to their senses with a single question.</p>
@@ -613,9 +746,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="The Key and the Hidden Door illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">The Key and the Hidden Door</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="The Key and the Hidden Door illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">The Key and the Hidden Door</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary turned the old key over and over in her hands, examining it with all the careful attention of a child who had never been taught to seek permission for anything. She thought only of what it might unlock—that mysterious garden sealed away for ten long years—and wondered what strange transformations had taken place within its hidden walls. The notion seized her imagination: if she could only find the door, she might slip inside whenever she pleased, shut it behind her, and have a secret place entirely her own. No one would know where she had gone. They would believe the door still locked, the key still buried in the earth. This thought pleased her enormously.</p>
 <p>Something was awakening in Mary Lennox. Living alone in that great house with its hundred mysteriously closed rooms, with nothing whatever to occupy her time, had set her dormant mind stirring at last. The fresh, strong air blowing across the moor deserved much of the credit—the same air that had given her an appetite and set her blood moving when she fought against the wind. In India she had always been too hot, too languid, too weak to care about much of anything. But here, she was beginning to care. She was beginning to want things. Already she felt less contrary, though she could not have said why.</p>
 <p>She walked her special path along the ivy-covered wall, searching for any sign of the hidden door, but the glossy dark leaves revealed nothing. Frustration crept back into her heart—it seemed so foolish to be so near and yet unable to enter. She resolved to carry the key with her always, so that when the moment came, she would be ready.</p>
@@ -629,9 +767,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A World All Her Own illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">A World All Her Own</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A World All Her Own illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">A World All Her Own</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary Lennox stepped through the hidden door and found herself standing within the most mysterious, most enchanting place she had ever beheld in all her life. High walls rose around her, covered so thickly with the leafless stems of climbing roses that they had grown tangled and matted together like a living tapestry turned to winter brown. She knew they were roses—she had seen enough of them in India—though here they slept in their gray and brown branches, waiting for some season yet to come.</p>
 <p>The garden spread before her in hushed splendor. Standard roses had grown so wild they resembled small trees, and climbing roses had crept from trunk to trunk, catching at branches and weaving themselves into delicate bridges, their long tendrils swaying like curtains of lace woven from bark and thorn. A hazy mantle of tangled growth spread over everything—walls, trees, even the wintry brown grass—and it was this soft veil of wildness that made the place seem touched by some quiet magic.</p>
 <p>&quot;How still it is!&quot; Mary whispered, scarcely daring to breathe. &quot;How still!&quot;</p>
@@ -647,9 +790,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Awakening in the Walled Garden illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Awakening in the Walled Garden</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Awakening in the Walled Garden illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Awakening in the Walled Garden</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For nearly a week, the sun poured its golden warmth upon what Mary had come to call the secret garden—a name that suited the place wonderfully, for it seemed to her like being shut away in some fairy kingdom where no one in all the world knew to look for her. She had read of such gardens in her fairy stories, where folk sometimes slept for a hundred years, though she herself had no intention of sleeping. Indeed, quite the opposite was happening to Mistress Mary. Each day at Misselthwaite found her wider awake than the last, her legs growing stronger, her lungs drinking in the moor wind she had once despised. She could skip to a hundred now, and the bulbs beneath the dark earth seemed to feel the change as keenly as she did—pushing up their pale green points everywhere, cheered by the sunshine and rain that could reach them at last through the cleared soil.</p>
 <p>Mary worked with the steady determination that was her nature, digging and weeding until her stockings grew tight round legs that had once been thin as sticks. Ben Weatherstaff noticed the change in her, remarking gruffly that she no longer looked like a young plucked crow, though he delivered even compliments with a scowl. Their unlikely friendship deepened during that week of sunshine, bound together by their mutual affection for the robin, who flirted his red waistcoat at them both with shameless vanity. When Mary pressed the old gardener about roses—whether they could survive being left to themselves, whether one might tell if they were dead or alive—he answered her questions with growing suspicion until he snapped at her to stop asking so many and sent her on her way.</p>
 <p>Yet Mary did not mind his crossness, for she had begun to collect people she liked in spite of themselves.</p>
@@ -662,9 +810,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Wick Wood and Waiting Roses illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">Wick Wood and Waiting Roses</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Wick Wood and Waiting Roses illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">Wick Wood and Waiting Roses</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>For several hushed, reverent minutes, Dickon stood within the secret garden&#x27;s walls, his eyes traveling over every gray-barked tree, every trailing creeper, every tangled mass of wild growth that had claimed the space as its own. He moved more softly even than Mary had on that first miraculous day of discovery, as though he understood instinctively that this forgotten place demanded a certain quiet respect.</p>
 <p>&quot;I never thought I&#x27;d see this place,&quot; he whispered at last, and when Mary spoke aloud in reply, he quickly silenced her with a gesture. They must speak low, he warned, lest someone wonder what stirred within these hidden walls. Martha had told him of the garden no one entered, he confessed, and he and his family had often wondered what mysteries lay behind its locked door. Now, gazing about at the lovely gray tangle surrounding them, his round eyes shone with a queer happiness, and he spoke of the nests that would fill these branches come spring—the safest nesting place in all England, surely, where no one ever came and roses and trees offered endless shelter for building.</p>
 <p>When Mary asked breathlessly whether there might still be roses, whether they had not all perished in the years of neglect, Dickon&#x27;s answer brought her more hope than she had dared imagine. He stepped to the nearest ancient tree and drew out his thick knife, showing her how to distinguish dead wood from living—how a brownish-green shoot meant life, how &quot;wick&quot; meant alive. Mary touched the living branch with something like reverence, and together they moved from tree to bush to tangled climber, counting the survivors. The strongest had thrived on their wildness, Dickon explained, while only the most delicate had died away. He knelt to cut through a lifeless-looking branch and revealed the green heart within, promising that with proper care there would be a fountain of roses blooming by summer.</p>
@@ -677,9 +830,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="A Garden Corner of Her Own illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">A Garden Corner of Her Own</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="A Garden Corner of Her Own illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">A Garden Corner of Her Own</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary arrived breathless at her room, cheeks flushed pink and hair windswept from her morning&#x27;s adventure, bursting with news that tumbled out before Martha could even remark upon her tardiness. She had seen Dickon—and she thought him beautiful. Martha, delighted but somewhat bewildered by this assessment of her brother, pointed out his turned-up nose, his round eyes, his wide mouth, as though cataloguing imperfections. But Mary would hear none of it. She loved his nose, adored his round eyes that matched the color of the moor sky, wished her own mouth were just as big. The two girls talked of seeds and garden tools, and Martha advised that if Mary wanted a corner of earth for planting, she ought to ask old Ben Weatherstaff rather than the grand head gardener. Surely no one could mind if she took a bit of ground that nobody wanted.</p>
 <p>But Martha had weightier news to deliver. Mr. Craven had returned to Misselthwaite Manor and wished to see Mary before departing again on his travels. The revelation struck Mary cold with dread. She knew he had not wanted to see her when she first arrived—had heard as much from the servants. Yet Martha explained that Susan Sowerby herself had stopped Mr. Craven on the moor and spoken to him about the child, putting it into his mind that he ought to see her.</p>
 <p>Mrs. Medlock arrived in her best black dress to escort Mary to the master&#x27;s study. All the rosy warmth drained from Mary&#x27;s face as she felt herself hardening back into that stiff, plain, silent creature she had been in India. She followed in silence through unfamiliar corridors until they reached the room where Mr. Craven sat before the fire—not the hunchback she had imagined, but a man with high, crooked shoulders and a face that might have been handsome had it not been so utterly wretched with grief.</p>
@@ -691,9 +849,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="The Crying in the Corridor illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">The Crying in the Corridor</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="The Crying in the Corridor illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">The Crying in the Corridor</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening after Dickon&#x27;s visit, Mary showed Martha the picture he had drawn—a missel thrush upon her nest—and understood at once the tender message hidden within it. Dickon meant her to know that her garden was safe, that he would guard her secret as fiercely as any bird protects its young. The thought of him warmed her, and she fell asleep anticipating his return.</p>
 <p>But Yorkshire weather cares nothing for children&#x27;s wishes. Mary woke in the deep of night to rain lashing against her window, the wind wuthering round the old house like something alive and grieving. She lay in the darkness, miserable and contrary, hating the storm for keeping her from the garden. Yet as she turned restlessly upon her pillow, another sound threaded through the tempest—a faint, fretful crying that was not the wind at all.</p>
 <p>This time, Mary would not be deterred. She slipped from her bed, took up her candle, and ventured into the long, shadowed corridor. Her heart hammered as she felt her way through the darkness, following that thin, piteous sound until she reached the tapestry-covered door Mrs. Medlock had forbidden her to seek. Beyond it, firelight flickered beneath another door, and Mary pushed it open to discover what had been hidden from her all along.</p>
@@ -707,9 +870,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="The Spoiled Boy Behind the Door illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">The Spoiled Boy Behind the Door</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="The Spoiled Boy Behind the Door illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">The Spoiled Boy Behind the Door</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning came shrouded in mist, with rain still pouring steadily across the moor, trapping everyone indoors and filling Mary with the urgent need to unburden her secret. In the afternoon, she summoned Martha to the nursery, and the moment they sat down together, Martha&#x27;s knowing eyes saw that something was different.</p>
 <p>&quot;Tha&#x27; looks as if tha&#x27;d somethin&#x27; to say,&quot; she observed, her knitting needles pausing.</p>
 <p>And so Mary told her everything—how she had heard the crying in the night, followed it through the dark corridors, and discovered Colin. Poor Martha went pale with fright, certain she would lose her place, that Mrs. Medlock would blame her for breaking orders. But Mary assured her that Colin was glad she had come, that he had wanted her to stay, that she had talked to him about India and gardens and the robin until she had sung him to sleep.</p>
@@ -731,9 +899,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The Boy Animal and New Friendships illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">The Boy Animal and New Friendships</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The Boy Animal and New Friendships illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">The Boy Animal and New Friendships</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>After a week of dreary rainfall had kept Mary indoors, the sky finally broke open into a great arch of blue, and warm sunlight came flooding back across the moor. But the wet days had not been wasted—not in the least. Mary had spent nearly every waking hour in Colin&#x27;s room, and something remarkable had begun to happen between them. They talked of Rajahs and gardens and Dickon&#x27;s cottage, pored over splendid books and pictures, and read aloud to one another until the hours slipped away unnoticed. Mrs. Medlock herself remarked upon the change—how Colin had not thrown a single tantrum or whining fit since Mary had befriended him, how even the nurse who had been ready to abandon her post now found the work bearable.</p>
 <p>Throughout these conversations, Mary had been careful, almost cunning. She wanted desperately to know whether Colin could be trusted with her great secret, whether he might one day be brought to the hidden garden itself. She had observed how he delighted in the very idea of a garden no one knew about, and gradually she tested him, asking why he hated to be looked at. Colin explained how strangers had always stared and whispered that he would not live to grow up, how ladies had patted his cheeks and called him &quot;Poor child&quot; until once he had screamed and bitten one of them. Yet when Mary asked whether he would mind if a boy looked at him, Colin grew thoughtful and admitted there was one boy he believed he could bear—Dickon, the animal charmer. &quot;He&#x27;s a sort of animal charmer and I am a boy animal,&quot; Colin said, and they both laughed at the notion of him hiding in his hole like a creature of the wild.</p>
 <p>On that first morning when the sun returned, Mary woke before anyone else and ran to the window to find the whole world transformed. The moor had gone blue, tender birdsong fluted from every direction, and warm scented air rushed in upon her. She could not wait another moment. She dressed in five minutes, crept down in her stocking feet, and bounded out onto the grass, which seemed to have turned green overnight. Crocuses were unfurling in purple and gold, green points were pushing through everywhere, and springtime had taken hold of everything.</p>
@@ -743,9 +916,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Clash of Two Stubborn Wills illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">The Clash of Two Stubborn Wills</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Clash of Two Stubborn Wills illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">The Clash of Two Stubborn Wills</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning had been glorious in the secret garden, and Mary lost herself so completely in the work of tending it alongside Dickon that Colin simply slipped from her mind. When at last she remembered him, she sent word through Martha that she was too busy to come—and Martha&#x27;s frightened expression told her plainly this would not go over well. But Mary was not the sort of girl who sacrificed her own pleasures for others, and besides, Dickon was waiting.</p>
 <p>The afternoon proved even more enchanting than the morning. Together, Mary and Dickon cleared weeds, pruned roses, and dug around the trees until the wild, sleeping garden began to show signs of the magnificent awakening to come. Dickon spoke of apple blossoms and cherry blossoms overhead, of peach and plum trees blooming against the walls, of grass becoming a carpet of flowers. His creatures—the little fox cub, the rook called Soot, the robin and his mate—busied themselves about the garden too, and when Dickon played his wooden pipe, even the squirrels came to listen.</p>
 <p>Mary herself was transforming. Dickon noticed it plainly—she was growing stronger, her cheeks glowing with exercise and fresh air, her hair thickening, her body filling out. She felt it too, this new vitality coursing through her, and she spoke of it with something like triumph.</p>
@@ -757,9 +935,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Colin&#x27;s Fury Meets Mary&#x27;s Fire illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">Colin&#x27;s Fury Meets Mary&#x27;s Fire</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Colin&#x27;s Fury Meets Mary&#x27;s Fire illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Colin&#x27;s Fury Meets Mary&#x27;s Fire</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary had spent the day working hard in the garden with Dickon, and by the time Martha brought her supper, weariness had settled deep into her bones. She fell into bed with thoughts of returning to the garden before breakfast, and perhaps afterward paying a visit to Colin. Sleep came quickly, wrapping her in its quiet darkness.</p>
 <p>But the middle of the night shattered that peace entirely.</p>
 <p>Dreadful sounds tore through the corridors of Misselthwaite Manor—doors slamming, feet hurrying, and above it all, someone screaming and sobbing in a way that made Mary&#x27;s blood run cold. She knew at once it was Colin, seized by one of those terrible fits the nurse had called hysterics. The awful noise explained everything—why the servants gave him whatever he wanted, why no one dared cross him. Mary pressed her hands over her ears, feeling sick and shivering, quite unable to bear it.</p>
@@ -775,9 +958,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="Colin&#x27;s Hope and Spring&#x27;s Calling illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">Colin&#x27;s Hope and Spring&#x27;s Calling</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="Colin&#x27;s Hope and Spring&#x27;s Calling illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Colin&#x27;s Hope and Spring&#x27;s Calling</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mary slept late the following morning, exhausted from the previous night&#x27;s confrontation, while Colin lay ill and feverish in his bed—the inevitable aftermath of one of his terrible crying fits. Yet something had shifted between them. When Martha delivered Mary&#x27;s breakfast, she brought word that Colin wished to see her, and the boy had even said &quot;please&quot;—a courtesy so foreign to his nature that Martha marveled at it.</p>
 <p>Mary&#x27;s first instinct was to run to the garden and find Dickon, but she checked herself. She would go to Colin first, tell him something that might kindle hope in that pale, shadowed face of his. When she appeared at his bedside with her hat on, ready for the outdoors, Colin looked momentarily disappointed, but his spirits lifted the instant Mary mentioned the garden. He had dreamed of it all night, he confessed—dreamed of standing amidst trembling green leaves while birds nested softly all around him. The vision had come from Mary&#x27;s own words, that image of gray changing into green, and now it lived inside him like a promise.</p>
 <p>In the garden, Dickon waited with his creatures—the fox Captain, the crow Soot, and two new companions: squirrels named Nut and Shell who leaped to his shoulders at the sound of their names. As Mary told him about Colin, something changed in Dickon&#x27;s expression. He looked up at the sky, listened to the birds calling to one another, breathed in the sweet spring air—and then spoke with quiet urgency about that poor lad shut away indoors, seeing so little of the world that his thoughts turned dark and screaming. They must get him outside, Dickon said, must soak him through with sunshine and birdsong and the smell of growing things. And they must not waste any time about it.</p>
@@ -789,9 +977,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="The Young Rajah Awakens illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">The Young Rajah Awakens</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="The Young Rajah Awakens illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">The Young Rajah Awakens</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning after Colin&#x27;s terrible tantrum, Dr. Craven arrived at Misselthwaite Manor expecting the usual dreary scene—a white, shaking boy lying in bed, sulky and hysterical, ready to burst into fresh sobbing at the slightest provocation. But what greeted him instead left him utterly astonished.</p>
 <p>Mrs. Medlock had warned him, of course, telling him he would scarcely believe his eyes. That plain, sour-faced child had somehow bewitched Colin, she said. The girl had flown at him like a little cat the night before, stamping her feet and ordering him to stop screaming—and miraculously, he had stopped.</p>
 <p>When the doctor entered Colin&#x27;s room, he found the boy sitting up straight on his sofa, chattering and laughing with Mary over pictures of delphiniums and larkspurs in garden books. Colin announced, rather like a young Rajah, that he intended to go outside in his chair if the weather was fine. Fresh air, he declared, would not tire him in the least. Dr. Craven could hardly believe this was the same child who had once shrieked that fresh air would give him cold and kill him. Colin insisted he would not have the nurse accompany him—only his cousin, and a strong boy named Dickon to push his carriage.</p>
@@ -805,9 +998,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="The Secret Plan Takes Shape illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">The Secret Plan Takes Shape</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="The Secret Plan Takes Shape illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">The Secret Plan Takes Shape</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The promise of the secret garden had to wait more than a week, as first the wind blew wild across the moor and then Colin caught the threat of a cold—either circumstance might once have sent him into one of his legendary rages. But there was far too much delicious scheming to occupy his mind for tantrums now. Nearly every day Dickon slipped into the sickroom, if only for a few stolen minutes, bearing tales of the wild world awakening outside: otters and badgers busily constructing their homes, water-rats bustling along stream banks, birds weaving nests with desperate urgency. The whole underworld of creatures worked and scuffled to prepare for the season, and hearing Dickon speak of it with such intimate knowledge made one fairly tremble with excitement.</p>
 <p>Yet nothing absorbed them quite so thoroughly as plotting Colin&#x27;s secret transport to the garden. The mystery of the place had become, in Colin&#x27;s mind, its greatest treasure—not a soul must suspect, not a whisper must escape. They charted their course with the gravity of generals planning a campaign: up this path, round the fountain beds where Mr. Roach had arranged the bedding-out plants, through the shrubbery walks until they reached the long ivied walls. Everything must appear perfectly ordinary, perfectly rational.</p>
 <p>When Mr. Roach, the head gardener, received the unprecedented summons to Colin&#x27;s room, rumors had already crept through the servants&#x27; hall of strange goings-on in the invalid&#x27;s apartments. The man had never glimpsed the boy and knew only wild tales of a humped back, helpless limbs, and insane tempers. What he found instead was a young Rajah holding court amid a menagerie—Dickon kneeling with a lamb at the bottle, a squirrel perched on his back, a large crow announcing visitors from its carved chair. With lordly authority that made Roach nearly laugh once safely in the corridor, Colin issued his commands: no gardener was to come near the Long Walk that afternoon, nor any afternoon he chose to venture out.</p>
@@ -819,9 +1017,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Afternoon of Eternal Spring illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">The Afternoon of Eternal Spring</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Afternoon of Eternal Spring illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">The Afternoon of Eternal Spring</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>There are moments in life when one feels certain of living forever—standing alone at dawn as the pale sky flushes with mysterious light, or lingering in a wood at sunset while golden stillness whispers secrets just beyond hearing, or gazing up at the immense dark blue of night with millions of stars keeping their ancient watch. And so it was for Colin on that spring afternoon when he first entered the hidden garden, where the whole world seemed to conspire in perfect, radiant kindness toward one boy.</p>
 <p>The garden had outdone itself. Blossoms crowded every branch and corner, and even Dickon, who had seen thirteen years&#x27; worth of afternoons on the moor, declared he had never witnessed one so &quot;graidely&quot; as this. Mary agreed with fierce Yorkshire pleasure, and Colin—speaking in the local dialect that Mary praised with delight—wondered dreamily if perhaps all this beauty had been made purposely for him.</p>
 <p>They wheeled his chair beneath a plum tree white with blossoms, its branches forming a fairy king&#x27;s canopy through which bits of blue sky peered down like wondering eyes. Mary and Dickon brought him treasures: opening buds, tight-closed ones, leaves just unfurling green, a woodpecker&#x27;s feather, the empty shell of a newly hatched bird. Dickon pushed the chair slowly round the garden while Colin drank in every wonder springing from the earth.</p>
@@ -836,9 +1039,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Magic of Standing Tall illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">The Magic of Standing Tall</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Magic of Standing Tall illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">The Magic of Standing Tall</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The moment Ben Weatherstaff&#x27;s head disappeared over the garden wall, Colin turned to Mary with a command that sent her flying across the grass to meet the old gardener at the ivy-covered door. What remained behind was nothing short of miraculous—a boy who had spent years believing himself an invalid now standing on his own two feet, scarlet spots blazing on his cheeks, his head held high with something that could only be called grandeur.</p>
 <p>Dickon watched with those sharp, knowing eyes of his, seeing no signs of falling in the thin figure before him. When Colin declared he could stand, Dickon merely grinned his cheerful grin and reminded him this was exactly what he had predicted would happen once fear stopped ruling him. And fear had stopped—Colin admitted it himself, the words carrying a weight of revelation that seemed to change everything.</p>
 <p>Then came the question about Magic, sharp and sudden, as Colin remembered Mary&#x27;s mysterious mutterings. But Dickon only laughed and pointed to a clump of crocuses pushing through the earth, explaining that Colin was making his own Magic now—the same force that pulled green things up from the dark soil. Colin gazed at those humble flowers and understood something profound, drawing himself up straighter still and announcing his intention to walk to a nearby tree, to be standing when Ben Weatherstaff entered the garden. He would rest against the trunk if he chose, but not before.</p>
@@ -850,9 +1058,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="The White Magic of the Garden illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">The White Magic of the Garden</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="The White Magic of the Garden illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">The White Magic of the Garden</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>When Colin returned from his day in the secret garden, Dr. Craven was waiting with furrowed concern, having nearly sent a search party down the garden paths. The poor physician looked him over with the gravity of a man who had spent years expecting the worst, cautioning the boy against overexertion. But Colin, flush with triumph, declared himself not tired at all—quite the contrary. The garden had made him well, and he would go out again tomorrow, morning and afternoon both.</p>
 <p>&quot;I am not sure that I can allow it,&quot; Dr. Craven protested.</p>
 <p>&quot;It would not be wise to try to stop me,&quot; Colin answered with perfect seriousness. &quot;I am going.&quot;</p>
@@ -869,9 +1082,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Dickon&#x27;s Garden and the Joyful Deception illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">Dickon&#x27;s Garden and the Joyful Deception</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Dickon&#x27;s Garden and the Joyful Deception illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Dickon&#x27;s Garden and the Joyful Deception</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Beyond the hidden walls of the secret garden, Dickon tended another growing place—the humble plot beside his mother&#x27;s cottage on the moor. There, in the early mist of morning and the long clear light of Yorkshire evenings, he worked among potatoes and cabbages, turnips and herbs, his creatures keeping him company while he whistled and sang. Mrs. Sowerby often said they&#x27;d never manage half so comfortably without Dickon&#x27;s garden, for everything flourished under his care, growing twice the size of anyone else&#x27;s vegetables and carrying a flavor no one could match. The low stone wall surrounding it had become one of the prettiest things in Yorkshire, tucked thick with foxglove and ferns and hedgerow flowers until scarcely a stone showed through.</p>
 <p>It was during these twilight hours, sitting upon that flowering wall, that Mrs. Sowerby came to hear the whole remarkable tale of Misselthwaite Manor. Dickon told her everything—the buried key, the robin, the gray haze of deadness that had seemed so final, and the secret Miss Mary had sworn never to reveal. He spoke of Colin&#x27;s doubt and his dramatic introduction to the hidden domain, of Ben Weatherstaff&#x27;s angry face appearing over the wall, and of the young master&#x27;s sudden indignant strength. Mrs. Sowerby&#x27;s face changed color several times as she listened, and when she learned that Colin had stood upon his own feet, she declared it had been the making of the girl and the saving of the boy.</p>
 <p>But Dickon had more to tell—of the delicious deception the children had devised. To keep the household from guessing Colin&#x27;s miraculous improvement, they had taken to &quot;play actin&#x27;,&quot; pretending he remained as helpless as ever. Colin would fly out at the footman for not carrying him carefully enough, groaning and fretting while being settled into his chair, with Mary asking sympathetically if poor Colin was truly so weak. Yet the moment they reached the safety of the garden, they dissolved into laughter, stuffing their faces into cushions to muffle the sound.</p>
@@ -884,9 +1102,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
 <section class="chapter" id="chapter-25" data-num="25">
-    <img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="The Robin&#x27;s Watchful Eye illustration" loading="lazy">
-    <div class="chapter-number">Chapter 25</div>
-    <h2 class="chapter-title">The Robin&#x27;s Watchful Eye</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="The Robin&#x27;s Watchful Eye illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">The Robin&#x27;s Watchful Eye</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The secret garden continued its transformation, each morning unfurling new miracles like whispered promises, and in the robin&#x27;s nest there appeared the most sacred of treasures—Eggs. The robin&#x27;s mate sat upon them with such tender vigilance, keeping them warm beneath her feathery breast, while the robin himself maintained his watch with indignant devotion. Even Dickon, who understood the language of all wild things, kept his distance from that close-grown corner, for he knew what the others knew—what every living soul in that garden understood through their innermost being—that the Eggs represented something of immense, terrible, heart-breaking beauty. Had there been even one creature present who did not comprehend this solemnity, who might have disturbed that sacred brooding, there could have been no happiness in all that golden springtime air.</p>
 <p>The robin observed the children with sharp anxiety at first, though he never worried about Dickon. From the moment he set his dew-bright black eye upon the boy, he recognized him as a sort of robin without beak or feathers—one who could speak robin as naturally as a Frenchman speaks French. But the other two required watching. The boy creature especially troubled him, arriving not on legs but pushed upon a wheeled contraption, wild animal skins thrown over him. When Colin began standing and moving in his queer, unaccustomed way, the robin secreted himself in a bush, tilting his head this way and that, fearing these slow movements might mean the boy was preparing to pounce like a cat.</p>
 <p>Yet as the weeks passed, understanding came to the robin in a flash of memory. He recalled his own fledgling days, learning to fly in short bursts before resting, and realized this boy was doing precisely the same—learning to walk, to fly in his own human fashion. He shared this revelation with his mate, who found great comfort in it and began watching Colin&#x27;s progress with eager interest from the edge of her nest. Though she remained confident the Eggs would prove far cleverer and quicker than any human child, she conceded indulgently that humans were always clumsy creatures who never truly learned to fly at all.</p>
@@ -899,9 +1122,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
 <section class="chapter" id="chapter-26" data-num="26">
-    <img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="The Magic Made Real illustration" loading="lazy">
-    <div class="chapter-number">Chapter 26</div>
-    <h2 class="chapter-title">The Magic Made Real</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_26.webp"><img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="The Magic Made Real illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">The Magic Made Real</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Magic had become a living thing to them now, as real as the roses climbing the garden walls or the Yorkshire soil beneath their fingernails. Colin had taken to delivering lectures on the subject—practice, he explained, for the great scientific discoveries he would one day share with the world. Ben Weatherstaff sat through these addresses with eyes fixed not upon the words but upon the boy himself, watching those once-stick-thin legs growing straighter and stronger by the day, that sharp chin filling out, those hollow cheeks rounding into something that reminded him powerfully of another face he had known and loved long ago. When Colin caught him staring, Ben reckoned the lad had gained three or four pounds that week alone, eyeing his calves and shoulders with the satisfaction of a farmer appraising fine livestock.</p>
 <p>That morning, Colin made a discovery that struck him with the force of revelation. He had been weeding alongside Mary and Dickon, trowel in hand, when something rushed through him—a rapturous certainty that could not be contained. He stood suddenly, stretching to his full height, arms flung wide, face flushed with joy. &quot;Just look at me!&quot; he cried. He remembered that first morning in the garden, when he had been wheeled in like an invalid prince, and now here he stood on his own two feet, digging in the earth. &quot;I&#x27;m *well*—I&#x27;m *well!*&quot;</p>
 <p>The realization demanded expression, something thankful and joyful to shout to anything that would listen. Ben Weatherstaff, dry as ever, suggested the Doxology. Colin had never heard it, having been too ill for church, but when Dickon explained that his mother believed the skylarks sang it each morning, Colin knew it must be worth learning. They removed their caps—even Ben, with puzzled reluctance—and Dickon&#x27;s strong boy-voice lifted the old hymn among the trees and roses. They all joined in, Mary and Colin lifting their voices as best they could, and by the third line Ben sang with such savage vigor that when they reached &quot;Amen,&quot; tears streaked his leathery cheeks.</p>
@@ -913,9 +1141,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
 <section class="chapter" id="chapter-27" data-num="27">
-    <img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="The Power of Thoughts Reborn illustration" loading="lazy">
-    <div class="chapter-number">Chapter 27</div>
-    <h2 class="chapter-title">The Power of Thoughts Reborn</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_27.webp"><img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="The Power of Thoughts Reborn illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">The Power of Thoughts Reborn</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The chapter opens with a meditation on the extraordinary power of discovery—how each passing century unveils wonders previously thought impossible, and how the human mind itself has emerged as one of the most remarkable forces yet understood. Thoughts, the narrator explains, possess the potency of electric batteries, capable of nourishing like sunlight or poisoning like fever. This philosophy threads through all that follows, binding the transformations of body and spirit that have quietly unfolded throughout the story.</p>
 <p>Mary Lennox, once that yellow-faced, sour-opinioned creature who found nothing worthy of her interest, had been pushed by circumstances toward her own good. Her mind, gradually filled with robins and moorland cottages, with the crabbed affection of old Ben Weatherstaff and the earthy wisdom of Yorkshire housemaids, with the secret garden awakening day by day and Dickon&#x27;s gentle creatures, left no room for the disagreeable thoughts that had once made her liver sluggish and her countenance jaundiced. Colin, too, had shed his hysterical fears and morbid obsessions with humps and early death. When beautiful thoughts pushed out the hideous ones, life flooded back into him like spring water clearing a stagnant pool. The scientific experiment, as he had called it, proved neither weird nor complicated—simply the determined replacement of dark thoughts with courageous ones, for two things cannot occupy the same space.</p>
 <p>Meanwhile, far across the continent, Archibald Craven wandered through Norwegian fjords and Swiss valleys, his mind still clouded with ten years of grief. He had let blackness fill his soul after his wife Lilias died, refusing any rift of light. Yet slowly, inexplicably, something began to shift. By a clear Austrian stream, gazing at forget-me-nots, he felt old thoughts gently pushed aside. At Lake Como, a dream came—Lilias&#x27;s voice calling him to the garden. When Susan Sowerby&#x27;s letter arrived, urging him home, he obeyed without hesitation.</p>
@@ -1055,6 +1288,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

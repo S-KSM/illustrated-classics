@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Dead Partner and a Frozen Soul illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Dead Partner and a Frozen Soul</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Dead Partner and a Frozen Soul illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Dead Partner and a Frozen Soul</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Marley was dead—let there be no mistake about that. Dead as a door-nail, if one may be permitted the expression, though I confess the particular deadness of door-nails remains something of a mystery, and perhaps coffin-nails might serve better. But no matter; the point must be established with emphatic certainty, for without the absolute conviction of Marley&#x27;s demise, nothing wonderful can proceed from what follows. The register bore all the necessary signatures—clergyman, clerk, undertaker, and chief mourner—and that chief mourner was none other than Ebenezer Scrooge himself, Marley&#x27;s sole executor, sole administrator, sole assign, sole residuary legatee, sole friend, and sole anything else one might name. So dreadfully affected was Scrooge by this sad event that he managed to conduct an undoubted bargain on the very day of the funeral.</p>
 <p>Oh! But what a piece of work was Scrooge! A squeezing, wrenching, grasping, scraping, clutching, covetous old sinner—hard and sharp as flint, secret and self-contained and solitary as an oyster. The cold within him had frozen his features blue and red in all the wrong places, had stiffened his gait and sharpened his grating voice. He carried his own low temperature about with him perpetually, icing his office in the dog-days and refusing to thaw it one degree at Christmas. No warmth could warm him, no wind could out-bitter him, no falling snow was more intent upon its purpose. Even the blind men&#x27;s dogs knew him by some canine instinct and tugged their masters into doorways at his approach.</p>
 <p>It was Christmas Eve, and old Scrooge sat busy in his counting-house while the fog pressed in at every chink and his poor clerk Bob Cratchit shivered over a fire so meager it resembled one coal. Into this frozen domain burst Scrooge&#x27;s nephew Fred, all ruddy warmth and sparkling eyes, offering dinner invitations and holiday blessings—and receiving nothing but &quot;Bah! Humbug!&quot; and a succession of icy &quot;Good afternoons!&quot; in return. Two charitable gentlemen fared no better, retreating in dismay after Scrooge inquired whether prisons and workhouses were still in operation and declared that those who would rather die than enter them had better do it and decrease the surplus population.</p>
@@ -522,9 +625,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="The Ghost of Christmas Past Arrives illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">The Ghost of Christmas Past Arrives</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="The Ghost of Christmas Past Arrives illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">The Ghost of Christmas Past Arrives</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>When Scrooge awoke to find the darkness so complete that he could scarcely distinguish window from wall, the neighboring church bells set about confounding him utterly. They struck twelve—twelve!—when it had been past two when he had sought his bed. His repeater confirmed the impossible hour, and so Scrooge was left to grapple with the preposterous notion that either he had slept through an entire day and into another night, or else something catastrophic had befallen the sun itself. This latter idea proved most alarming, for &quot;three days after sight of this First of Exchange pay to Mr. Ebenezer Scrooge&quot; would become mere worthless paper if there were no days left to count by.</p>
 <p>He thought, and thought, and thought it over—and could make nothing of it. Marley&#x27;s Ghost bothered him exceedingly. Each time he resolved that it had been merely a dream, his mind flew back again, like a strong spring released, to the selfsame question: Was it a dream or not?</p>
 <p>He remembered then the Ghost&#x27;s warning of a visitation when the bell tolled one, and resolved to lie awake until the hour was passed—considering that he could no more go to sleep than go to Heaven, this was perhaps the wisest resolution in his power. The quarter-hours crept by with maddening deliberation until at last the bell sounded with a deep, dull, hollow, melancholy ONE.</p>
@@ -538,9 +646,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Feast of Light and Plenty illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">A Feast of Light and Plenty</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Feast of Light and Plenty illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">A Feast of Light and Plenty</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Scrooge awoke mid-snore—a prodigiously tough snore, mind you—and found himself sitting bolt upright in bed, knowing without being told that the clock was again upon the stroke of one. The previous night&#x27;s visitation had taught him something, and he determined this time to meet his supernatural visitor head-on, drawing back every bed-curtain with his own trembling hands and establishing what he fancied was a sharp lookout in all directions. Now, gentlemen of the free-and-easy sort may boast themselves ready for anything from pitch-and-toss to manslaughter, but without venturing quite so hardily on Scrooge&#x27;s behalf, let it be said he had steeled himself for a tolerably broad field of strange appearances. What he had not prepared himself for was *nothing*—and so when the bell tolled and no shape materialized, only a great blaze of ruddy light streaming inexplicably upon his bed, the old miser was seized with violent trembling, half-convinced he had become an interesting case of spontaneous combustion.</p>
 <p>At last—for it is always the person *not* in the predicament who knows what ought to have been done—he traced the mysterious glow to his sitting room, where a voice called him by name and bade him enter. And what a transformation awaited him there! The walls hung thick with living green, holly and mistletoe glittering like scattered mirrors, while heaped upon the floor in magnificent abundance lay turkeys, geese, great joints of meat, plum-puddings, and seething bowls of punch—a throne of Christmas plenty upon which sat a jolly Giant clothed in simple green robes, his breast bare, his feet unshod, a holly wreath upon his head. This was the Ghost of Christmas Present, and he carried a glowing torch shaped like Plenty&#x27;s horn, its light falling full upon the cowering Scrooge.</p>
 <p>The Spirit revealed he had more than eighteen hundred brothers—a tremendous family indeed—and Scrooge, humbled by his previous night&#x27;s lessons, submitted willingly to the Spirit&#x27;s guidance. They traveled first through the bustling city streets on Christmas morning, where the people&#x27;s cheerfulness defied the gloomy weather, where poulterers&#x27; shops burst with pot-bellied baskets of chestnuts and Spanish onions winked slyly from their shelves. The Ghost sprinkled blessings from his torch upon the dinners of the poor, and when Scrooge questioned whether certain self-righteous folk might close such bakers&#x27; shops on Sundays in the Spirit&#x27;s name, the Ghost delivered a stinging rebuke: those who do deeds of passion and selfishness while claiming Christmas kinship are strangers to its true family.</p>
@@ -551,9 +664,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="The Silent Shadow of Things to Come illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">The Silent Shadow of Things to Come</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="The Silent Shadow of Things to Come illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">The Silent Shadow of Things to Come</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Phantom came upon him as silence made flesh—slowly, gravely, wordlessly—and Scrooge, though well-seasoned now in ghostly company, fell to his knees before it. Here was no jolly giant wreathed in plenty, no flickering ancient bearing light; here was darkness itself given form, a figure shrouded so completely in funeral black that only a single outstretched hand distinguished it from the night through which it moved. The Spirit neither spoke nor stirred, and Scrooge, trembling beneath those unseen eyes he felt fixed upon him, declared himself ready to follow—for he knew its purpose was his good, and he hoped, desperately hoped, to become another man entirely.</p>
 <p>They plunged into the city, or rather the city sprang up around them, depositing them upon &#x27;Change among merchants who chinked coins and consulted pocket-watches as they always had. Yet the conversations the Spirit bade him hear concerned not commerce but a death—some fellow gone, it seemed, whom nobody much mourned and fewer still would bury unless lunch were provided. Scrooge recognized these men; he had cultivated their esteem, strictly in a business point of view, mind you. But whose death provoked such magnificent indifference? He searched for his own shadow among the familiar crowds and found it nowhere, which gave him curious comfort—perhaps his new-born resolutions had already carried him elsewhere.</p>
 <p>The Phantom led on, into quarters so wretched that alleys disgorged their offences like cesspools, to a beetle-browed shop where old Joe dealt in rags, bones, and secrets best left unscrutinised. There three scavengers had converged—charwoman, laundress, undertaker&#x27;s man—each bearing plunder stripped from the same unlamented corpse: sleeve-buttons, teaspoons, bed-curtains torn down rings and all, and—most ghastly—the very shirt meant for burial, replaced with calico because, as the charwoman laughed, &quot;He can&#x27;t look uglier than he did.&quot; Scrooge watched these obscene merchants of death haggle over their spoils and understood, with mounting horror, that a life of avarice purchases only this: to be picked clean by strangers before the body grows cold.</p>
@@ -563,9 +681,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="A New Life Begins in Joy illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">A New Life Begins in Joy</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="A New Life Begins in Joy illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">A New Life Begins in Joy</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>YES! — and what a syllable to hang a man&#x27;s salvation upon! Scrooge awoke to find the bedpost his own, the room his own, and — best and happiest of all, mind you — the Time before him his own, stretched out like a gift yet unwrapped, ripe for amendment. The old sinner tumbled from his sheets in such a state of fluttering, glowing agitation that his garments scarcely knew which way was up, nor did he trouble himself to instruct them. He made, as it were, a perfect Laocoön of himself with his stockings whilst laughing and weeping in the same ragged breath — light as a feather, merry as a schoolboy, giddy as a man drunk on something far headier than wine.</p>
 <p>Through his chambers he frisked — actually *frisked*, this man who had been frozen harder than his own counting-house lock — cataloguing the evidence of his supernatural visitation with all the wonder of a child discovering the world new-made. There stood the saucepan that once held gruel! There, the door through which Marley&#x27;s ghost had clanked and moaned! The bed-curtains remained intact, rings and all, proof positive that those dreadful shadows of things that *would* have been might yet be dispelled. And dispelled they would be — he knew it in whatever organ now pumped warmly beneath his nightshirt.</p>
 <p>The church bells crashed and clanged their glorious Christmas chorus whilst Scrooge thrust his head into air so golden, so piercingly cold and sweet, that the blood fairly danced. Learning from a boy in Sunday clothes that the Spirits had accomplished their entire reformation in a single night — &quot;Of course they can! Of course they can!&quot; — he dispatched the lad to purchase that magnificent prize turkey, the one as big as the boy himself, for anonymous delivery to Bob Cratchit&#x27;s humble table. The chuckle with which he paid for the bird, and the chuckle with which he paid for the cab to carry it, and the chuckle with which he recompensed the boy were only exceeded by the chuckle with which he collapsed, breathless and weeping, into his chair.</p>
@@ -708,6 +831,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="Dreams of Eternal Light and Glory illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">Dreams of Eternal Light and Glory</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="Dreams of Eternal Light and Glory illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Dreams of Eternal Light and Glory</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>From the frost-touched streets of St. Petersburgh to the ice-bound waters of the Arctic, Robert Walton pours forth his soul in letters to his beloved sister Margaret, chronicling the commencement of an enterprise that has consumed his imagination since boyhood. With a heart swelling with Romantic fervour, he writes of the northern breeze that braces his nerves and fills him with visions of that region of perpetual light—the pole, which he refuses to conceive as a seat of desolation, but rather as a land surpassing in wonders every territory yet known to man. His dreams are magnificent: to discover the secret power that attracts the needle, to tread upon earth never before imprinted by human foot, and to confer upon all mankind the inestimable benefit of a northern passage.</p>
 <p>Yet even as Walton confesses his ardent hopes, the shadow of isolation falls across his pages. Having prepared himself through years of privation among whale-fishers, having hardened his body to cold and want, he finds himself possessed of resolution but wanting in companionship. In Archangel, where he assembles his crew, he laments most bitterly the absence of a friend—one whose cultivated mind and sympathetic nature might approve or amend his plans, might temper his impatience and regulate the romantic excesses of his self-educated soul. He speaks with admiration of his lieutenant&#x27;s courage and his master&#x27;s noble disposition, recounting the latter&#x27;s tale of selfless love with evident feeling, yet these worthy men cannot fill the void that aches within him.</p>
 <p>By July, Walton&#x27;s vessel has penetrated far into northern latitudes, where floating sheets of ice pass like spectral warnings of dangers ahead. Then, upon the fifth of August, so strange an accident befalls them that Walton cannot forbear recording it: through the clearing mist, the crew beholds a gigantic figure upon a dog-drawn sledge, racing northward across the ice—an apparition that excites their unqualified wonder. The following morning brings an even more extraordinary discovery: another sledge, drifted towards them upon a fragment of ice, bearing within it a European stranger, wretched beyond description, his limbs frozen and his frame dreadfully emaciated. This man, before consenting to board the vessel, makes one peculiar inquiry—he must know whither they are bound.</p>
@@ -522,9 +625,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Family Forged in Grief and Devotion illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">A Family Forged in Grief and Devotion</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Family Forged in Grief and Devotion illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Family Forged in Grief and Devotion</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>I am by birth a Genevese, and from the outset I must impress upon the reader the nature of my lineage, for it illuminates all that followed in my singular existence. My father, a man of unimpeachable integrity who had devoted his younger years to the public affairs of our republic, came late to matrimony—and the circumstances of his union with my mother reveal the very essence of his character, that rare mingling of steadfast loyalty and tender benevolence which shaped the sanctuary of my earliest years.</p>
 <p>There lived a merchant named Beaufort, my father&#x27;s most intimate friend, who through the cruel vicissitudes of fortune fell from prosperity into utter destitution. Pride—that false and unbending pride which so often proves the architect of deeper misery—compelled Beaufort to conceal himself in the mean streets of Lucerne, where he languished in obscurity with his daughter Caroline. My father, grieved beyond measure by his friend&#x27;s retreat, searched for ten months until he discovered the wretched abode, only to find Beaufort upon his sickbed, consumed by that peculiar grief which feeds upon idleness and reflection. Caroline, possessed of an uncommon fortitude, had sustained them both through plain work and plaited straw, earning a pittance scarcely sufficient for survival. Yet despite her courage, the end proved inevitable; in the tenth month of their exile, Beaufort expired in her arms, leaving her orphan and beggar both.</p>
 <p>My father entered that chamber of death like a protecting spirit, and Caroline committed herself to his care with the trust of one who has known the depths of despair. Two years hence, she became his wife—and though considerable years separated them, this disparity served only to deepen their devoted affection. There was reverence in my father&#x27;s attachment, a desire to recompense her for sorrows endured, and he sheltered her as a fair exotic is sheltered by the gardener from every rougher wind. They sought the pleasant climate of Italy for her restoration, and there at Naples I was born, their eldest child, accompanying them through those lands of wonders during my infant years.</p>
@@ -535,9 +643,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Seeds of Obsession and Harmony illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">Seeds of Obsession and Harmony</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Seeds of Obsession and Harmony illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">Seeds of Obsession and Harmony</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>How sweet it is to linger upon those golden hours of childhood, before the shadow of catastrophe had fallen across my soul—and yet how necessary, for in tracing the innocent origins of my obsessions, I must illuminate the very wellsprings from which my ruin would eventually flow.</p>
 <p>Elizabeth and I were raised as one, our dispositions contrasting yet harmonious: she, serene and contemplative, drew sustenance from the sublime poetry of our Alpine home, finding in the tempests and silences of the mountains ample nourishment for her spirit; whilst I, ardent and restless, burned with an insatiable thirst to penetrate nature&#x27;s secrets, to divine the hidden causes behind the magnificent appearances she so peacefully admired. The world presented itself to me not as a spectacle to be enjoyed, but as a mystery demanding resolution—and from my earliest sensations, I can recall nothing so keenly as that rapturous gladness which attended each new discovery.</p>
 <p>Our family settled at length in Geneva and at our beloved *campagne* on Belrive, where my parents lived in gentle seclusion. It was my nature to shun crowds and attach myself fervently to but a few chosen companions, and chief among these was Henry Clerval—a boy of singular fancy who devoured tales of chivalry, composed heroic songs, and dreamed of becoming one of those gallant benefactors whose names are immortalised in story. Where I sought the physical secrets of existence, Clerval occupied himself with the moral relations of men; and Elizabeth, that saintly soul whose presence shone like a shrine-dedicated lamp in our peaceful home, softened us both with her celestial gentleness, tempering my sullen intensity and refining Clerval&#x27;s adventurous spirit into true benevolence.</p>
@@ -548,9 +661,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Mother&#x27;s Sacrifice and Farewell illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">A Mother&#x27;s Sacrifice and Farewell</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Mother&#x27;s Sacrifice and Farewell illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">A Mother&#x27;s Sacrifice and Farewell</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The shadow of death first falls across young Frankenstein&#x27;s path on the eve of his departure for the University of Ingolstadt, that fateful institution where his destiny would ultimately be forged in the fires of forbidden knowledge. At seventeen, his father had determined that he should quit the schools of Geneva for broader horizons, yet before the appointed day could arrive, Elizabeth—dear, gentle Elizabeth—was seized by the scarlet fever, her life hanging in the most precarious balance. His mother, that best of women whose benevolence knew no bounds, could not be restrained from attending the sickbed of her beloved charge, though all entreaties urged her to preserve herself from contagion. Her watchful devotions triumphed over the malignity of the distemper, and Elizabeth was saved—yet the consequences of this maternal sacrifice proved fatal to its author. Within three days, his mother lay dying, her countenance serene even as she joined the hands of Victor and Elizabeth, bestowing upon them her final blessing and her fervent hope for their future union, before departing from this world with the calm resignation of one who has loved well and been beloved.</p>
 <p>The void that follows such an irreparable loss—that rending of the dearest ties—need not be described to any soul who has known grief, for who among the living has not felt the rude hand of death snatch away some cherished connection? The house became a temple of mourning, and Victor obtained from his father a respite of some weeks, finding it sacrilege to rush into the thick of life while sorrow yet reigned. Elizabeth, ever the angel of consolation, veiled her own grief and devoted herself to comforting those who remained, her enchanting smiles bestowed like sunshine upon a darkened household.</p>
 <p>When at last the day of departure arrived, young Clerval—that faithful companion whose father, a narrow-minded trader, had forbidden him the liberal education his soul craved—spent the final evening in melancholy communion with his friend. The farewell was prolonged until morning&#x27;s dawn, when Victor threw himself into the chaise and indulged in the most sorrowful reflections upon his isolation, though his spirits gradually rose with anticipation of the knowledge he would acquire.</p>
@@ -559,9 +677,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Secret of Life and Death illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">The Secret of Life and Death</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Secret of Life and Death illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">The Secret of Life and Death</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>From that fateful day forward, natural philosophy—and chemistry most particularly—consumed the whole of my existence, becoming at once my sole occupation and my singular obsession. I devoted myself with ardour to the works of modern inquirers, attending lectures with unwavering diligence and cultivating the acquaintance of every man of science the university might offer. Even M. Krempe, whose repulsive physiognomy and brusque manners had initially repelled me, revealed himself possessed of sound sense and genuine knowledge; and in M. Waldman I discovered not merely an instructor but a true friend, whose gentle guidance banished all pedantry and illuminated even the most abstruse inquiries with clarity and warmth. My application, at first uncertain, soon grew so fervent that the stars themselves would fade into morning light while I yet laboured in my chamber.</p>
 <p>Two years passed thus, during which I paid no visit to Geneva, for I was engaged heart and soul in pursuits that promised discoveries beyond what any had achieved before me. My progress astonished both students and masters alike, and I made certain improvements to chemical instruments that procured me considerable esteem. Yet when I had mastered all that the professors of Ingolstadt could teach, and thought to return at last to my native town and those I loved, an incident occurred that protracted my stay—an incident that would seal my fate irrevocably.</p>
 <p>The structure of the human frame had long fascinated me, and I found myself consumed by that boldest of questions: whence proceeds the principle of life itself? To examine life&#x27;s causes, I reasoned, one must first have recourse to death. Thus I became intimate with anatomy, spending days and nights in vaults and charnel-houses, observing the corruption of what had once been beautiful and strong. My father&#x27;s rational education had spared me any supernatural terror; to my eyes, a churchyard was merely the receptacle of bodies deprived of life. Yet as I studied the minutiae of decay, tracing the transformation from life to death, a sudden light broke upon me—brilliant, wondrous, and terrifyingly simple. After incredible labour and fatigue, I discovered the cause of generation and life; nay, more—I became capable of bestowing animation upon lifeless matter.</p>
@@ -571,9 +694,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Creature Wakes to Horror illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">The Creature Wakes to Horror</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Creature Wakes to Horror illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">The Creature Wakes to Horror</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On a dreary November night, with rain pattering against the windows and a candle guttering in its final moments, Victor Frankenstein at last beheld the culmination of his obsessive labors—yet the triumph he had so ardently pursued transformed instantaneously into unutterable horror. The creature&#x27;s dull yellow eye opened, its breath came harsh and labored, and convulsive motion shuddered through limbs that Victor had so painstakingly assembled. Though he had selected features meant to be beautiful, the animation of that form revealed only ghastliness: yellow skin stretched thin over visible muscles and arteries, watery eyes set in dun-white sockets, shriveled complexion paired with straight black lips. The beauty of the dream vanished utterly, and breathless disgust filled Victor&#x27;s heart.</p>
 <p>Unable to endure the sight of his creation, Victor fled to his bedchamber, where fitful sleep brought only nightmarish visions—Elizabeth transformed in his embrace from blooming health to the livid hue of death, her features shifting until he held his dead mother&#x27;s corpse, grave-worms crawling in the folds of her shroud. He woke in cold terror to find the monster standing over his bed, reaching toward him with one outstretched hand, jaws moving in inarticulate sounds. Victor escaped into the courtyard, where he passed the remainder of that wretched night pacing in agitation, his pulse alternating between frantic racing and languorous weakness, the bitterness of disappointment mingling with his horror at what he had wrought.</p>
 <p>Morning brought no relief—only grey, wet daylight illuminating the streets of Ingolstadt, through which Victor wandered aimlessly, dreading each turning that might present his creation to his view. Yet providence, or perhaps cruel irony, placed him before the inn just as the Swiss diligence arrived bearing Henry Clerval, his dearest friend from childhood. Henry&#x27;s presence momentarily banished Victor&#x27;s torment, summoning thoughts of home, of Elizabeth, of all that was warm and familiar. They walked together toward Victor&#x27;s college, Clerval cheerfully recounting his triumph over his father&#x27;s mercantile objections to scholarly pursuits.</p>
@@ -582,9 +710,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="A Letter from Home and Justine&#x27;s Story illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">A Letter from Home and Justine&#x27;s Story</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="A Letter from Home and Justine&#x27;s Story illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">A Letter from Home and Justine&#x27;s Story</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The hand that placed Elizabeth&#x27;s letter into my own trembled not from fever&#x27;s remnant, but from that peculiar anticipation which accompanies tidings from those we hold most dear. Her words—penned in that flowing script I knew so intimately—arrived as a breath of alpine air into the sickroom where I had languished these many months, and as I read, the walls of my Ingolstadt chamber seemed to dissolve, replaced by visions of Geneva&#x27;s tranquil shores and the beloved faces that awaited me there.</p>
 <p>Elizabeth wrote with that tender solicitude which had ever characterised her nature, her anxiety for my health threading through every line like a silver filament through dark cloth. She spoke of my father&#x27;s vigorous constitution and his single wish—merely to behold me well again—and of young Ernest, now sixteen, restless and spirited, yearning for military glory in foreign lands while the family resisted parting with him until my return. The blue lake and snow-clad mountains, she assured me, remained unchanged, those immutable sentinels of our peaceful existence, and in her constancy I perceived the very essence of home itself.</p>
 <p>Yet it was her account of Justine Moritz that stirred in me memories long dormant—Justine, that gentle creature who had entered our household as a child, rescued from a mother&#x27;s inexplicable cruelty by my benevolent aunt. Elizabeth traced for me the girl&#x27;s sorrowful history: how she had flourished under my aunt&#x27;s tutelage, had mourned her passing with exquisite devotion, and had subsequently endured the deaths of her siblings and the bitter vacillations of her repentant mother, who accused her of causing those very losses she grieved. Now returned to our family following Madame Moritz&#x27;s death, Justine stood as a living memorial to my departed aunt, her expression and manner echoing that beloved protectress in ways that moved Elizabeth deeply. And of little William she wrote with such vivid affection—his laughing blue eyes, his cherubic dimples, his innocent courtships—that I could almost feel his small hand clasping my own.</p>
@@ -595,9 +728,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="A Father&#x27;s Letter of Death illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">A Father&#x27;s Letter of Death</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="A Father&#x27;s Letter of Death illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">A Father&#x27;s Letter of Death</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Upon Victor&#x27;s return, a letter from his father awaited him—a letter that began with the tender hesitation of one who must deliver unbearable news, and culminated in words that struck like a thunderbolt across the page: William is dead, murdered. The sweet child whose innocent smiles had warmed the hearts of all who knew him had been found stretched upon the grass at Plainpalais, the terrible print of the murderer&#x27;s fingers pressed upon his gentle throat. Elizabeth, in her anguish, accused herself as the cause, for she had permitted little William to wear a precious miniature of Victor&#x27;s mother—a trinket now vanished, presumed to be the murderer&#x27;s motive. Victor&#x27;s father summoned him home not with thoughts of vengeance, but with pleas for peace, for healing, for the comfort that only family might provide in such dark hours.</p>
 <p>The letter transformed Victor utterly; the joy that had first lit his countenance upon receiving correspondence from Geneva gave way to the most profound despair. Clerval, ever the faithful friend, could offer no consolation adequate to such irreparable loss, and could only accompany Victor as far as ordering the horses for his melancholy journey homeward. As Victor traveled through landscapes once familiar to his youth, he found himself suspended between longing and dread—the snowy mountains and placid lake of his beloved country restored him briefly, yet as night descended and he drew nearer to Geneva, an oppressive foreboding seized his spirit, as though he foresaw that he was destined to become the most wretched of human beings.</p>
 <p>It was amidst a terrible storm, with lightning illuminating the Alps in sheets of celestial fire, that Victor beheld a figure emerging from the gloom—a figure whose gigantic stature and hideous aspect could belong to none other than the creature to whom he had given life. In that terrible flash of illumination, conviction struck Victor with irresistible force: this fiend, this daemon of his own creation, was William&#x27;s murderer. The creature scaled the precipices of Mont Salêve and vanished, leaving Victor to spend the remainder of that dreadful night consumed by anguish, contemplating the horror he had unleashed upon the world.</p>
@@ -606,9 +744,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Mockery of Justice and Living Torture illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">Mockery of Justice and Living Torture</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Mockery of Justice and Living Torture illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Mockery of Justice and Living Torture</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The hours preceding the trial passed in sorrowful anticipation, each moment weighted with the terrible knowledge that I alone possessed—that this proceeding was no pursuit of justice but rather a wretched mockery, a theatre of condemnation in which the true author of these horrors sat concealed among the witnesses. My curiosity, my lawless devices, had set in motion a catastrophe that would now claim two innocents: first William, that smiling babe whose joy had been extinguished by monstrous hands, and now Justine, whose only crime lay in proximity to my creation&#x27;s hellish sport.</p>
 <p>Justine entered the court dressed in mourning, her countenance possessed of that exquisite beauty which deep feeling bestows upon the truly innocent. Though thousands gazed upon her with execration, imagining her capable of unspeakable enormity, she maintained a tranquility—constrained, yes, yet resolute—that spoke more eloquently of her guiltlessness than any testimony might convey. The evidence mounted against her with terrible precision: her absence throughout that fatal night, her confused encounter with the market-woman near the very spot where William&#x27;s body was discovered, and most damningly, the miniature portrait found secreted in her pocket, that same portrait Elizabeth had placed around the child&#x27;s neck mere hours before his disappearance.</p>
 <p>Justine&#x27;s defence was simple and heartbreaking in its honesty. She related how she had spent the evening at her aunt&#x27;s house in Chêne, how upon returning she had learned of William&#x27;s disappearance and searched through the night, how exhaustion had driven her to seek shelter in a cottage barn where she slept fitfully until dawn. Of the portrait&#x27;s presence in her possession, she could offer no explanation, for she had none—and in this single inexplicable circumstance lay her doom.</p>
@@ -619,9 +762,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Guilt&#x27;s Weight Upon the Living illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Guilt&#x27;s Weight Upon the Living</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Guilt&#x27;s Weight Upon the Living illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Guilt&#x27;s Weight Upon the Living</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Nothing is more painful to the human spirit than the dreadful stillness that descends when tumultuous events have passed, leaving the soul suspended in a purgatory that offers neither the solace of hope nor the animation of fear. Such was my condition in the aftermath of Justine&#x27;s execution—her innocent blood upon my conscience, my veins flowing with life I scarcely deserved to possess. Sleep abandoned me utterly, and I wandered through my days like some malevolent specter, haunted by the knowledge that the horrors I had wrought were perhaps but a prelude to greater atrocities yet to come. I, who had commenced my existence with such benevolent aspirations, who had thirsted to render myself useful to my fellow creatures, now found myself plunged into a hell of remorse from which no language could adequately convey the torment.</p>
 <p>My father, observing the shadow that had fallen across my countenance, endeavoured to rouse me through appeals to duty and fortitude, reminding me that excessive grief serves neither the dead nor the living. Yet his counsel, however wise for an innocent man, proved utterly inapplicable to one whose conscience writhed beneath the weight of secret guilt. I could offer him nothing but averted eyes and the hollow pretense of sorrow untainted by complicity.</p>
 <p>Our removal to the house at Belrive afforded me a peculiar liberty—the freedom to take my solitary boat upon the lake in those midnight hours when the rest of the household slumbered. How often, drifting beneath the indifferent stars, was I tempted to surrender myself to those dark waters, to let them close forever over my calamities! Yet the thought of Elizabeth, heroic and suffering, whose existence was bound inextricably to mine, and of my father and brother, whom I dared not abandon to the malice of the fiend I had unleashed—these considerations alone restrained my desperate hand.</p>
@@ -631,9 +779,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Solace and Shadows Among the Glaciers illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">Solace and Shadows Among the Glaciers</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Solace and Shadows Among the Glaciers illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">Solace and Shadows Among the Glaciers</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The day following his restless torment, I wandered through the valley as one seeking absolution from nature herself, standing beside the sources of the Arveiron where the glacier creeps with slow and inexorable majesty down from the heights, threatening to barricade the valley in its frozen embrace. The sublime grandeur of that scene—the vast mountain walls, the overhanging ice, the shattered pines scattered like fallen soldiers—afforded me such consolation as my wounded spirit could receive. The solemn silence of what I could only call imperial Nature&#x27;s presence-chamber was broken solely by the thunder of avalanches and the great cracking of ice, rent asunder by immutable laws as though it were mere plaything in the hands of forces beyond comprehension. That night, these grand shapes congregated about my slumbers like benevolent guardians—the snowy peaks, the glittering pinnacles, the soaring eagle—and bade me rest in peace.</p>
 <p>Yet where had they fled when morning came? All soul-inspiriting vision vanished with sleep, and dark melancholy once again clouded every thought. Rain poured in torrents, thick mists veiled the summits of my mighty friends, but I resolved nonetheless to ascend Montanvert, remembering how that tremendous glacier had once filled me with sublime ecstasy sufficient to give wings to the soul. I would go alone, for the presence of another would destroy the solitary grandeur I sought.</p>
 <p>The ascent proved terrifically desolate—traces of winter avalanches everywhere visible, trees broken and strewn upon the ground, ravines of snow down which stones perpetually rolled. Alas! Why does man boast of sensibilities superior to the brute, when such refinement only renders us more susceptible to every passing wind, every chance word or scene? We are moved by all things, poisoned in our sleep by dreams, polluted in our waking by wandering thoughts. Nought may endure but mutability itself.</p>
@@ -644,9 +797,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Awakening to a World of Sensation illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Awakening to a World of Sensation</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Awakening to a World of Sensation illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Awakening to a World of Sensation</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Thus begins the creature&#x27;s own testimony, a narrative of awakening so strange and pitiable that one cannot hear it without feeling the peculiar anguish of consciousness born into confusion. He speaks of his earliest moments as through a veil—sensations flooding upon him in bewildering simultaneity, light and sound and touch arriving without distinction or meaning, until gradually, by painful degrees, he learned to separate the operations of his various senses and to comprehend the world into which he had been so unceremoniously thrust.</p>
 <p>His first refuge was the forest near Ingolstadt, where he lay beside a brook, tormented by hunger and thirst he could not name, eating berries and drinking from the stream as any beast might do. Cold and desolate, wrapped in garments stolen from his creator&#x27;s apartment, he wept—that most human of responses—knowing nothing, understanding nothing, feeling only the invasion of pain upon every side. Yet when the moon rose and stole gently over the heavens, he gazed upon it with wonder and something approaching joy, fixing his eyes upon that radiant form as upon the first beautiful thing he had ever beheld.</p>
 <p>Days passed—the waxing and waning of the moon marking time&#x27;s passage—and the creature&#x27;s mind awakened by imperceptible gradations. He learned to distinguish the songs of birds, to perceive the boundaries of objects, to observe the workings of nature with an innocent curiosity uncorrupted by experience. The discovery of fire proved both revelation and cruel instructor; he thrust his hand into the embers and learned, with a cry of pain, that the same element which bestowed warmth could also destroy. Yet he persevered, teaching himself to maintain the flame, to cook his food, to reason from cause to effect with a native intelligence that had received no tutelage save necessity itself.</p>
@@ -656,9 +814,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Lessons in Language and Love illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">Lessons in Language and Love</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Lessons in Language and Love illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">Lessons in Language and Love</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>From the shelter of my wretched hovel, I observed the cottagers with a devotion that bordered upon reverence, for their gentle manners stood in such stark contrast to the brutality I had suffered at the hands of the villagers that I dared not reveal myself, though my heart ached to join their humble circle. The family consisted of three souls: a young man called Felix, his sister Agatha, and their venerable father, who I soon perceived to be blind—a circumstance that would later assume great significance in my fevered imaginings of acceptance.</p>
 <p>Their days unfolded in quiet routine, yet I discerned that they were not entirely happy. The younger cottagers often withdrew to weep in secret, and this mystery confounded me utterly, for they possessed what seemed to my inexperienced eyes every comfort: a warm hearth, food upon the table, and the inestimable treasure of one another&#x27;s companionship. What could such gentle beings know of wretchedness? And yet their tears were genuine, and in time I discovered the bitter cause—they suffered poverty in its most distressing degree, often placing food before their blind father whilst reserving none for themselves.</p>
 <p>This revelation wrought a profound change in my conduct. I had been stealing from their meagre stores during my nightly forays, but upon comprehending the pain I thereby inflicted, I resolved to abstain entirely, sustaining myself upon berries and roots gathered from the neighbouring wood. More than this, I determined to assist them by stealth, and so I took up Felix&#x27;s tools and replenished their woodpile under cover of darkness. The astonishment of the young woman upon discovering this invisible bounty afforded me a pleasure I had never before experienced—the joy of benevolence, of being something other than a creature of horror.</p>
@@ -668,9 +831,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Safie&#x27;s Arrival Brings Light and Language illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">Safie&#x27;s Arrival Brings Light and Language</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Safie&#x27;s Arrival Brings Light and Language illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">Safie&#x27;s Arrival Brings Light and Language</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>With the advancing of spring, that season of renewal which transforms all desert and gloomy spaces into gardens of verdure and delight, the creature&#x27;s narrative hastens toward those events which would shape the very essence of his being. The cottagers&#x27; humble dwelling, already a temple of domestic virtue in his watching eyes, became illuminated by a new and radiant presence—the arrival of Safie, the lovely Arabian, whose angelic countenance and voice like a nightingale&#x27;s song brought joy flooding back to Felix&#x27;s melancholy features.</p>
 <p>She came as a mystery, veiled in black and speaking in musical tones that none within the cottage could comprehend, yet her presence diffused gladness through those simple rooms as the sun dissipates the morning mists. The creature, observing from his hidden place, perceived at once the profound alteration wrought by her arrival: Felix, transformed from sorrow to ecstatic delight; Agatha, ever gentle, kissing the stranger&#x27;s hands in welcome; the old father, embracing this foreign daughter with tender affection. And when Safie took up the guitar and sang, drawing tears of mingled sorrow and rapture from the creature&#x27;s eyes, he understood that beauty and love might transcend all barriers of language and origin.</p>
 <p>Yet herein lay the instrument of both his advancement and his despair. For as Felix undertook to teach Safie the language of the cottagers, the creature bent every faculty toward the same purpose, and found he could imitate almost every word spoken. Through Volney&#x27;s *Ruins of Empires*, read aloud for the Arabian&#x27;s instruction, he obtained a cursory knowledge of history—of the stupendous genius of the Grecians, the virtue and subsequent degenerating of the Romans, and the hapless fate of the American continent&#x27;s original inhabitants. These wonderful narrations inspired in him strange and terrible questions: Was man indeed so powerful and virtuous, yet so vicious and base? The duality of human nature presented itself to him as an unfathomable mystery.</p>
@@ -679,9 +847,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The De Laceys&#x27; Fall From Grace illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">The De Laceys&#x27; Fall From Grace</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The De Laceys&#x27; Fall From Grace illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">The De Laceys&#x27; Fall From Grace</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Some considerable time had passed before the creature came to learn the full history of those gentle beings he observed through the chink in his hovel wall, yet when at last that history unfolded itself before him, it impressed upon his awakening mind a tale of such profound injustice and tender devotion that he could not but feel its weight upon his own nascent soul.</p>
 <p>The old blind man, he discovered, bore the name De Lacey, and far from the humble circumstances in which the creature now beheld him, he had once enjoyed the privileges of good birth and comfortable fortune in France, dwelling in that great luxurious city called Paris, surrounded by friends and respected by all who knew him. His son Felix had served his country with honour, and the lovely Agatha had moved among ladies of the highest distinction—yet all this had been swept away in a single tide of misfortune, the cause of which lay with Safie&#x27;s father, a Turkish merchant who had drawn the family into ruin.</p>
 <p>This merchant, having for reasons unknown become obnoxious to the French government, was seized and condemned to death in a trial so flagrantly unjust that all Paris rose in indignation, recognising that his religion and wealth, rather than any true crime, had sealed his fate. Young Felix, present by accident at these proceedings, felt such horror at the injustice that he vowed upon the instant to deliver the condemned man. Through perseverance and courage, he found means to communicate with the prisoner, and though he rejected all offers of reward, he could not prevent his heart from recognising in the lovely Safie, who came to visit her father in his chains, a treasure worth any peril.</p>
@@ -692,9 +865,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Awakening Through Forbidden Books illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">Awakening Through Forbidden Books</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Awakening Through Forbidden Books illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">Awakening Through Forbidden Books</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Such were the lessons of the cottagers, yet the education of my intellect was destined to receive its most profound—and most devastating—instruction through three volumes of singular influence, discovered by chance in a leathern portmanteau upon the forest floor. These treasures, written in the very language I had so painstakingly acquired, comprised *The Sorrows of Werter*, *Plutarch&#x27;s Lives*, and *Paradise Lost*—a triumvirate of works that would alternately elevate my spirit to ecstasy and cast it into the deepest abysses of despair.</p>
 <p>From Werter I gleaned the domestic sentiments and lofty passions of mankind, weeping at the hero&#x27;s extinction though I scarce comprehended the philosophical disquisitions upon death that occasioned it. Plutarch taught me otherwise—raising my thoughts to the noble founders of ancient republics, to Numa and Solon and Lycurgus, whose peaceable virtues accorded with the gentle example of my protectors. Yet it was Milton&#x27;s great epic that stirred the deepest chords within my being. Reading it as true history, I beheld in Adam a creature like myself—solitary, linked to no other existence—but how different his blessed condition from my wretched state! He had emerged perfect and prosperous from the hands of a loving Creator; I was hideous, abandoned, and accursed. More often did I find Satan the fitter emblem of my condition, for when I gazed upon the happiness of my protectors, the bitter gall of envy rose within me unbidden.</p>
 <p>These literary reflections were soon compounded by a discovery of more terrible import. Among the garments I had taken from my creator&#x27;s laboratory lay papers I had previously neglected—Victor Frankenstein&#x27;s journal, detailing in minute and horrified language every step of my odious creation. To read such words, to comprehend at last the disgust with which my maker had beheld his own handiwork! &quot;Hateful day when I received life!&quot; I cried in agony. Satan at least possessed his fellow devils for companionship, but I was solitary and abhorred.</p>
@@ -705,9 +883,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="A Hell Within and War Declared illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">A Hell Within and War Declared</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="A Hell Within and War Declared illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">A Hell Within and War Declared</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Cursed creator! Why did you bestow upon me the spark of existence only to abandon me to such insupportable misery? These were the tortured reflections that consumed the creature&#x27;s breast as he recounted to his maker the terrible events that followed his rejection by the De Lacey family—events that would transform a being capable of gentleness and yearning into an instrument of vengeance and destruction.</p>
 <p>That first wretched night after his expulsion, the creature wandered through the darkened wood like a wild beast unshackled, giving vent to his anguish in fearful howlings whilst the cold stars shone above him in mockery. He bore, as he confessed, a hell within himself, and finding no sympathy among the myriads of men who inhabited the earth, he declared everlasting war against the human species—and most especially against him who had formed him and cast him forth into such desolation.</p>
 <p>Yet morning brought a measure of tranquillity, and with it hope. The creature reflected upon his imprudence in revealing himself to the younger De Laceys before securing the old man&#x27;s friendship, and he resolved to return and make another attempt. But when he crept back to his hovel and waited through the accustomed hours, no movement stirred within the cottage. At length he overheard Felix speaking with the landlord—the family had fled, never to return, the father&#x27;s very life endangered by the horror of that dreadful encounter. The creature would never look upon his protectors again.</p>
@@ -718,9 +901,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="A Creature&#x27;s Desperate Bargain illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">A Creature&#x27;s Desperate Bargain</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="A Creature&#x27;s Desperate Bargain illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">A Creature&#x27;s Desperate Bargain</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Upon the barren heights of the glacier, where the creature&#x27;s long and melancholy narration had at last reached its conclusion, he fixed his expectant gaze upon me, and I found myself utterly confounded—my thoughts scattered like leaves before an Alpine gale, incapable of comprehending the full magnitude of what he now demanded. He broke the silence with terrible clarity: I must create for him a female companion, a being as wretched as himself, with whom he might share those sympathies without which existence becomes unendurable torment. This, he declared, was his right—a debt owed by creator to creation.</p>
 <p>The peaceful interludes of his tale among the cottagers had softened my heart toward him, yet this audacious demand rekindled the rage I thought extinguished. I refused him absolutely, swearing that no torture could compel my consent—for how could I, in conscience, unleash upon the world another creature whose wickedness, joined with his, might bring desolation to all mankind? But the creature, with a philosopher&#x27;s patience that belied his fearsome countenance, chose reason over threat. He was malicious, he confessed, only because misery had made him so. Mankind had spurned him; even I, his maker, would destroy him without remorse if given opportunity. Why then should he pity those who offered him none?</p>
 <p>Yet even as he spoke of vengeance and inextinguishable hatred, he mastered his passions and returned to supplication. His request, he argued, was modest—merely a companion as hideous as himself, with whom he might retreat to the vast wilds of South America, subsisting on berries and acorns, troubling no human soul. They would be monsters, yes, cut off from all the world—but on that very account, more tenderly attached to one another. He painted a picture of peaceful exile, harmless and remote, and implored me to grant him this single benefit, that he might feel gratitude rather than hatred toward his creator.</p>
@@ -730,9 +918,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="A Promise Deferred, a Journey Planned illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">A Promise Deferred, a Journey Planned</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="A Promise Deferred, a Journey Planned illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">A Promise Deferred, a Journey Planned</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Upon my return to Geneva, I found myself a creature suspended between duty and dread, the weeks slipping past like shadows whilst I gathered neither the courage nor the resolve to recommence that loathsome work which the fiend had exacted from me. The task of composing a female companion for my creature—that unholy promise which hung about my neck like a millstone—demanded months of profound study, and I seized upon every pretence for delay, clinging to excuses as a drowning man clings to driftwood. And yet, paradoxically, my health began to restore itself, my spirits rising whenever the memory of that dreadful engagement did not intrude upon my consciousness with its devouring blackness.</p>
 <p>My father, perceiving some improvement in my disposition, conceived a plan which he believed would eradicate the melancholy that yet visited me in fits. He called me aside and, with trembling heart, I listened as he spoke of what he had long anticipated—my marriage to dear Elizabeth. He feared, the gentle soul, that perhaps I regarded her merely as a sister, or worse, that I had conceived an attachment to another. With what earnestness I assured him of my devotion to Elizabeth, though even as the words left my lips, the thought of immediate union filled me with horror! How could I enter into such sacred festivities whilst my terrible promise remained unfulfilled, whilst the monster awaited his mate?</p>
 <p>It was then that I conceived my stratagem. I expressed a fervent wish to travel to England, where certain philosophical discoveries essential to my work might be obtained, though I concealed the true and ghastly nature of my purpose beneath a guise of scholarly enthusiasm. My father, glad to see me capable of any interest whatsoever, readily consented, and arranged—with Elizabeth&#x27;s tender solicitude—that my beloved friend Clerval should join me at Strasburgh as companion. The marriage, it was understood, would be solemnised immediately upon my return.</p>
@@ -742,9 +935,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Blasted Tree&#x27;s Bitter Journey illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">A Blasted Tree&#x27;s Bitter Journey</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Blasted Tree&#x27;s Bitter Journey illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">A Blasted Tree&#x27;s Bitter Journey</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>London received us as weary pilgrims seeking rest, though rest itself had become a stranger to my tortured spirit. We determined to pass several months in that celebrated city, where Clerval pursued the society of men of genius and talent with all the ardour of his generous nature—whilst I, consumed by darker purposes, sought only those natural philosophers whose knowledge might furnish the means of fulfilling my dreadful promise. Had this journey occurred in those innocent days of study and happiness, before the blight descended upon my existence, what inexpressible pleasure it would have afforded me! But company had grown irksome, and in the joyous faces of others I perceived only an insurmountable barrier—one sealed with the blood of William and Justine, whose very names filled my soul with anguish.</p>
 <p>In Clerval I beheld the ghost of my former self: inquisitive, eager, delighting in every novelty of manners and custom. He busied himself with plans to visit India, believing his knowledge of its languages might assist the progress of European enterprise, and Britain alone could further such designs. I endeavoured to conceal my misery, that I might not debar him from pleasures natural to one entering upon a new scene of life undisturbed by bitter recollection. Meanwhile, I began collecting materials for my abhorrent creation—a labour that fell upon me like the torture of single drops of water upon the head, each thought an extreme anguish, each spoken word causing my lips to quiver.</p>
 <p>An invitation from Scotland determined our northward course, and though I abhorred society, I longed to behold again mountains and streams—those wondrous works with which Nature adorns her chosen dwelling-places. We journeyed through Windsor&#x27;s majestic forests, through Oxford with its ancient colleges and melancholy memories of the unfortunate King Charles, through Matlock where the mention of Chamounix made me tremble, and into Cumberland&#x27;s lake country, where I could almost fancy myself among Swiss mountains. Throughout these wanderings, I was a blasted tree, the bolt having entered my soul—formed for peaceful happiness, yet surviving only to exhibit what I should soon cease to be: a miserable spectacle of wrecked humanity, pitiable to others and intolerable to myself.</p>
@@ -753,9 +951,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Promise Broken at Moonrise illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">The Promise Broken at Moonrise</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Promise Broken at Moonrise illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">The Promise Broken at Moonrise</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening sun had surrendered to the rising moon when I found myself seated in my laboratory, suspended between the completion of my dreadful work and the abandonment of it altogether, when there descended upon me a clarity of thought that pierced through the veil of my former reasoning like cold moonlight through storm clouds. Three years prior, I had laboured in just such a manner and had brought forth a creature whose savagery had rendered my heart a wasteland of perpetual remorse—and now, poised to repeat that catastrophic act, I perceived at last the full magnitude of my folly. What assurances had I that this female creature would honour a compact made before her very existence? She might prove ten thousand times more malignant than her mate; she might reject him entirely, drawn instead to the superior form of man, leaving him more wretched and vengeful than before. And should they find contentment together—oh, that prospect chilled me most profoundly—their union would surely beget a race of devils upon the earth, and future generations would curse my name as the architect of humanity&#x27;s destruction.</p>
 <p>It was in the midst of these terrible contemplations that I lifted my gaze to discover the dæmon himself at my window, his ghastly countenance illuminated by moonlight, a grin of malevolent triumph contorting his features. In that instant, seized by a passion I can scarcely describe, I tore to pieces the half-formed creature upon my table. The wretch&#x27;s howl of despair rent the night air as he withdrew, and I, trembling yet resolute, locked the laboratory door and swore a solemn vow never to resume those accursed labours.</p>
 <p>Hours passed in dreadful solitude until the creature returned, entering my dwelling with predatory stealth to demand the fulfilment of my promise. Our exchange grew violent in its rhetoric—he proclaimed himself my master, I declared him a devil unworthy of a companion in vice—until at last he uttered those words that would echo through every subsequent moment of my existence: *&quot;I shall be with you on your wedding-night.&quot;* I understood his meaning as a death sentence upon myself, yet when I thought of my beloved Elizabeth left to endless sorrow, tears—the first in many months—fell freely from my eyes.</p>
@@ -764,9 +967,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Death of Henry Clerval illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">The Death of Henry Clerval</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Death of Henry Clerval illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">The Death of Henry Clerval</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The hand of fate, it seemed, had contrived to place me in circumstances so damnably coincidental that no plea of innocence could readily penetrate the veil of suspicion which had descended upon my wretched person. I found myself brought before an aged magistrate of benevolent countenance, yet his eyes betrayed that severity which the law demands when confronted with the specter of murder most foul. The witnesses assembled against me—simple fishermen and village women—constructed through their testimonies a web of circumstance that bound me inexorably to the crime: a boat observed upon the waters at the fatal hour, a solitary figure matching my own desperate landing upon those inhospitable shores.</p>
 <p>Yet what did their depositions matter to me until the mention of those black marks—the imprint of fingers upon the victim&#x27;s throat? At these words, my very blood revolted within my veins, for I knew with terrible certainty whose monstrous hands had wrought this deed. The magistrate, Mr. Kirwin, observing my violent agitation, drew from my trembling frame that most unfavorable conclusion which any reasonable observer must reach. To test me further, he commanded that I be conducted to view the corpse itself, that my reaction might serve as evidence of guilt or innocence.</p>
 <p>How shall I describe the annihilating horror that seized me when I beheld not some stranger&#x27;s form, but the beloved features of Henry Clerval stretched lifeless before me? My dearest friend, my faithful companion, murdered by the creature I had unleashed upon the world! I flung myself upon his body in an agony of self-accusation, crying out that my murderous machinations had claimed yet another victim. The human frame, mercifully, could endure no more—I was seized by convulsions and carried from that chamber of horrors into a fever that consumed two months of my wretched existence.</p>
@@ -777,9 +985,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="The Burden of Unspoken Guilt illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">The Burden of Unspoken Guilt</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="The Burden of Unspoken Guilt illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">The Burden of Unspoken Guilt</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The voyage across the waters ended at last, and Victor found himself in Paris, his strength so thoroughly exhausted that he was compelled to rest before continuing homeward to Geneva. His father attended him with tireless devotion, yet how could that good man remedy an affliction whose origins remained forever concealed from him? Alphonse urged his son toward society, toward the pleasant diversions of human company, but Victor recoiled from such prescriptions—not from hatred of mankind, no, for he felt himself drawn even to the most wretched among them as to celestial beings—but from the terrible knowledge that he had unchained a monster upon the world, a creature whose delight was the shedding of innocent blood. How they would despise him, hunt him from their midst, did they know the unhallowed acts that had their source in his ambition!</p>
 <p>In his anguish, Victor confessed to his father that he was the true murderer of William, Justine, and Henry—all had died by his machinations. Yet Alphonse, hearing such wild assertions, could only attribute them to delirium, to some fever-born fancy that persisted beyond illness. Victor dared not speak plainly of the creature he had made, for who would believe him? He would be thought mad, and worse, the revelation would fill his father&#x27;s breast with unnatural horror. Thus he remained silent, though his soul thirsted for sympathy, and those terrible confessions burst from him unbidden, offering partial relief to his mysterious woe.</p>
 <p>As weeks passed, a fragile calm descended upon Victor&#x27;s spirit, though misery remained his constant companion. It was then that Elizabeth&#x27;s letter arrived—tender, anxious, yet trembling with a question she had long wished to ask. Did Victor love another? She released him from any obligation of honour, declaring that their marriage would render her eternally miserable unless it sprang from his own free choice. Her words stirred something soft within his heart, whispered of paradisiacal dreams, yet instantly the monster&#x27;s threat returned to his memory with terrible force: *I will be with you on your wedding-night!*</p>
@@ -789,9 +1002,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="The Creature&#x27;s Deadly Wedding Night Vengeance illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">The Creature&#x27;s Deadly Wedding Night Vengeance</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="The Creature&#x27;s Deadly Wedding Night Vengeance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">The Creature&#x27;s Deadly Wedding Night Vengeance</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The night that ought to have been Victor&#x27;s bridal refuge became instead the theatre of his most devastating loss, the culmination of every dread that had haunted him since the Creature first breathed life beneath his trembling hands.</p>
 <p>They had arrived at eight o&#x27;clock, Victor and Elizabeth, walking briefly upon the shore as the transitory light surrendered to encroaching darkness. The mountains and waters, though obscured by night, still traced their black outlines against the sky—a sublime landscape that seemed to Victor not peaceful but ominous, pregnant with unspoken menace. The wind rose violently from the west, the moon dimmed behind swift-moving clouds, and a heavy storm descended, as though nature herself conspired to herald the approaching catastrophe.</p>
 <p>Victor remained watchful throughout the evening, a pistol concealed against his breast, every faculty strained toward the conflict he believed inevitable. Elizabeth, observing his agitation with growing terror, pressed him to confess his fears, but he could offer only hollow reassurances—*this night is dreadful, very dreadful*—words that revealed more than they concealed. Reflecting that his anticipated combat would prove fearful for his bride to witness, Victor entreated her to retire to their chamber, resolving to face his adversary alone. He paced the passages of the inn, inspecting every corner that might harbour the fiend, yet discovered no trace of him.</p>
@@ -802,9 +1020,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
 <section class="chapter" id="chapter-25" data-num="25">
-    <img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="A Vow of Vengeance Begins illustration" loading="lazy">
-    <div class="chapter-number">Chapter 25</div>
-    <h2 class="chapter-title">A Vow of Vengeance Begins</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="A Vow of Vengeance Begins illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">A Vow of Vengeance Begins</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>And so the tale draws toward its close upon those frozen seas, where fury and vengeance have driven both creator and creation to the uttermost ends of the earth.</p>
 <p>Victor, his heart consumed utterly by that singular flame of retribution, recounts to Walton the commencement of his dread pilgrimage. Geneva, once beloved in the days of his happiness, had become hateful to him in his adversity, and he departed from that place forever, bearing only a sum of money and those few jewels which had belonged to his mother. His wanderings thereafter were to cease but with life itself—traversing deserts and barbarous countries, enduring hardships that would have destroyed a lesser spirit, sustained only by that burning desire to destroy the fiend who had taken all he loved.</p>
 <p>At the cemetery where William, Elizabeth, and his father lay in their eternal repose, Victor knelt upon the sacred earth and swore a terrible oath, invoking the spirits of the departed and the wandering ministers of vengeance to aid him in his grim work. Yet scarcely had the words escaped his quivering lips when a loud and fiendish laugh echoed through the stillness of night, the mountains themselves seeming to mock his anguish. That well-known and abhorred voice whispered close to his ear: &quot;I am satisfied, miserable wretch! You have determined to live, and I am satisfied.&quot;</p>
@@ -949,6 +1172,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>

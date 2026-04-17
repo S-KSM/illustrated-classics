@@ -352,40 +352,94 @@ html[data-mode="maximal"] .book-author { color: var(--accent); }
 
 /* Chapters */
 .chapter {
-    margin: 80px 0;
+    margin: 120px 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
 .chapter-image {
     width: 100%;
+    max-width: 1100px;
     height: auto;
-    border-radius: 12px;
-    margin-bottom: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
     transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
 }
 html[data-mode="minimal"] .chapter-image {
     border-radius: 2px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    max-width: 520px;
-    margin: 0 auto 28px;
-    display: block;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
 }
-.chapter-number {
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 6px;
     font-weight: 600;
-}
-html[data-mode="maximal"] .chapter-number {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin-bottom: 6px;
 }
 .chapter-title {
     font-family: 'Fraunces', Georgia, serif;
@@ -393,9 +447,53 @@ html[data-mode="maximal"] .chapter-number {
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 24px;
 }
 html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
 .chapter-summary p {
     font-size: 1.02rem;
     line-height: 1.85;
@@ -510,9 +608,14 @@ html[data-mode="minimal"] .back-cover {
 
 <main class="reader">
 <section class="chapter" id="chapter-1" data-num="1">
-    <img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Rich Bachelor Arrives at Netherfield illustration" loading="lazy">
-    <div class="chapter-number">Chapter 1</div>
-    <h2 class="chapter-title">A Rich Bachelor Arrives at Netherfield</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Rich Bachelor Arrives at Netherfield illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Rich Bachelor Arrives at Netherfield</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It is a truth universally acknowledged in the English countryside that any gentleman of considerable means who ventures into a new neighbourhood will find himself regarded with the keenest matrimonial interest by every family blessed—or burdened—with unmarried daughters. Such a man&#x27;s own opinions on the matter of marriage are entirely beside the point; society has already determined his fate before he has so much as unpacked his trunks.</p>
 <p>This immutable law of social nature sets into motion the domestic comedy at Longbourn, where Mrs. Bennet bursts upon her husband with news of tremendous import: Netherfield Park, that fine estate which has stood empty far too long, has at last found a tenant. The intelligence comes courtesy of Mrs. Long, and Mrs. Bennet wastes not a moment in laying the particulars before Mr. Bennet—though he has expressed no curiosity whatsoever in the matter. The new arrival, a Mr. Bingley, is young, single, and possessed of four or five thousand pounds a year. In Mrs. Bennet&#x27;s estimation, this constitutes nothing less than a providential gift to her family of five unmarried daughters.</p>
 <p>What follows is a masterful exchange between husband and wife, a verbal dance that reveals everything essential about their characters. Mrs. Bennet implores, cajoles, and very nearly demands that Mr. Bennet pay the customary first visit to their new neighbour—for without this social formality, she and her girls cannot properly make Mr. Bingley&#x27;s acquaintance. Mr. Bennet, for his part, deflects her entreaties with practiced ease and no small degree of mischief, suggesting at one turn that Mrs. Bennet herself might catch the young man&#x27;s eye, and at another offering to send his written blessing for Bingley to marry whichever daughter he fancies.</p>
@@ -522,9 +625,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
 <section class="chapter" id="chapter-2" data-num="2">
-    <img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="Mr. Bennet&#x27;s Secret Visit Revealed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 2</div>
-    <h2 class="chapter-title">Mr. Bennet&#x27;s Secret Visit Revealed</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="Mr. Bennet&#x27;s Secret Visit Revealed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">Mr. Bennet&#x27;s Secret Visit Revealed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mr. Bennet proved himself a man who delighted in quiet sport at his family&#x27;s expense, having kept his own counsel regarding the matter of Mr. Bingley until the precise moment when revelation would produce the greatest effect. Though he had assured Mrs. Bennet repeatedly that he should not call upon their new neighbour—indeed, had maintained this position with such steadfastness that his wife had quite despaired of the introduction ever taking place—he had, in fact, been among the very first gentlemen of the neighbourhood to pay his respects.</p>
 <p>The disclosure came about with characteristic cunning. Observing Elizabeth at work trimming a hat, Mr. Bennet remarked with studied casualness that he hoped Mr. Bingley would like it. His wife, still nursing her grievances on the subject, could not resist the opportunity to lament their supposed exclusion from the gentleman&#x27;s acquaintance. Elizabeth offered the sensible observation that they might meet him at the assemblies through Mrs. Long&#x27;s introduction, but this served only to draw Mrs. Bennet&#x27;s ire toward that lady, whom she denounced as selfish and hypocritical—a woman with two nieces of her own to consider.</p>
 <p>The conversation wound its way through Kitty&#x27;s ill-timed coughing, which her mother declared an assault upon her nerves and her father observed was poorly scheduled, to the matter of the upcoming ball a fortnight hence. Mr. Bennet continued his teasing, suggesting that Mrs. Bennet might introduce Mr. Bingley to Mrs. Long rather than the reverse, and when his wife protested the impossibility of introducing a man with whom she was unacquainted, he delivered his stroke with masterful timing—offering to perform the office himself.</p>
@@ -534,9 +642,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
 <section class="chapter" id="chapter-3" data-num="3">
-    <img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="First Impressions at the Assembly Ball illustration" loading="lazy">
-    <div class="chapter-number">Chapter 3</div>
-    <h2 class="chapter-title">First Impressions at the Assembly Ball</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="First Impressions at the Assembly Ball illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">First Impressions at the Assembly Ball</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Despite the combined efforts of Mrs. Bennet and all five of her daughters, no amount of questioning—whether through direct inquiry, clever speculation, or artful hints—could persuade Mr. Bennet to offer any satisfactory account of the mysterious Mr. Bingley. The man proved utterly impervious to their collective curiosity, and the ladies were forced to content themselves with intelligence gathered secondhand from their neighbour, Lady Lucas. The report proved most encouraging: Sir William had found the young gentleman delightful in every respect—wonderfully handsome, exceedingly agreeable, and, most thrillingly, resolved to attend the upcoming assembly with a large party in tow. Mrs. Bennet&#x27;s hopes soared, for what could be more promising than a young man fond of dancing?</p>
 <p>Mr. Bingley soon returned Mr. Bennet&#x27;s visit, though his ten minutes in the library afforded him no glimpse of the celebrated young ladies whose beauty had reached his ears. The Bennet girls, however, managed to observe from an upper window that the gentleman wore a blue coat and rode a black horse—intelligence of the most vital importance. An invitation to dinner followed swiftly, but was regrettably declined, as Mr. Bingley found himself obliged to return to London. Mrs. Bennet&#x27;s consternation was only soothed by Lady Lucas&#x27;s suggestion that he had gone merely to gather a larger party for the ball.</p>
 <p>When at last the evening of the assembly arrived, Mr. Bingley&#x27;s party consisted not of the rumoured twelve ladies and seven gentlemen, but of five persons altogether: Mr. Bingley himself, his two sisters, the elder sister&#x27;s husband Mr. Hurst, and another young man—Mr. Darcy. Bingley proved everything amiable, with pleasant countenance and easy manners, quickly making himself agreeable to the entire neighbourhood and dancing every dance with evident delight. His friend Mr. Darcy, however, presented a striking contrast. Though his tall figure, handsome features, and reported income of ten thousand a year initially drew considerable admiration, his proud and reserved manner soon turned opinion decidedly against him. He danced but twice, declined introductions, and spent the evening walking about with an air of superiority that rendered him thoroughly disagreeable to all present.</p>
@@ -546,9 +659,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
 <section class="chapter" id="chapter-4" data-num="4">
-    <img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Sisters Reflect on Character and Fortune illustration" loading="lazy">
-    <div class="chapter-number">Chapter 4</div>
-    <h2 class="chapter-title">Sisters Reflect on Character and Fortune</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Sisters Reflect on Character and Fortune illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Sisters Reflect on Character and Fortune</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>When at last the sisters found themselves alone, Jane could no longer contain the warmth of feeling she had so carefully guarded in company. Mr. Bingley, she declared, was everything a young man ought to be—sensible, good-humoured, lively—possessed of such happy manners and perfect ease as she had rarely encountered. Elizabeth, ever ready with her playful wit, agreed heartily, adding that he was handsome besides, which rendered his character quite complete. Jane confessed herself flattered by his asking her to dance a second time, a compliment she had not anticipated. But Elizabeth would hear none of such modesty; she had fully expected it, for what could be more natural than his singling out a woman five times prettier than any other in the room?</p>
 <p>Here the fundamental difference between the sisters revealed itself most charmingly. Elizabeth chided Jane for her eternal inclination to think well of everyone, to see no fault in any human creature, to take the good of every character and make it still better while saying nothing of the bad. Such genuine candour, Elizabeth observed, was rare indeed—for affectation of goodwill was common enough, but to be truly generous without design belonged to Jane alone. And so it followed that Jane found even Miss Bingley and Mrs. Hurst to be pleasing women, though Elizabeth listened in unconvinced silence. Her quicker observation and less pliable temper had already formed a different judgment.</p>
 <p>The narrator then draws back the curtain upon the Bingley sisters with clear-eyed precision. They were fine ladies indeed—handsome, educated at one of the first private seminaries in town, possessed of twenty thousand pounds apiece—yet proud and conceited withal. They spent more than they ought, associated with people of rank, and were therefore entitled, in their own estimation, to think well of themselves and meanly of others. That their fortune had been acquired through trade was a circumstance they preferred to forget, though their brother&#x27;s hundred thousand pounds and their own gentility rested upon that same commercial foundation.</p>
@@ -558,9 +676,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
 <section class="chapter" id="chapter-5" data-num="5">
-    <img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Neighbors Dissect the Ball&#x27;s Events illustration" loading="lazy">
-    <div class="chapter-number">Chapter 5</div>
-    <h2 class="chapter-title">Neighbors Dissect the Ball&#x27;s Events</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Neighbors Dissect the Ball&#x27;s Events illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Neighbors Dissect the Ball&#x27;s Events</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning following the Meryton assembly found the Miss Lucases making their way to Longbourn, for what purpose could be more pressing than the thorough dissection of a ball? The Lucas family resided but a short distance away at Lucas Lodge, a dwelling whose very name commemorated Sir William Lucas&#x27;s elevation to knighthood—a distinction bestowed during his mayoralty and one which had so thoroughly altered his view of himself that trade and market towns became insufferable to him. Having made a tolerable fortune in Meryton, Sir William now devoted himself entirely to the pleasant occupation of being civil to everyone he encountered, his presentation at St. James&#x27;s having perfected what nature had already made agreeable and obliging. Lady Lucas, meanwhile, proved herself a most valuable neighbor to Mrs. Bennet by the simple virtue of not being too clever, and their eldest daughter Charlotte—a sensible young woman of seven-and-twenty—had long been Elizabeth&#x27;s most intimate companion.</p>
 <p>The conversation turned immediately to Mr. Bingley&#x27;s attentions, with Mrs. Bennet acknowledging, in tones of civil restraint, that Charlotte had been his first partner. Charlotte, however, was quick to redirect praise toward Jane, revealing what she had overheard: Mr. Bingley, when pressed by Mr. Robinson to name the prettiest woman in attendance, had declared without hesitation that the eldest Miss Bennet was beyond a doubt the most handsome. Mrs. Bennet received this intelligence with characteristic vacillation between triumph and caution, allowing that it might yet come to nothing.</p>
 <p>Charlotte then turned her wit upon Elizabeth, teasing her for being deemed merely &quot;tolerable&quot; by Mr. Darcy. Mrs. Bennet, ever ready to defend her daughters through attack, pronounced the gentleman so thoroughly disagreeable that his good opinion would constitute a misfortune, citing Mrs. Long&#x27;s account of his sitting beside her for half an hour without uttering a syllable. Jane, characteristically gentle, ventured to suggest there might be some mistake, and offered Miss Bingley&#x27;s explanation that Mr. Darcy spoke little except among intimate acquaintance. This defense Mrs. Bennet dismissed entirely, attributing his behavior to insufferable pride—perhaps, she speculated, he had learned that Mrs. Long arrived in a hack chaise rather than a private carriage.</p>
@@ -570,9 +693,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
 <section class="chapter" id="chapter-6" data-num="6">
-    <img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Guarded Hearts and Shifting Glances illustration" loading="lazy">
-    <div class="chapter-number">Chapter 6</div>
-    <h2 class="chapter-title">Guarded Hearts and Shifting Glances</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Guarded Hearts and Shifting Glances illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Guarded Hearts and Shifting Glances</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The acquaintance between the families of Longbourn and Netherfield progressed with all the ceremony that neighbourhood custom required. The Bennet ladies paid their visit, and it was duly returned, though the Bingley sisters found little to admire beyond the two eldest Miss Bennets—the mother being judged quite intolerable and the younger girls beneath notice. Jane received their attentions with her characteristic warmth and gratitude, ever ready to think well of those who showed her any kindness. Elizabeth, however, perceived the superciliousness that coloured their every interaction, and she could not bring herself to like them, though she acknowledged their civility to Jane had some merit, arising as it most likely did from their brother&#x27;s evident admiration.</p>
 <p>That Mr. Bingley admired Jane was plain to anyone with eyes to see, and Elizabeth observed with sisterly satisfaction that Jane was yielding to a preference of her own. Yet Elizabeth took comfort in knowing her sister&#x27;s composure and steady cheerfulness would shield her growing attachment from the prying speculations of the neighbourhood. When she confided this observation to Charlotte Lucas, her friend offered a markedly different philosophy on the matter. Charlotte counselled that concealment, however pleasant for one&#x27;s dignity, might prove a disadvantage—that a woman who hides her feelings too well risks losing her chance altogether. Encouragement, she argued, was necessary to secure a man&#x27;s affections, for vanity and gratitude played their parts in every attachment.</p>
 <p>Elizabeth disputed this mercenary view with spirit, insisting that Jane&#x27;s nature would not permit such calculated display, and that a fortnight&#x27;s acquaintance was hardly sufficient to understand any man&#x27;s true character. Charlotte countered with her own brand of pragmatic wit, suggesting that happiness in marriage was entirely a matter of chance, and that prolonged study of a partner&#x27;s disposition offered no particular advantage. Elizabeth laughed at her friend&#x27;s cynicism, certain Charlotte could never act upon such principles herself.</p>
@@ -582,9 +710,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
 <section class="chapter" id="chapter-7" data-num="7">
-    <img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Officers, Entails, and a Fateful Invitation illustration" loading="lazy">
-    <div class="chapter-number">Chapter 7</div>
-    <h2 class="chapter-title">Officers, Entails, and a Fateful Invitation</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Officers, Entails, and a Fateful Invitation illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Officers, Entails, and a Fateful Invitation</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The fortunes of the Bennet family rested upon precarious ground, for Mr. Bennet&#x27;s estate of two thousand a year was entailed away from his daughters to a distant male relation, and Mrs. Bennet&#x27;s own inheritance—four thousand pounds left by her father, a Meryton attorney—could scarcely make up the difference. Her connexions were modest but respectable: a sister married to Mr. Philips, who had taken over her father&#x27;s legal practice, and a brother established in trade in London.</p>
 <p>The village of Longbourn lay but a mile from Meryton, a distance the young Bennet ladies found most agreeable for their frequent visits to their aunt Philips and the milliner&#x27;s shop across the way. Catherine and Lydia, the two youngest, proved especially devoted to these excursions, their minds being rather more vacant than their elder sisters&#x27; and therefore more easily diverted by local gossip. Their current source of fascination—indeed, of rapture—was the militia regiment newly quartered in Meryton for the winter. Every visit to their aunt yielded fresh intelligence regarding the officers&#x27; names, lodgings, and connexions, until Mr. Bingley&#x27;s considerable fortune became utterly insignificant compared to the regimentals of an ensign.</p>
 <p>Mr. Bennet, having endured one morning&#x27;s worth of their effusions, observed with characteristic dryness that his two youngest daughters must be among the silliest girls in the country. Catherine fell silent at this rebuke, but Lydia continued her raptures over Captain Carter quite undisturbed. Mrs. Bennet rose to their defence with predictable indignation, insisting all her children were clever, and confessing she still harboured a fondness for a red coat herself—particularly if attached to a colonel with five or six thousand a year.</p>
@@ -595,9 +728,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
 <section class="chapter" id="chapter-8" data-num="8">
-    <img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Mud, Manners, and Fine Eyes illustration" loading="lazy">
-    <div class="chapter-number">Chapter 8</div>
-    <h2 class="chapter-title">Mud, Manners, and Fine Eyes</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Mud, Manners, and Fine Eyes illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Mud, Manners, and Fine Eyes</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening at Netherfield unfolds with all the subtle warfare of drawing-room society, where civilities mask indifference and compliments conceal contempt. When Elizabeth descends to dinner at half-past six, she finds herself the subject of polite inquiries regarding Jane&#x27;s health—though only Mr. Bingley&#x27;s concern carries any genuine weight. His sisters, upon hearing that Jane remains unwell, perform their obligatory expressions of sympathy with such theatrical excess that the hollowness of their sentiments stands quite exposed. Their indifference, the moment Jane ceases to be the topic at hand, restores Elizabeth most completely to her original dislike of them both.</p>
 <p>Indeed, Mr. Bingley proves the sole member of the party whose company Elizabeth can tolerate with any degree of pleasure. His evident anxiety for Jane and his attentions to herself provide some comfort against the unmistakable sense that she is regarded as an intruder by everyone else present. Miss Bingley remains wholly engrossed by Mr. Darcy, her sister scarcely less so, while Mr. Hurst—an indolent creature who lives only to eat, drink, and play at cards—dismisses Elizabeth entirely upon discovering she prefers plain dishes to ragouts.</p>
 <p>The moment Elizabeth quits the dining room to attend her sister, the abuse commences with remarkable swiftness. Her manners are pronounced very bad indeed—a mixture of pride and impertinence—and she is declared wanting in conversation, style, taste, and beauty. Mrs. Hurst recalls with horror Elizabeth&#x27;s wild appearance that morning, her muddy petticoat six inches deep in filth. Yet Mr. Bingley offers gentle resistance to his sisters&#x27; cruelty, declaring Elizabeth looked remarkably well, and when Miss Bingley attempts to enlist Mr. Darcy in condemning Elizabeth&#x27;s conceited independence, he observes instead that her fine eyes were brightened by the exercise—a remark that produces a telling silence.</p>
@@ -608,9 +746,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
 <section class="chapter" id="chapter-9" data-num="9">
-    <img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Mrs. Bennet&#x27;s Triumphant Visit to Netherfield illustration" loading="lazy">
-    <div class="chapter-number">Chapter 9</div>
-    <h2 class="chapter-title">Mrs. Bennet&#x27;s Triumphant Visit to Netherfield</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Mrs. Bennet&#x27;s Triumphant Visit to Netherfield illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Mrs. Bennet&#x27;s Triumphant Visit to Netherfield</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth passed the greater portion of that restless night at Jane&#x27;s bedside, watchful and attentive, and by morning found herself able to return a tolerably hopeful answer to Mr. Bingley&#x27;s early inquiries, delivered first through a housemaid and subsequently through the two elegant ladies attending his sisters. Yet despite this improvement in Jane&#x27;s condition, Elizabeth thought it prudent to send a note to Longbourn, requesting her mother come and judge the situation for herself. Mrs. Bennet arrived with admirable swiftness, bringing in her wake the two youngest Bennet girls, and descended upon Netherfield shortly after the family had breakfasted.</p>
 <p>Upon finding Jane in no immediate danger, Mrs. Bennet&#x27;s spirits lifted considerably—though not so much that she wished for her daughter&#x27;s speedy recovery. Such restoration to health would only hasten Jane&#x27;s removal from Netherfield, and from Mr. Bingley&#x27;s most attentive company. She therefore dismissed all talk of carrying Jane home, a position conveniently supported by the apothecary who arrived around the same time. When Miss Bingley appeared and invited the party into the breakfast parlour, Mrs. Bennet seized the opportunity with characteristic enthusiasm, declaring to Mr. Bingley that Jane was far too ill to be moved and they must trespass upon his kindness a while longer. Bingley, ever amiable, insisted removal was not to be thought of, while Miss Bingley offered her assurances of every possible attention with a civility as cold as it was correct.</p>
 <p>What followed was an exercise in mortification for Elizabeth. Her mother, profuse in her thanks, launched into a rambling discourse that touched upon Jane&#x27;s sweetness of temper, the superiority of Netherfield&#x27;s views, and her fervent hope that Mr. Bingley would not quit the neighbourhood. When the conversation turned to the study of character, Elizabeth found herself engaged in a lively exchange with Bingley, defending the pleasures of observing human nature even in confined country society. Mr. Darcy&#x27;s cool remark that country neighbourhoods offered little variety for such study drew Mrs. Bennet&#x27;s immediate offense, and she proceeded to champion the country with an enthusiasm that made Elizabeth blush with embarrassment. Her mother&#x27;s triumph over what she perceived as Darcy&#x27;s defeat was complete, though Darcy merely turned silently away.</p>
@@ -619,9 +762,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
 <section class="chapter" id="chapter-10" data-num="10">
-    <img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Wit and Words in the Drawing Room illustration" loading="lazy">
-    <div class="chapter-number">Chapter 10</div>
-    <h2 class="chapter-title">Wit and Words in the Drawing Room</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Wit and Words in the Drawing Room illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Wit and Words in the Drawing Room</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The day at Netherfield unfolded much as its predecessor had done, with Mrs. Hurst and Miss Bingley dutifully attending the invalid Jane, who continued her gradual recovery. When evening drew the party together in the drawing-room, Elizabeth found herself an observer of a most diverting scene. Mr. Darcy sat composing a letter while Miss Bingley hovered nearby, showering him with excessive compliments on his penmanship, his even lines, and the impressive length of his correspondence—all of which he received with perfect indifference. Elizabeth watched their exchange with quiet amusement, finding in it confirmation of her opinions regarding both parties.</p>
 <p>The conversation soon expanded when Mr. Bingley teased Darcy about his laboured writing style, prompting Elizabeth to remark upon Bingley&#x27;s disarming humility. Darcy, however, proved less charmed, declaring that humility often masked mere carelessness or served as an indirect boast. What followed was a spirited philosophical debate between Elizabeth and Darcy on the nature of persuasion and conviction. When Darcy suggested that yielding to a friend&#x27;s request without proper argument showed weakness of understanding, Elizabeth countered that he allowed nothing for the influence of friendship and affection—that regard for another might reasonably prompt compliance without demanding logical justification.</p>
 <p>Bingley, ever good-natured but uncomfortable with such intellectual sparring, begged them to defer their argument until he had quit the room, joking that Darcy&#x27;s imposing height alone commanded his deference. Elizabeth graciously ended the debate, suggesting Mr. Darcy finish his letter, which he did.</p>
@@ -633,9 +781,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
 <section class="chapter" id="chapter-11" data-num="11">
-    <img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="An Evening of Artful Pursuits illustration" loading="lazy">
-    <div class="chapter-number">Chapter 11</div>
-    <h2 class="chapter-title">An Evening of Artful Pursuits</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="An Evening of Artful Pursuits illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">An Evening of Artful Pursuits</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening began pleasantly enough when Elizabeth accompanied her recovering sister to the drawing-room, where Miss Bingley and Mrs. Hurst proved themselves capable of agreeable conversation—at least until the gentlemen arrived. The moment Mr. Darcy entered, Miss Bingley&#x27;s attention shifted with almost comical swiftness, and Jane became merely part of the furniture. Mr. Bingley, however, remained devoted to his invalid guest, fussing over the fire and repositioning her chair with such tender solicitude that Elizabeth, watching from her corner, could scarcely contain her satisfaction at the promising scene unfolding before her.</p>
 <p>The card-table was suggested and promptly dismissed, Miss Bingley having discovered that Darcy wished no part in such amusement. Poor Mr. Hurst found himself with nothing to do but stretch upon a sofa and drift into slumber. Darcy took up a book, and Miss Bingley, ever attentive to his pursuits, selected the second volume of his own reading material—though her eyes wandered far more frequently to his page than to her own. Her attempts at engaging him in conversation met with polite indifference, and she soon abandoned all pretense of literary interest, declaring with magnificent irony how delightful reading was and how wretched she would be without an excellent library of her own.</p>
 <p>When talk of a ball at Netherfield arose between Bingley and Jane, Miss Bingley attempted to quash the idea, suggesting that some present company might find dancing a punishment rather than a pleasure. Her brother dismissed her objections with cheerful determination—the ball was settled, and Darcy could take himself to bed if he objected. Undeterred, Miss Bingley tried another approach, parading about the room in hopes of capturing Darcy&#x27;s notice. Failing still, she enlisted Elizabeth in her scheme, inviting her to take a turn about the room.</p>
@@ -645,9 +798,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
 <section class="chapter" id="chapter-12" data-num="12">
-    <img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Departures and Guarded Hearts illustration" loading="lazy">
-    <div class="chapter-number">Chapter 12</div>
-    <h2 class="chapter-title">Departures and Guarded Hearts</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Departures and Guarded Hearts illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Departures and Guarded Hearts</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning following their sisterly conference, Elizabeth put pen to paper, requesting that their mother send the carriage to retrieve them from Netherfield. Mrs. Bennet, however, had made her own calculations on the matter—calculations that extended precisely to the following Tuesday, which would round out a full week since Jane had first taken ill. The notion of receiving her daughters any sooner held no appeal whatsoever. Her response proved as unhelpful as Elizabeth had feared: the carriage could not possibly be spared before Tuesday, and should Mr. Bingley and his sister express any desire for their continued presence, Mrs. Bennet could manage quite well without them at Longbourn.</p>
 <p>Elizabeth found herself entirely unmoved by her mother&#x27;s schemes. She remained steadfast in her determination to quit Netherfield at the earliest opportunity, convinced that prolonging their stay would render them unwelcome guests rather than cherished visitors. She pressed Jane to request the use of Mr. Bingley&#x27;s carriage at once, and it was agreed that their intention to depart that very morning should be made known.</p>
 <p>The announcement produced the expected expressions of regret—sufficient, at least, to work upon Jane&#x27;s tender sensibilities. Their departure was consequently postponed until the morrow, a delay that Miss Bingley immediately came to rue. Her dislike of Elizabeth far outweighed any sisterly affection she might profess for Jane, and another day of Elizabeth&#x27;s company proved a poor exchange indeed. Mr. Bingley himself heard the news with genuine disappointment, making repeated attempts to convince Jane that her health remained too fragile for travel. But Jane, when certain of her own judgment, could not be swayed.</p>
@@ -658,9 +816,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
 <section class="chapter" id="chapter-13" data-num="13">
-    <img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="The Arrival of Mr. Collins illustration" loading="lazy">
-    <div class="chapter-number">Chapter 13</div>
-    <h2 class="chapter-title">The Arrival of Mr. Collins</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="The Arrival of Mr. Collins illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">The Arrival of Mr. Collins</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The quiet of breakfast at Longbourn was disturbed most agreeably when Mr. Bennet announced, with that dry pleasure he took in provoking his wife&#x27;s nerves, that they might expect an addition to their party that very day. Mrs. Bennet&#x27;s imagination flew at once to Mr. Bingley, and she was already lamenting the want of fish and calling for the housekeeper when her husband corrected her—the visitor was not Bingley, but a perfect stranger, a man he had never laid eyes upon in his life.</p>
 <p>This intelligence produced a flurry of curiosity among the assembled ladies, which Mr. Bennet indulged for some time before revealing the truth. The expected guest was none other than Mr. Collins, his cousin and heir, the very man destined by the cruel workings of the entail to inherit Longbourn and cast its present inhabitants into the hedgerows upon Mr. Bennet&#x27;s death. Mrs. Bennet could scarcely hear the name without launching into bitter complaints against the injustice of entails—a subject upon which neither Jane nor Elizabeth&#x27;s patient explanations could make the slightest impression.</p>
 <p>Mr. Bennet then read aloud the letter Mr. Collins had sent, a remarkable document whose every line dripped with obsequious self-satisfaction. The young clergyman expressed his desire to heal the breach between their families, cited his recent ordination and his great fortune in securing the patronage of the illustrious Lady Catherine de Bourgh, and hinted mysteriously at making amends to the Bennet daughters for the injury of his inheritance. He proposed arriving that very Monday at four o&#x27;clock and staying until the following Saturday—a plan he assured them Lady Catherine would graciously permit.</p>
@@ -670,9 +833,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
 <section class="chapter" id="chapter-14" data-num="14">
-    <img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Mr. Collins Praises His Noble Patroness illustration" loading="lazy">
-    <div class="chapter-number">Chapter 14</div>
-    <h2 class="chapter-title">Mr. Collins Praises His Noble Patroness</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Mr. Collins Praises His Noble Patroness illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">Mr. Collins Praises His Noble Patroness</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Dinner at Longbourn passed in relative silence, but when the servants withdrew, Mr. Bennet found himself at last prepared to draw out his curious guest on a subject certain to produce the most entertaining results. He had merely to mention Lady Catherine de Bourgh, and Mr. Collins required no further encouragement to launch into rapturous praise of his noble patroness.</p>
 <p>With an air of profound importance, the clergyman catalogued Lady Catherine&#x27;s many condescensions toward his humble person. She had graciously approved his sermons—both of them—and had twice invited him to dine at Rosings. More remarkably still, she had summoned him only the previous Saturday to complete her card table for quadrille. Though many considered her proud, Mr. Collins had witnessed nothing but the most generous affability. Her ladyship treated him as she would any gentleman, raised no objection to his mingling with the neighbourhood, and even permitted him to leave his parish for visits to relations. She had counselled him to marry with discretion, and had once descended upon his parsonage to inspect and approve his domestic improvements—going so far as to suggest shelves for the closets upstairs.</p>
 <p>Mrs. Bennet, ever alert to matters of eligible young ladies and their fortunes, soon steered the conversation toward Miss de Bourgh. She learned that Lady Catherine&#x27;s only daughter stood as heiress to Rosings and extensive property besides—a circumstance that prompted Mrs. Bennet&#x27;s envious observation that the girl was better off than many. As for Miss de Bourgh&#x27;s person, Mr. Collins assured them she was charming indeed, her mother declaring her beauty superior to all her sex, marked as it was by the distinction of noble birth. A sickly constitution had regrettably hindered her accomplishments, yet she remained perfectly amiable, often condescending to drive her phaeton past his humble abode.</p>
@@ -683,9 +851,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
 <section class="chapter" id="chapter-15" data-num="15">
-    <img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Mr Collins Shifts His Sights to Elizabeth illustration" loading="lazy">
-    <div class="chapter-number">Chapter 15</div>
-    <h2 class="chapter-title">Mr Collins Shifts His Sights to Elizabeth</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Mr Collins Shifts His Sights to Elizabeth illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">Mr Collins Shifts His Sights to Elizabeth</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mr. Collins, it must be understood, was a man whose natural deficiencies of sense had never found remedy through education or society. Raised beneath the heavy hand of an illiterate, miserly father and having passed through university without forming a single useful connection, he had emerged into the world with a peculiar disposition—a strange compound of inherited humility and newfound self-conceit. His good fortune in securing the patronage of the great Lady Catherine de Bourgh had only compounded this curious mixture, rendering him at once obsequious and proud, deferential and self-important, in measures that shifted as readily as the weather.</p>
 <p>Now possessed of a comfortable living and a respectable income, Mr. Collins had turned his thoughts to matrimony, and with characteristic self-satisfaction, had devised what he considered a most generous scheme: he would marry one of his Bennet cousins, thereby making amends for the entail that would one day deprive them of their home. That he considered this plan excessively noble and disinterested speaks volumes of his character.</p>
 <p>Upon first laying eyes on the Bennet daughters, his choice fell naturally upon Jane, whose lovely countenance satisfied both his notions of beauty and his respect for seniority. Yet this settled intention survived only until breakfast the following morning, when a brief private conversation with Mrs. Bennet altered everything. With complaisant smiles and artful hints, that scheming mother steered him away from Jane—who was, she intimated, soon to be engaged—and toward her second daughter. Thus, with no more ceremony than it took Mrs. Bennet to stir the fire, Mr. Collins transferred his matrimonial ambitions from Jane to Elizabeth. Mrs. Bennet, delighted by this turn, found herself suddenly well-disposed toward the man she could scarcely tolerate the day before, already envisioning two daughters advantageously married.</p>
@@ -696,9 +869,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
 <section class="chapter" id="chapter-16" data-num="16">
-    <img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Wickham&#x27;s Charming Revelations Begin illustration" loading="lazy">
-    <div class="chapter-number">Chapter 16</div>
-    <h2 class="chapter-title">Wickham&#x27;s Charming Revelations Begin</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Wickham&#x27;s Charming Revelations Begin illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">Wickham&#x27;s Charming Revelations Begin</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The evening at Mrs. Philips&#x27;s house in Meryton began with a coach journey that conveyed Mr. Collins and his five cousins to their aunt&#x27;s dwelling, where the young ladies learned with considerable pleasure that Mr. Wickham had accepted the invitation and was already present. Upon entering the drawing-room, Mr. Collins found himself so thoroughly impressed by the size and furnishings of the apartment that he declared it might almost rival the small summer breakfast parlour at Rosings—a comparison that initially puzzled Mrs. Philips until she understood the magnificence of Lady Catherine de Bourgh&#x27;s estate, whereupon she received the compliment with gratified delight and listened with rapt attention to every detail of grandeur her guest could supply.</p>
 <p>While Mr. Collins happily occupied himself in describing Lady Catherine&#x27;s splendours and his own humble improvements at Hunsford, the young ladies endured tedious minutes examining china on the mantelpiece until the gentlemen finally arrived. When Mr. Wickham entered the room, Elizabeth found herself struck anew by his superior appearance—his person, countenance, and manner far exceeding those of the other officers, who themselves stood leagues above the broad-faced, port-wine-breathing Mr. Philips.</p>
 <p>Mr. Wickham became the happy man towards whom nearly every female eye turned, and Elizabeth became the happy woman beside whom he chose to seat himself. Their conversation, though beginning with nothing more remarkable than observations about wet weather, proved engaging through his evident skill as a speaker. When card tables were arranged, Mr. Collins obliged Mrs. Philips by joining the whist party, while Mr. Wickham positioned himself at the other table between Elizabeth and Lydia. The latter&#x27;s enthusiasm for lottery tickets soon absorbed her entirely, leaving Wickham at leisure to converse with Elizabeth on matters far more interesting than games of chance.</p>
@@ -708,9 +886,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
 <section class="chapter" id="chapter-17" data-num="17">
-    <img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Jane&#x27;s Generous Doubt and Dancing Plans illustration" loading="lazy">
-    <div class="chapter-number">Chapter 17</div>
-    <h2 class="chapter-title">Jane&#x27;s Generous Doubt and Dancing Plans</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Jane&#x27;s Generous Doubt and Dancing Plans illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Jane&#x27;s Generous Doubt and Dancing Plans</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning after her illuminating conversation with Mr. Wickham, Elizabeth lost no time in sharing every particular of that gentleman&#x27;s history with Jane. Her sister received the intelligence with all the astonishment and concern that might be expected, yet found herself caught between two equally distressing impossibilities—for how could she believe Mr. Darcy capable of such unconscionable cruelty, when he enjoyed the intimate friendship and regard of a man so amiable as Mr. Bingley? And yet, how could she doubt the word of a young man whose countenance spoke so plainly of sincerity and good nature?</p>
 <p>Jane&#x27;s tender heart, ever disposed to think well of everyone, settled upon the only conclusion available to her generous spirit: that both gentlemen must have been deceived by interested parties, and that misrepresentation rather than genuine villainy lay at the root of their estrangement. Elizabeth could not resist teasing her sister for this excessive charity, observing with characteristic wit that Jane&#x27;s determination to clear everyone must eventually extend even to those shadowy figures responsible for the mischief. Yet Jane held firm in her conviction that no man of common humanity could treat his father&#x27;s favourite so abominably, while Elizabeth maintained that the truth had been perfectly evident in Wickham&#x27;s looks.</p>
 <p>Their philosophical debate was interrupted by the arrival of the Bingley party, come to deliver in person the long-anticipated invitation to the Netherfield ball, now fixed for the following Tuesday. Miss Bingley and Mrs. Hurst made their usual show of effusive affection toward Jane whilst treating the remainder of the family with barely concealed disdain, and departed with such haste as suggested an urgent desire to escape Mrs. Bennet&#x27;s hospitality.</p>
@@ -720,9 +903,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
 <section class="chapter" id="chapter-18" data-num="18">
-    <img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="Sparring Steps at the Netherfield Ball illustration" loading="lazy">
-    <div class="chapter-number">Chapter 18</div>
-    <h2 class="chapter-title">Sparring Steps at the Netherfield Ball</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="Sparring Steps at the Netherfield Ball illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Sparring Steps at the Netherfield Ball</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth Bennet arrived at the Netherfield ball with spirits higher than prudence might have advised, having dressed with particular care and fully expecting to find Mr. Wickham among the assembled officers. She had prepared herself for nothing less than the conquest of whatever portion of his heart remained unclaimed. Yet when she searched the sea of red coats and found him absent, a cold suspicion seized her—that Mr. Darcy had arranged for his exclusion. Mr. Denny soon confirmed the essence of her fears, revealing with a knowing smile that Wickham had conveniently departed for London on business, clearly to avoid a certain gentleman present. This intelligence sharpened every feeling of displeasure Elizabeth harbored against Darcy, and when he approached her with civil inquiries, she could barely manage tolerable courtesy in return.</p>
 <p>Though Elizabeth was not formed for sustained ill-humor, the evening&#x27;s early mortifications proved considerable. Her first dances with the awkward and oblivious Mr. Collins brought nothing but shame—he apologized where he should have attended, moved wrong without awareness, and left her counting the moments until her release. Relief came briefly in dancing with an officer who spoke well of Wickham, but then Mr. Darcy appeared before her, requesting her hand with such unexpectedness that she accepted without quite knowing what she did.</p>
 <p>Their dance became a peculiar contest of wits and silences. Elizabeth, determined to make him as uncomfortable as possible, prodded him into conversation by suggesting he remark upon the room&#x27;s dimensions or the number of couples. When he smiled and complied, she archly declared they shared a similarity of disposition—both too taciturn to speak unless certain of amazing the entire assembly. The verbal sparring grew sharper when Elizabeth mentioned their encounter at Meryton and their mutual acquaintance with Wickham. Darcy&#x27;s features darkened, and he observed coolly that Wickham possessed manners to make friends, though whether he could retain them remained uncertain. Elizabeth pressed further, questioning whether Darcy ever allowed prejudice to blind his judgment, but he grew distant and cold. They parted dissatisfied—though in Darcy&#x27;s breast stirred feelings that soon pardoned her entirely.</p>
@@ -732,9 +920,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
 <section class="chapter" id="chapter-19" data-num="19">
-    <img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="Mr. Collins Proposes with Methodical Certainty illustration" loading="lazy">
-    <div class="chapter-number">Chapter 19</div>
-    <h2 class="chapter-title">Mr. Collins Proposes with Methodical Certainty</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="Mr. Collins Proposes with Methodical Certainty illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">Mr. Collins Proposes with Methodical Certainty</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning following brought to Longbourn a scene of considerable absurdity, for Mr. Collins had resolved to make his proposal to Elizabeth without delay—his leave of absence extending only to Saturday, and his self-assurance extending, it seemed, well beyond the bounds of reason.</p>
 <p>Upon discovering Mrs. Bennet, Elizabeth, and Kitty assembled after breakfast, he approached the matron with all the ceremony he supposed requisite to such occasions, requesting the honour of a private audience with her fair daughter. Mrs. Bennet, whose delight at the prospect of securing a son-in-law could scarcely be contained, hastened to oblige, dragging poor Kitty upstairs despite Elizabeth&#x27;s urgent protestations that Mr. Collins could have nothing to say that required privacy. But Mrs. Bennet would hear none of it, insisting with maternal authority that Lizzy remain precisely where she was.</p>
 <p>Thus abandoned to her fate, Elizabeth resolved to endure the inevitable with what composure she could muster, her feelings divided most unequally between distress and the irresistible urge toward laughter.</p>
@@ -747,9 +940,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
 <section class="chapter" id="chapter-20" data-num="20">
-    <img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Father&#x27;s Wry Ultimatum illustration" loading="lazy">
-    <div class="chapter-number">Chapter 20</div>
-    <h2 class="chapter-title">A Father&#x27;s Wry Ultimatum</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Father&#x27;s Wry Ultimatum illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">A Father&#x27;s Wry Ultimatum</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The silence that followed Mr. Collins&#x27;s ill-fated proposal proved exceedingly brief, for Mrs. Bennet had stationed herself most strategically in the vestibule, and upon witnessing Elizabeth&#x27;s hasty retreat up the staircase, she descended upon the breakfast-room with all the eager triumph of a woman who believes herself on the verge of securing a most advantageous match. Her congratulations flowed freely to Mr. Collins, who received them with that particular satisfaction belonging to a man wholly convinced of his own desirability—for he had already persuaded himself that Elizabeth&#x27;s refusal sprang not from genuine disinclination but from that charming bashfulness so becoming in young ladies of delicate sensibility.</p>
 <p>Mrs. Bennet&#x27;s joy, however, was swiftly replaced by consternation when she comprehended the true nature of the interview&#x27;s conclusion. She declared, with all the determination a mother could muster, that Lizzy should be brought to reason forthwith—a pronouncement that gave Mr. Collins unexpected pause. If Elizabeth were indeed headstrong and foolish, he mused aloud, perhaps she would not prove so very desirable a wife after all. Mrs. Bennet, alarmed at the prospect of losing her quarry through her own candour, hastily amended her characterization: Lizzy was headstrong only in such matters as these, and in everything else, quite the most agreeable creature imaginable.</p>
 <p>Without permitting further deliberation, Mrs. Bennet flew to the library, where Mr. Bennet sat in his customary repose, and demanded his immediate intervention. Her husband, raising his eyes from his book with an expression of calm unconcern that the most pressing domestic crisis could not alter, listened to her agitated account with something approaching amusement. When Elizabeth was summoned and her refusal confirmed, Mr. Bennet delivered his verdict with characteristic dryness: an unhappy alternative lay before his daughter, for her mother would never see her again if she did not marry Mr. Collins, and he would never see her again if she did.</p>
@@ -759,9 +957,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
 <section class="chapter" id="chapter-21" data-num="21">
-    <img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="A Letter Shatters Jane&#x27;s Hopes illustration" loading="lazy">
-    <div class="chapter-number">Chapter 21</div>
-    <h2 class="chapter-title">A Letter Shatters Jane&#x27;s Hopes</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="A Letter Shatters Jane&#x27;s Hopes illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">A Letter Shatters Jane&#x27;s Hopes</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The unfortunate business of Mr. Collins&#x27;s rejected proposal lingered like an unwelcome guest, leaving Elizabeth to endure her mother&#x27;s peevish complaints whilst the gentleman himself took refuge in wounded pride and resentful silence. Rather than embarrassment or dejection, Collins chose stiffness as his response, transferring his assiduous attentions most pointedly to Miss Lucas—a redirection that proved a seasonable relief to all, and most particularly to Elizabeth herself. Mrs. Bennet&#x27;s ill humour showed no sign of abating, and though Elizabeth harboured some hope that Collins&#x27;s resentment might hasten his departure, the man remained obstinately fixed upon staying until Saturday as originally planned.</p>
 <p>The following morning brought the Bennet sisters to Meryton, where they sought news of Mr. Wickham and the mystery of his absence from the Netherfield ball. He soon joined their party, and to Elizabeth he made a most interesting confession—his absence had been entirely self-imposed. He had determined it wiser not to place himself in the same room with Mr. Darcy for so many hours together, fearing that unpleasant scenes might arise. Elizabeth found herself thoroughly approving his forbearance, and when Wickham walked back to Longbourn with their party, she felt the compliment keenly, delighting in the opportunity to introduce him to her parents.</p>
 <p>Yet the pleasures of Wickham&#x27;s company were soon overshadowed by more troubling news. A letter arrived for Jane from Netherfield, penned in Caroline Bingley&#x27;s fair, flowing hand, and Elizabeth watched her sister&#x27;s countenance change as she read its contents. The intelligence was alarming indeed—the entire Netherfield party had quit Hertfordshire for London, with no intention of returning.</p>
@@ -773,9 +976,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
 <section class="chapter" id="chapter-22" data-num="22">
-    <img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="Charlotte&#x27;s Calculated Pursuit of Security illustration" loading="lazy">
-    <div class="chapter-number">Chapter 22</div>
-    <h2 class="chapter-title">Charlotte&#x27;s Calculated Pursuit of Security</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="Charlotte&#x27;s Calculated Pursuit of Security illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">Charlotte&#x27;s Calculated Pursuit of Security</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The Bennets dined with the Lucases, and once more Charlotte Lucas proved herself the most obliging of friends by keeping Mr. Collins thoroughly occupied throughout the evening. Elizabeth, grateful beyond measure for this reprieve, offered her heartfelt thanks, little suspecting that Charlotte&#x27;s kindness sprang from motives far more calculated than simple friendship. For Charlotte had devised a scheme of her own—nothing less than securing Mr. Collins&#x27;s attentions permanently, thereby freeing Elizabeth from any further danger of his addresses by directing them squarely toward herself.</p>
 <p>The signs proved favorable enough that Charlotte might have felt assured of success, had Mr. Collins not been departing Hertfordshire so soon. Yet she underestimated the gentleman&#x27;s ardor and determination. The very next morning, he slipped away from Longbourn House with remarkable stealth, hastening to Lucas Lodge to throw himself at Charlotte&#x27;s feet. Having suffered the humiliation of Wednesday&#x27;s rejection, he wished to keep his purpose secret until triumph could be announced. His reception exceeded all hopes—Charlotte, having spotted him from an upper window, contrived to meet him &quot;accidentally&quot; in the lane, where she found awaiting her more declarations of love and eloquence than she had dared imagine.</p>
 <p>In as brief a time as Mr. Collins&#x27;s lengthy speeches would permit, everything was settled between them. Charlotte accepted him with clear eyes and a steady heart, moved not by affection but by the &quot;pure and disinterested desire of an establishment.&quot; At seven-and-twenty, plain and possessed of little fortune, she understood matrimony as the only respectable provision available to women of her circumstances—a preservative from want, if not a guarantee of happiness.</p>
@@ -787,9 +995,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
 <section class="chapter" id="chapter-23" data-num="23">
-    <img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="Mrs. Bennet&#x27;s Unending Resentment illustration" loading="lazy">
-    <div class="chapter-number">Chapter 23</div>
-    <h2 class="chapter-title">Mrs. Bennet&#x27;s Unending Resentment</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="Mrs. Bennet&#x27;s Unending Resentment illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">Mrs. Bennet&#x27;s Unending Resentment</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The news of Charlotte Lucas&#x27;s engagement to Mr. Collins spread through Longbourn with all the delicacy of a summer storm. Sir William Lucas himself arrived to deliver the intelligence, brimming with compliments and self-congratulation at the prospect of uniting their two families, only to find his audience not merely astonished but utterly disbelieving. Mrs. Bennet, abandoning politeness in favour of persistence, insisted he must be mistaken, while Lydia burst out with characteristic tactlessness that Mr. Collins had surely meant to marry Lizzy. Only Sir William&#x27;s impeccable breeding preserved him from mortification, and Elizabeth, recognising his predicament, stepped forward to confirm the truth of the matter, having heard it from Charlotte&#x27;s own lips.</p>
 <p>Once Sir William had departed, Mrs. Bennet&#x27;s feelings found full expression. She disbelieved the engagement; she was certain Mr. Collins had been deceived; she trusted the pair would never find happiness together; and she hoped the match would be broken off entirely. From this catalogue of grievances, two conclusions emerged paramount in her mind: Elizabeth was the true author of all this mischief, and she herself had been barbarously ill-used. A week passed before she could look upon Elizabeth without scolding, a month before she could address Sir William or Lady Lucas with civility, and many months more before she could bring herself to forgive Charlotte at all.</p>
 <p>Mr. Bennet&#x27;s response proved characteristically philosophical. The affair afforded him considerable amusement, for it revealed Charlotte Lucas—whom he had always considered tolerably sensible—to be quite as foolish as his wife, and rather more foolish than his daughter. Jane, ever generous, expressed surprise but dwelt far more upon her hopes for the couple&#x27;s happiness than upon any doubts. Kitty and Lydia remained supremely indifferent, for a mere clergyman held no fascination for them; the engagement served only as fresh gossip to spread about Meryton.</p>
@@ -801,9 +1014,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
 <section class="chapter" id="chapter-24" data-num="24">
-    <img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Hope Extinguished, Sisters Consoling illustration" loading="lazy">
-    <div class="chapter-number">Chapter 24</div>
-    <h2 class="chapter-title">Hope Extinguished, Sisters Consoling</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Hope Extinguished, Sisters Consoling illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Hope Extinguished, Sisters Consoling</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Miss Bingley&#x27;s letter arrived at Longbourn with all the finality of a door closing forever. The Bingley party had settled in London for the winter, with no intention of returning to Hertfordshire, and Jane&#x27;s fragile hopes were extinguished completely. What comfort could the letter offer? Precious little—only Caroline&#x27;s professed affection, which rang hollow against her effusive praise of Miss Darcy and her barely concealed predictions that Mr. Bingley would soon be united with that young lady. Caroline wrote with undisguised pleasure of her brother residing at Mr. Darcy&#x27;s house, as though the very furniture being ordered there held more significance than any connection left behind in the country.</p>
 <p>Elizabeth received this intelligence from Jane with silent indignation, her heart torn between sympathy for her sister and resentment toward those who had engineered this separation. She dismissed Caroline&#x27;s insinuations about Bingley&#x27;s preference for Miss Darcy as pure fabrication, remaining convinced of his genuine attachment to Jane. Yet this conviction only deepened her contempt for Bingley himself—that weak, pliable man who allowed his designing friends to govern his happiness and, worse still, her sister&#x27;s peace.</p>
 <p>When Jane finally gathered courage to speak of her feelings, she did so with characteristic selflessness, expressing concern only that their mother&#x27;s constant lamentations caused her pain. She insisted she would forget him, that the attachment had been merely an error of fancy on her part, harming no one but herself. Elizabeth, moved beyond measure, declared her sister&#x27;s sweetness and disinterestedness truly angelic.</p>
@@ -814,9 +1032,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
 <section class="chapter" id="chapter-25" data-num="25">
-    <img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="The Gardiners Bring Comfort and Counsel illustration" loading="lazy">
-    <div class="chapter-number">Chapter 25</div>
-    <h2 class="chapter-title">The Gardiners Bring Comfort and Counsel</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="The Gardiners Bring Comfort and Counsel illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">The Gardiners Bring Comfort and Counsel</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mr. Collins departed Longbourn on Saturday, his week of devoted courtship drawing to its ceremonious close. Though the pain of parting from his amiable Charlotte might have afflicted a more ardent lover, Mr. Collins found sufficient consolation in contemplating the preparations awaiting him—for soon, very soon, he should return to Hertfordshire to fix the happy day that would make him the most blessed of men. He took his leave with all the solemnity one might expect, bestowing health and happiness upon his fair cousins and promising yet another letter of thanks to their father.</p>
 <p>The Monday following brought far more welcome visitors to Longbourn: Mr. and Mrs. Gardiner arrived to spend Christmas with the family, as was their agreeable custom. Mr. Gardiner proved himself a sensible, gentlemanlike man, so vastly superior to his sister in both nature and education that the Netherfield ladies would scarcely have believed a man who lived by trade, within view of his own warehouses, could possess such breeding and agreeable manners. His wife, several years younger than Mrs. Bennet, was an intelligent, elegant woman who had secured a particular place in the affections of her Longbourn nieces, especially the two eldest, who had frequently stayed with her in town.</p>
 <p>Mrs. Gardiner&#x27;s first business upon arriving was the pleasant duty of distributing presents and describing the newest fashions. This accomplished, she assumed the less active role of listener—for Mrs. Bennet had grievances aplenty to unburden. Two daughters had been on the very point of marriage, and yet here they remained, quite unmarried! Jane, she allowed, could not be blamed, for Jane would have secured Mr. Bingley had it been within her power. But Lizzy—oh, the perverseness of that girl!—might have been Mrs. Collins by now, had she not refused his proposal in that very room. The consequence? Lady Lucas would have a married daughter before Mrs. Bennet, and Longbourn remained as entailed as ever. The Lucases, she declared, were artful people indeed.</p>
@@ -828,9 +1051,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
 <section class="chapter" id="chapter-26" data-num="26">
-    <img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="Farewells and Fading Intimacies illustration" loading="lazy">
-    <div class="chapter-number">Chapter 26</div>
-    <h2 class="chapter-title">Farewells and Fading Intimacies</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_26.webp"><img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="Farewells and Fading Intimacies illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">Farewells and Fading Intimacies</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mrs. Gardiner, ever the sensible relation, seized her first private moment with Elizabeth to deliver a warning regarding Mr. Wickham. She spoke with characteristic directness, acknowledging Elizabeth&#x27;s good sense while urging caution: a match with a man of no fortune, however agreeable he might be, would prove imprudent indeed. Elizabeth&#x27;s father depended upon her judgment, her aunt reminded her, and she must not disappoint him.</p>
 <p>Elizabeth received this counsel with her usual wit, half in earnest and half in playful deflection. She could not deny Wickham&#x27;s charms—he remained, beyond all comparison, the most agreeable man she had ever encountered—yet she understood the folly of encouraging an attachment that could lead nowhere advantageous. With a characteristic flash of spirit, she cursed that abominable Mr. Darcy for his role in Wickham&#x27;s misfortune. Still, she promised her aunt to exercise patience, to avoid hastening her own hopes, and to refrain from encouraging her mother&#x27;s invitations. Mrs. Gardiner departed satisfied, and the exchange concluded without resentment—a rare triumph where unsolicited advice is concerned.</p>
 <p>Meanwhile, Mr. Collins returned to Hertfordshire to claim his bride. Mrs. Bennet, resigned at last to Charlotte&#x27;s victory, could only manage ill-natured wishes for the couple&#x27;s happiness. Elizabeth, ashamed of her mother&#x27;s ungracious manner, accompanied Charlotte downstairs during her farewell visit. There, Charlotte extracted a promise that Elizabeth would visit Hunsford in March, a prospect Elizabeth accepted with little enthusiasm but sincere affection for her friend. The wedding proceeded without ceremony, the couple departing directly for Kent, and correspondence between the friends continued—though Elizabeth felt keenly that true intimacy had been lost forever. Charlotte&#x27;s letters arrived cheerfully enough, praising house, neighbourhood, and Lady Catherine alike, but Elizabeth knew she must see Hunsford herself to understand the whole truth.</p>
@@ -841,9 +1069,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
 <section class="chapter" id="chapter-27" data-num="27">
-    <img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="Departures and Lingering Attachments illustration" loading="lazy">
-    <div class="chapter-number">Chapter 27</div>
-    <h2 class="chapter-title">Departures and Lingering Attachments</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_27.webp"><img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="Departures and Lingering Attachments illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">Departures and Lingering Attachments</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The quiet months of January and February slipped away at Longbourn with little to mark their passage beyond the familiar walks to Meryton, undertaken in weather that alternated between muddy and bitter cold. Yet March promised something altogether different, for it would carry Elizabeth to Hunsford.</p>
 <p>She had not, at first, given the visit much serious consideration, but Charlotte&#x27;s evident dependence upon the scheme gradually transformed Elizabeth&#x27;s reluctant acquiescence into genuine anticipation. The passage of time had worked its subtle influence—her longing to see Charlotte had grown stronger while her distaste for Mr. Collins had softened somewhat. The prospect of change held its own appeal; with such a mother and such uncompanionable sisters, home could hardly claim perfection, and novelty offered its own reward. Better still, the journey would afford her a glimpse of Jane in London. By the time her departure approached, Elizabeth would have mourned any delay.</p>
 <p>All arrangements proceeded smoothly according to Charlotte&#x27;s original design. Elizabeth would travel with Sir William Lucas and his second daughter, Maria, with the happy addition of a night spent in London perfecting the plan entirely.</p>
@@ -857,9 +1090,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
 <section class="chapter" id="chapter-28" data-num="28">
-    <img class="chapter-image" src="images_cinematic/chapter_28.webp" alt="Arrival at Hunsford Parsonage illustration" loading="lazy">
-    <div class="chapter-number">Chapter 28</div>
-    <h2 class="chapter-title">Arrival at Hunsford Parsonage</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_28.webp"><img class="chapter-image" src="images_cinematic/chapter_28.webp" alt="Arrival at Hunsford Parsonage illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">28</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 28</div>
+            <h2 class="chapter-title">Arrival at Hunsford Parsonage</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth Bennet&#x27;s journey to Hunsford proved a tonic for her spirits, each mile bringing fresh diversions and the pleasant assurance that Jane&#x27;s health had quite recovered. The northern tour she had planned stretched before her imagination like a promise, and she found herself in that agreeable state where anticipation doubles every pleasure.</p>
 <p>As the carriage turned from the high road into the narrower lane leading to the Parsonage, all eyes strained forward in search of their destination. The pale fencing of Rosings Park marked one boundary of their path, and Elizabeth could not suppress a smile at the thought of its illustrious inhabitants—those personages of whom she had heard such excessive praise from her cousin&#x27;s own lips.</p>
 <p>The Parsonage revealed itself at last: a modest house set within sloping gardens, bordered by green pales and a laurel hedge. Mr. Collins and Charlotte stood waiting at the door, and the moment the carriage halted at the small gate, the whole party descended amid much nodding and smiling. Charlotte welcomed Elizabeth with genuine warmth, and Elizabeth felt her decision to visit vindicated by such an affectionate reception.</p>
@@ -874,9 +1112,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
 <section class="chapter" id="chapter-29" data-num="29">
-    <img class="chapter-image" src="images_cinematic/chapter_29.webp" alt="An Audience with Lady Catherine illustration" loading="lazy">
-    <div class="chapter-number">Chapter 29</div>
-    <h2 class="chapter-title">An Audience with Lady Catherine</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_29.webp"><img class="chapter-image" src="images_cinematic/chapter_29.webp" alt="An Audience with Lady Catherine illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">29</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 29</div>
+            <h2 class="chapter-title">An Audience with Lady Catherine</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mr. Collins could scarcely contain his delight upon receiving an invitation for the entire party to dine at Rosings, for here was precisely the opportunity he had longed for—to display before his wondering visitors the full magnificence of his noble patroness and to bask in the reflected glory of her condescension. That the invitation should arrive so immediately after Elizabeth and Sir William&#x27;s arrival struck him as an extraordinary mark of Lady Catherine&#x27;s favour, though he confessed he would not have been surprised by a mere invitation to tea, such was his intimate knowledge of her affability.</p>
 <p>Sir William, not to be outdone in self-importance, declared himself equally unsurprised, claiming that his experience at court had accustomed him to such instances of elegant breeding among the great. Between the two gentlemen, scarcely anything else was spoken of for a day and a half, with Mr. Collins taking particular care to prepare his guests for the splendours awaiting them—lest the sight of so many servants and so fine a dinner should wholly overpower their senses.</p>
 <p>Before the ladies could even dress, Mr. Collins thought it prudent to advise Elizabeth on her attire, assuring her that Lady Catherine required no particular elegance from those beneath her station, for she preferred the distinction of rank to be preserved. Poor Maria Lucas, unused to such formidable company, trembled with apprehension at the very thought of the introduction, though Elizabeth&#x27;s courage remained unshaken. She had heard nothing of Lady Catherine that suggested any extraordinary merit beyond the mere stateliness of fortune and position, and these she felt she could encounter without trepidation.</p>
@@ -887,9 +1130,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
 <section class="chapter" id="chapter-30" data-num="30">
-    <img class="chapter-image" src="images_cinematic/chapter_30.webp" alt="Charlotte&#x27;s Quiet Strategy at Hunsford illustration" loading="lazy">
-    <div class="chapter-number">Chapter 30</div>
-    <h2 class="chapter-title">Charlotte&#x27;s Quiet Strategy at Hunsford</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_30.webp"><img class="chapter-image" src="images_cinematic/chapter_30.webp" alt="Charlotte&#x27;s Quiet Strategy at Hunsford illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">30</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 30</div>
+            <h2 class="chapter-title">Charlotte&#x27;s Quiet Strategy at Hunsford</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Sir William Lucas departed Hunsford after a week&#x27;s stay, quite satisfied that his daughter Charlotte had secured both a comfortable situation and that rarest of combinations—a devoted husband and an illustrious neighbour. With his departure, the household resumed its ordinary rhythms, and Elizabeth found herself grateful that Mr. Collins&#x27;s absence from their company had not diminished in the least. Her cousin now occupied his mornings most industriously in the garden or sequestered in his book room, which commanded a prospect of the road—a vantage point he guarded with considerable vigilance. The ladies, meanwhile, sat in a room facing backwards, affording no view of the lane whatsoever. Elizabeth had initially puzzled over Charlotte&#x27;s choice to forsake the more agreeable dining parlour for their daily use, but comprehension soon dawned: had they situated themselves in a room of equal liveliness to Mr. Collins&#x27;s retreat, he should certainly have haunted their company far more frequently. Elizabeth silently commended her friend&#x27;s shrewd domestic arrangement.</p>
 <p>From their secluded drawing-room, the ladies remained entirely ignorant of passing carriages—a deficiency Mr. Collins remedied with unfailing enthusiasm, announcing each vehicle with particular attention to Miss De Bourgh&#x27;s phaeton, which traversed the lane with almost daily regularity. That sickly young lady occasionally deigned to pause at the Parsonage for brief conversation with Charlotte, though she could scarcely ever be persuaded to alight.</p>
 <p>Mr. Collins&#x27;s pilgrimages to Rosings occurred with such devoted frequency that Elizabeth could not fathom the sacrifice of so many hours until she recollected that other family livings might yet be disposed of. Lady Catherine herself occasionally graced the Parsonage with her presence, and nothing within those walls escaped her imperious observation. She scrutinized their needlework, prescribed alterations, found fault with the furniture arrangement, detected negligence in the housemaid, and, upon accepting refreshment, seemed principally occupied with determining that Mrs. Collins&#x27;s joints of meat exceeded what was proper for so modest a household. Though this great lady held no official commission of the peace, she served as most active magistrate within her own parish, sallying forth to settle disputes among cottagers and scold them into harmony and plenty whenever they proved quarrelsome, discontented, or insufficiently grateful for their poverty.</p>
@@ -900,9 +1148,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
 <section class="chapter" id="chapter-31" data-num="31">
-    <img class="chapter-image" src="images_cinematic/chapter_31.webp" alt="Sparring at the Pianoforte illustration" loading="lazy">
-    <div class="chapter-number">Chapter 31</div>
-    <h2 class="chapter-title">Sparring at the Pianoforte</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_31.webp"><img class="chapter-image" src="images_cinematic/chapter_31.webp" alt="Sparring at the Pianoforte illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">31</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 31</div>
+            <h2 class="chapter-title">Sparring at the Pianoforte</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The arrival of Colonel Fitzwilliam at Rosings had not gone unnoticed by the inhabitants of the Parsonage, whose appreciation for his agreeable manners stood in marked contrast to the somewhat cooler reception afforded by the great house itself. Though the Colonel had taken it upon himself to call at the Parsonage on more than one occasion during the first week of his visit, Mr. Darcy had been glimpsed only at church, maintaining that deliberate distance which seemed so characteristic of his nature. As for any invitation to Rosings, the party at the Parsonage was made to understand, without the indelicacy of direct statement, that while distinguished visitors occupied Lady Catherine&#x27;s attention, humbler acquaintances must content themselves with patience. It was not until Easter-day that such an honour was at last bestowed, and even then with the air of an afterthought, the invitation extended as they departed church.</p>
 <p>Upon arriving at Lady Catherine&#x27;s drawing-room that evening, the company was received with civility, though it was abundantly clear that their presence served merely to fill seats rather than to provide any genuine pleasure to their hostess. Her Ladyship devoted herself almost entirely to her nephews, reserving for Darcy in particular the greater portion of her condescension. Colonel Fitzwilliam, however, proved himself a man who found any diversion welcome at Rosings, and Mrs. Collins&#x27;s pretty friend had quite captured his interest. He seated himself beside Elizabeth, and together they embarked upon such a lively discourse—touching upon Kent and Hertfordshire, the pleasures of travel and the comforts of home, new publications and musical accomplishments—that Elizabeth found herself better entertained than she had ever been within those grand walls.</p>
 <p>Their animated conversation soon drew curious glances from Mr. Darcy, whose eyes turned repeatedly in their direction, and eventually provoked Lady Catherine herself to demand an account of their discussion. Upon learning that music was their subject, her Ladyship seized the opportunity to expound at length upon her own natural superiority in musical taste—a proficiency that existed, remarkably, without the inconvenience of ever having learnt to play. She extended this self-congratulation to her daughter Anne, whose delicate health had alone prevented her from achieving similar imaginary excellence, before turning her attention to Darcy&#x27;s sister Georgiana with advice that was neither requested nor, apparently, required.</p>
@@ -913,9 +1166,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
 <section class="chapter" id="chapter-32" data-num="32">
-    <img class="chapter-image" src="images_cinematic/chapter_32.webp" alt="Awkward Silences and Hidden Intentions illustration" loading="lazy">
-    <div class="chapter-number">Chapter 32</div>
-    <h2 class="chapter-title">Awkward Silences and Hidden Intentions</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_32.webp"><img class="chapter-image" src="images_cinematic/chapter_32.webp" alt="Awkward Silences and Hidden Intentions illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">32</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 32</div>
+            <h2 class="chapter-title">Awkward Silences and Hidden Intentions</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth found herself quite alone one morning at Hunsford, engaged in correspondence with Jane, while Charlotte and Maria had gone into the village on some errand or other. The ring at the door startled her, and supposing it must be Lady Catherine come to impose herself, Elizabeth hastily concealed her half-finished letter to escape the inevitable impertinent inquiries. But the figure who entered was not Lady Catherine at all—it was Mr. Darcy, entirely alone, looking nearly as astonished to find her unaccompanied as she was to see him.</p>
 <p>What followed was an interview of considerable awkwardness. After the briefest civilities regarding Rosings, they seemed destined to sink into utter silence. Elizabeth, casting about for anything to discuss, ventured to mention the hasty departure from Netherfield the previous November and to inquire after Mr. Bingley&#x27;s intentions regarding the place. Darcy&#x27;s replies were maddeningly brief—he believed Bingley might give up Netherfield entirely—and Elizabeth, afraid of pressing too far on the subject of his friend, resolved to leave the burden of conversation squarely upon his shoulders.</p>
 <p>He took up the challenge with admirable effort, commenting on the Parsonage and Mr. Collins&#x27;s good fortune in his choice of wife. Elizabeth could not resist observing that Charlotte was one of very few sensible women who would have accepted Mr. Collins, or could have made him happy—a remark delivered with her characteristic mixture of fondness and irony. When Darcy suggested that Charlotte must find comfort in being settled so near her family, Elizabeth disputed the notion that fifty miles could be called near, and a curious little exchange ensued about distance, fortune, and attachment to home. At one point, Darcy drew his chair closer to her, observing pointedly that *she* could not have such strong local attachment, that she could not have always been at Longbourn—but something in the moment shifted, and he withdrew, taking up a newspaper and resuming a colder tone until Charlotte and Maria returned and rescued them all from the strange encounter.</p>
@@ -925,9 +1183,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
 <section class="chapter" id="chapter-33" data-num="33">
-    <img class="chapter-image" src="images_cinematic/chapter_33.webp" alt="Unexpected Encounters and Revealing Conversations illustration" loading="lazy">
-    <div class="chapter-number">Chapter 33</div>
-    <h2 class="chapter-title">Unexpected Encounters and Revealing Conversations</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_33.webp"><img class="chapter-image" src="images_cinematic/chapter_33.webp" alt="Unexpected Encounters and Revealing Conversations illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">33</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 33</div>
+            <h2 class="chapter-title">Unexpected Encounters and Revealing Conversations</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>During her daily rambles through the park at Hunsford, Elizabeth found herself crossing paths with Mr. Darcy far more often than chance alone could account for. Though she had taken care to inform him that these particular walks were her favourite haunt—hoping, perhaps, to discourage his presence—he appeared again and again, turning back to accompany her with an odd persistence that puzzled her exceedingly. Their conversations were neither long nor particularly animated, yet Elizabeth could not help but notice the peculiar nature of his questions: her pleasure in Kent, her fondness for solitary exercise, her thoughts on the Collinses&#x27; domestic arrangements. Stranger still was his apparent assumption that she might one day return to Kent as a guest at Rosings itself. Elizabeth, attempting to make sense of such intimations, wondered if Colonel Fitzwilliam might be the object of his meaning—a supposition that unsettled her more than she cared to examine.</p>
 <p>It was Colonel Fitzwilliam, in fact, whom she encountered on another of her walks, her spirits already lowered by the melancholy tone of Jane&#x27;s most recent letter. Their conversation turned easily to the subject of Mr. Darcy—his fondness for arranging matters to his own liking, his wealth affording him liberties that others could not claim. The Colonel spoke with some feeling of the constraints placed upon younger sons, confessing that men in his position could not marry where they chose. Elizabeth coloured at this, uncertain whether she was meant to receive the observation as a personal caution, but she recovered her composure swiftly, turning the exchange into light raillery.</p>
 <p>Yet what followed stripped away all lightness from her heart. Colonel Fitzwilliam, speaking without any consciousness of the wound he inflicted, mentioned that Darcy had lately congratulated himself upon saving a friend from an imprudent marriage—separating him from a young lady whose connections presented strong objections. Elizabeth required no names to understand the truth: Mr. Darcy had been the architect of Jane&#x27;s misery, not merely an accessory to Miss Bingley&#x27;s schemes. His pride, his insufferable presumption in judging what was suitable for his friend&#x27;s happiness, had torn Bingley from Jane and left her sister to suffer in quiet dignity.</p>
@@ -936,9 +1199,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
 <section class="chapter" id="chapter-34" data-num="34">
-    <img class="chapter-image" src="images_cinematic/chapter_34.webp" alt="A Most Unwelcome Proposal illustration" loading="lazy">
-    <div class="chapter-number">Chapter 34</div>
-    <h2 class="chapter-title">A Most Unwelcome Proposal</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_34.webp"><img class="chapter-image" src="images_cinematic/chapter_34.webp" alt="A Most Unwelcome Proposal illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">34</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 34</div>
+            <h2 class="chapter-title">A Most Unwelcome Proposal</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Left alone after the others&#x27; departure, Elizabeth set herself to a task designed to stoke the flames of her indignation against Mr. Darcy. She pored over every letter Jane had written since her arrival in Kent, searching each line for evidence of suffering. Though Jane had voiced no direct complaint, Elizabeth now perceived what her earlier, more careless readings had missed—an absence of that natural cheerfulness which had always characterized her sister&#x27;s correspondence, a heaviness where lightness ought to have been. Mr. Darcy&#x27;s proud confession of having separated Jane from Bingley lent fresh sharpness to every melancholy phrase, and Elizabeth found some small comfort only in knowing that his visit to Rosings would soon conclude, and that she herself would shortly return to Jane&#x27;s side.</p>
 <p>Her thoughts turned briefly to Colonel Fitzwilliam, who would depart alongside his cousin, but she dismissed any stirring of regret. He had made his lack of serious intentions plain enough, and she refused to waste sentiment on the matter.</p>
 <p>The sound of the door-bell interrupted her reflections. She half-expected the Colonel himself, perhaps come to inquire after her health—but the figure who entered the room banished all such suppositions instantly. Mr. Darcy stood before her, agitated and restless, his manner betraying some inner tumult she could not immediately comprehend. He inquired after her health with hurried formality; she answered with cold civility. He sat, then rose, pacing the room in evident distress while Elizabeth watched in bewildered silence.</p>
@@ -949,9 +1217,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><a class="next" href="#chapter-35"><span>Next</span>Chapter 35</a></nav>
 </section>
 <section class="chapter" id="chapter-35" data-num="35">
-    <img class="chapter-image" src="images_cinematic/chapter_35.webp" alt="A Letter Demands Her Justice illustration" loading="lazy">
-    <div class="chapter-number">Chapter 35</div>
-    <h2 class="chapter-title">A Letter Demands Her Justice</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_35.webp"><img class="chapter-image" src="images_cinematic/chapter_35.webp" alt="A Letter Demands Her Justice illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">35</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 35</div>
+            <h2 class="chapter-title">A Letter Demands Her Justice</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth woke still haunted by the extraordinary events of the previous evening, her mind turning over the same thoughts that had finally permitted her to close her eyes. Rest had brought no clarity—only the persistent astonishment at what had passed between herself and Mr. Darcy. Finding herself wholly unfit for any occupation, she resolved after breakfast to seek what solace she might in air and exercise.</p>
 <p>She had nearly reached her favourite walk when the unwelcome recollection that Mr. Darcy sometimes frequented those grounds arrested her steps. She turned instead up the lane leading farther from the main road, keeping the park paling as her boundary, and passed through one of the gates onto the grounds. The morning was uncommonly pleasant; five weeks in Kent had transformed the countryside, and the early trees were daily increasing in verdure. Elizabeth paused at the gates to admire the prospect before her—and it was then she caught a glimpse of a gentleman moving through the grove that edged the park.</p>
 <p>Fearing it might be Mr. Darcy, she immediately began to retreat, but the figure advanced with such purpose that escape proved impossible. He called her name, and though she had turned away, she found herself moving again towards the gate. He reached it just as she did, and with a look of haughty composure, held out a letter, which she took instinctively. &quot;I have been walking in the grove some time, in the hope of meeting you,&quot; said he. &quot;Will you do me the honour of reading that letter?&quot; With a slight bow, he disappeared into the plantation before she could respond.</p>
@@ -963,9 +1236,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-34"><span>Previous</span>Chapter 34</a><a class="next" href="#chapter-36"><span>Next</span>Chapter 36</a></nav>
 </section>
 <section class="chapter" id="chapter-36" data-num="36">
-    <img class="chapter-image" src="images_cinematic/chapter_36.webp" alt="Prejudice Shattered by Painful Truth illustration" loading="lazy">
-    <div class="chapter-number">Chapter 36</div>
-    <h2 class="chapter-title">Prejudice Shattered by Painful Truth</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_36.webp"><img class="chapter-image" src="images_cinematic/chapter_36.webp" alt="Prejudice Shattered by Painful Truth illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">36</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 36</div>
+            <h2 class="chapter-title">Prejudice Shattered by Painful Truth</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>When Elizabeth received Mr. Darcy&#x27;s letter, she had formed no expectation of what it might contain, certainly not a renewal of his suit. Yet whatever she had imagined, nothing could have prepared her for the contrariety of emotions the pages would excite within her breast.</p>
 <p>She began reading with all the prejudice of wounded pride, steadfastly convinced that no explanation could justify his conduct, that any apology must be veiled in shame. His account of separating Jane from Mr. Bingley she dismissed at once—his belief in her sister&#x27;s insensibility she pronounced false, his enumeration of the Bennet family&#x27;s deficiencies insufferable. His tone struck her as haughty rather than penitent, all pride and insolence, and she found nothing in his words to satisfy her sense of injury.</p>
 <p>But when she came to the matter of Mr. Wickham, her feelings grew more acutely painful and far more difficult to define. Here was a relation of events that, if true, must overthrow every cherished opinion she had formed. Astonishment, apprehension, and even horror oppressed her as she read. She wished desperately to discredit it all, crying aloud that it must be the grossest falsehood. She thrust the letter away, vowing never to look upon it again.</p>
@@ -979,9 +1257,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-35"><span>Previous</span>Chapter 35</a><a class="next" href="#chapter-37"><span>Next</span>Chapter 37</a></nav>
 </section>
 <section class="chapter" id="chapter-37" data-num="37">
-    <img class="chapter-image" src="images_cinematic/chapter_37.webp" alt="Unpleasant Recollections and Solitary Walks illustration" loading="lazy">
-    <div class="chapter-number">Chapter 37</div>
-    <h2 class="chapter-title">Unpleasant Recollections and Solitary Walks</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_37.webp"><img class="chapter-image" src="images_cinematic/chapter_37.webp" alt="Unpleasant Recollections and Solitary Walks illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">37</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 37</div>
+            <h2 class="chapter-title">Unpleasant Recollections and Solitary Walks</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The departure of Mr. Darcy and Colonel Fitzwilliam from Rosings set into motion the chapter&#x27;s events, though their absence served chiefly as backdrop to Elizabeth&#x27;s tumultuous inner world. Mr. Collins, ever vigilant in his attentions to his patroness, stationed himself near the lodges to witness their leave-taking and returned with the satisfying report that both gentlemen appeared well enough, considering the melancholy of their recent farewells. He then hurried to Rosings to offer consolation, returning with Lady Catherine&#x27;s summons to dinner—her Ladyship finding herself so dull without her nephews that company became a necessity.</p>
 <p>Elizabeth dined at Rosings with a secret amusement playing about her thoughts. She could not look upon Lady Catherine without reflecting that she might, had she chosen differently, have been presented as Darcy&#x27;s future wife. The mere imagination of her Ladyship&#x27;s indignation at such a prospect afforded Elizabeth considerable private entertainment.</p>
 <p>Lady Catherine held forth at length upon how keenly she felt the loss of the young men, declaring that nobody suffered the absence of friends as acutely as herself. She remarked particularly upon Darcy&#x27;s attachment to Rosings, observing that he seemed to feel the parting most deeply this year—a comment Elizabeth received with what composure she could muster. When Lady Catherine noticed Elizabeth&#x27;s subdued spirits and attributed them to reluctance at leaving Kent, she pressed her to extend her stay, offering eventually to convey her to London in the barouche alongside Dawson, provided the weather proved cool enough to accommodate two young women who were, after all, neither of them large. Elizabeth declined with polite firmness, citing her father&#x27;s wishes for her return.</p>
@@ -992,9 +1275,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-36"><span>Previous</span>Chapter 36</a><a class="next" href="#chapter-38"><span>Next</span>Chapter 38</a></nav>
 </section>
 <section class="chapter" id="chapter-38" data-num="38">
-    <img class="chapter-image" src="images_cinematic/chapter_38.webp" alt="Farewells and Secrets to Keep illustration" loading="lazy">
-    <div class="chapter-number">Chapter 38</div>
-    <h2 class="chapter-title">Farewells and Secrets to Keep</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_38.webp"><img class="chapter-image" src="images_cinematic/chapter_38.webp" alt="Farewells and Secrets to Keep illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">38</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 38</div>
+            <h2 class="chapter-title">Farewells and Secrets to Keep</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>On the morning of Elizabeth&#x27;s departure from Hunsford, Mr. Collins seized upon the quiet interval before breakfast to deliver what he considered the essential courtesies demanded by the occasion. With characteristic self-satisfaction, he assured Elizabeth that, despite the humble circumstances of the parsonage—its small rooms, few servants, and general obscurity—he trusted she had not found her stay entirely disagreeable. Indeed, he could not help but observe, with swelling pride, that their intimate connection with Rosings had surely elevated the visit beyond what such a modest household might otherwise provide. The privilege of Lady Catherine&#x27;s frequent notice, he declared, was a blessing few could claim, and he walked about the room in an excess of feeling, quite overcome by the grandeur of his own situation.</p>
 <p>Elizabeth, exercising that delicate art of uniting civility with truth, offered what sincere gratitude she could muster. She had genuinely enjoyed her six weeks with Charlotte, whose kind attentions had made the visit pleasant despite its peculiar trials. Mr. Collins, oblivious to any shade of irony, pressed on to assure his cousin that she might carry a favorable report of their domestic happiness back to Hertfordshire. He and Charlotte, he proclaimed, were perfectly matched in mind and temperament—designed for each other in every particular.</p>
 <p>Elizabeth could honestly affirm that such harmony was indeed a great happiness, though she felt a pang of melancholy watching poor Charlotte, who entered the room with quiet composure. Her friend had chosen this life with clear eyes, and though she plainly regretted the departure of her visitors, she seemed content enough with her parish duties, her household management, and her poultry. It was not a fate Elizabeth could envy, but neither did Charlotte appear to seek compassion.</p>
@@ -1005,9 +1293,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-37"><span>Previous</span>Chapter 37</a><a class="next" href="#chapter-39"><span>Next</span>Chapter 39</a></nav>
 </section>
 <section class="chapter" id="chapter-39" data-num="39">
-    <img class="chapter-image" src="images_cinematic/chapter_39.webp" alt="Lydia&#x27;s Frivolous Homecoming illustration" loading="lazy">
-    <div class="chapter-number">Chapter 39</div>
-    <h2 class="chapter-title">Lydia&#x27;s Frivolous Homecoming</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_39.webp"><img class="chapter-image" src="images_cinematic/chapter_39.webp" alt="Lydia&#x27;s Frivolous Homecoming illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">39</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 39</div>
+            <h2 class="chapter-title">Lydia&#x27;s Frivolous Homecoming</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>It was the second week of May when Elizabeth, Jane, and Maria Lucas departed from Gracechurch Street, bound for Hertfordshire and the familiar comforts of home. As their carriage approached the appointed inn, they spied Kitty and Lydia peering down from an upstairs dining-room window—those two giddy creatures having occupied themselves for the past hour with pursuits entirely suited to their dispositions: examining bonnets at the milliner&#x27;s, watching soldiers stand guard, and arranging a salad of cucumber.</p>
 <p>The younger sisters greeted them with triumphant pride, displaying a table of cold meats and declaring their intention to treat the party—though they should require a loan, having already exhausted their funds on purchases. Lydia exhibited her new bonnet with characteristic indifference to its plainness, announcing her plans to dismantle and reconstruct it, for what did it signify what one wore after the regiment departed Meryton in a fortnight?</p>
 <p>This intelligence brought Elizabeth considerable satisfaction, though Lydia&#x27;s subsequent scheme—that their father should take the whole family to Brighton, where the soldiers would be encamped—filled her with private horror. Brighton! A whole campful of officers for a family already compromised by their connections with one modest militia regiment!</p>
@@ -1019,9 +1312,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-38"><span>Previous</span>Chapter 38</a><a class="next" href="#chapter-40"><span>Next</span>Chapter 40</a></nav>
 </section>
 <section class="chapter" id="chapter-40" data-num="40">
-    <img class="chapter-image" src="images_cinematic/chapter_40.webp" alt="Sisters Share Shocking Secrets illustration" loading="lazy">
-    <div class="chapter-number">Chapter 40</div>
-    <h2 class="chapter-title">Sisters Share Shocking Secrets</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_40.webp"><img class="chapter-image" src="images_cinematic/chapter_40.webp" alt="Sisters Share Shocking Secrets illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">40</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 40</div>
+            <h2 class="chapter-title">Sisters Share Shocking Secrets</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth could no longer contain herself. The weight of all she had witnessed and learned pressed too heavily upon her heart, and so, with careful deliberation, she resolved to unburden herself to Jane—though not entirely. She would speak of Mr. Darcy&#x27;s astonishing proposal and her refusal, but every particular touching upon Jane&#x27;s own situation with Mr. Bingley she would keep locked away, a secret still too tender to expose.</p>
 <p>Jane&#x27;s astonishment at hearing of Darcy&#x27;s addresses was quickly tempered by her generous nature; that any man should admire her sister seemed perfectly natural to her. Yet she grieved for Mr. Darcy&#x27;s disappointment, her kind heart aching for the pain Elizabeth&#x27;s rejection must have caused him. When Elizabeth pressed her—did Jane blame her for refusing him? For speaking so warmly against Wickham?—Jane could offer no censure, only sympathy.</p>
 <p>But it was the letter that truly shattered Jane&#x27;s tranquility. Elizabeth recounted its contents regarding George Wickham, and poor Jane, who would have traversed the whole world believing mankind incapable of such concentrated villainy, found herself confronted with an evil she could scarcely comprehend. She laboured earnestly to find some error in the account, some way to preserve the goodness of both gentlemen, until Elizabeth cut through her sister&#x27;s hopeful confusion with characteristic wit: there was only enough merit between the two men for one decent sort of fellow, and of late it had been shifting about considerably. She was now inclined to give it all to Mr. Darcy.</p>
@@ -1034,9 +1332,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-39"><span>Previous</span>Chapter 39</a><a class="next" href="#chapter-41"><span>Next</span>Chapter 41</a></nav>
 </section>
 <section class="chapter" id="chapter-41" data-num="41">
-    <img class="chapter-image" src="images_cinematic/chapter_41.webp" alt="Lydia&#x27;s Brighton Invitation Sparks Warning illustration" loading="lazy">
-    <div class="chapter-number">Chapter 41</div>
-    <h2 class="chapter-title">Lydia&#x27;s Brighton Invitation Sparks Warning</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_41.webp"><img class="chapter-image" src="images_cinematic/chapter_41.webp" alt="Lydia&#x27;s Brighton Invitation Sparks Warning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">41</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 41</div>
+            <h2 class="chapter-title">Lydia&#x27;s Brighton Invitation Sparks Warning</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The regiment&#x27;s departure from Meryton cast a pall over the neighbourhood, reducing the young ladies of the district to universal dejection—all save Jane and Elizabeth, who maintained their composure with admirable steadiness. This sensible comportment earned them sharp reproaches from Kitty and Lydia, whose misery knew no bounds, and from Mrs. Bennet herself, who recalled with theatrical fondness her own heartbreak when Colonel Miller&#x27;s regiment had departed five-and-twenty years prior.</p>
 <p>The household echoed with lamentations and schemes for Brighton, that promised paradise of officers and sea-bathing, though Mr. Bennet remained unmoved by such appeals. Elizabeth could scarcely find amusement in these domestic theatrics, for they served only to deepen her mortification and confirm the justice of Mr. Darcy&#x27;s objections to her family&#x27;s conduct. Never had she been more inclined to forgive his interference in Bingley&#x27;s affairs.</p>
 <p>Lydia&#x27;s gloom, however, proved short-lived. An invitation arrived from Mrs. Forster—wife of the colonel, a very young woman whose intimate friendship with Lydia had blossomed remarkably from a mere three months&#x27; acquaintance—to accompany her to Brighton. The household erupted accordingly: Lydia in rapturous ecstasy, Mrs. Bennet in maternal delight, and poor Kitty in bitter mortification at being passed over.</p>
@@ -1047,9 +1350,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-40"><span>Previous</span>Chapter 40</a><a class="next" href="#chapter-42"><span>Next</span>Chapter 42</a></nav>
 </section>
 <section class="chapter" id="chapter-42" data-num="42">
-    <img class="chapter-image" src="images_cinematic/chapter_42.webp" alt="A Marriage&#x27;s Lessons in Disappointment illustration" loading="lazy">
-    <div class="chapter-number">Chapter 42</div>
-    <h2 class="chapter-title">A Marriage&#x27;s Lessons in Disappointment</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_42.webp"><img class="chapter-image" src="images_cinematic/chapter_42.webp" alt="A Marriage&#x27;s Lessons in Disappointment illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">42</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 42</div>
+            <h2 class="chapter-title">A Marriage&#x27;s Lessons in Disappointment</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth Bennet had long observed the wreckage of her parents&#x27; marriage with a clear and unsparing eye. Her father, having been foolish enough in his youth to wed for beauty and the mere appearance of good temper, had discovered far too late that his wife possessed neither sense nor generosity of spirit. Whatever affection, whatever respect he might once have harboured had withered early, leaving him to seek his consolations elsewhere—in books, in the quiet pleasures of country life, and, rather less admirably, in the sport of ridiculing Mrs. Bennet&#x27;s follies. Elizabeth, though grateful for her father&#x27;s partiality toward her, could not help but perceive the cruelty in this—the way he had, by his mockery, exposed his wife to the contempt of her own children, and by his indolence, failed to guide his younger daughters toward anything resembling propriety.</p>
 <p>The departure of the regiment from Meryton, which Elizabeth had anticipated with such relief after Wickham&#x27;s removal, proved a hollow victory. Her mother and Kitty descended into relentless complaint, casting a pall over the household. Lydia, meanwhile, had gone off to Brighton with Mrs. Forster, her letters home revealing nothing but officers, new gowns, and the sort of breathless frivolity that promised future disgrace. Elizabeth could only console herself by looking ahead—to the northern tour she was to take with her aunt and uncle Gardiner, a scheme that now became the repository of all her hopes for happiness.</p>
 <p>Yet even this pleasure was to be curtailed. A letter from Mrs. Gardiner brought the unwelcome intelligence that business would delay their departure and shorten their journey considerably. The Lakes must be given up; they would venture only as far as Derbyshire. Elizabeth bore the disappointment with her characteristic good temper, though she could not quite suppress a pang. Derbyshire, of course, brought with it certain associations—impossible to think of that county without thinking of Pemberley, and of its master.</p>
@@ -1059,9 +1367,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-41"><span>Previous</span>Chapter 41</a><a class="next" href="#chapter-43"><span>Next</span>Chapter 43</a></nav>
 </section>
 <section class="chapter" id="chapter-43" data-num="43">
-    <img class="chapter-image" src="images_cinematic/chapter_43.webp" alt="Pemberley Reveals Its Master&#x27;s True Nature illustration" loading="lazy">
-    <div class="chapter-number">Chapter 43</div>
-    <h2 class="chapter-title">Pemberley Reveals Its Master&#x27;s True Nature</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_43.webp"><img class="chapter-image" src="images_cinematic/chapter_43.webp" alt="Pemberley Reveals Its Master&#x27;s True Nature illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">43</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 43</div>
+            <h2 class="chapter-title">Pemberley Reveals Its Master&#x27;s True Nature</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth approached Pemberley Woods with a flutter of nerves she could scarcely contain, her mind too full for conversation as the carriage wound through the vast park. When at last the house revealed itself—a handsome stone building set against wooded hills, with a stream swelling naturally before it, its banks neither formal nor falsely adorned—she found herself quite delighted. Here was a place where nature had been allowed to reign, where taste had not intruded upon beauty. And in that moment, gazing upon it all, she permitted herself to feel what she had not before: that to be mistress of Pemberley might indeed be something.</p>
 <p>Inside, the respectable housekeeper Mrs. Reynolds led them through rooms that were lofty and elegant without being gaudy—a testament to their owner&#x27;s refinement that Elizabeth could not help but admire. She thought with something like regret of what might have been, until she recollected that had she accepted Mr. Darcy, her dear aunt and uncle would have been lost to her, for she should never have been permitted to invite them. This was a fortunate thought indeed, and it saved her from dwelling too long in that dangerous territory.</p>
 <p>But it was Mrs. Reynolds&#x27;s account of her master that truly astonished Elizabeth. Here was praise most extraordinary—that he had never spoken a cross word in his life, that he was the sweetest-tempered, most generous-hearted boy who had grown into the best landlord and best master that ever lived. &quot;Can this be Mr. Darcy?&quot; Elizabeth wondered, listening with increasing amazement. The proud, ill-tempered man of her firmest opinion seemed to dissolve before this portrait of kindness and constancy. Even the housekeeper&#x27;s dismissal of his reputation for pride—attributing it merely to his not rattling away like other young men—gave Elizabeth pause.</p>
@@ -1072,9 +1385,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-42"><span>Previous</span>Chapter 42</a><a class="next" href="#chapter-44"><span>Next</span>Chapter 44</a></nav>
 </section>
 <section class="chapter" id="chapter-44" data-num="44">
-    <img class="chapter-image" src="images_cinematic/chapter_44.webp" alt="An Unexpected Visit at Lambton illustration" loading="lazy">
-    <div class="chapter-number">Chapter 44</div>
-    <h2 class="chapter-title">An Unexpected Visit at Lambton</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_44.webp"><img class="chapter-image" src="images_cinematic/chapter_44.webp" alt="An Unexpected Visit at Lambton illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">44</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 44</div>
+            <h2 class="chapter-title">An Unexpected Visit at Lambton</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth had fully expected that Mr. Darcy would wait at least a day before bringing his sister to call upon her at the inn, and had therefore resolved to remain within sight of their lodgings throughout the morning. Yet her calculations proved entirely mistaken, for the visitors arrived on the very morning following the Gardiners&#x27; own arrival at Lambton. Elizabeth and her relations had only just returned from walking about the place with new acquaintances, and were preparing to dress for a dinner engagement, when the sound of a carriage drew them to the window. Elizabeth recognized the livery at once, and in communicating the honour about to be bestowed upon them, she imparted no small degree of astonishment to her uncle and aunt.</p>
 <p>The Gardiners were all amazement—and Elizabeth&#x27;s visible embarrassment, combined with the singular circumstances of the preceding day, opened to them a new and rather illuminating idea. Nothing had suggested it before, but they now perceived that such marked attentions from such a quarter could only be explained by supposing Mr. Darcy harboured a decided partiality for their niece. Elizabeth herself was in considerable perturbation, dreading that the brother&#x27;s enthusiasm might have painted too favourable a picture of her, and fearing that every power of pleasing would desert her in the moment of greatest need.</p>
 <p>When Miss Darcy and her brother appeared, the formidable introduction proved rather less daunting than anticipated. Elizabeth discovered with astonishment that Miss Darcy was quite as embarrassed as herself—not proud, as rumour had suggested, but merely exceedingly shy. She was tall and graceful, her figure womanly despite her being little more than sixteen, and her manners perfectly unassuming and gentle. Elizabeth found herself much relieved.</p>
@@ -1085,9 +1403,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-43"><span>Previous</span>Chapter 43</a><a class="next" href="#chapter-45"><span>Next</span>Chapter 45</a></nav>
 </section>
 <section class="chapter" id="chapter-45" data-num="45">
-    <img class="chapter-image" src="images_cinematic/chapter_45.webp" alt="An Awkward Visit to Pemberley illustration" loading="lazy">
-    <div class="chapter-number">Chapter 45</div>
-    <h2 class="chapter-title">An Awkward Visit to Pemberley</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_45.webp"><img class="chapter-image" src="images_cinematic/chapter_45.webp" alt="An Awkward Visit to Pemberley illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">45</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 45</div>
+            <h2 class="chapter-title">An Awkward Visit to Pemberley</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth arrived at Pemberley fully aware that her presence would be most unwelcome to Miss Bingley, whose dislike she now understood to spring entirely from jealousy. The visit began in a handsome saloon with windows opening onto the grounds, where Miss Darcy received them alongside Mrs. Hurst, Miss Bingley, and her London companion, Mrs. Annesley. Georgiana&#x27;s manner, though civil, bore all the marks of painful shyness—that unfortunate diffidence which so often gives the appearance of pride to those inclined to perceive it. Elizabeth and Mrs. Gardiner, however, understood her better and felt only compassion.</p>
 <p>The Bingley sisters acknowledged them with barely more than a curtsey, and an awkward silence settled over the room until Mrs. Annesley, proving herself the most genuinely well-bred among them, endeavoured to establish conversation. Elizabeth noticed Miss Bingley watching her every movement with jealous scrutiny, particularly when she addressed Miss Darcy. Yet Elizabeth&#x27;s thoughts were elsewhere—fixed upon the door, wondering whether she wished or feared that Mr. Darcy might walk through it.</p>
 <p>After a quarter hour of strained civility, refreshments appeared, and the party gathered round pyramids of grapes, nectarines, and peaches. It was then that Darcy entered, having left Mr. Gardiner fishing by the river upon learning of the ladies&#x27; visit. Elizabeth resolved immediately to appear perfectly at ease, though every eye in the room—especially Miss Bingley&#x27;s—was fixed upon them both with undisguised curiosity.</p>
@@ -1098,9 +1421,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-44"><span>Previous</span>Chapter 44</a><a class="next" href="#chapter-46"><span>Next</span>Chapter 46</a></nav>
 </section>
 <section class="chapter" id="chapter-46" data-num="46">
-    <img class="chapter-image" src="images_cinematic/chapter_46.webp" alt="Lydia&#x27;s Disgrace Revealed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 46</div>
-    <h2 class="chapter-title">Lydia&#x27;s Disgrace Revealed</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_46.webp"><img class="chapter-image" src="images_cinematic/chapter_46.webp" alt="Lydia&#x27;s Disgrace Revealed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">46</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 46</div>
+            <h2 class="chapter-title">Lydia&#x27;s Disgrace Revealed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth&#x27;s mounting disappointment at receiving no correspondence from Jane during her stay at Lambton dissolved entirely upon the third morning, when two letters arrived at once—one having been delayed by Jane&#x27;s characteristically poor handwriting upon the direction. Her uncle and aunt departed for their walk, leaving Elizabeth to absorb the contents in solitude, and she turned first to the earlier letter, little suspecting the catastrophe its pages would unfold.</p>
 <p>The opening contained the expected pleasantries of country life, but the latter portion, penned in evident distress, delivered intelligence of the most alarming nature. Lydia had fled Brighton with Wickham, bound, it was believed, for Scotland and a hasty marriage at Gretna Green. Jane&#x27;s gentle optimism painted the affair as merely imprudent, her generous heart unwilling to think ill of Wickham despite all evidence to the contrary. Yet even as she wrote of hope, the agitation of her pen betrayed deeper fears.</p>
 <p>The second letter obliterated what fragile comfort the first had offered. Colonel Forster had traced the runaways only as far as Clapham, where they had exchanged their chaise for a hackney-coach and vanished into the labyrinth of London. Denny&#x27;s careless remark that Wickham never intended marriage had proved prophetic. There would be no Scottish wedding; there would, in all likelihood, be no wedding at all. Mrs. Bennet had taken to her room, Mr. Bennet was gone to London in frantic pursuit, and Jane—dear, steadfast Jane—begged for Elizabeth&#x27;s return and their uncle&#x27;s assistance with a desperation that pierced the heart.</p>
@@ -1110,9 +1438,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-45"><span>Previous</span>Chapter 45</a><a class="next" href="#chapter-47"><span>Next</span>Chapter 47</a></nav>
 </section>
 <section class="chapter" id="chapter-47" data-num="47">
-    <img class="chapter-image" src="images_cinematic/chapter_47.webp" alt="Doubt, Fear, and Wickham&#x27;s True Character illustration" loading="lazy">
-    <div class="chapter-number">Chapter 47</div>
-    <h2 class="chapter-title">Doubt, Fear, and Wickham&#x27;s True Character</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_47.webp"><img class="chapter-image" src="images_cinematic/chapter_47.webp" alt="Doubt, Fear, and Wickham&#x27;s True Character illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">47</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 47</div>
+            <h2 class="chapter-title">Doubt, Fear, and Wickham&#x27;s True Character</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>As the carriage bore Elizabeth away from the town, her uncle Mr. Gardiner ventured to offer a thread of hope—however slender—that Wickham&#x27;s intentions toward Lydia might not be so entirely dishonorable as they feared. What man of any sense, he reasoned, would risk such public disgrace, such certain exile from his regiment, for a girl who was neither without protection nor without friends who would surely step forward in her defense? Mrs. Gardiner found herself inclined to agree; the violation of decency required for such villainy seemed too great even for Wickham.</p>
 <p>But Elizabeth, though her heart yearned to grasp at this comfort, could not quiet her understanding. She laid before them the cold arithmetic of Wickham&#x27;s character: his debts, his profligacy, his steadfast devotion to his own interest above all else. What could Lydia offer him but youth and good humor? No fortune, no connections that might elevate him. And as for family interference—Elizabeth spoke with bitter clarity of her father&#x27;s indolence, his long neglect of what transpired beneath his own roof. Wickham might well have calculated that Mr. Bennet would do as little about this matter as any father could.</p>
 <p>When pressed on whether Lydia could truly have consented to live with a man outside of marriage, Elizabeth&#x27;s eyes filled with tears. Her sister was young, thoughtless, given over entirely to vanity and flirtation since the regiment first came to Meryton. She had never been taught to think seriously on any subject, and Wickham possessed every charm of person and manner that could captivate an unguarded heart.</p>
@@ -1123,9 +1456,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-46"><span>Previous</span>Chapter 46</a><a class="next" href="#chapter-48"><span>Next</span>Chapter 48</a></nav>
 </section>
 <section class="chapter" id="chapter-48" data-num="48">
-    <img class="chapter-image" src="images_cinematic/chapter_48.webp" alt="Whispers of Wickham&#x27;s Wickedness Spread illustration" loading="lazy">
-    <div class="chapter-number">Chapter 48</div>
-    <h2 class="chapter-title">Whispers of Wickham&#x27;s Wickedness Spread</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_48.webp"><img class="chapter-image" src="images_cinematic/chapter_48.webp" alt="Whispers of Wickham&#x27;s Wickedness Spread illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">48</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 48</div>
+            <h2 class="chapter-title">Whispers of Wickham&#x27;s Wickedness Spread</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The morning after Lydia&#x27;s disgrace had fallen upon the house, the family at Longbourn waited with anxious hearts for word from Mr. Bennet, yet the post brought nothing—a silence more distressing than any ill news might have been. His family knew him for a negligent correspondent, but surely such extraordinary circumstances would compel him to write. They were left to conclude, unhappily, that he had nothing encouraging to report. Mr. Gardiner departed for London, promising to send constant intelligence and to persuade Mr. Bennet to return home—a prospect that brought Mrs. Bennet considerable relief, for she had convinced herself that her husband would otherwise certainly be killed in a duel with Wickham.</p>
 <p>Mrs. Gardiner remained at Longbourn to comfort her nieces, sharing the burden of attending to their mother&#x27;s nerves. Their other aunt, Mrs. Phillips, visited frequently with professed intentions of cheering them, though she invariably arrived bearing fresh tales of Wickham&#x27;s villainy and departed leaving them more wretched than before. Indeed, all of Meryton now competed to blacken the name of the man they had so recently admired. He was declared to be in debt to every tradesman, his conduct with young women branded universally as seduction, and everyone suddenly recalled having always suspected his charming manner concealed a wicked heart. Elizabeth, though she credited only half these reports, believed enough to feel her sister&#x27;s ruin more certain than ever.</p>
 <p>A letter from Mr. Gardiner brought news that Mr. Bennet had exhausted himself searching Epsom and Clapham to no avail, and was now determined to inquire at every principal hotel in London—a measure his brother-in-law thought futile but assisted nonetheless. The letter requested Elizabeth&#x27;s help in identifying any relations of Wickham who might know his hiding place, yet she could offer nothing useful, having never heard of any living connections.</p>
@@ -1136,9 +1474,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-47"><span>Previous</span>Chapter 47</a><a class="next" href="#chapter-49"><span>Next</span>Chapter 49</a></nav>
 </section>
 <section class="chapter" id="chapter-49" data-num="49">
-    <img class="chapter-image" src="images_cinematic/chapter_49.webp" alt="A Marriage Bargained and Bought illustration" loading="lazy">
-    <div class="chapter-number">Chapter 49</div>
-    <h2 class="chapter-title">A Marriage Bargained and Bought</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_49.webp"><img class="chapter-image" src="images_cinematic/chapter_49.webp" alt="A Marriage Bargained and Bought illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">49</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 49</div>
+            <h2 class="chapter-title">A Marriage Bargained and Bought</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Two days after Mr. Bennet&#x27;s return from his fruitless search in London, his daughters Jane and Elizabeth found themselves walking in the shrubbery when the housekeeper approached with curious urgency. Mrs. Hill, supposing the young ladies already informed, inquired after good news from town—and thus revealed that an express letter had arrived from Mr. Gardiner a full half-hour past. The sisters, startled into action, flew through the house in search of their father, racing from vestibule to breakfast-room to library before learning from the butler that he had gone walking toward the little copse.</p>
 <p>Elizabeth, being the lighter and more accustomed to running, soon outpaced Jane and reached their father breathless, her eager questions tumbling forth. Mr. Bennet, with his characteristic dry composure, offered her the letter to read for herself, and when Jane joined them, bade Elizabeth read aloud—confessing he hardly knew himself what to make of its contents.</p>
 <p>The letter brought extraordinary news. Mr. Gardiner had discovered Lydia and Wickham in London, and though they were not yet married nor had any apparent intention of becoming so, arrangements had been made. The terms were remarkably modest: Lydia was to receive her equal share of the family&#x27;s five thousand pounds upon her parents&#x27; deaths, along with one hundred pounds annually during Mr. Bennet&#x27;s lifetime. With these conditions met, the marriage would proceed, and Lydia would wed from the Gardiners&#x27; house in Gracechurch Street.</p>
@@ -1150,9 +1493,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-48"><span>Previous</span>Chapter 48</a><a class="next" href="#chapter-50"><span>Next</span>Chapter 50</a></nav>
 </section>
 <section class="chapter" id="chapter-50" data-num="50">
-    <img class="chapter-image" src="images_cinematic/chapter_50.webp" alt="A Father&#x27;s Regret and Resolve illustration" loading="lazy">
-    <div class="chapter-number">Chapter 50</div>
-    <h2 class="chapter-title">A Father&#x27;s Regret and Resolve</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_50.webp"><img class="chapter-image" src="images_cinematic/chapter_50.webp" alt="A Father&#x27;s Regret and Resolve illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">50</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 50</div>
+            <h2 class="chapter-title">A Father&#x27;s Regret and Resolve</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Mr. Bennet found himself confronting the bitter harvest of years spent without foresight. How many times had he wished he had set aside something annually, rather than living upon the whole of his income! Now, with Lydia&#x27;s disgrace requiring remedy at another man&#x27;s expense, that wish burned with particular sharpness. The satisfaction of having secured one of the most worthless young men in all of Britain as a son-in-law ought to have been his own burden to bear—not his brother-in-law&#x27;s.</p>
 <p>The matter of money had always been treated carelessly at Longbourn. When the Bennets first married, economy seemed unnecessary folly, for surely a son would come to break the entail and secure the family&#x27;s future. Five daughters arrived instead, yet Mrs. Bennet had persisted in her certainty of a male heir until hope itself grew weary and departed. By then, saving had become impossible—Mrs. Bennet possessed no instinct for it, and only her husband&#x27;s stubborn independence had kept them from outright ruin.</p>
 <p>Mr. Bennet wrote his acceptance of the marriage terms with characteristic brevity, privately astonished at how little the arrangement would cost him. Lydia had always been an expensive creature; the hundred pounds a year promised to the couple would scarcely exceed what she had already consumed in board and pocket money. His chief desire now was to have as little trouble in the business as possible, and once his initial fury had spent itself, he returned gladly to his habitual indolence.</p>
@@ -1163,9 +1511,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-49"><span>Previous</span>Chapter 49</a><a class="next" href="#chapter-51"><span>Next</span>Chapter 51</a></nav>
 </section>
 <section class="chapter" id="chapter-51" data-num="51">
-    <img class="chapter-image" src="images_cinematic/chapter_51.webp" alt="Lydia Returns Unashamed and Triumphant illustration" loading="lazy">
-    <div class="chapter-number">Chapter 51</div>
-    <h2 class="chapter-title">Lydia Returns Unashamed and Triumphant</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_51.webp"><img class="chapter-image" src="images_cinematic/chapter_51.webp" alt="Lydia Returns Unashamed and Triumphant illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">51</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 51</div>
+            <h2 class="chapter-title">Lydia Returns Unashamed and Triumphant</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The day arrived when Lydia and Wickham were to return to Longbourn as husband and wife, and Jane and Elizabeth awaited their coming with far greater apprehension than the bride herself could possibly have felt. Jane, whose tender heart always imagined the feelings of others through the lens of her own sensibility, dreaded what shame her youngest sister must surely endure. But Jane had gravely miscalculated.</p>
 <p>The carriage rolled up to find the Bennet family assembled in the breakfast room—Mrs. Bennet all smiles and rapture, Mr. Bennet impenetrably grave, and the elder daughters tight with anxiety. Lydia burst through the door with all her usual wildness, utterly untamed and unabashed, demanding congratulations as though she had accomplished something worthy of admiration. Wickham followed with that easy, pleasing manner of his, claiming their relationship with smiles that would have charmed had his character been anything other than what it was. Elizabeth and Jane blushed deeply on behalf of the shameless pair, whose own cheeks suffered no variation of colour whatsoever.</p>
 <p>The conversation flowed ceaselessly between Lydia and her mother, each talking faster than the other, while Wickham made pleasant inquiries of Elizabeth with an ease she could not match. Lydia spoke voluntarily of subjects her sisters would not have touched for the world—marveling at how three months felt like a fortnight, and how she had never dreamed of being married when she left, though she had thought it might be &quot;very good fun.&quot;</p>
@@ -1176,9 +1529,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-50"><span>Previous</span>Chapter 50</a><a class="next" href="#chapter-52"><span>Next</span>Chapter 52</a></nav>
 </section>
 <section class="chapter" id="chapter-52" data-num="52">
-    <img class="chapter-image" src="images_cinematic/chapter_52.webp" alt="Darcy&#x27;s Secret Role Revealed illustration" loading="lazy">
-    <div class="chapter-number">Chapter 52</div>
-    <h2 class="chapter-title">Darcy&#x27;s Secret Role Revealed</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_52.webp"><img class="chapter-image" src="images_cinematic/chapter_52.webp" alt="Darcy&#x27;s Secret Role Revealed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">52</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 52</div>
+            <h2 class="chapter-title">Darcy&#x27;s Secret Role Revealed</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth&#x27;s eager anticipation proved well-founded when the letter from Gracechurch Street arrived, its considerable length promising revelation rather than denial. Retreating to the quiet sanctuary of the little copse, she settled upon a bench to absorb what her aunt had to impart—and the contents exceeded her wildest imaginings.</p>
 <p>Mrs. Gardiner&#x27;s account unfolded with delicious particularity the true architect of Lydia&#x27;s salvation. Mr. Darcy, it transpired, had departed Derbyshire merely a day after the Gardiners themselves, driven to London by a resolution born of guilt and honour. He had traced the runaways through that disreputable former governess, Mrs. Younge, who had required considerable persuasion—bribery, Mrs. Gardiner suspected—before surrendering Wickham&#x27;s direction. Finding Lydia obstinately determined to remain with her seducer, convinced of eventual marriage though careless of its timing, Darcy had turned his formidable will toward securing that union which Wickham had never intended to make.</p>
 <p>The negotiations had been arduous. Wickham, shameless to the last, had confessed debts of honour pressing enough to force his resignation from the regiment, yet harboured fantasies of a more advantageous match elsewhere. Darcy&#x27;s purse had proved the necessary instrument of persuasion—debts exceeding a thousand pounds discharged, another thousand settled upon Lydia, a commission purchased. When Mr. Gardiner had attempted to bear these burdens himself, Darcy&#x27;s obstinacy—which Mrs. Gardiner now declared his true fault—had prevailed entirely. The gentleman would brook no interference in discharging what he deemed his own obligation, having kept Wickham&#x27;s worthlessness concealed through misplaced pride.</p>
@@ -1189,9 +1547,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-51"><span>Previous</span>Chapter 51</a><a class="next" href="#chapter-53"><span>Next</span>Chapter 53</a></nav>
 </section>
 <section class="chapter" id="chapter-53" data-num="53">
-    <img class="chapter-image" src="images_cinematic/chapter_53.webp" alt="Bingley&#x27;s Return Stirs Old Hopes illustration" loading="lazy">
-    <div class="chapter-number">Chapter 53</div>
-    <h2 class="chapter-title">Bingley&#x27;s Return Stirs Old Hopes</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_53.webp"><img class="chapter-image" src="images_cinematic/chapter_53.webp" alt="Bingley&#x27;s Return Stirs Old Hopes illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">53</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 53</div>
+            <h2 class="chapter-title">Bingley&#x27;s Return Stirs Old Hopes</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The departure of Wickham and Lydia from Longbourn brought with it a peculiar mingling of relief and melancholy. Elizabeth found herself well satisfied that her pointed conversation with Wickham had achieved its purpose—he troubled her no more with references to their shared knowledge of his true character. As for Lydia, she bid farewell to her mother with characteristic carelessness, dismissing any notion of frequent correspondence with the airy observation that married women have precious little time for such things, while her sisters, having nothing better to occupy themselves, might write to her instead.</p>
 <p>Wickham&#x27;s parting proved far more agreeable in manner than in substance. He smiled handsomely and dispensed pretty words with practiced ease, prompting Mr. Bennet to observe with cutting irony that he defied even Sir William Lucas to produce a more valuable son-in-law—a fellow who simpers and smirks and makes love to them all.</p>
 <p>Mrs. Bennet&#x27;s spirits sank considerably at losing her daughter to the distant north, though her despondency proved mercifully short-lived. News soon reached Longbourn that Mr. Bingley was returning to Netherfield for the shooting season, and her mind opened again to the agitation of hope. She declared, with elaborate indifference that fooled no one, that she cared nothing for his coming, though she could not help but wonder what might happen.</p>
@@ -1203,9 +1566,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-52"><span>Previous</span>Chapter 52</a><a class="next" href="#chapter-54"><span>Next</span>Chapter 54</a></nav>
 </section>
 <section class="chapter" id="chapter-54" data-num="54">
-    <img class="chapter-image" src="images_cinematic/chapter_54.webp" alt="Teasing Silence and Uncertain Hearts illustration" loading="lazy">
-    <div class="chapter-number">Chapter 54</div>
-    <h2 class="chapter-title">Teasing Silence and Uncertain Hearts</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_54.webp"><img class="chapter-image" src="images_cinematic/chapter_54.webp" alt="Teasing Silence and Uncertain Hearts illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">54</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 54</div>
+            <h2 class="chapter-title">Teasing Silence and Uncertain Hearts</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The moment their visitors departed, Elizabeth escaped into the open air, ostensibly to recover her spirits, though in truth she wandered only to brood more thoroughly upon the very subjects that troubled her. Mr. Darcy&#x27;s behaviour during the visit had left her utterly confounded. He had come, yet he had been silent, grave, indifferent—what purpose could such a call possibly serve? She vexed herself with questions she could not answer. He had been perfectly amiable to her uncle and aunt in town, so why should he now treat her with such coldness? If he feared her, why come at all? If he no longer cared for her, why this strange reserve? &quot;Teasing, teasing man!&quot; she declared to herself, resolving firmly to think no more upon him—a resolution that lasted precisely as long as it took for Jane to join her.</p>
 <p>Jane approached with a cheerful countenance, evidently better satisfied with the visit than her sister. She pronounced herself perfectly easy now that the first awkward meeting with Mr. Bingley had passed, confident that any future encounters would demonstrate to all the world that they met merely as common acquaintances. Elizabeth could not help but laugh at such self-deception, warning Jane that she stood in very great danger of making Bingley as desperately in love with her as ever before.</p>
 <p>Tuesday brought the dinner party at Longbourn, and with it, fresh cause for both hope and frustration. Elizabeth watched eagerly as Bingley entered the dining room, hesitating briefly before Jane&#x27;s smile decided the matter—he placed himself beside her, just as he had always done. Elizabeth glanced triumphantly toward Darcy, who bore the sight with noble indifference, though Bingley himself cast half-laughing, anxious looks at his friend, as if seeking permission for his own happiness.</p>
@@ -1216,9 +1584,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-53"><span>Previous</span>Chapter 53</a><a class="next" href="#chapter-55"><span>Next</span>Chapter 55</a></nav>
 </section>
 <section class="chapter" id="chapter-55" data-num="55">
-    <img class="chapter-image" src="images_cinematic/chapter_55.webp" alt="Mrs. Bennet&#x27;s Schemes Bear Fruit illustration" loading="lazy">
-    <div class="chapter-number">Chapter 55</div>
-    <h2 class="chapter-title">Mrs. Bennet&#x27;s Schemes Bear Fruit</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_55.webp"><img class="chapter-image" src="images_cinematic/chapter_55.webp" alt="Mrs. Bennet&#x27;s Schemes Bear Fruit illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">55</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 55</div>
+            <h2 class="chapter-title">Mrs. Bennet&#x27;s Schemes Bear Fruit</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The days following Mr. Darcy&#x27;s departure brought Mr. Bingley calling at Longbourn once more, this time quite alone, his friend having gone to London with promises to return within the fortnight. He sat with the family above an hour, displaying remarkably good spirits, and though Mrs. Bennet&#x27;s invitation to dinner was declined with profuse apologies of a prior engagement, she pressed him for the morrow—and found him entirely at liberty.</p>
 <p>He arrived the next day in such eager haste that the ladies remained half-dressed. Mrs. Bennet flew to her daughters&#x27; chamber in a flutter of dressing-gown and unfinished hair, urging Jane to make haste with such frantic insistence that poor Kitty was dismissed with an impatient &quot;Oh! hang Kitty!&quot; Jane, however, would not descend without one of her sisters, refusing to submit entirely to her mother&#x27;s transparent machinations.</p>
 <p>That evening brought fresh attempts at contrivance. With Mr. Bennet retired to his library and Mary gone to her instrument, Mrs. Bennet sat winking and gesturing at Elizabeth and Kitty with all the subtlety of a woman who possessed none. When Kitty innocently inquired what she was meant to do, her mother denied any winking whatsoever—then promptly spirited her from the room and called Elizabeth away moments later, leaving Jane and Bingley quite alone.</p>
@@ -1235,9 +1608,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-54"><span>Previous</span>Chapter 54</a><a class="next" href="#chapter-56"><span>Next</span>Chapter 56</a></nav>
 </section>
 <section class="chapter" id="chapter-56" data-num="56">
-    <img class="chapter-image" src="images_cinematic/chapter_56.webp" alt="Lady Catherine&#x27;s Unwelcome Demand illustration" loading="lazy">
-    <div class="chapter-number">Chapter 56</div>
-    <h2 class="chapter-title">Lady Catherine&#x27;s Unwelcome Demand</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_56.webp"><img class="chapter-image" src="images_cinematic/chapter_56.webp" alt="Lady Catherine&#x27;s Unwelcome Demand illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">56</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 56</div>
+            <h2 class="chapter-title">Lady Catherine&#x27;s Unwelcome Demand</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The tranquil morning at Longbourn, scarcely a week after Bingley and Jane had settled their engagement, was broken by the unmistakable rattle of carriage wheels upon the lawn. The Bennets gathered at the window found themselves confronted with a mystery—a chaise and four, post horses, unfamiliar livery, and an hour far too early for any ordinary call. Bingley, ever quick to shield Jane from potential unpleasantness, whisked her away to the shrubbery, leaving Mrs. Bennet, Kitty, and Elizabeth to receive whoever should emerge. The door opened to reveal none other than Lady Catherine de Bourgh herself, and the astonishment of the household exceeded all expectation.</p>
 <p>Her Ladyship entered with a countenance more forbidding than gracious, barely acknowledging Elizabeth&#x27;s greeting before seating herself without ceremony. Mrs. Bennet, thoroughly flattered yet bewildered by such distinguished company, made every effort at civility, only to be met with cold observations about the smallness of the park and the unfortunate westward orientation of the sitting-room windows. Lady Catherine declined all refreshment and, rising abruptly, requested Elizabeth&#x27;s company for a turn about the grounds—a request that carried all the weight of a command.</p>
 <p>Once alone in the copse, Lady Catherine dispensed with pretense entirely. She had come, she declared, upon hearing a most alarming report: that Elizabeth Bennet was soon to be united with her nephew, Mr. Darcy. Though professing disbelief in such a scandalous rumor, she demanded its immediate and universal contradiction. Elizabeth, coloring with equal parts astonishment and disdain, pointed out the irony—Lady Catherine&#x27;s very presence at Longbourn would only serve to confirm whatever whispers might exist.</p>
@@ -1247,9 +1625,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-55"><span>Previous</span>Chapter 55</a><a class="next" href="#chapter-57"><span>Next</span>Chapter 57</a></nav>
 </section>
 <section class="chapter" id="chapter-57" data-num="57">
-    <img class="chapter-image" src="images_cinematic/chapter_57.webp" alt="Lady Catherine&#x27;s Shadow Over Netherfield illustration" loading="lazy">
-    <div class="chapter-number">Chapter 57</div>
-    <h2 class="chapter-title">Lady Catherine&#x27;s Shadow Over Netherfield</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_57.webp"><img class="chapter-image" src="images_cinematic/chapter_57.webp" alt="Lady Catherine&#x27;s Shadow Over Netherfield illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">57</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 57</div>
+            <h2 class="chapter-title">Lady Catherine&#x27;s Shadow Over Netherfield</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The extraordinary visit from Lady Catherine left Elizabeth in a state of profound agitation, her thoughts circling incessantly round the audacity of that great lady&#x27;s scheme. That her Ladyship had undertaken the journey from Rosings for the sole purpose of dissolving a rumoured engagement struck Elizabeth as rational enough in its intent, however presumptuous in its execution. Whence such a report could have originated puzzled her only briefly; she soon recollected that Mr. Darcy&#x27;s intimate friendship with Bingley, combined with her own sisterly connection to Jane, would prove sufficient fodder for speculation in a neighbourhood grown eager for weddings. The gossiping Lucases, through their correspondence with the Collinses, had evidently transformed what Elizabeth herself had merely entertained as a future possibility into certain and immediate fact.</p>
 <p>Yet as Elizabeth revolved Lady Catherine&#x27;s imperious declarations, uneasiness crept upon her. Her Ladyship had spoken with such resolution of preventing the marriage that Elizabeth could not doubt she intended to apply directly to her nephew. How Mr. Darcy might receive such a representation of the evils attending a connection with herself, Elizabeth dared not pronounce. She knew not the precise degree of his affection for his aunt, nor his dependence upon her judgment, but it seemed natural that he should regard her Ladyship with considerably more respect than Elizabeth ever could. In enumerating the miseries of an alliance with one whose immediate connections were so unequal to his own, Lady Catherine would surely address him upon his weakest side—his notions of dignity. Arguments that had appeared weak and ridiculous to Elizabeth might well strike him as containing much good sense.</p>
 <p>If he had been wavering before, the advice and entreaty of so near a relation might settle every doubt and determine him to preserve his dignity unblemished. In that case, he would return no more; his engagement to accompany Bingley to Netherfield must give way to his aunt&#x27;s influence. Elizabeth resolved that should an excuse arrive within a few days, she would understand its meaning perfectly and relinquish every expectation of his constancy.</p>
@@ -1260,9 +1643,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-56"><span>Previous</span>Chapter 56</a><a class="next" href="#chapter-58"><span>Next</span>Chapter 58</a></nav>
 </section>
 <section class="chapter" id="chapter-58" data-num="58">
-    <img class="chapter-image" src="images_cinematic/chapter_58.webp" alt="A Walk Toward Understanding illustration" loading="lazy">
-    <div class="chapter-number">Chapter 58</div>
-    <h2 class="chapter-title">A Walk Toward Understanding</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_58.webp"><img class="chapter-image" src="images_cinematic/chapter_58.webp" alt="A Walk Toward Understanding illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">58</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 58</div>
+            <h2 class="chapter-title">A Walk Toward Understanding</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>The anticipated letter of excuse never arrived. Instead, Mr. Darcy himself appeared at Longbourn alongside Bingley, mere days after Lady Catherine&#x27;s imperious visit. The gentlemen came early—mercifully so, for Elizabeth sat in dread of her mother revealing the particulars of his aunt&#x27;s interference. Bingley, ever eager for Jane&#x27;s company, proposed a walk before Mrs. Bennet could utter a word of it, and so the party set off: five in number, for Mrs. Bennet would not walk and Mary could never spare the time.</p>
 <p>As was their habit, Bingley and Jane soon fell behind, leaving Elizabeth, Kitty, and Darcy to manage amongst themselves. Little was spoken. Kitty remained too frightened of Darcy to venture conversation, while Elizabeth steeled herself for what she knew must be said. Perhaps he was doing the same.</p>
 <p>When Kitty departed at Lucas Lodge to call upon Maria, Elizabeth walked boldly on with Darcy alone. Her courage high, she spoke immediately—thanking him for his unexampled kindness to Lydia, confessing she had long wished to express her family&#x27;s gratitude. Darcy, surprised and moved, regretted she had learned of his involvement at all, fearing it had caused her distress. But Elizabeth would not let him deflect. She pressed her thanks upon him again, and he answered with words that changed everything: if she must thank him, let it be for herself alone. He had thought only of her. Her family owed him nothing.</p>
@@ -1274,9 +1662,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-57"><span>Previous</span>Chapter 57</a><a class="next" href="#chapter-59"><span>Next</span>Chapter 59</a></nav>
 </section>
 <section class="chapter" id="chapter-59" data-num="59">
-    <img class="chapter-image" src="images_cinematic/chapter_59.webp" alt="Confessions Between Sisters at Midnight illustration" loading="lazy">
-    <div class="chapter-number">Chapter 59</div>
-    <h2 class="chapter-title">Confessions Between Sisters at Midnight</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_59.webp"><img class="chapter-image" src="images_cinematic/chapter_59.webp" alt="Confessions Between Sisters at Midnight illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">59</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 59</div>
+            <h2 class="chapter-title">Confessions Between Sisters at Midnight</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>Elizabeth returned from her walk with a flush upon her cheeks and a discomposure in her manner that might have betrayed everything, had anyone possessed the inclination to observe it closely. When Jane inquired where she had wandered, Elizabeth could only confess that she had gone beyond her own knowledge—a truth far deeper than her sister could have suspected. The colour that rose to her face spoke volumes, yet none present thought to read its meaning.</p>
 <p>The evening passed in that peculiar quietude that settles over a household unaware of momentous change. Bingley and Jane, those acknowledged lovers, filled the room with their easy conversation and ready laughter, whilst Elizabeth and Darcy sat in contemplative silence. Darcy was never a man whose happiness expressed itself in mirth, and Elizabeth found herself in that strange state of knowing she was happy rather than feeling it—for how could she feel anything clearly when such apprehension clouded her joy? She foresaw with painful clarity the family&#x27;s reception of her news. Jane alone harboured any affection for him; the others maintained a dislike that even his ten thousand a year might not overcome.</p>
 <p>That night, in the intimacy of sisterly confidence, Elizabeth unburdened her heart. Jane&#x27;s incredulity was absolute and rather mortifying to one seeking support. Engaged to Mr. Darcy! The very man Elizabeth had professed to despise! Yet Elizabeth persisted, assuring her sister with increasing solemnity until Jane&#x27;s amazement transformed into cautious delight. When Elizabeth confessed she loved Darcy better even than Bingley, and jested that she must date her affection from first seeing his beautiful grounds at Pemberley, Jane demanded seriousness—and received it. Half the night dissolved into whispered revelations, including Mr. Darcy&#x27;s secret role in Lydia&#x27;s marriage.</p>
@@ -1289,9 +1682,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-58"><span>Previous</span>Chapter 58</a><a class="next" href="#chapter-60"><span>Next</span>Chapter 60</a></nav>
 </section>
 <section class="chapter" id="chapter-60" data-num="60">
-    <img class="chapter-image" src="images_cinematic/chapter_60.webp" alt="Love&#x27;s Beginnings and Lady Catherine&#x27;s Usefulness illustration" loading="lazy">
-    <div class="chapter-number">Chapter 60</div>
-    <h2 class="chapter-title">Love&#x27;s Beginnings and Lady Catherine&#x27;s Usefulness</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_60.webp"><img class="chapter-image" src="images_cinematic/chapter_60.webp" alt="Love&#x27;s Beginnings and Lady Catherine&#x27;s Usefulness illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">60</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 60</div>
+            <h2 class="chapter-title">Love&#x27;s Beginnings and Lady Catherine&#x27;s Usefulness</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>In the warm afterglow of their engagement, Elizabeth&#x27;s spirits rose once more to that teasing playfulness so natural to her character, and she pressed Mr. Darcy to account for how he had ever come to love her at all. She could comprehend his continuing on once begun, she told him, but what had first set him off? Darcy confessed he could not fix upon any particular hour, spot, look, or word—it had been too gradual, too imperceptible. He was in the middle of loving her before he knew he had begun.</p>
 <p>Elizabeth, with characteristic wit, reminded him that he had early withstood her beauty, and her behaviour toward him had always bordered on the uncivil. Had he admired her for her impertinence? For the liveliness of her mind, he admitted. She would not allow him to soften it—impertinence it was, and she proceeded to explain his own heart to him with delightful presumption. He had been sick of civility, of deference, of women who spoke and looked only for his approbation. She had roused and interested him precisely because she was so unlike them. Had he not been truly amiable, he would have hated her for it; but his feelings, despite his efforts at disguise, had always been noble and just.</p>
 <p>Their conversation turned to the awkwardness of their recent encounters—his visits to Longbourn when both had been too embarrassed to speak freely, each waiting for encouragement the other could not give. Elizabeth wondered how long he might have gone on in silence had she not mentioned Lydia, but Darcy assured her that Lady Catherine&#x27;s interference had been the true catalyst. Her ladyship&#x27;s unjustifiable attempts to separate them had removed all his doubts and given him the courage to speak. Elizabeth laughed that Lady Catherine had been of infinite use, which ought to make her happy, for she did so love to be of use.</p>
@@ -1302,9 +1700,14 @@ html[data-mode="minimal"] .back-cover {
     <nav class="chapter-jump"><a class="prev" href="#chapter-59"><span>Previous</span>Chapter 59</a><a class="next" href="#chapter-61"><span>Next</span>Chapter 61</a></nav>
 </section>
 <section class="chapter" id="chapter-61" data-num="61">
-    <img class="chapter-image" src="images_cinematic/chapter_61.webp" alt="Settled Fates and Family Fortunes illustration" loading="lazy">
-    <div class="chapter-number">Chapter 61</div>
-    <h2 class="chapter-title">Settled Fates and Family Fortunes</h2>
+    <figure class="chapter-figure" data-full="images_cinematic/chapter_61.webp"><img class="chapter-image" src="images_cinematic/chapter_61.webp" alt="Settled Fates and Family Fortunes illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">61</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 61</div>
+            <h2 class="chapter-title">Settled Fates and Family Fortunes</h2>
+        </div>
+    </header>
     <div class="chapter-summary"><p>And so the business of marrying off daughters, which had so long occupied Mrs. Bennet&#x27;s every waking thought and nervous complaint, came at last to its triumphant conclusion. The day that saw Elizabeth and Jane settled as Mrs. Darcy and Mrs. Bingley respectively was perhaps the happiest of that good lady&#x27;s existence—though one ought not suppose that such success in matrimonial scheming rendered her any less ridiculous. She remained, to the probable relief of Mr. Bennet, as foolish and excitable as ever, visiting her daughters with insufferable pride and speaking of their establishments to anyone who would listen.</p>
 <p>Mr. Bennet, for his part, found himself drawn from his library more frequently than had ever been his custom, for he missed Elizabeth keenly. Pemberley became his favored retreat, and he took particular pleasure in arriving unannounced, the better to enjoy the surprise his visits occasioned.</p>
 <p>The Bingleys did not long remain at Netherfield. Even Jane&#x27;s gentle nature and Bingley&#x27;s amiable disposition could not withstand the perpetual proximity to Mrs. Bennet and the Meryton society, and within a twelvemonth they had removed to an estate in a county neighboring Derbyshire—a circumstance that gratified Bingley&#x27;s sisters and, more importantly, placed the two eldest Bennet daughters within thirty miles of one another.</p>
@@ -1446,6 +1849,32 @@ document.addEventListener('DOMContentLoaded', function() {
         if (idx === -1) idx = chapters.length;
         const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
 </script>
