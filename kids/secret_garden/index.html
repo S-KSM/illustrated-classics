@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="maximal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Secret Garden · Kids Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --max-bg: #07060f;
+    --max-bg-soft: #11102a;
+    --max-text: #f4f4f7;
+    --max-muted: #9aa0b4;
+    --max-accent-1: #a5b4fc;
+    --max-accent-2: #f9a8d4;
+    --max-accent-3: #fbbf24;
+    --max-border: rgba(255,255,255,0.08);
+    --max-card: rgba(255,255,255,0.04);
+    --max-glow: 0 0 80px rgba(165,180,252,0.35);
+
+    --min-bg: #faf8f4;
+    --min-text: #1a1a1a;
+    --min-muted: #6b6b6b;
+    --min-accent: #1a1a1a;
+    --min-border: #e2ded5;
+    --min-card: #ffffff;
+}
+
+html[data-mode="maximal"] {
+    --bg: var(--max-bg);
+    --bg-soft: var(--max-bg-soft);
+    --text: var(--max-text);
+    --muted: var(--max-muted);
+    --accent: var(--max-accent-1);
+    --accent-2: var(--max-accent-2);
+    --accent-3: var(--max-accent-3);
+    --border: var(--max-border);
+    --card: var(--max-card);
+    color-scheme: dark;
+}
+html[data-mode="minimal"] {
+    --bg: var(--min-bg);
+    --bg-soft: var(--min-bg);
+    --text: var(--min-text);
+    --muted: var(--min-muted);
+    --accent: var(--min-accent);
+    --accent-2: var(--min-accent);
+    --accent-3: var(--min-accent);
+    --border: var(--min-border);
+    --card: var(--min-card);
+    color-scheme: light;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Top bar */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.topbar-brand {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+.topbar-brand a { color: inherit; }
+.topbar-toggles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.mode-toggle, .style-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+}
+.mode-toggle button, .style-toggle button {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.mode-toggle button[aria-pressed="true"], .style-toggle button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+}
+.audience-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.audience-current { color: var(--muted); }
+.audience-swap {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg) !important;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.audience-swap:hover { opacity: 0.88; }
+@media (max-width: 600px) {
+    .mode-toggle button, .style-toggle button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Maximal-only decor: animated gradient backdrop */
+html[data-mode="maximal"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(165,180,252,0.28), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(249,168,212,0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(251,191,36,0.14), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgDrift 22s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(-2%, 2%, 0) scale(1.08); }
+}
+
+/* Minimal hides all fancy decor */
+html[data-mode="minimal"] body::before { display: none; }
+
+/* Footer */
+footer {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 30px 28px 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+.reader {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Progress bar */
+.progress {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 120;
+    pointer-events: none;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    transition: width 0.1s linear;
+}
+html[data-mode="minimal"] .progress-bar {
+    background: var(--text);
+}
+
+/* Hero / cover */
+.book-hero {
+    text-align: center;
+    padding: clamp(60px, 9vw, 110px) 20px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.cover-wrap {
+    max-width: 360px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+.cover-wrap img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="maximal"] .cover-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(165,180,252,0.25), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(30px);
+}
+html[data-mode="minimal"] .cover-wrap img {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    border-radius: 2px;
+}
+.cover-wrap:hover img { transform: translateY(-4px) scale(1.01); }
+
+.book-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    margin-bottom: 10px;
+}
+html[data-mode="maximal"] .book-title {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+html[data-mode="minimal"] .book-title {
+    font-weight: 700;
+    color: var(--text);
+}
+.book-author {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+html[data-mode="maximal"] .book-author { color: var(--accent); }
+.book-meta {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* TOC drawer */
+.toc-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 110;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.toc-btn:hover { transform: scale(1.05); }
+.toc-btn svg { width: 18px; height: 18px; }
+.toc-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(340px, 85vw);
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    transform: translateX(-105%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 150;
+    overflow-y: auto;
+    padding: 70px 24px 30px;
+}
+.toc-drawer.open { transform: translateX(0); }
+.toc-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.toc-backdrop.open { opacity: 1; pointer-events: auto; }
+.toc-drawer h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+.toc-drawer ol {
+    list-style: none;
+    counter-reset: tocc;
+}
+.toc-drawer ol li {
+    counter-increment: tocc;
+    margin: 0;
+}
+.toc-drawer ol li a {
+    display: block;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: color 0.2s ease, padding 0.2s ease;
+}
+.toc-drawer ol li a::before {
+    content: counter(tocc) ". ";
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+}
+.toc-drawer ol li a:hover {
+    color: var(--accent);
+    padding-left: 10px;
+}
+.toc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+/* Chapters */
+.chapter {
+    margin: 120px 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
+.chapter-image {
+    width: 100%;
+    max-width: 1100px;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
+}
+html[data-mode="minimal"] .chapter-image {
+    border-radius: 2px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
+}
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.chapter-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+.chapter-summary p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1.15em;
+    color: var(--text);
+}
+html[data-mode="minimal"] .chapter-summary {
+    font-family: 'Fraunces', Georgia, serif;
+}
+html[data-mode="minimal"] .chapter-summary p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+}
+
+/* Chapter nav arrows */
+.chapter-jump {
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0 0;
+    gap: 10px;
+}
+.chapter-jump a {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+}
+.chapter-jump a:hover {
+    color: var(--text);
+    border-color: var(--text);
+    transform: translateY(-1px);
+}
+.chapter-jump a.next { text-align: right; }
+.chapter-jump a.prev { text-align: left; }
+.chapter-jump span { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 4px; }
+
+/* Current chapter pill */
+.pill {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    font-size: 0.82rem;
+    color: var(--muted);
+    z-index: 90;
+    transition: transform 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pill.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Back cover + footer */
+.back-cover {
+    max-width: 360px;
+    margin: 80px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+html[data-mode="minimal"] .back-cover {
+    border-radius: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+</style>
+</head>
+<body data-kids="1">
+<div class="progress"><div class="progress-bar"></div></div>
+<header class="topbar">
+    <div class="topbar-brand"><a href="../../kids.html">Illustrated Classics</a></div>
+    <div class="topbar-toggles">
+        <div class="audience-toggle" role="group" aria-label="Audience">
+            <span class="audience-current">Kids</span>
+            <a class="audience-swap" href="../../secret_garden/index.html">Switch to Adults</a>
+        </div>
+        
+        <div class="mode-toggle" role="group" aria-label="Visual mode">
+            <button type="button" data-mode="minimal">Minimal</button>
+            <button type="button" data-mode="maximal">Maximal</button>
+        </div>
+    </div>
+</header>
+
+<button class="toc-btn" aria-label="Open chapter list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+</button>
+<div class="toc-backdrop"></div>
+<aside class="toc-drawer" aria-label="Chapters">
+    <button class="toc-close" aria-label="Close">×</button>
+    <h3>The Secret Garden</h3>
+    <ol><li><a href="#chapter-1">A Sickly Child Left Behind</a></li><li><a href="#chapter-2">A Contrary Child Bound for England</a></li><li><a href="#chapter-3">A Wild Drive Through Darkness</a></li><li><a href="#chapter-4">A Sturdy Yorkshire Maid Speaks Freely</a></li><li><a href="#chapter-5">The Robin and the Hidden Wall</a></li><li><a href="#chapter-6">Rainy Days and Wandering Corridors</a></li><li><a href="#chapter-7">Springtime&#x27;s Promise on the Moor</a></li><li><a href="#chapter-8">The Key and the Hidden Door</a></li><li><a href="#chapter-9">A World All Her Own</a></li><li><a href="#chapter-10">Awakening in the Walled Garden</a></li><li><a href="#chapter-11">Wick Wood and Waiting Roses</a></li><li><a href="#chapter-12">A Garden Corner of Her Own</a></li><li><a href="#chapter-13">The Crying in the Corridor</a></li><li><a href="#chapter-14">The Spoiled Boy Behind the Door</a></li><li><a href="#chapter-15">The Boy Animal and New Friendships</a></li><li><a href="#chapter-16">The Clash of Two Stubborn Wills</a></li><li><a href="#chapter-17">Colin&#x27;s Fury Meets Mary&#x27;s Fire</a></li><li><a href="#chapter-18">Colin&#x27;s Hope and Spring&#x27;s Calling</a></li><li><a href="#chapter-19">The Young Rajah Awakens</a></li><li><a href="#chapter-20">The Secret Plan Takes Shape</a></li><li><a href="#chapter-21">The Afternoon of Eternal Spring</a></li><li><a href="#chapter-22">The Magic of Standing Tall</a></li><li><a href="#chapter-23">The White Magic of the Garden</a></li><li><a href="#chapter-24">Dickon&#x27;s Garden and the Joyful Deception</a></li><li><a href="#chapter-25">The Robin&#x27;s Watchful Eye</a></li><li><a href="#chapter-26">The Magic Made Real</a></li><li><a href="#chapter-27">The Power of Thoughts Reborn</a></li></ol>
+</aside>
+
+<section class="book-hero">
+    
+<div class="cover-wrap">
+    <img src="../../secret_garden/images_anime/cover.webp" alt="The Secret Garden cover">
+</div>
+    <h1 class="book-title">The Secret Garden</h1>
+    <p class="book-author">Frances Hodgson Burnett</p>
+    <p class="book-meta">Kids Edition · 27 Chapters</p>
+</section>
+
+<main class="reader">
+<section class="chapter" id="chapter-1" data-num="1">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_1.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_1.webp" alt="A Sickly Child Left Behind illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">A Sickly Child Left Behind</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary Lennox was a little girl who lived in India. She was thin and pale and often felt sick. She had a sour, grumpy look on her face most of the time. Her parents were very busy and did not spend time with her. Servants took care of Mary instead, and they gave her whatever she wanted. This made Mary quite spoiled and hard to get along with.</p>
+<p>One strange morning, everything felt different. The house was very quiet. People whispered and hurried around with worried faces. Mary did not understand what was happening. No one would tell her anything. She played alone in the garden, poking flowers into the dirt. Then she waited and waited in the nursery by herself. When helpers finally came, they told Mary something very sad. Her parents were gone forever. There was no one left to take care of her in India. Mary stood all alone, not knowing what would happen next.</p></div>
+    <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
+</section>
+<section class="chapter" id="chapter-2" data-num="2">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_2.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_2.webp" alt="A Contrary Child Bound for England illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Contrary Child Bound for England</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary Lennox was a small girl who mostly thought about herself. She did not know her mother very well at all. When she had to leave India, she was not scared. She just hoped her new family would be nice to her.</p>
+<p>First Mary stayed with a clergyman and his five children. The children played rough and grabbed each other&#x27;s toys. Mary was so grumpy that no one wanted to be her friend. A boy named Basil made up a silly song about her. He called her &quot;Mistress Mary, quite contrary&quot; because she was always cross. This made Mary very angry indeed.</p>
+<p>Then Mary learned she was going to England. She would live with her uncle in a big old house called Misselthwaite Manor. A woman named Medlock came to take her there. On the train, Medlock told Mary about the huge house with a hundred rooms. Most of the rooms were locked up tight. Her uncle was sad and liked to be alone. As rain pattered against the window, Mary fell asleep. She was traveling toward a house full of secrets.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
+</section>
+<section class="chapter" id="chapter-3" data-num="3">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_3.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_3.webp" alt="A Wild Drive Through Darkness illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">A Wild Drive Through Darkness</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary woke up on the train to find Mrs. Medlock had gotten them a nice lunch basket. There was chicken, bread and butter, and warm tea. Rain splashed against the windows while they ate. Mrs. Medlock fell asleep with her fancy hat tipping to one side. Mary thought it looked quite funny. Soon the sound of rain made Mary sleepy too.</p>
+<p>When Mary woke again, it was nighttime. They got into a cozy carriage for the last part of their journey. Mary pressed her face to the window, watching the darkness outside. They drove through a tiny village with little white cottages. Then the road climbed higher and higher onto something called a moor. The wind made a wild, rushing sound through the bushes. It sounded like the sea! Miles and miles of open land stretched around them.</p>
+<p>Finally they reached Misselthwaite Manor, a big old house with many rooms. Inside, the hall was very dim and quiet. A man told Mrs. Medlock that Mary would have her own rooms to stay in. Mary felt tired and a little lonely, but she wondered what adventures might be waiting for her tomorrow.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
+</section>
+<section class="chapter" id="chapter-4" data-num="4">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_4.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_4.webp" alt="A Sturdy Yorkshire Maid Speaks Freely illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">A Sturdy Yorkshire Maid Speaks Freely</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary woke up in a strange room with old pictures on the walls. A friendly housemaid named Martha was cleaning the fireplace. Martha had rosy cheeks and a big smile. She told Mary about the moor outside, a wide wild place with sweet-smelling flowers and singing birds. Martha talked to Mary like a friend, not like the quiet servants Mary knew in India. This surprised Mary very much.</p>
+<p>Martha was amazed that Mary could not dress herself. She said it was time to learn how. Mary felt upset and very lonely being so far from home. She even cried a little. But Martha was so kind that Mary felt better soon. Martha told her about her big family and her brother Dickon, who was friends with wild animals and even had his own pony. Mary wanted to know more about him. Martha sent Mary outside to play in the gardens. She whispered that one garden had been locked up for ten years. Outside, Mary met a friendly robin with a red chest. He sang to her sweetly. An old gardener named Ben said the robin came from the secret garden. Mary watched the little bird fly over the high wall, and she wondered what was hidden there.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
+</section>
+<section class="chapter" id="chapter-5" data-num="5">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_5.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_5.webp" alt="The Robin and the Hidden Wall illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">The Robin and the Hidden Wall</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary spent her first days at Misselthwaite Manor in a quiet way. Each morning she ate breakfast alone in the nursery. Outside her window, the big purple moor stretched far away. Mary liked to walk in the gardens to stay warm. The wind blew hard and cold, but it smelled like wild flowers. Without knowing it, Mary was getting healthier every day. Her cheeks turned pink and her eyes grew brighter.</p>
+<p>One morning Mary woke up feeling hungry for the first time. She ate all her porridge, and Martha was so pleased. Mary kept exploring the gardens, looking for something interesting. One day the friendly robin came back. He perched on a wall and sang to her. Mary laughed and chased after him along the path. The robin flew to a tree, and Mary realized that tree was inside the secret locked garden. She looked everywhere but could not find a door. That night, Martha told Mary that the garden belonged to Mrs. Craven, who had died there long ago. That made Mr. Craven too sad to ever go back. Mary felt sorry for him. Then she heard a strange crying sound deep in the house. Martha said it was just the wind, but Mary did not believe her. She wanted to find out what was hidden inside this mysterious place.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
+</section>
+<section class="chapter" id="chapter-6" data-num="6">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_6.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_6.webp" alt="Rainy Days and Wandering Corridors illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Rainy Days and Wandering Corridors</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Rain poured down outside, so Mary had to stay inside the big, quiet house. She talked with Martha about her family. Martha told her about her brother Dickon. He loved to go outside even in the rain! He found baby animals that needed help. He brought home a little fox cub once and a baby crow too. The crow was black as soot and followed Dickon everywhere.</p>
+<p>Mary wanted something to do. Martha said the house had a library with thousands of books! Mary decided to explore and find it herself. She walked down long hallways and found many rooms. She saw old paintings of fancy people on the walls. In one room, she found tiny ivory elephants to play with. In another room, she found a mother mouse with her babies on a soft cushion. Then Mary heard something strange. It sounded like a child crying far away! The housekeeper found Mary and took her back to her room. She said no one was crying. But Mary knew what she heard. Someone was crying somewhere in this big house, and Mary wanted to find out who.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
+</section>
+<section class="chapter" id="chapter-7" data-num="7">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_7.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_7.webp" alt="Springtime&#x27;s Promise on the Moor illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Springtime&#x27;s Promise on the Moor</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Two days after her first adventure outside, Mary woke up to something wonderful. The rain had stopped and the gray clouds were gone. The sky was the brightest, most beautiful blue she had ever seen. It sparkled like magic water, with fluffy white clouds floating here and there.</p>
+<p>Martha told Mary that spring was coming soon. She talked about golden flowers and purple bells and butterflies dancing everywhere. She said her brother Dickon spent his days out on the moor with all these lovely things. Mary wished she could see it too. Martha noticed that Mary looked softer now, not so cross as before.</p>
+<p>Later, Mary played outside in the sunshine and felt happy. She found Ben working in the garden, and he told her about flowers sleeping under the ground, getting ready to grow. Then the friendly robin came hopping close to Mary. He had a pretty red chest and seemed to like her very much. While she watched him scratch in the dirt, Mary spotted something buried there. She pulled it out and her heart beat fast. It was an old, rusty key that had been hiding for a very long time. Mary wondered if maybe, just maybe, this was the key to the secret garden. Now she just had to find the door.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
+</section>
+<section class="chapter" id="chapter-8" data-num="8">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_8.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_8.webp" alt="The Key and the Hidden Door illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">The Key and the Hidden Door</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary had found an old key, and she wanted so badly to find the door it opened. She dreamed of having a secret garden all to herself. No one would know where she was! Mary walked along the high wall covered in ivy, looking and looking, but she could not find any door hidden beneath the leaves.</p>
+<p>Martha came back from visiting her family and brought Mary a wonderful gift. It was a skipping rope with bright red and blue handles! Mary had never seen one before. She went outside and skipped and skipped until her cheeks turned pink. The friendly robin hopped along beside her, watching this funny new game. Mary laughed at the little bird. &quot;You showed me where the key was buried,&quot; she said. &quot;Now show me the door!&quot;</p>
+<p>Just then, a big gust of wind blew the ivy aside. And there it was—a round door handle! Mary&#x27;s heart beat fast. She pushed the key into the lock and turned it with both hands. She looked around to make sure no one saw her. Then she pushed open the door and stepped through. She was inside the secret garden at last!</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
+</section>
+<section class="chapter" id="chapter-9" data-num="9">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_9.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_9.webp" alt="A World All Her Own illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">A World All Her Own</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary found the secret garden at last. She stepped through the hidden door and stood very still. High walls rose all around her, covered with rose branches. The roses were sleeping for winter, with no leaves or flowers yet. But the garden felt like a magical, quiet place.</p>
+<p>&quot;How still it is!&quot; Mary whispered softly.</p>
+<p>The friendly robin flew down and hopped from bush to bush. He chirped as if he was showing Mary around his home. Then Mary saw something wonderful. Tiny green shoots poked up through the dark soil. The garden was not dead after all!</p>
+<p>Mary worked happily for hours, pulling weeds away from the little plants. Her cheeks turned rosy and pink. She smiled without even knowing it. At lunch she ate more food than ever before. Then she wrote a letter to Martha&#x27;s brother Dickon, asking him to buy seeds and a little spade. Mary wanted to help the secret garden grow again. She had never felt so happy in her whole life.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
+</section>
+<section class="chapter" id="chapter-10" data-num="10">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_10.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_10.webp" alt="Awakening in the Walled Garden illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Awakening in the Walled Garden</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>For almost a week, warm sunshine poured into the secret garden. Mary thought it felt like a fairy kingdom where no one could find her. Each day she grew stronger and healthier. Her legs were not so thin anymore, and she could skip to a hundred. She dug and weeded while little green shoots pushed up through the soil all around her.</p>
+<p>One day Mary heard a strange, sweet whistling sound. She found a boy sitting under a tree, playing a little wooden pipe. A squirrel sat nearby, rabbits watched quietly, and a pheasant peeped from the bushes. This was Dickon, Martha&#x27;s brother, who could make friends with any wild creature. He had curly red hair, rosy cheeks, and bright blue eyes. He smelled like fresh grass and flowers. Dickon brought Mary the seeds and tools she had asked for. When she finally told him about her secret garden, he promised to keep it safe. She led him through the ivy-covered door. He looked all around and whispered that it was like being in a wonderful dream.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
+</section>
+<section class="chapter" id="chapter-11" data-num="11">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_11.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_11.webp" alt="Wick Wood and Waiting Roses illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">Wick Wood and Waiting Roses</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dickon stood very still inside the secret garden walls. His eyes looked at every old tree and every twisting vine. He walked even more quietly than Mary had on her first visit. He knew this special place needed soft voices and gentle steps. Martha had told him about the locked garden, and he always wondered what was inside. Now his eyes were bright with happiness.</p>
+<p>Mary asked if the roses were still alive after so many years. Dickon took out his little knife and showed her how to tell. If a branch looked green inside, it was still living. He called it &quot;wick,&quot; which means alive. They walked from tree to bush, finding many plants that had survived. Dickon said the strong ones grew even wilder and prettier. They worked together all morning, cutting and digging. Dickon found the little clearings Mary had made around the tiny shoots. He was so pleased with her work. They promised to keep the garden wild and secret forever. When Mary had to go home for lunch, Dickon promised her secret was safe with him, just like a bird&#x27;s hidden nest.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
+</section>
+<section class="chapter" id="chapter-12" data-num="12">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_12.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_12.webp" alt="A Garden Corner of Her Own illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">A Garden Corner of Her Own</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary rushed back to her room, her cheeks pink and her hair messy from playing outside. She had so much to tell Martha! She had met Dickon, and she thought he was wonderful. Martha laughed because Dickon was her brother, but Mary loved everything about him. They talked about seeds and gardens, and Martha said Mary should ask old Ben if she wanted a spot to plant things.</p>
+<p>Then Martha shared big news. Mr. Craven had come home and wanted to see Mary. This made Mary feel nervous and shy. She walked through long hallways to a room where a sad-looking man sat by the fire. He seemed lonely and tired. He asked Mary what she wanted, and before she could think, she blurted out her wish. She wanted a bit of earth to plant seeds and watch things grow. His face softened, and he said yes. She could have as much earth as she liked. Mary hurried back to the garden, and there she found a note from Dickon pinned to a rose bush. It said he would come back.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
+</section>
+<section class="chapter" id="chapter-13" data-num="13">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_13.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_13.webp" alt="The Crying in the Corridor illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">The Crying in the Corridor</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>One stormy night, Mary could not sleep. Rain pounded on her window and wind howled around the old house. But then she heard something else. It was a soft crying sound coming from somewhere far away. Mary grabbed her candle and tiptoed down the dark hallway. She followed the sound until she found a room with firelight glowing inside.</p>
+<p>There, lying in a big bed, was a boy with a pale face and wide gray eyes. His name was Colin, and he was the son of the man who owned the house. Colin had been sick for a long time and stayed hidden in his room. He felt very lonely and sad. Mary felt lonely too, so she understood him right away. She told him a little bit about a secret garden, and Colin got so excited. They decided they would find a way to visit it together when spring came. Mary sang softly until Colin fell asleep. Now Mary had a new friend who shared her wonderful secret.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
+</section>
+<section class="chapter" id="chapter-14" data-num="14">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_14.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_14.webp" alt="The Spoiled Boy Behind the Door illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">The Spoiled Boy Behind the Door</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary had a big secret, and she was ready to share it. She told Martha all about finding Colin in his hidden room. Martha was worried at first because no one was supposed to know about him. But Mary said Colin was happy she had come to visit.</p>
+<p>Martha explained that Colin had been sick since he was a tiny baby. He had to stay in bed most of the time. He often felt grumpy and sad because he was lonely. Soon a bell rang, and Colin wanted to see Mary right away. She found him wrapped in soft velvet by a warm fire. He looked like a little prince. Mary told him about Dickon, the boy who could make friends with foxes and squirrels and birds. She told him about the moor, full of happy creatures and growing things. Colin&#x27;s eyes grew wide with wonder. They talked and laughed together like good friends. Mary said they should talk about living and growing, not about being sick. When the doctor came in, he was surprised to see Colin so cheerful. Colin said Mary made him feel better. Then he asked her to tell him more stories, ready to listen and imagine new things.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
+</section>
+<section class="chapter" id="chapter-15" data-num="15">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_15.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_15.webp" alt="The Boy Animal and New Friendships illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">The Boy Animal and New Friendships</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>After many rainy days, the sun finally came back. The whole sky turned bright blue and warm again. While Mary was stuck inside, she spent her time with Colin. They looked at picture books and told stories together. They talked about gardens and Dickon&#x27;s animal friends. Colin stopped being so grumpy and cross. He and Mary were becoming real friends.</p>
+<p>Mary wondered if Colin could keep a secret about something special. Colin told her that people always stared at him and it made him feel bad. But he thought maybe Dickon would be different. Dickon was kind to animals, so maybe he would be kind to Colin too.</p>
+<p>When the sunny morning came, Mary ran outside as fast as she could. Flowers were popping up everywhere in purple and gold. She found Dickon in the secret garden with his little fox and his pet crow. They watched a robin carrying twigs to build a cozy nest. Mary told Dickon about Colin. They hoped that maybe Colin could visit the garden someday too.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
+</section>
+<section class="chapter" id="chapter-16" data-num="16">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_16.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_16.webp" alt="The Clash of Two Stubborn Wills illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">The Clash of Two Stubborn Wills</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary had a wonderful morning in the secret garden with her friend Dickon. They pulled weeds and dug in the dirt together. She forgot all about Colin waiting inside the big house. Dickon&#x27;s animal friends were there too—a little fox cub, a black bird called Soot, and the friendly robin. When Dickon played his wooden pipe, even the squirrels came close to listen. Mary felt stronger and happier than ever before.</p>
+<p>When Mary went back inside, Colin was very upset. He had waited for her all day long. The two children had a big argument. Colin said mean things, and Mary said mean things right back. She stomped out of his room feeling cross and sad. But then she found a surprise—beautiful books and a pretty writing set, gifts just for her. Her angry feelings started to melt away. Later, lying in bed, Mary thought about how scared Colin sometimes felt. Maybe she would visit him tomorrow after all.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
+</section>
+<section class="chapter" id="chapter-17" data-num="17">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_17.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_17.webp" alt="Colin&#x27;s Fury Meets Mary&#x27;s Fire illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Colin&#x27;s Fury Meets Mary&#x27;s Fire</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary had spent all day working in the garden with Dickon. She was so tired that she fell asleep right away. But in the middle of the night, she woke up. Colin was crying and yelling very loudly in his room. The sounds were so loud they filled the whole house. At first Mary felt scared, but then she started feeling angry instead.</p>
+<p>The nurse came and asked Mary to help calm Colin down. Mary marched to his room feeling quite cross with him. She told Colin to stop all his fussing and noise. Colin was so surprised that someone talked to him like that! He said he was afraid because he thought something was wrong with his back. Mary looked carefully and told him the truth. His back was perfectly fine. No one had ever told him that before. Colin felt so much better knowing the truth. He held Mary&#x27;s hand and grew calm and gentle. Mary whispered to him about the garden, the roses, and the little robin. Colin closed his eyes and fell asleep, dreaming of flowers and sunshine.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
+</section>
+<section class="chapter" id="chapter-18" data-num="18">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_18.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_18.webp" alt="Colin&#x27;s Hope and Spring&#x27;s Calling illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Colin&#x27;s Hope and Spring&#x27;s Calling</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary woke up late because she was very tired. Colin had been sick and sad, but something had changed between them. He asked to see Mary, and he even said &quot;please!&quot; That was very new for him.</p>
+<p>Mary wanted to run to the garden, but first she went to Colin. She told him about the secret garden, and his eyes grew bright with wonder. He had dreamed about it all night—green leaves and birds singing all around him.</p>
+<p>In the garden, Dickon waited with his animal friends. There was a fox, a crow, and two little squirrels named Nut and Shell. Dickon said they must bring Colin outside to feel the sunshine and smell the flowers. It would help him feel better.</p>
+<p>When Mary came back to Colin, she smelled like springtime. Colin sniffed her hair and started to laugh. They laughed together until the whole room felt happy. Then Mary held Colin&#x27;s hands and told him the biggest secret—she had found the hidden door to the garden. Tomorrow, Dickon would come visit. And soon, they would all go to the garden together.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
+</section>
+<section class="chapter" id="chapter-19" data-num="19">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_19.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_19.webp" alt="The Young Rajah Awakens illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">The Young Rajah Awakens</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The morning after Colin&#x27;s big upset, the doctor came to visit. He expected to find a pale, unhappy boy lying in bed. But something wonderful had happened instead. Colin was sitting up, smiling and laughing with Mary. They were looking at pictures of beautiful flowers in garden books together.</p>
+<p>Colin said he wanted to go outside in his chair. He wanted Mary and a kind boy named Dickon to take him. The doctor was very surprised because Colin used to be afraid of fresh air. Now Colin seemed excited about it.</p>
+<p>That night Colin slept peacefully all the way until morning. When he woke up, he felt happy and free. Then Mary ran into his room with exciting news. Spring had come at last! Colin asked for the window to be opened wide. Sweet fresh air and birdsong floated in. Soon Dickon arrived with a tiny baby lamb. He placed the soft little lamb right on Colin&#x27;s lap. Colin was so delighted. The lamb snuggled into his cozy robe while Dickon fed it from a bottle. The room filled with happy talk about gardens and animals. Colin could hardly wait to see the secret garden for himself.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
+</section>
+<section class="chapter" id="chapter-20" data-num="20">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_20.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_20.webp" alt="The Secret Plan Takes Shape illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">The Secret Plan Takes Shape</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The secret garden had to wait more than a week. First the wind blew wild, then Colin felt a little sick. But Colin did not get angry like he used to. He was too busy making exciting plans with his new friends! Dickon came to visit almost every day. He told wonderful stories about baby animals outside. Otters and badgers were building cozy homes. Birds were making nests. The whole world was waking up for spring.</p>
+<p>Colin, Mary, and Dickon planned how to get Colin to the garden. It had to be a secret! No one could know. When the big day came, someone carried Colin downstairs. Dickon pushed his wheeled chair along the paths. Colin looked up at the bright blue sky and smelled the sweet air. Mary showed him all her special spots. Then she pushed back the ivy, and Dickon wheeled Colin right through the hidden door. Colin covered his eyes at first. When he looked, he saw green leaves, pink blossoms, and golden sunshine everywhere. The warm sun touched his face like a gentle hand. Color came into his pale cheeks. &quot;I shall get well!&quot; Colin cried happily. The garden had found its newest friend.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
+</section>
+<section class="chapter" id="chapter-21" data-num="21">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_21.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_21.webp" alt="The Afternoon of Eternal Spring illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">The Afternoon of Eternal Spring</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Colin visited the secret garden for the very first time on a beautiful spring afternoon. The garden was full of flowers and blossoms everywhere he looked. His friends Mary and Dickon wheeled his chair under a plum tree covered in white flowers. They brought him little treasures to see, like opening buds and green leaves and even a woodpecker&#x27;s feather. A friendly robin flew by looking for food for his family.</p>
+<p>They had a lovely tea on the grass with hot toast and crumpets. A funny crow named Soot gobbled up a whole piece in one big bite! Colin felt so happy that color came into his cheeks. He said he wanted to come back every single day and watch summer arrive. Then something wonderful happened. Colin decided to try standing up, even though his legs felt weak and wobbly. And he did it! He stood up straight and tall. Old Ben Weatherstaff, the gardener, saw him and cried happy tears. Now Ben would help keep their garden a wonderful secret.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
+</section>
+<section class="chapter" id="chapter-22" data-num="22">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_22.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_22.webp" alt="The Magic of Standing Tall illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">The Magic of Standing Tall</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Colin had spent a long time thinking he was too sick to walk. But today was different. Today he stood up all by himself in the secret garden. His cheeks turned pink and his eyes were bright and excited. Dickon smiled his big cheerful smile. He said he always knew Colin could do this once he stopped being afraid.</p>
+<p>Colin looked at little flowers pushing up through the dirt. He understood something special was happening. He walked slowly to a tree with Dickon helping him. Mary whispered kind words to cheer him on. Old Ben came into the garden and could not believe his eyes. He saw a strong boy standing tall and proud.</p>
+<p>Then Colin did something wonderful. He dug in the soft earth with his own hands. They planted a rose together just as the sun was setting. Colin stood up and laughed. The garden felt full of magic and happy surprises waiting to happen.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
+</section>
+<section class="chapter" id="chapter-23" data-num="23">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_23.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_23.webp" alt="The White Magic of the Garden illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">The White Magic of the Garden</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Colin came back from the secret garden feeling wonderful. The doctor was worried and said Colin should rest. But Colin said the garden was making him well, and he would go back every day. Mary told Colin that he could be a bit rude sometimes. She said getting his own way so much had made him act strange. But Mary said she used to be the same way too. Colin smiled and said the garden would help him change. There was something magical about that place.</p>
+<p>And then the most wonderful time began. The garden filled with flowers of every color. Blue and purple and red blooms opened everywhere. Colin spent every hour he could there, watching buds open and little creatures scurry about. He decided the garden had real Magic in it. Colin and his friends sat together under a big tree. They closed their eyes and thought happy thoughts about the sun and the growing things. Colin walked all around the garden that day. He wanted to get stronger and stronger until he could surprise his father someday.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
+</section>
+<section class="chapter" id="chapter-24" data-num="24">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_24.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_24.webp" alt="Dickon&#x27;s Garden and the Joyful Deception illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Dickon&#x27;s Garden and the Joyful Deception</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dickon had his own little garden near his family&#x27;s cottage on the moor. He grew potatoes and cabbages and yummy herbs while his animal friends kept him company. Everything he planted grew big and beautiful! The stone wall around his garden was covered with pretty flowers, and it was one of the loveliest spots in all of Yorkshire.</p>
+<p>Dickon told his mother the whole wonderful story about the secret garden. He told her about the hidden key, the friendly robin, and how Colin had finally stood up on his own two feet! His mother was so happy she could hardly believe it. The children were playing a funny trick on everyone at the big house. They pretended Colin was still weak and tired, but really he was getting stronger every day! The hardest part was hiding how hungry they were from all that growing. So Dickon brought them fresh milk and warm buns to eat in the garden. They even learned to roast potatoes over a tiny stone oven in the woods! The grown-ups at the house noticed that Colin looked healthier and that Mary had rosy cheeks too. They all wondered what the secret might be.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
+</section>
+<section class="chapter" id="chapter-25" data-num="25">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_25.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_25.webp" alt="The Robin&#x27;s Watchful Eye illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">The Robin&#x27;s Watchful Eye</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The secret garden kept growing more beautiful every day. In the robin&#x27;s nest, something special appeared—tiny eggs! The mother robin sat on them to keep them warm. The father robin watched over everything with love. All the children knew to stay quiet and far away. They understood how special the eggs were.</p>
+<p>The robin was not sure about Colin at first. Colin came in a chair with wheels and moved in slow, wobbly ways. But then the robin remembered being a baby bird, learning to fly in little tries. He realized Colin was doing the same thing—learning to walk! The robin told his mate, and she thought this was sweet, though she was sure her babies would learn much faster.</p>
+<p>On a rainy day, Mary and Colin explored the big old house together. They found rooms with ivory elephants and old treasures. Colin also looked at a picture of his mother for the first time in a long while. She seemed to smile at him, and he felt happy instead of sad. He wished his father could see how much he had changed.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
+</section>
+<section class="chapter" id="chapter-26" data-num="26">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_26.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_26.webp" alt="The Magic Made Real illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">The Magic Made Real</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The Magic felt real to everyone in the secret garden now. Colin loved to give little talks about it while they all worked together. Ben Weatherstaff would listen and watch Colin with wonder. The boy who had once been so thin and weak was growing stronger every day. His legs were sturdy now, and his cheeks were round and pink.</p>
+<p>One morning, Colin was digging in the dirt with Mary and Dickon. Suddenly, a happy feeling rushed through him. He stood up tall and stretched his arms wide. &quot;Just look at me!&quot; he cried with joy. &quot;I&#x27;m well!&quot; He remembered when he first came to the garden in his wheelchair. Now he could stand and dig all by himself. They all sang a thankful song together, and even Ben had happy tears on his face.</p>
+<p>Then the garden door opened, and Dickon&#x27;s mother walked in. Her name was Susan Sowerby, and she had kind, wonderful eyes. She hugged Colin and told him his legs would soon be the strongest in all of Yorkshire. She promised Mary she would bloom like a beautiful rose. Susan told them the same good thing that makes seeds grow and the sun shine had helped Colin get well. Far away, Colin&#x27;s father was starting to feel something calling him back home.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
+</section>
+<section class="chapter" id="chapter-27" data-num="27">
+    <figure class="chapter-figure" data-full="../../secret_garden/images_anime/chapter_27.webp"><img class="chapter-image" src="../../secret_garden/images_anime/chapter_27.webp" alt="The Power of Thoughts Reborn illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">The Power of Thoughts Reborn</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Mary Lennox used to be a grumpy girl who frowned at everything. But then her mind filled up with wonderful new things. She thought about friendly robins and the wild moor. She thought about Ben the gardener and kind Dickon with his animals. She thought about the secret garden waking up with flowers. All these happy thoughts left no room for grumpy ones, and Mary became healthy and bright.</p>
+<p>Colin changed too. He used to worry and feel scared all the time. But when he started thinking brave, beautiful thoughts, he grew strong like a plant reaching for sunshine. Far away, Colin&#x27;s father had been very sad for a long time. Then one day by a pretty stream, he started to feel better. He dreamed of the garden and hurried home. When he arrived, the garden door burst open and a tall, glowing boy ran into his arms. It was Colin, healthy and happy at last. Father and son walked across the lawn together, and everyone smiled to see them.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><span></span></nav>
+</section>
+<img class="back-cover" src="../../secret_garden/images_anime/back_cover.webp" alt="Back cover">
+</main>
+
+<div class="pill"></div>
+
+<footer>
+    <p>From Project Gutenberg · Generated with AI</p>
+</footer>
+
+<script>
+(function() {
+    const html = document.documentElement;
+    const savedMode = localStorage.getItem('site-mode') || 'maximal';
+    const savedStyle = localStorage.getItem('site-style') || 'cinematic';
+    html.setAttribute('data-mode', savedMode);
+    html.setAttribute('data-style', savedStyle);
+    document.addEventListener('DOMContentLoaded', function() {
+        const modeBtns = document.querySelectorAll('.mode-toggle button');
+        const styleBtns = document.querySelectorAll('.style-toggle button');
+
+        function syncMode() {
+            const m = html.getAttribute('data-mode');
+            modeBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+        }
+        function syncStyle() {
+            const s = html.getAttribute('data-style');
+            styleBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.style === s ? 'true' : 'false'));
+        }
+        function applyStyle(newStyle) {
+            html.setAttribute('data-style', newStyle);
+            localStorage.setItem('site-style', newStyle);
+            // Landing cards: swap cover img + primary Read link
+            document.querySelectorAll('.card').forEach(card => {
+                const img = card.querySelector('.cover-link img');
+                const link = card.querySelector('.cover-link');
+                const readBtn = card.querySelector('.btn.primary');
+                const cin = card.dataset.cinematic;
+                const ani = card.dataset.anime;
+                const hasAni = ani && ani !== '';
+                const target = (newStyle === 'anime' && hasAni) ? ani : cin;
+                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
+                if (img && target) img.src = target;
+                if (link && href) link.href = href;
+                if (readBtn && href) readBtn.href = href;
+            });
+            // Book viewer: navigate to sibling page
+            const swap = document.body.dataset.stylePage;
+            if (swap && swap !== newStyle) {
+                const target = document.body.dataset.siblingHref;
+                if (target) window.location.href = target;
+            }
+            syncStyle();
+        }
+        modeBtns.forEach(b => b.addEventListener('click', function() {
+            const m = b.dataset.mode;
+            html.setAttribute('data-mode', m);
+            localStorage.setItem('site-mode', m);
+            syncMode();
+        }));
+        styleBtns.forEach(b => b.addEventListener('click', function() {
+            applyStyle(b.dataset.style);
+        }));
+        syncMode();
+        // Initial landing apply so cards reflect saved style on first paint
+        if (document.querySelector('.card')) applyStyle(savedStyle);
+        else syncStyle();
+    });
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading progress
+    const bar = document.querySelector('.progress-bar');
+    const onScroll = () => {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (scrolled / max * 100) + '%' : '0%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal chapters
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '-60px' });
+    document.querySelectorAll('.chapter').forEach(c => io.observe(c));
+
+    // TOC drawer
+    const tocBtn = document.querySelector('.toc-btn');
+    const drawer = document.querySelector('.toc-drawer');
+    const backdrop = document.querySelector('.toc-backdrop');
+    const closeBtn = document.querySelector('.toc-close');
+    function openToc() { drawer.classList.add('open'); backdrop.classList.add('open'); }
+    function closeToc() { drawer.classList.remove('open'); backdrop.classList.remove('open'); }
+    tocBtn.addEventListener('click', openToc);
+    backdrop.addEventListener('click', closeToc);
+    closeBtn.addEventListener('click', closeToc);
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeToc));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToc();
+    });
+
+    // Current-chapter pill
+    const pill = document.querySelector('.pill');
+    const chapters = Array.from(document.querySelectorAll('.chapter'));
+    const io2 = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const title = e.target.querySelector('.chapter-title').textContent;
+                const num = e.target.dataset.num;
+                pill.textContent = `Ch ${num} · ${title}`;
+                pill.classList.add('show');
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    chapters.forEach(c => io2.observe(c));
+
+    // Keyboard chapter nav
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const y = window.scrollY + window.innerHeight / 3;
+        let idx = chapters.findIndex(c => c.offsetTop > y);
+        if (idx === -1) idx = chapters.length;
+        const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
+    });
+});
+</script>
+</body>
+</html>

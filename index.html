@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Illustrated Classics · Toggleable edition</title>
+<title>Illustrated Classics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
@@ -122,6 +122,29 @@ body {
     background: var(--text);
     color: var(--bg);
 }
+.audience-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.audience-current { color: var(--muted); }
+.audience-swap {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg) !important;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.audience-swap:hover { opacity: 0.88; }
 @media (max-width: 600px) {
     .mode-toggle button, .style-toggle button {
         padding: 5px 10px;
@@ -410,10 +433,13 @@ html[data-mode="maximal"] .card-author {
 </style>
 </head>
 <body>
-
 <header class="topbar">
     <div class="topbar-brand"><a href="index.html">Illustrated Classics</a></div>
     <div class="topbar-toggles">
+        <div class="audience-toggle" role="group" aria-label="Audience">
+            <span class="audience-current">Adults</span>
+            <a class="audience-swap" href="kids.html">Switch to Kids</a>
+        </div>
         <div class="style-toggle" role="group" aria-label="Art style">
             <button type="button" data-style="cinematic">Cinematic</button>
             <button type="button" data-style="anime">Anime</button>
@@ -424,7 +450,6 @@ html[data-mode="maximal"] .card-author {
         </div>
     </div>
 </header>
-
 <section class="hero">
     <h1>Illustrated Classics</h1>
     <p class="tagline">Public-domain novels, re-imagined chapter-by-chapter with AI art. Toggle Minimal or Maximal at the top.</p>

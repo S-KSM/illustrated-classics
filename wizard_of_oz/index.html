@@ -122,6 +122,29 @@ body {
     background: var(--text);
     color: var(--bg);
 }
+.audience-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.audience-current { color: var(--muted); }
+.audience-swap {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg) !important;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.audience-swap:hover { opacity: 0.88; }
 @media (max-width: 600px) {
     .mode-toggle button, .style-toggle button {
         padding: 5px 10px;
@@ -573,8 +596,12 @@ html[data-mode="minimal"] .back-cover {
 <body data-style-page="cinematic" data-sibling-href="index_anime.html">
 <div class="progress"><div class="progress-bar"></div></div>
 <header class="topbar">
-    <div class="topbar-brand"><a href="../index.html">← All books</a></div>
+    <div class="topbar-brand"><a href="../index.html">Illustrated Classics</a></div>
     <div class="topbar-toggles">
+        <div class="audience-toggle" role="group" aria-label="Audience">
+            <span class="audience-current">Adults</span>
+            <a class="audience-swap" href="../kids/wizard_of_oz/index.html">Switch to Kids</a>
+        </div>
         <div class="style-toggle" role="group" aria-label="Art style">
             <button type="button" data-style="cinematic">Cinematic</button>
             <button type="button" data-style="anime">Anime</button>

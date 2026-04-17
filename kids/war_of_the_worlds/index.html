@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="maximal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The War of the Worlds · Kids Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --max-bg: #07060f;
+    --max-bg-soft: #11102a;
+    --max-text: #f4f4f7;
+    --max-muted: #9aa0b4;
+    --max-accent-1: #a5b4fc;
+    --max-accent-2: #f9a8d4;
+    --max-accent-3: #fbbf24;
+    --max-border: rgba(255,255,255,0.08);
+    --max-card: rgba(255,255,255,0.04);
+    --max-glow: 0 0 80px rgba(165,180,252,0.35);
+
+    --min-bg: #faf8f4;
+    --min-text: #1a1a1a;
+    --min-muted: #6b6b6b;
+    --min-accent: #1a1a1a;
+    --min-border: #e2ded5;
+    --min-card: #ffffff;
+}
+
+html[data-mode="maximal"] {
+    --bg: var(--max-bg);
+    --bg-soft: var(--max-bg-soft);
+    --text: var(--max-text);
+    --muted: var(--max-muted);
+    --accent: var(--max-accent-1);
+    --accent-2: var(--max-accent-2);
+    --accent-3: var(--max-accent-3);
+    --border: var(--max-border);
+    --card: var(--max-card);
+    color-scheme: dark;
+}
+html[data-mode="minimal"] {
+    --bg: var(--min-bg);
+    --bg-soft: var(--min-bg);
+    --text: var(--min-text);
+    --muted: var(--min-muted);
+    --accent: var(--min-accent);
+    --accent-2: var(--min-accent);
+    --accent-3: var(--min-accent);
+    --border: var(--min-border);
+    --card: var(--min-card);
+    color-scheme: light;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Top bar */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.topbar-brand {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+.topbar-brand a { color: inherit; }
+.topbar-toggles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.mode-toggle, .style-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+}
+.mode-toggle button, .style-toggle button {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.mode-toggle button[aria-pressed="true"], .style-toggle button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+}
+.audience-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.audience-current { color: var(--muted); }
+.audience-swap {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg) !important;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.audience-swap:hover { opacity: 0.88; }
+@media (max-width: 600px) {
+    .mode-toggle button, .style-toggle button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Maximal-only decor: animated gradient backdrop */
+html[data-mode="maximal"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(165,180,252,0.28), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(249,168,212,0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(251,191,36,0.14), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgDrift 22s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(-2%, 2%, 0) scale(1.08); }
+}
+
+/* Minimal hides all fancy decor */
+html[data-mode="minimal"] body::before { display: none; }
+
+/* Footer */
+footer {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 30px 28px 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+.reader {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Progress bar */
+.progress {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 120;
+    pointer-events: none;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    transition: width 0.1s linear;
+}
+html[data-mode="minimal"] .progress-bar {
+    background: var(--text);
+}
+
+/* Hero / cover */
+.book-hero {
+    text-align: center;
+    padding: clamp(60px, 9vw, 110px) 20px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.cover-wrap {
+    max-width: 360px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+.cover-wrap img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="maximal"] .cover-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(165,180,252,0.25), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(30px);
+}
+html[data-mode="minimal"] .cover-wrap img {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    border-radius: 2px;
+}
+.cover-wrap:hover img { transform: translateY(-4px) scale(1.01); }
+
+.book-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    margin-bottom: 10px;
+}
+html[data-mode="maximal"] .book-title {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+html[data-mode="minimal"] .book-title {
+    font-weight: 700;
+    color: var(--text);
+}
+.book-author {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+html[data-mode="maximal"] .book-author { color: var(--accent); }
+.book-meta {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* TOC drawer */
+.toc-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 110;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.toc-btn:hover { transform: scale(1.05); }
+.toc-btn svg { width: 18px; height: 18px; }
+.toc-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(340px, 85vw);
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    transform: translateX(-105%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 150;
+    overflow-y: auto;
+    padding: 70px 24px 30px;
+}
+.toc-drawer.open { transform: translateX(0); }
+.toc-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.toc-backdrop.open { opacity: 1; pointer-events: auto; }
+.toc-drawer h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+.toc-drawer ol {
+    list-style: none;
+    counter-reset: tocc;
+}
+.toc-drawer ol li {
+    counter-increment: tocc;
+    margin: 0;
+}
+.toc-drawer ol li a {
+    display: block;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: color 0.2s ease, padding 0.2s ease;
+}
+.toc-drawer ol li a::before {
+    content: counter(tocc) ". ";
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+}
+.toc-drawer ol li a:hover {
+    color: var(--accent);
+    padding-left: 10px;
+}
+.toc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+/* Chapters */
+.chapter {
+    margin: 120px 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
+.chapter-image {
+    width: 100%;
+    max-width: 1100px;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
+}
+html[data-mode="minimal"] .chapter-image {
+    border-radius: 2px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
+}
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.chapter-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+.chapter-summary p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1.15em;
+    color: var(--text);
+}
+html[data-mode="minimal"] .chapter-summary {
+    font-family: 'Fraunces', Georgia, serif;
+}
+html[data-mode="minimal"] .chapter-summary p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+}
+
+/* Chapter nav arrows */
+.chapter-jump {
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0 0;
+    gap: 10px;
+}
+.chapter-jump a {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+}
+.chapter-jump a:hover {
+    color: var(--text);
+    border-color: var(--text);
+    transform: translateY(-1px);
+}
+.chapter-jump a.next { text-align: right; }
+.chapter-jump a.prev { text-align: left; }
+.chapter-jump span { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 4px; }
+
+/* Current chapter pill */
+.pill {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    font-size: 0.82rem;
+    color: var(--muted);
+    z-index: 90;
+    transition: transform 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pill.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Back cover + footer */
+.back-cover {
+    max-width: 360px;
+    margin: 80px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+html[data-mode="minimal"] .back-cover {
+    border-radius: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+</style>
+</head>
+<body data-kids="1">
+<div class="progress"><div class="progress-bar"></div></div>
+<header class="topbar">
+    <div class="topbar-brand"><a href="../../kids.html">Illustrated Classics</a></div>
+    <div class="topbar-toggles">
+        <div class="audience-toggle" role="group" aria-label="Audience">
+            <span class="audience-current">Kids</span>
+            <a class="audience-swap" href="../../war_of_the_worlds/index.html">Switch to Adults</a>
+        </div>
+        
+        <div class="mode-toggle" role="group" aria-label="Visual mode">
+            <button type="button" data-mode="minimal">Minimal</button>
+            <button type="button" data-mode="maximal">Maximal</button>
+        </div>
+    </div>
+</header>
+
+<button class="toc-btn" aria-label="Open chapter list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+</button>
+<div class="toc-backdrop"></div>
+<aside class="toc-drawer" aria-label="Chapters">
+    <button class="toc-close" aria-label="Close">×</button>
+    <h3>The War of the Worlds</h3>
+    <ol><li><a href="#chapter-1">Watched by Vast and Unsympathetic Minds</a></li><li><a href="#chapter-2">A Cylinder Unscrews at Dawn</a></li><li><a href="#chapter-3">The Cylinder Draws a Crowd</a></li><li><a href="#chapter-4">Humanity Meets Its Alien Terror</a></li><li><a href="#chapter-5">Death Leaping From Man to Man</a></li><li><a href="#chapter-6">Panic and Death on the Common</a></li><li><a href="#chapter-7">Flight Through Terror and Disbelief</a></li><li><a href="#chapter-8">Life Continues as the Poison Spreads</a></li><li><a href="#chapter-9">Calm Before the Martian Storm</a></li><li><a href="#chapter-10">Midnight Journey Through Fire and Lightning</a></li><li><a href="#chapter-11">A World Transformed by Fire</a></li><li><a href="#chapter-12">Fleeing Through a Shattered Landscape</a></li><li><a href="#chapter-13">Escape and Encounter Amid Devastation</a></li><li><a href="#chapter-14">London&#x27;s Calm Before the Storm</a></li><li><a href="#chapter-15">The Martians Resume Their Deadly Advance</a></li><li><a href="#chapter-16">London&#x27;s Collapse Into Chaos</a></li><li><a href="#chapter-17">Humanity&#x27;s Desperate Flight to the Sea</a></li><li><a href="#chapter-18">Trapped by Smoke, Freed to Flee</a></li><li><a href="#chapter-19">Martians Revealed at the Pit&#x27;s Edge</a></li><li><a href="#chapter-20">Trapped with Madness and Martians</a></li><li><a href="#chapter-21">Madness, Violence, and Martian Discovery</a></li><li><a href="#chapter-22">Emergence from the Martian Pit</a></li><li><a href="#chapter-23">Dethronement Among the Red Weed</a></li><li><a href="#chapter-24">Refuge, Reflection, and Restless Dawn</a></li><li><a href="#chapter-25">The Eerie Silence and Alien Wailing</a></li><li><a href="#chapter-26">The World Revives in Ruin</a></li><li><a href="#chapter-27">Humanity&#x27;s Uncertain Future Among the Stars</a></li></ol>
+</aside>
+
+<section class="book-hero">
+    
+<div class="cover-wrap">
+    <img src="../../war_of_the_worlds/images_anime/cover.webp" alt="The War of the Worlds cover">
+</div>
+    <h1 class="book-title">The War of the Worlds</h1>
+    <p class="book-author">H.G. Wells</p>
+    <p class="book-meta">Kids Edition · 27 Chapters</p>
+</section>
+
+<main class="reader">
+<section class="chapter" id="chapter-1" data-num="1">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_1.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_1.webp" alt="Watched by Vast and Unsympathetic Minds illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Watched by Vast and Unsympathetic Minds</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Long ago, people lived happy, busy lives on Earth. They did not know that someone far away was watching them. On the planet Mars, very clever creatures looked at Earth through special tools. Mars had become cold and dry, with not much water left. The creatures there needed a new home, and Earth looked perfect.</p>
+<p>One night, a man named Ogilvy invited his friend to look at Mars through a big telescope. They saw a tiny bright light, like a little dot far, far away. Ogilvy thought maybe a volcano was making flashes on Mars. He did not think anyone lived there. But those flashes were really something being sent toward Earth.</p>
+<p>The newspapers wrote a little bit about the strange lights. Most people did not worry at all. They rode bicycles and sang songs and enjoyed the warm summer evenings. On one lovely night, a man walked with his wife and pointed up at Mars glowing in the sky. Everything felt peaceful and safe.</p></div>
+    <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
+</section>
+<section class="chapter" id="chapter-2" data-num="2">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_2.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_2.webp" alt="A Cylinder Unscrews at Dawn illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">A Cylinder Unscrews at Dawn</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Something amazing fell from the sky very early one morning. It looked like a bright green shooting star! Many people saw it flash across the dark sky. They thought it was just a regular space rock.</p>
+<p>But a man named Ogilvy wanted to find where it landed. He woke up at sunrise and walked to the sandy fields near his town. There he found a big hole in the ground. In the middle of the hole was something strange. It was not a round rock at all. It was a huge metal tube, as wide as a house! The metal was still warm from falling through the sky. Ogilvy heard soft sounds coming from inside. Then he saw the top was slowly turning. Something inside was trying to get out! Ogilvy got very excited and ran to tell everyone. A news writer named Henderson believed him. They told the whole town. Soon everyone hurried to see this mysterious thing from space.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
+</section>
+<section class="chapter" id="chapter-3" data-num="3">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_3.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_3.webp" alt="The Cylinder Draws a Crowd illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">The Cylinder Draws a Crowd</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>A huge metal cylinder sat in a big pit on the common. It had fallen from the sky and burned the grass all around it. When I came back that morning, about twenty people stood looking at it. Some boys were throwing stones at it, but I asked them to stop. Then they ran off to play instead.</p>
+<p>All sorts of people came to see the strange thing. There were cyclists and gardeners and shopkeepers and children too. Most people did not know what it was. They just stared at the big, rusty shape in the ground. I climbed into the pit and looked closely. I could tell this amazing object had come all the way from Mars! I wondered what might be inside.</p>
+<p>By afternoon, the news had spread everywhere. Crowds came from nearby towns. Someone even brought a cart to sell apples and ginger beer! Scientists worked hard to dig around the cylinder. They tried to open it, but the lid would not budge. I went to find help with the big crowd, feeling excited about what we might discover next.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
+</section>
+<section class="chapter" id="chapter-4" data-num="4">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_4.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_4.webp" alt="Humanity Meets Its Alien Terror illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Humanity Meets Its Alien Terror</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator went back to the big open field where a crowd had gathered. Everyone was watching a strange metal cylinder that had fallen from the sky. People pushed closer to see, and a boy ran by saying something inside was moving! A loud hum came from the cylinder, and slowly the top began to unscrew all by itself.</p>
+<p>When the lid fell off, everyone stared at the dark opening. What came out was not what they expected at all. Instead of a person, they saw something very different. It had big round eyes that glowed, and long wiggly arms like grey snakes. The creature was round and about as big as a bear, with shiny wet-looking skin. It seemed to have trouble moving because Earth felt too heavy for it. Everyone felt very surprised and scared. People started backing away quickly. The narrator ran to hide behind some trees. All around the field, people stood frozen, not sure what to do. No one knew what would happen next.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
+</section>
+<section class="chapter" id="chapter-5" data-num="5">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_5.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_5.webp" alt="Death Leaping From Man to Man illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Death Leaping From Man to Man</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator stood in the tall grass, watching the big hole where the Martians had landed. He felt scared but also very curious. Strange black arms poked out of the pit and then went back in. Other people stood watching too, all around the common.</p>
+<p>As the sky grew darker, some brave people walked closer to the pit. A group of kind, smart men decided to say hello to the Martians. They waved a white flag to show they wanted to be friends. But something terrible happened next. A bright green light came from the pit, and a strange humming sound filled the air. The light hurt the people who were trying to be friendly. Trees and bushes caught fire all around. The narrator was so frightened that he turned and ran away as fast as he could. He stumbled through the grass in the growing darkness, his heart pounding. The stars came out above, shining down on the quiet, smoky common.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
+</section>
+<section class="chapter" id="chapter-6" data-num="6">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_6.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_6.webp" alt="Panic and Death on the Common illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Panic and Death on the Common</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>That night, something scary happened on the big field called the common. The Martians had a bright beam that made things very hot. It could start fires and melt metal. People in the nearby towns did not know about the danger yet. They thought something interesting was happening, so they walked over to take a look. Young people strolled together in the evening air, curious and excited. Soon, about three hundred people had gathered to watch the strange visitors from space.</p>
+<p>Then the Martians used their heat beam. People saw bright flashes and bushes catching fire. The beam swept across the treetops and set them burning. Sparks fell like tiny stars, and leaves floated down like bits of flame. Everyone was so frightened! They all turned and ran back toward town as fast as they could. The roads were crowded and people pushed and bumped into each other. Some people got hurt in the rush. It was a very sad and scary night, and everyone now knew the Martians were not friendly.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
+</section>
+<section class="chapter" id="chapter-7" data-num="7">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_7.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_7.webp" alt="Flight Through Terror and Disbelief illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Flight Through Terror and Disbelief</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The run home felt strange and scary like a bad dream. Everything was a blur of trees and darkness. Finally there came rest near a bridge by some big gas tanks. After catching a breath and standing up again the hat was gone and clothes were all messy from running so fast.</p>
+<p>But the world looked so normal now. A train went by with bright windows. Neighbours stood chatting at their gates. The streetlamps glowed warm and steady. It was hard to believe anything strange had happened at all. Some people by a gate just laughed when they heard about the Martians. They thought it was all a silly joke.</p>
+<p>At home a worried wife listened to the whole story. But soon dinner and a cozy room made everything feel better. Surely the Martians could not do much here on Earth. They moved so slowly and seemed so weak. Tomorrow the newspaper would explain everything. The pink lamplight glowed softly and the table looked lovely. It felt safe and warm. But this peaceful dinner would be the last normal evening for quite a while.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
+</section>
+<section class="chapter" id="chapter-8" data-num="8">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_8.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_8.webp" alt="Life Continues as the Poison Spreads illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Life Continues as the Poison Spreads</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>That Friday night, something strange was happening near Woking, but most people did not know. Far away in London, life went on as normal. Families ate dinner together and children went to sleep in their cozy beds. People talked about the strange cylinder from space, but they did not worry much. It seemed like a faraway story that did not matter to them.</p>
+<p>Closer to the common, things felt different. Some houses had their lights on all night long. Curious people gathered on the bridges to watch and wonder. At the train station, a boy called out about visitors from Mars. But most travelers just thought there was a small fire burning somewhere. The mysterious visitors kept working through the dark night, making strange sounds and puffs of greenish smoke. Soldiers came to stand watch nearby. Then, just after midnight, everyone saw a bright greenish light fall from the sky into the woods. A second cylinder had come down from space.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
+</section>
+<section class="chapter" id="chapter-9" data-num="9">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_9.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_9.webp" alt="Calm Before the Martian Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Calm Before the Martian Storm</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>It was a hot summer morning, and everything felt strangely quiet. I had not slept much, but I went out to the garden early. The milkman came and told us that soldiers had surrounded the Martians. My neighbour was working in his garden and seemed cheerful. He gave me strawberries over the fence and said another big cylinder had landed far away.</p>
+<p>I walked toward the common but soldiers stopped me at the bridge. They asked me lots of questions about the Martians. Everyone was waiting and wondering what would happen next. The day grew long and very warm.</p>
+<p>Then late in the afternoon, things changed very fast. There was a loud boom and bright flashes of light. Trees caught fire and buildings started to crumble. I knew we had to leave right away. I took my wife&#x27;s hand and we hurried to the road. I got a horse and cart, and we drove away as quickly as we could. Behind us, smoke rose into the sky. We were heading to Leatherhead where her cousins lived, hoping to find somewhere safe.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
+</section>
+<section class="chapter" id="chapter-10" data-num="10">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_10.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_10.webp" alt="Midnight Journey Through Fire and Lightning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Midnight Journey Through Fire and Lightning</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>A man drove his wife through pretty countryside to stay with her cousins. The meadows smelled sweet like summer hay. His wife was very quiet and looked worried the whole way. He tried to make her feel better, but she just felt scared inside. When they said goodbye, her face looked pale and sad.</p>
+<p>Later that night, he drove back alone under dark, cloudy skies. A strange red glow spread across the sky in the distance. Then something amazing happened. A green light fell from the clouds like a shooting star. Lightning flashed bright purple and thunder boomed so loud. His horse got very scared and ran too fast. The cart tipped over and the man tumbled into a puddle of water.</p>
+<p>Then he saw something incredible. Giant metal machines as tall as houses were walking through the trees. They made loud clanking sounds and moved like they were alive. The man was so surprised and scared. He crawled all the way home through the wet woods and locked his door tight. Outside, the storm kept rumbling while he sat shivering, thinking about what he had seen.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
+</section>
+<section class="chapter" id="chapter-11" data-num="11">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_11.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_11.webp" alt="A World Transformed by Fire illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">A World Transformed by Fire</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The man sat alone in his house feeling cold and tired. His clothes were all wet from the rain. He found dry things to wear and went up to his study. When he looked out the window, everything had changed. The trees were gone. Strange lights glowed red and orange across the land. Big dark shapes moved around in the distance.</p>
+<p>He sat in his chair and watched for a long time. The shapes were very tall and they walked on three legs like nothing he had ever seen before. They came from Mars, far away in the sky. Soon a soldier climbed over the garden fence looking scared and lost. The man let him inside. The soldier was so tired he could barely talk. They shared some food together in the dark kitchen. When morning came, they looked outside again. Smoke rose gently into the sky. Everything looked so different now. The two tired friends sat together, wondering what would happen next.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
+</section>
+<section class="chapter" id="chapter-12" data-num="12">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_12.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_12.webp" alt="Fleeing Through a Shattered Landscape illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Fleeing Through a Shattered Landscape</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The next morning, the narrator and his soldier friend knew they had to leave the house. It was not safe to stay any longer. They packed food and water for the journey ahead. Outside, everything looked strange and quiet. The roads were empty, and people had left in a hurry.</p>
+<p>They walked through the woods very carefully, trying to be as quiet as mice. Soon they came to a busy town where families were packing up their carts and getting ready to leave. Children ran around, not quite understanding what was happening. Church bells rang in the distance.</p>
+<p>When they reached the river, many people were trying to get across in boats. Then the tall Martian machines appeared, walking quickly across the fields. Everyone was very scared and started running. The narrator jumped into the river to get away. The water got very hot, and he had to swim hard to reach the shore. He was tired and frightened, but he made it safely to the other side.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
+</section>
+<section class="chapter" id="chapter-13" data-num="13">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_13.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_13.webp" alt="Escape and Encounter Amid Devastation illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">Escape and Encounter Amid Devastation</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The strange visitors from Mars had stopped moving forward for a while. They stayed in one spot and worked on building things. Every day, another of their shiny ships fell from the sky bringing more of them. People with big guns got ready to protect their towns and cities.</p>
+<p>Meanwhile, the narrator had to get away from a dangerous place. He found a little boat floating on the river and swam out to catch it. He paddled with his hands because there were no oars. Along the way, he saw houses with smoke rising and people running across fields. Everything felt very quiet and strange.</p>
+<p>He was so tired that he fell asleep in the tall grass by the river. When he woke up, a man was sitting nearby. This man was called a curate, and he looked very worried and scared. The narrator tried to help him feel braver. Together, they decided to walk north to find safety. The moon glowed softly in the evening sky as they started their journey.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
+</section>
+<section class="chapter" id="chapter-14" data-num="14">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_14.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_14.webp" alt="London&#x27;s Calm Before the Storm illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">London&#x27;s Calm Before the Storm</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator&#x27;s younger brother lived in London. He was a student studying to become a doctor. He spent his days reading big books and getting ready for tests. When news came about strange visitors from Mars, he did not worry much at first. The newspapers said everything would be fine. London felt safe and far away from any trouble.</p>
+<p>On Sunday, the brother went to the train station. He heard bits of news from people there. Some families had left their homes and looked very tired. Trains were not running the right way. Still, most people in London went about their normal day. They walked in the parks and rode the buses like always. But by nightfall, more and more worried people began arriving in the city. Then, very early Monday morning, bells started ringing loudly. Police officers called out that everyone needed to leave. The brother put some money in his pocket and stepped outside into the quiet morning, not knowing what would happen next.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
+</section>
+<section class="chapter" id="chapter-15" data-num="15">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_15.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_15.webp" alt="The Martians Resume Their Deadly Advance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">The Martians Resume Their Deadly Advance</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>While different people watched and worried in other places, the Martians began moving again. Most of them stayed busy in their big pit, where strange green clouds rose into the sky. But three tall Martians walked out across the countryside as the sun went down. They called to each other with loud, strange howling sounds.</p>
+<p>Some brave soldiers tried to stop them. One group of soldiers hid in a forest and fired their big guns. They actually knocked one Martian down! But then the other Martians helped their friend, and the soldiers had to run away. The hurt Martian was fixed, and soon more Martians came to join the group. Now there were seven of them standing together. They carried special tubes that made loud booming sounds and sent out thick black clouds. The dark clouds spread across the land like fog, and everyone who saw them coming knew they had to leave quickly. By morning, people in the big city were told they needed to go somewhere safe.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
+</section>
+<section class="chapter" id="chapter-16" data-num="16">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_16.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_16.webp" alt="London&#x27;s Collapse Into Chaos illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">London&#x27;s Collapse Into Chaos</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>As morning came, many people in London felt very scared. They all wanted to leave the city at once. The streets became crowded with families rushing to get away. Trains were full, and roads were packed with people walking, riding bikes, and driving carriages.</p>
+<p>My brother tried to leave too. He found a bicycle and rode through the busy streets. He was tired and hungry, but he kept going. Along a quiet lane, he met two women who needed help. Some mean men were bothering them, but my brother was brave. He helped chase the men away, and one of the women even helped him. After that, they all decided to travel together.</p>
+<p>The roads were dusty and full of people hurrying along. Everyone looked tired and worried. My brother and his new friends kept moving east, hoping to find a safe place. When evening came, they stopped to rest, watching the long line of travelers still walking past them into the night.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
+</section>
+<section class="chapter" id="chapter-17" data-num="17">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_17.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_17.webp" alt="Humanity&#x27;s Desperate Flight to the Sea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">Humanity&#x27;s Desperate Flight to the Sea</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator&#x27;s brother had to escape with two friends. Their names were Mrs. Elphinstone and her sister-in-law. Many, many people were trying to leave the city all at once. The roads were very crowded and everyone was worried. The three travelers walked for days, looking for a way to be safe. They heard stories about the Martians moving closer. Finally, they reached the sea and saw something wonderful. Hundreds and hundreds of boats floated on the water, waiting to help people get away.</p>
+<p>They climbed aboard a big steamboat heading far across the sea. But then three Martians came walking through the shallow water toward all the boats. A brave warship called the Thunder Child raced toward the Martians to protect everyone. The ship was very brave and stopped two of the Martians before it disappeared into clouds of steam. People on all the boats cheered because the Thunder Child had saved them. As night came, the little steamboat carried the brother and his friends safely away across the dark water.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
+</section>
+<section class="chapter" id="chapter-18" data-num="18">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_18.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_18.webp" alt="Trapped by Smoke, Freed to Flee illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Trapped by Smoke, Freed to Flee</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator and the curate had been stuck in an empty house for two whole days. A strange dark smoke filled the air outside, so they could not leave. The narrator worried very much about his wife far away. He hoped she was safe and not too scared.</p>
+<p>Then on Monday, a Martian came walking across the fields. It sprayed hot steam everywhere, and the dark smoke began to clear away. Now they could finally go outside again! The land looked very different, all dark and strange. The two men gathered food and water and started walking toward the narrator&#x27;s wife.</p>
+<p>They walked through many towns and saw other people who looked frightened. Near one place, they saw a tall Martian machine picking people up and carrying them away. The narrator wondered what the Martians wanted.</p>
+<p>That night, they found a nice house with bread and ham to eat. But suddenly there was a bright flash and a loud crash! The house fell down around them. When the narrator woke up, he and the curate were trapped under the broken house. Through a small hole, they could see a Martian right outside. Now they had to be very, very quiet and wait.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
+</section>
+<section class="chapter" id="chapter-19" data-num="19">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_19.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_19.webp" alt="Martians Revealed at the Pit&#x27;s Edge illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">Martians Revealed at the Pit&#x27;s Edge</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>From their hiding spot in a broken house, the narrator and the curate peeked through a gap in the wall. What they saw was amazing and strange. A huge round pit had formed right next to them, and inside it, the Martians were busy at work. The Martians looked very different from people. They had big round bodies about as wide as a bathtub, with large dark eyes and long thin arms like octopus tentacles. They used amazing machines that moved like living creatures, with bendy metal arms that could pick things up and build things. The machines did not have any wheels at all. Instead they had special parts that squeezed and stretched to make them move. The Martians did not talk out loud to each other. They shared their thoughts quietly, like magic, working together without saying a word. Strange red plants had started growing up the walls of the pit, adding bright color to everything. The narrator watched in wonder as the machines kept building, some even working all by themselves.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
+</section>
+<section class="chapter" id="chapter-20" data-num="20">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_20.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_20.webp" alt="Trapped with Madness and Martians illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">Trapped with Madness and Martians</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator and another man called the curate were hiding inside a broken house. A big Martian machine had crashed nearby, and they were very scared. They stayed in the dark cellar and tried to be as quiet as mice. Sometimes they peeked through a tiny hole in the rubble to see what the Martians were doing outside. It was scary to look, but they could not help being curious.</p>
+<p>The two men did not get along very well. The curate cried a lot and talked too much, which made it hard to stay hidden. He also ate their food too quickly, and the narrator worried they would run out. The narrator tried to explain they needed to be patient and wait for the Martians to leave, but the curate would not listen. It was very hard being stuck together in such a small, dark space. Then one quiet night, the narrator heard something wonderful far away. Boom, boom, boom! It was the sound of big guns. Somewhere out there, people were still fighting back. That gave him a tiny bit of hope.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
+</section>
+<section class="chapter" id="chapter-21" data-num="21">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_21.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_21.webp" alt="Madness, Violence, and Martian Discovery illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">Madness, Violence, and Martian Discovery</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>On the sixth day of hiding in the ruined house, the two men began to argue. The curate was so scared and hungry that he stopped thinking clearly. He wanted to eat all their food at once. The narrator knew they needed to save their food to stay safe. He tried very hard to help the curate stay calm and quiet.</p>
+<p>But the curate grew more and more upset. He started talking loudly, even though they needed to whisper. The Martians were still outside, and any noise could bring danger. The narrator begged him to be quiet. When the curate tried to leave the house, the narrator had to stop him. He gently knocked the curate down so he would be still.</p>
+<p>Then something scary happened. A Martian machine reached a long metal arm into the house, searching around. The narrator hid in the coal cellar and stayed very, very still. The metal arm touched his boot but then went away. For two whole days, the narrator hid in the dark, waiting until it was safe to come out again.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
+</section>
+<section class="chapter" id="chapter-22" data-num="22">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_22.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_22.webp" alt="Emergence from the Martian Pit illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">22</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 22</div>
+            <h2 class="chapter-title">Emergence from the Martian Pit</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>For many days, the man hid in a dark little room. He was so hungry and thirsty that he felt very weak. There was no food left anywhere. Everything was quiet outside, which felt strange and a bit scary. Finally he found some water to drink, and it helped him feel a little better.</p>
+<p>One morning, he heard a dog sniffing nearby. The dog poked its nose through some red plants that had grown over everything. When the dog left, the man peeked outside and saw something amazing. The Martians were gone. The big pit was empty and silent. He pushed through the red plants and stepped outside for the first time in so long. The world looked very different now. Strange red plants covered everything like a carpet. Houses were broken and empty. Birds hopped around, and a thin cat walked by. But there were no people anywhere. The sky was bright blue, and the fresh air felt wonderful. He wondered what he would find next.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
+</section>
+<section class="chapter" id="chapter-23" data-num="23">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_23.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_23.webp" alt="Dethronement Among the Red Weed illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">23</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 23</div>
+            <h2 class="chapter-title">Dethronement Among the Red Weed</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>I had been hiding for many days in a dark place. When I finally came outside, everything looked so strange and different. Red plants from Mars had grown everywhere! They covered the ground and wrapped around the trees. The whole world looked like it was painted in shades of red and crimson.</p>
+<p>I was very hungry after hiding for so long. I found a little garden with some carrots and onions growing. I picked them quickly and ate what I could find. Then I walked through the tall red plants toward the river. The strange red weed had grown all along the water. But something wonderful was happening. The red plants were getting sick and starting to fade away. They could not live on our Earth after all. The water would carry the wilted plants out to sea. I kept walking as the sky grew dark. I felt very alone, but something inside me said to keep going.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
+</section>
+<section class="chapter" id="chapter-24" data-num="24">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_24.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_24.webp" alt="Refuge, Reflection, and Restless Dawn illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">24</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 24</div>
+            <h2 class="chapter-title">Refuge, Reflection, and Restless Dawn</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator finally escaped from hiding and found a place to rest. It was an empty inn on top of a hill. He was so hungry! He searched every room but only found some old biscuits and two cans of pineapple. He did not turn on any lights because he was afraid the Martians might see. That night he could not sleep well. He thought about many things, especially his dear wife. He hoped so much that she was safe somewhere.</p>
+<p>In the morning, the sky was pink and golden and very pretty. He walked toward a big open field where yellow flowers grew. Little frogs hopped all around in a muddy puddle. Then he saw someone hiding in the bushes. It was a soldier he had met before! The soldier had big ideas about people hiding underground to stay safe. They spent the day together, but the narrator started to feel bad. He missed his wife very much. He decided he must go to London to find out what happened.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
+</section>
+<section class="chapter" id="chapter-25" data-num="25">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_25.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_25.webp" alt="The Eerie Silence and Alien Wailing illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">25</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 25</div>
+            <h2 class="chapter-title">The Eerie Silence and Alien Wailing</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The narrator walked through a very quiet city. Hardly anyone was around. The streets were empty and still. Red weeds grew everywhere, but some were turning white and dying. It felt strange and lonely to walk through such a big, silent place.</p>
+<p>Then a strange sound began. It was a sad, low cry that went on and on. The sound made the narrator feel tired and very alone. But something inside said to keep going. So the narrator walked toward where the sound was coming from. Near a big park stood a tall Martian machine, but it was not moving at all. Birds flew around it. The narrator climbed a hill and looked down. All the Martians had stopped. They were not dangerous anymore. Tiny germs, so small you cannot see them, had made the Martians sick. The city was safe now. The narrator felt grateful and thought of home and the people waiting there.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
+</section>
+<section class="chapter" id="chapter-26" data-num="26">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_26.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_26.webp" alt="The World Revives in Ruin illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">26</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 26</div>
+            <h2 class="chapter-title">The World Revives in Ruin</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>He had been through so much that his mind needed a very long rest. For three whole days, he could not remember anything at all. Kind strangers found him wandering and took care of him until he felt better. They gave him food and a safe place to sleep. When he woke up, he learned that the Martians were gone forever. People everywhere were so happy! Church bells rang out across England. Ships full of bread and good food sailed toward London to help everyone.</p>
+<p>After a few days, he wanted to go home. The streets were busy again with people walking and shops opening up. He took a train through the countryside, looking out the window at everything. When he finally reached his house, the door was open and everything looked just the same as when he left. Then he heard a voice behind him. He turned around and there stood his wife! They had found each other again, and he was not alone anymore.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
+</section>
+<section class="chapter" id="chapter-27" data-num="27">
+    <figure class="chapter-figure" data-full="../../war_of_the_worlds/images_anime/chapter_27.webp"><img class="chapter-image" src="../../war_of_the_worlds/images_anime/chapter_27.webp" alt="Humanity&#x27;s Uncertain Future Among the Stars illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">27</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 27</div>
+            <h2 class="chapter-title">Humanity&#x27;s Uncertain Future Among the Stars</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The story is almost over now. The narrator thinks about everything that happened. The visitors from Mars did not lose because of our brave soldiers. They got sick from tiny, tiny things called germs that live on Earth. Their bodies had never met these germs before, so they could not fight them off.</p>
+<p>Some people wonder if the visitors might come back someday. The narrator looks up at the stars and feels a little worried. But maybe something good came from all this trouble too. People learned to work together and help each other. And now everyone knows that space is very big, with so many things we do not understand yet.</p>
+<p>The narrator still feels shaky sometimes, remembering the scary days. But then he holds his wife&#x27;s hand. He thought he had lost her, and she thought she had lost him. Now they are together again, safe and sound. The hard times are over, but no one will ever forget what happened.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><span></span></nav>
+</section>
+<img class="back-cover" src="../../war_of_the_worlds/images_anime/back_cover.webp" alt="Back cover">
+</main>
+
+<div class="pill"></div>
+
+<footer>
+    <p>From Project Gutenberg · Generated with AI</p>
+</footer>
+
+<script>
+(function() {
+    const html = document.documentElement;
+    const savedMode = localStorage.getItem('site-mode') || 'maximal';
+    const savedStyle = localStorage.getItem('site-style') || 'cinematic';
+    html.setAttribute('data-mode', savedMode);
+    html.setAttribute('data-style', savedStyle);
+    document.addEventListener('DOMContentLoaded', function() {
+        const modeBtns = document.querySelectorAll('.mode-toggle button');
+        const styleBtns = document.querySelectorAll('.style-toggle button');
+
+        function syncMode() {
+            const m = html.getAttribute('data-mode');
+            modeBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+        }
+        function syncStyle() {
+            const s = html.getAttribute('data-style');
+            styleBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.style === s ? 'true' : 'false'));
+        }
+        function applyStyle(newStyle) {
+            html.setAttribute('data-style', newStyle);
+            localStorage.setItem('site-style', newStyle);
+            // Landing cards: swap cover img + primary Read link
+            document.querySelectorAll('.card').forEach(card => {
+                const img = card.querySelector('.cover-link img');
+                const link = card.querySelector('.cover-link');
+                const readBtn = card.querySelector('.btn.primary');
+                const cin = card.dataset.cinematic;
+                const ani = card.dataset.anime;
+                const hasAni = ani && ani !== '';
+                const target = (newStyle === 'anime' && hasAni) ? ani : cin;
+                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
+                if (img && target) img.src = target;
+                if (link && href) link.href = href;
+                if (readBtn && href) readBtn.href = href;
+            });
+            // Book viewer: navigate to sibling page
+            const swap = document.body.dataset.stylePage;
+            if (swap && swap !== newStyle) {
+                const target = document.body.dataset.siblingHref;
+                if (target) window.location.href = target;
+            }
+            syncStyle();
+        }
+        modeBtns.forEach(b => b.addEventListener('click', function() {
+            const m = b.dataset.mode;
+            html.setAttribute('data-mode', m);
+            localStorage.setItem('site-mode', m);
+            syncMode();
+        }));
+        styleBtns.forEach(b => b.addEventListener('click', function() {
+            applyStyle(b.dataset.style);
+        }));
+        syncMode();
+        // Initial landing apply so cards reflect saved style on first paint
+        if (document.querySelector('.card')) applyStyle(savedStyle);
+        else syncStyle();
+    });
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading progress
+    const bar = document.querySelector('.progress-bar');
+    const onScroll = () => {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (scrolled / max * 100) + '%' : '0%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal chapters
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '-60px' });
+    document.querySelectorAll('.chapter').forEach(c => io.observe(c));
+
+    // TOC drawer
+    const tocBtn = document.querySelector('.toc-btn');
+    const drawer = document.querySelector('.toc-drawer');
+    const backdrop = document.querySelector('.toc-backdrop');
+    const closeBtn = document.querySelector('.toc-close');
+    function openToc() { drawer.classList.add('open'); backdrop.classList.add('open'); }
+    function closeToc() { drawer.classList.remove('open'); backdrop.classList.remove('open'); }
+    tocBtn.addEventListener('click', openToc);
+    backdrop.addEventListener('click', closeToc);
+    closeBtn.addEventListener('click', closeToc);
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeToc));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToc();
+    });
+
+    // Current-chapter pill
+    const pill = document.querySelector('.pill');
+    const chapters = Array.from(document.querySelectorAll('.chapter'));
+    const io2 = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const title = e.target.querySelector('.chapter-title').textContent;
+                const num = e.target.dataset.num;
+                pill.textContent = `Ch ${num} · ${title}`;
+                pill.classList.add('show');
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    chapters.forEach(c => io2.observe(c));
+
+    // Keyboard chapter nav
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const y = window.scrollY + window.innerHeight / 3;
+        let idx = chapters.findIndex(c => c.offsetTop > y);
+        if (idx === -1) idx = chapters.length;
+        const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
+    });
+});
+</script>
+</body>
+</html>

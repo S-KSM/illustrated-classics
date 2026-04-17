@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="maximal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Picture of Dorian Gray · Kids Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --max-bg: #07060f;
+    --max-bg-soft: #11102a;
+    --max-text: #f4f4f7;
+    --max-muted: #9aa0b4;
+    --max-accent-1: #a5b4fc;
+    --max-accent-2: #f9a8d4;
+    --max-accent-3: #fbbf24;
+    --max-border: rgba(255,255,255,0.08);
+    --max-card: rgba(255,255,255,0.04);
+    --max-glow: 0 0 80px rgba(165,180,252,0.35);
+
+    --min-bg: #faf8f4;
+    --min-text: #1a1a1a;
+    --min-muted: #6b6b6b;
+    --min-accent: #1a1a1a;
+    --min-border: #e2ded5;
+    --min-card: #ffffff;
+}
+
+html[data-mode="maximal"] {
+    --bg: var(--max-bg);
+    --bg-soft: var(--max-bg-soft);
+    --text: var(--max-text);
+    --muted: var(--max-muted);
+    --accent: var(--max-accent-1);
+    --accent-2: var(--max-accent-2);
+    --accent-3: var(--max-accent-3);
+    --border: var(--max-border);
+    --card: var(--max-card);
+    color-scheme: dark;
+}
+html[data-mode="minimal"] {
+    --bg: var(--min-bg);
+    --bg-soft: var(--min-bg);
+    --text: var(--min-text);
+    --muted: var(--min-muted);
+    --accent: var(--min-accent);
+    --accent-2: var(--min-accent);
+    --accent-3: var(--min-accent);
+    --border: var(--min-border);
+    --card: var(--min-card);
+    color-scheme: light;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Top bar */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.topbar-brand {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+.topbar-brand a { color: inherit; }
+.topbar-toggles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.mode-toggle, .style-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+}
+.mode-toggle button, .style-toggle button {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.mode-toggle button[aria-pressed="true"], .style-toggle button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+}
+.audience-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.audience-current { color: var(--muted); }
+.audience-swap {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg) !important;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.audience-swap:hover { opacity: 0.88; }
+@media (max-width: 600px) {
+    .mode-toggle button, .style-toggle button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Maximal-only decor: animated gradient backdrop */
+html[data-mode="maximal"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(165,180,252,0.28), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(249,168,212,0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(251,191,36,0.14), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgDrift 22s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(-2%, 2%, 0) scale(1.08); }
+}
+
+/* Minimal hides all fancy decor */
+html[data-mode="minimal"] body::before { display: none; }
+
+/* Footer */
+footer {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 30px 28px 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+.reader {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Progress bar */
+.progress {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 120;
+    pointer-events: none;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    transition: width 0.1s linear;
+}
+html[data-mode="minimal"] .progress-bar {
+    background: var(--text);
+}
+
+/* Hero / cover */
+.book-hero {
+    text-align: center;
+    padding: clamp(60px, 9vw, 110px) 20px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.cover-wrap {
+    max-width: 360px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+.cover-wrap img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="maximal"] .cover-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(165,180,252,0.25), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(30px);
+}
+html[data-mode="minimal"] .cover-wrap img {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    border-radius: 2px;
+}
+.cover-wrap:hover img { transform: translateY(-4px) scale(1.01); }
+
+.book-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    margin-bottom: 10px;
+}
+html[data-mode="maximal"] .book-title {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+html[data-mode="minimal"] .book-title {
+    font-weight: 700;
+    color: var(--text);
+}
+.book-author {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+html[data-mode="maximal"] .book-author { color: var(--accent); }
+.book-meta {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* TOC drawer */
+.toc-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 110;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.toc-btn:hover { transform: scale(1.05); }
+.toc-btn svg { width: 18px; height: 18px; }
+.toc-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(340px, 85vw);
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    transform: translateX(-105%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 150;
+    overflow-y: auto;
+    padding: 70px 24px 30px;
+}
+.toc-drawer.open { transform: translateX(0); }
+.toc-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.toc-backdrop.open { opacity: 1; pointer-events: auto; }
+.toc-drawer h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+.toc-drawer ol {
+    list-style: none;
+    counter-reset: tocc;
+}
+.toc-drawer ol li {
+    counter-increment: tocc;
+    margin: 0;
+}
+.toc-drawer ol li a {
+    display: block;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: color 0.2s ease, padding 0.2s ease;
+}
+.toc-drawer ol li a::before {
+    content: counter(tocc) ". ";
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+}
+.toc-drawer ol li a:hover {
+    color: var(--accent);
+    padding-left: 10px;
+}
+.toc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+/* Chapters */
+.chapter {
+    margin: 120px 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
+.chapter-image {
+    width: 100%;
+    max-width: 1100px;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
+}
+html[data-mode="minimal"] .chapter-image {
+    border-radius: 2px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
+}
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.chapter-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+.chapter-summary p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1.15em;
+    color: var(--text);
+}
+html[data-mode="minimal"] .chapter-summary {
+    font-family: 'Fraunces', Georgia, serif;
+}
+html[data-mode="minimal"] .chapter-summary p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+}
+
+/* Chapter nav arrows */
+.chapter-jump {
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0 0;
+    gap: 10px;
+}
+.chapter-jump a {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+}
+.chapter-jump a:hover {
+    color: var(--text);
+    border-color: var(--text);
+    transform: translateY(-1px);
+}
+.chapter-jump a.next { text-align: right; }
+.chapter-jump a.prev { text-align: left; }
+.chapter-jump span { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 4px; }
+
+/* Current chapter pill */
+.pill {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    font-size: 0.82rem;
+    color: var(--muted);
+    z-index: 90;
+    transition: transform 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pill.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Back cover + footer */
+.back-cover {
+    max-width: 360px;
+    margin: 80px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+html[data-mode="minimal"] .back-cover {
+    border-radius: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+</style>
+</head>
+<body data-kids="1">
+<div class="progress"><div class="progress-bar"></div></div>
+<header class="topbar">
+    <div class="topbar-brand"><a href="../../kids.html">Illustrated Classics</a></div>
+    <div class="topbar-toggles">
+        <div class="audience-toggle" role="group" aria-label="Audience">
+            <span class="audience-current">Kids</span>
+            <a class="audience-swap" href="../../dorian_gray/index.html">Switch to Adults</a>
+        </div>
+        
+        <div class="mode-toggle" role="group" aria-label="Visual mode">
+            <button type="button" data-mode="minimal">Minimal</button>
+            <button type="button" data-mode="maximal">Maximal</button>
+        </div>
+    </div>
+</header>
+
+<button class="toc-btn" aria-label="Open chapter list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+</button>
+<div class="toc-backdrop"></div>
+<aside class="toc-drawer" aria-label="Chapters">
+    <button class="toc-close" aria-label="Close">×</button>
+    <h3>The Picture of Dorian Gray</h3>
+    <ol><li><a href="#chapter-1">Art&#x27;s Beautiful and Useless Truth</a></li><li><a href="#chapter-2">The Seduction of a Beautiful Soul</a></li><li><a href="#chapter-3">Lord Henry&#x27;s Dangerous Philosophy Unveiled</a></li><li><a href="#chapter-4">A Lineage of Beauty and Tragedy</a></li><li><a href="#chapter-5">Sibyl Vane and the Theatre of Love</a></li><li><a href="#chapter-6">A Sister&#x27;s Dangerous Prince Charming</a></li><li><a href="#chapter-7">Love&#x27;s Sudden and Foolish Blossoming</a></li><li><a href="#chapter-8">The Night Sibyl Vane&#x27;s Art Died</a></li><li><a href="#chapter-9">The Portrait&#x27;s First Terrible Truth</a></li><li><a href="#chapter-10">The Art of Unfeeling</a></li><li><a href="#chapter-11">The Schoolroom&#x27;s Secret Burden</a></li><li><a href="#chapter-12">The Mirror and the Monster Within</a></li><li><a href="#chapter-13">A Foggy Night&#x27;s Fatal Reckoning</a></li><li><a href="#chapter-14">The Soul Revealed in Canvas</a></li><li><a href="#chapter-15">Sunlight on Blood-Stained Memory</a></li><li><a href="#chapter-16">A Mask of Grace and Guilt</a></li><li><a href="#chapter-17">The Desperate Search for Oblivion</a></li><li><a href="#chapter-18">Paradox and Wit at Tea</a></li><li><a href="#chapter-19">Shadows of Conscience and Fatal Chance</a></li><li><a href="#chapter-20">The Final Mask Shatters</a></li><li><a href="#chapter-21">The Soul&#x27;s Final Reckoning</a></li></ol>
+</aside>
+
+<section class="book-hero">
+    
+<div class="cover-wrap">
+    <img src="../../dorian_gray/images_anime/cover.webp" alt="The Picture of Dorian Gray cover">
+</div>
+    <h1 class="book-title">The Picture of Dorian Gray</h1>
+    <p class="book-author">Oscar Wilde</p>
+    <p class="book-meta">Kids Edition · 21 Chapters</p>
+</section>
+
+<main class="reader">
+<section class="chapter" id="chapter-1" data-num="1">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_1.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_1.webp" alt="Art&#x27;s Beautiful and Useless Truth illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Art&#x27;s Beautiful and Useless Truth</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>A clever writer once shared some special thoughts about art and beauty. He believed that people who make beautiful things, like painters and writers, have a very important job. They create lovely pictures and stories for everyone to enjoy. He thought that beautiful things do not need to teach us lessons or be useful like a hammer or a spoon. A painting can just be pretty, and that is enough. A story can just be exciting or dreamy, and that is wonderful too. He wanted people to look at art and feel happy or curious or amazed. The writer believed that making something beautiful takes great care and love. Artists work very hard to get everything just right. With these ideas about beauty and art, a new story is about to begin, full of interesting people and surprising things to discover.</p></div>
+    <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
+</section>
+<section class="chapter" id="chapter-2" data-num="2">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_2.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_2.webp" alt="The Seduction of a Beautiful Soul illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">The Seduction of a Beautiful Soul</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The studio smelled sweet, like roses and lilacs in bloom. Lord Henry lay on a cozy couch, watching bird shadows dance across the curtains. Bees buzzed outside in the tall grass. In the middle of the room stood a beautiful painting of a young man. The artist Basil had made it, and he thought it was very special.</p>
+<p>Lord Henry said it was wonderful work. But Basil did not want anyone else to see it. He felt he had put too much of his heart into the painting. The young man in the picture was named Dorian Gray. Basil told his friend how he met Dorian at a fancy party. From that very first moment, Basil knew Dorian was important. Dorian helped Basil paint better than ever before. He was like a wonderful friend who made everything feel exciting and new. Just then, someone knocked. The butler came in with surprising news. Dorian Gray had arrived and was waiting to see them.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
+</section>
+<section class="chapter" id="chapter-3" data-num="3">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_3.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_3.webp" alt="Lord Henry&#x27;s Dangerous Philosophy Unveiled illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">Lord Henry&#x27;s Dangerous Philosophy Unveiled</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>In Basil&#x27;s sunny art studio, young Dorian sat at the piano looking at music while Basil painted his picture. Then Lord Henry came to visit, and everything began to change. Lord Henry was very clever with words and liked to share big ideas. He told Dorian that being young and beautiful was the most wonderful thing in the world. He said people should enjoy every happy moment while they can.</p>
+<p>Dorian listened carefully to every word Lord Henry said. When Basil finished the painting, Dorian looked at it and gasped. He had never seen how lovely he looked! But then he felt sad because he knew the painting would stay beautiful forever while he would grow older. Dorian wished very much that he could stay young like the picture. Basil worried that his friend was filling Dorian&#x27;s head with too many new ideas. Lord Henry invited Dorian to go to the theatre that evening, and the two of them left together while Basil stayed behind, feeling a little bit lonely.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
+</section>
+<section class="chapter" id="chapter-4" data-num="4">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_4.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_4.webp" alt="A Lineage of Beauty and Tragedy illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">A Lineage of Beauty and Tragedy</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Lord Henry wanted to learn about his new friend Dorian Gray. So he went to visit his uncle, Lord Fermor. His uncle was a kind old man who knew many stories about important families. Lord Fermor remembered Dorian&#x27;s family well. Dorian&#x27;s mother was named Margaret, and she was very beautiful. She fell in love and got married, but then something sad happened. She lost her husband and became very unhappy. She passed away when Dorian was just a little baby.</p>
+<p>Later that day, Lord Henry went to a fancy lunch party. Dorian was there too! Everyone talked and laughed around the big table. Lord Henry told funny stories and said clever things that made people smile. Dorian listened to every word with wide, wondering eyes. He thought Lord Henry was the most interesting person he had ever met. When lunch was over, Dorian asked Lord Henry to spend more time with him. Lord Henry smiled warmly and said yes.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
+</section>
+<section class="chapter" id="chapter-5" data-num="5">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_5.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_5.webp" alt="Sibyl Vane and the Theatre of Love illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Sibyl Vane and the Theatre of Love</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian Gray was waiting in his friend Harry&#x27;s fancy library one afternoon. The room was pretty, with soft light coming through the windows. Harry&#x27;s wife Victoria stopped by for a little visit. She was a funny lady who liked loud music and talked very fast. Then Harry came in, and Victoria hurried off to do other things.</p>
+<p>Dorian had exciting news to share with Harry. He had fallen in love with a girl named Sibyl Vane. She was an actress who performed in plays at a small theatre. Dorian thought she was wonderful and magical on stage. She played princesses and brave girls in beautiful stories. Every night, Dorian went back to watch her act. He wanted everyone to know how special she was. Harry said he would come see her perform too. Later that night, Harry got a surprise note. Dorian wanted to marry Sibyl! Everything was happening so fast.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
+</section>
+<section class="chapter" id="chapter-6" data-num="6">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_6.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_6.webp" alt="A Sister&#x27;s Dangerous Prince Charming illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">A Sister&#x27;s Dangerous Prince Charming</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Sibyl is a young actress who feels so happy because she has fallen in love. She calls her sweetheart Prince Charming, and her heart feels full of joy. Her mother worries about money and bills, but Sibyl can only think about love. Her brother James is about to sail far away to Australia. He wants to spend one last afternoon walking with his sister before he goes. They stroll together through the sunny streets and talk about dreams and the future.</p>
+<p>James feels worried about his sister&#x27;s new sweetheart. He does not know this man&#x27;s real name, and he wants to make sure Sibyl will be safe and happy. He loves his sister very much and promises to always look out for her, even from far away. Sibyl just laughs and tells him not to worry. She believes everything will be wonderful. Then James says goodbye to his mother and climbs into a cab, ready to begin his big adventure across the sea.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
+</section>
+<section class="chapter" id="chapter-7" data-num="7">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_7.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_7.webp" alt="Love&#x27;s Sudden and Foolish Blossoming illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Love&#x27;s Sudden and Foolish Blossoming</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>One evening, three friends met for dinner at a fancy hotel. Dorian had exciting news to share. He had fallen in love! The girl&#x27;s name was Sibyl, and she was an actress who performed in plays. Dorian thought she was wonderful and magical. When she acted on stage, she made him feel like he was watching something from a dream. He wanted to marry her someday soon.</p>
+<p>His friend Basil felt worried because everything was happening so fast. But Dorian&#x27;s heart was so full of happiness that nothing could make him feel afraid. He talked and talked about Sibyl with sparkly eyes and a big smile. His other friend Harry listened and said clever things, but Dorian just kept feeling joyful. After dinner, they all rode in carriages through the bright city streets to see Sibyl perform at the theatre. Basil felt a little sad and quiet, but Dorian could only think about seeing the girl he loved.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
+</section>
+<section class="chapter" id="chapter-8" data-num="8">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_8.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_8.webp" alt="The Night Sibyl Vane&#x27;s Art Died illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">The Night Sibyl Vane&#x27;s Art Died</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian took his friends to a little theatre to see Sibyl act in a play. The room was very warm and crowded that night. When Sibyl walked onto the stage, she looked so pretty and sweet. But something was wrong. Her words sounded empty and strange, not magical like before. The people watching grew upset and restless. Dorian felt confused and sad.</p>
+<p>After the show, Sibyl ran to meet him with a happy smile. She told him that love had changed everything for her. Acting felt pretend now, and his love felt real. But Dorian said something very unkind to her. He told her that without her wonderful acting, he did not love her anymore. Poor Sibyl cried and begged him to stay, but he walked away into the dark night. When Dorian came home at sunrise, he looked at his special portrait. Something about the face looked different now, a little bit cruel. It made him feel sorry for what he had done.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
+</section>
+<section class="chapter" id="chapter-9" data-num="9">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_9.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_9.webp" alt="The Portrait&#x27;s First Terrible Truth illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">The Portrait&#x27;s First Terrible Truth</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian Gray woke up very late in his beautiful room. Sunlight streamed through the fancy curtains. He had tea in a pretty cup and felt happy. A bee buzzed around the roses by his window. Everything seemed so peaceful and nice.</p>
+<p>Then Dorian looked at the painting of himself. Something about it had changed. The face in the picture looked a little bit mean now. Dorian felt bad because he had been unkind to Sibyl. He decided he would say sorry and be a better person. He wrote her a long letter telling her how much he cared.</p>
+<p>But then his friend Henry came with sad news. Sibyl had gotten very sick and passed away. Dorian felt strange inside. He was sad, but not as sad as he thought he should be. Henry said things that made Dorian feel less worried about it all. Later, Dorian looked at the painting again. He decided to keep it hidden behind a screen. Then he got dressed and went out with Henry.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
+</section>
+<section class="chapter" id="chapter-10" data-num="10">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_10.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_10.webp" alt="The Art of Unfeeling illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">The Art of Unfeeling</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The morning after Sibyl passes away, Basil comes to visit Dorian. The painter feels very worried about his young friend. But Dorian does not seem sad at all. He talks about going to the opera and acts like nothing bad happened. This makes Basil feel cold inside. Dorian says he will not let his feelings control him anymore. He wants to be strong and not cry. Basil can tell that something has changed in his friend.</p>
+<p>Even so, Dorian asks Basil not to leave him. He says Basil is a good person. Basil wants to see the painting he made, but Dorian gets very upset and scared. He does not want anyone to look at it. Basil tells Dorian a secret instead. He says he cared so much about painting Dorian that he put his whole heart into the picture. Dorian feels better after hearing this. But he still hides the painting away where no one can find it.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
+</section>
+<section class="chapter" id="chapter-11" data-num="11">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_11.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_11.webp" alt="The Schoolroom&#x27;s Secret Burden illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">The Schoolroom&#x27;s Secret Burden</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian woke up feeling worried and watchful. He had a big secret to hide, and he did not want anyone to find it. He asked the kind housekeeper for a key to an old room at the very top of his house. It was a dusty schoolroom where no one ever went anymore. When Dorian was little, he used to play there all by himself. He remembered hiding in a big wooden chest and reading his schoolbooks. Now the room would keep his special painting safe where no one could see it.</p>
+<p>Some helpers came to carry the heavy painting up the stairs. Dorian covered it with a beautiful purple cloth that shimmered with golden threads. He locked the door tight and went back downstairs. There he found a cup of tea waiting for him, and a strange yellow book from his friend Henry. Dorian started reading the book and could not stop. It was full of dreamy, unusual stories that made him feel like he was in another world. He read until the sky turned soft and dim outside his window.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
+</section>
+<section class="chapter" id="chapter-12" data-num="12">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_12.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_12.webp" alt="The Mirror and the Monster Within illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">The Mirror and the Monster Within</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>A special book became very important to Dorian Gray. He loved it so much that he bought nine copies and covered each one in a different color. The book made him think about his own life in new ways.</p>
+<p>Dorian stayed young and handsome while years and years went by. People in the city whispered about him and wondered about his secrets. But when they saw his kind face and gentle smile, they forgot their worries. He was very good at making people like him.</p>
+<p>In a locked room, Dorian kept a hidden painting of himself. Sometimes he would look at it behind a curtain. The painting changed over time, but Dorian stayed the same on the outside. He filled his house with beautiful things like sparkly jewels, fancy clothes, and instruments that made unusual music. He loved sweet-smelling perfumes too. All these lovely treasures helped him feel happy and forget his troubles for a while. But the hidden painting was always waiting quietly in its secret room.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
+</section>
+<section class="chapter" id="chapter-13" data-num="13">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_13.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_13.webp" alt="A Foggy Night&#x27;s Fatal Reckoning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">13</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 13</div>
+            <h2 class="chapter-title">A Foggy Night&#x27;s Fatal Reckoning</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>On a foggy night, Dorian was walking home when he spotted his old friend Basil in the mist. At first Dorian tried to hurry past, but Basil caught up with him. Basil wanted to talk before leaving on a long trip to Paris. He had been waiting for hours just to see Dorian.</p>
+<p>Inside the cozy library with a warm fire, they chatted for a bit. But then Basil grew serious and sad. He told Dorian that people in town were saying unkind things about him. Basil was worried because some of Dorian&#x27;s friends had gotten into trouble. He wanted to understand what was happening with the person he cared about.</p>
+<p>Dorian felt strange feelings bubbling up inside him. He decided to show Basil something very special and secret upstairs. It was the painting Basil had made long ago. Dorian grabbed a lamp and led his friend up the stairs into the quiet darkness.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
+</section>
+<section class="chapter" id="chapter-14" data-num="14">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_14.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_14.webp" alt="The Soul Revealed in Canvas illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">14</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 14</div>
+            <h2 class="chapter-title">The Soul Revealed in Canvas</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian took Basil up a dark staircase to a dusty old room at the very top of the house. The room had been forgotten for a long time. Cobwebs hung everywhere, and a little mouse ran behind the wall. In the middle of the room stood a painting covered by a curtain. Dorian pulled back the curtain to show Basil the picture. It was the beautiful portrait Basil had painted long ago, but now it looked very different. The face in the painting had become ugly and mean-looking. Basil was so shocked and sad when he saw what had happened to his lovely painting. He begged Dorian to be kind and good again. But Dorian&#x27;s heart had grown cold. He did not want to listen to his old friend anymore. Something very bad happened between them that night, and afterward Dorian went downstairs alone. He sat in his library looking through a book for the name of someone who might help him.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
+</section>
+<section class="chapter" id="chapter-15" data-num="15">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_15.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_15.webp" alt="Sunlight on Blood-Stained Memory illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">15</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 15</div>
+            <h2 class="chapter-title">Sunlight on Blood-Stained Memory</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The next morning was sunny and warm, even though it was November. Dorian slept so peacefully, like a tired child after playing all day. When he woke up, he smiled without knowing why. Young people often smile like that, and it is lovely.</p>
+<p>But then Dorian remembered something sad from the night before. His friend Basil was gone, and Dorian felt very worried about it. He tried not to think about it. He got dressed nicely and ate a slow breakfast. He read his letters and wrote some notes. One note went to a man named Alan Campbell, asking him to come over right away.</p>
+<p>While waiting, Dorian tried to draw pictures and read a pretty book about a city with green waterways. But he kept thinking about his friend. When Alan finally came, he looked very serious. Dorian asked Alan for help with something important. At first Alan said no, but then he changed his mind. Alan helped Dorian take care of a big problem. Afterward, Alan left quietly, and Dorian felt grateful but also a little sad inside.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
+</section>
+<section class="chapter" id="chapter-16" data-num="16">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_16.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_16.webp" alt="A Mask of Grace and Guilt illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">16</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 16</div>
+            <h2 class="chapter-title">A Mask of Grace and Guilt</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>That evening, Dorian went to a fancy dinner party. He wore his best clothes and a pretty purple flower. He smiled and talked with everyone there. But inside, he felt very worried and strange. He was pretending to be happy when he really was not.</p>
+<p>Lady Narborough hosted the party at her big house. The other guests were not very interesting to Dorian. He was glad when his friend Lord Henry came in. Lord Henry always knew how to make people laugh. At dinner, Dorian did not feel like eating. He just pushed his food around his plate. People chatted about silly things and told funny stories. Lady Narborough said Dorian looked like such a good person. That made him feel funny inside because he had a big secret.</p>
+<p>After dinner, Lord Henry asked Dorian too many questions. Dorian got nervous and said he needed to go home. Back at his house, he burned some old things in the fireplace. Then he looked at a beautiful little box but put it away. When the clock struck midnight, he slipped out into the dark night.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
+</section>
+<section class="chapter" id="chapter-17" data-num="17">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_17.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_17.webp" alt="The Desperate Search for Oblivion illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">17</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 17</div>
+            <h2 class="chapter-title">The Desperate Search for Oblivion</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian was feeling very sad and troubled inside. He wanted to forget all the things that were making his heart heavy. He rode in a carriage through dark, rainy streets, past flickering lights and shadowy buildings. The ride felt like it took forever. Finally, he came to a shabby old house near the docks. Big ships with tall black masts stood in the misty water nearby. Inside the house, Dorian met a young man named Adrian who seemed very lost and unhappy. This made Dorian feel even worse, so he decided to leave.</p>
+<p>Outside in the dark, a man named James grabbed Dorian and held him tight. James was looking for someone who had hurt his sister Sibyl long ago. But when James pulled Dorian into the light, he saw a young face that looked too young to be the right person. James let him go. Dorian hurried away into the foggy night and disappeared before James could catch him again.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
+</section>
+<section class="chapter" id="chapter-18" data-num="18">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_18.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_18.webp" alt="Paradox and Wit at Tea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">18</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 18</div>
+            <h2 class="chapter-title">Paradox and Wit at Tea</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian was having a fancy party at his big country house. Pretty lamps glowed on nice cups and shiny silver. A kind lady called the Duchess poured tea for everyone. Lord Henry sat nearby, making clever jokes as he always did. The Duchess was very smart too, and she called him Prince Paradox because he said such funny, backwards things. They all talked and laughed together about art and love and all sorts of ideas. Dorian smiled and joked with his friends, but inside he felt worried about something.</p>
+<p>Later, Dorian went to pick some pretty flowers in the plant room. But then something scared him very badly, and he fell down in a faint. His friends hurried to help him and made sure he was comfortable on a soft sofa. When he woke up, he looked pale and shaky. He had seen someone through the window who made him feel afraid. Dorian did not want to be alone that night, so his friends stayed close to keep him company.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
+</section>
+<section class="chapter" id="chapter-19" data-num="19">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_19.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_19.webp" alt="Shadows of Conscience and Fatal Chance illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">19</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 19</div>
+            <h2 class="chapter-title">Shadows of Conscience and Fatal Chance</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>For a whole day, Dorian stayed alone in his room feeling very scared. He thought he saw a frightening face outside his window. Every little sound made him jump. The wind rattling the leaves made his heart pound fast. He felt so upset that his friend Henry found him crying.</p>
+<p>After a few days, Dorian felt a little better. He went outside with friends on a cold winter morning. The air smelled like pine trees and the sky was bright blue. But then something sad happened during the outing. A man got badly hurt, and Dorian felt terrible about it. He wanted to go home right away.</p>
+<p>Then someone brought surprising news. The man who got hurt was actually the sailor who had scared Dorian before. Dorian rode to see for himself, and it was true. He cried as he rode home, but these were tears of relief. He finally felt safe again.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
+</section>
+<section class="chapter" id="chapter-20" data-num="20">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_20.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_20.webp" alt="The Final Mask Shatters illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">20</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 20</div>
+            <h2 class="chapter-title">The Final Mask Shatters</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian told his friend Harry that he wanted to be a better person now. He said he had been kind to a sweet girl named Hetty instead of being unkind to her. Harry just laughed gently and said being good was probably just a new game for Dorian. They talked about their old friend Basil, the painter, who had gone away and nobody knew where he was. Dorian asked Harry a strange question about what he would think if someone did something very wrong. But Harry did not take him seriously at all.</p>
+<p>Harry asked about the special painting Basil had made long ago. Dorian looked uncomfortable and said he did not like to think about it anymore. Harry noticed how young and handsome Dorian still looked after all these years. Dorian seemed sad and said he wished he could change and be different inside. They said goodnight, and Dorian walked out under the soft golden moon, feeling very thoughtful and a little bit lost.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
+</section>
+<section class="chapter" id="chapter-21" data-num="21">
+    <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_21.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_21.webp" alt="The Soul&#x27;s Final Reckoning illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">21</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 21</div>
+            <h2 class="chapter-title">The Soul&#x27;s Final Reckoning</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Dorian Gray walked home through the warm night, feeling very tired and sad. Two young men recognized him, but he did not care anymore. He thought about a kind girl in a village who had laughed like a singing bird. She was happy and good, and he wished he could be like that again. Dorian sat alone in his library, thinking about his past. He had not been kind to people, and he felt very sorry. He looked in a beautiful mirror, but it only made him feel worse. He threw it down and it broke into tiny pieces. Then Dorian went upstairs to look at a special painting of himself. He hoped the painting would look nicer now, but it did not. It looked even sadder than before. Dorian picked up a sharp knife and cut the painting. There was a loud crash. When the servants came in, they found the painting looking young and beautiful again, but Dorian was gone forever.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><span></span></nav>
+</section>
+<img class="back-cover" src="../../dorian_gray/images_anime/back_cover.webp" alt="Back cover">
+</main>
+
+<div class="pill"></div>
+
+<footer>
+    <p>From Project Gutenberg · Generated with AI</p>
+</footer>
+
+<script>
+(function() {
+    const html = document.documentElement;
+    const savedMode = localStorage.getItem('site-mode') || 'maximal';
+    const savedStyle = localStorage.getItem('site-style') || 'cinematic';
+    html.setAttribute('data-mode', savedMode);
+    html.setAttribute('data-style', savedStyle);
+    document.addEventListener('DOMContentLoaded', function() {
+        const modeBtns = document.querySelectorAll('.mode-toggle button');
+        const styleBtns = document.querySelectorAll('.style-toggle button');
+
+        function syncMode() {
+            const m = html.getAttribute('data-mode');
+            modeBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+        }
+        function syncStyle() {
+            const s = html.getAttribute('data-style');
+            styleBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.style === s ? 'true' : 'false'));
+        }
+        function applyStyle(newStyle) {
+            html.setAttribute('data-style', newStyle);
+            localStorage.setItem('site-style', newStyle);
+            // Landing cards: swap cover img + primary Read link
+            document.querySelectorAll('.card').forEach(card => {
+                const img = card.querySelector('.cover-link img');
+                const link = card.querySelector('.cover-link');
+                const readBtn = card.querySelector('.btn.primary');
+                const cin = card.dataset.cinematic;
+                const ani = card.dataset.anime;
+                const hasAni = ani && ani !== '';
+                const target = (newStyle === 'anime' && hasAni) ? ani : cin;
+                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
+                if (img && target) img.src = target;
+                if (link && href) link.href = href;
+                if (readBtn && href) readBtn.href = href;
+            });
+            // Book viewer: navigate to sibling page
+            const swap = document.body.dataset.stylePage;
+            if (swap && swap !== newStyle) {
+                const target = document.body.dataset.siblingHref;
+                if (target) window.location.href = target;
+            }
+            syncStyle();
+        }
+        modeBtns.forEach(b => b.addEventListener('click', function() {
+            const m = b.dataset.mode;
+            html.setAttribute('data-mode', m);
+            localStorage.setItem('site-mode', m);
+            syncMode();
+        }));
+        styleBtns.forEach(b => b.addEventListener('click', function() {
+            applyStyle(b.dataset.style);
+        }));
+        syncMode();
+        // Initial landing apply so cards reflect saved style on first paint
+        if (document.querySelector('.card')) applyStyle(savedStyle);
+        else syncStyle();
+    });
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading progress
+    const bar = document.querySelector('.progress-bar');
+    const onScroll = () => {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (scrolled / max * 100) + '%' : '0%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal chapters
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '-60px' });
+    document.querySelectorAll('.chapter').forEach(c => io.observe(c));
+
+    // TOC drawer
+    const tocBtn = document.querySelector('.toc-btn');
+    const drawer = document.querySelector('.toc-drawer');
+    const backdrop = document.querySelector('.toc-backdrop');
+    const closeBtn = document.querySelector('.toc-close');
+    function openToc() { drawer.classList.add('open'); backdrop.classList.add('open'); }
+    function closeToc() { drawer.classList.remove('open'); backdrop.classList.remove('open'); }
+    tocBtn.addEventListener('click', openToc);
+    backdrop.addEventListener('click', closeToc);
+    closeBtn.addEventListener('click', closeToc);
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeToc));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToc();
+    });
+
+    // Current-chapter pill
+    const pill = document.querySelector('.pill');
+    const chapters = Array.from(document.querySelectorAll('.chapter'));
+    const io2 = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const title = e.target.querySelector('.chapter-title').textContent;
+                const num = e.target.dataset.num;
+                pill.textContent = `Ch ${num} · ${title}`;
+                pill.classList.add('show');
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    chapters.forEach(c => io2.observe(c));
+
+    // Keyboard chapter nav
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const y = window.scrollY + window.innerHeight / 3;
+        let idx = chapters.findIndex(c => c.offsetTop > y);
+        if (idx === -1) idx = chapters.length;
+        const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
+    });
+});
+</script>
+</body>
+</html>

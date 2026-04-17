@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="maximal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alice&#x27;s Adventures in Wonderland · Kids Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --max-bg: #07060f;
+    --max-bg-soft: #11102a;
+    --max-text: #f4f4f7;
+    --max-muted: #9aa0b4;
+    --max-accent-1: #a5b4fc;
+    --max-accent-2: #f9a8d4;
+    --max-accent-3: #fbbf24;
+    --max-border: rgba(255,255,255,0.08);
+    --max-card: rgba(255,255,255,0.04);
+    --max-glow: 0 0 80px rgba(165,180,252,0.35);
+
+    --min-bg: #faf8f4;
+    --min-text: #1a1a1a;
+    --min-muted: #6b6b6b;
+    --min-accent: #1a1a1a;
+    --min-border: #e2ded5;
+    --min-card: #ffffff;
+}
+
+html[data-mode="maximal"] {
+    --bg: var(--max-bg);
+    --bg-soft: var(--max-bg-soft);
+    --text: var(--max-text);
+    --muted: var(--max-muted);
+    --accent: var(--max-accent-1);
+    --accent-2: var(--max-accent-2);
+    --accent-3: var(--max-accent-3);
+    --border: var(--max-border);
+    --card: var(--max-card);
+    color-scheme: dark;
+}
+html[data-mode="minimal"] {
+    --bg: var(--min-bg);
+    --bg-soft: var(--min-bg);
+    --text: var(--min-text);
+    --muted: var(--min-muted);
+    --accent: var(--min-accent);
+    --accent-2: var(--min-accent);
+    --accent-3: var(--min-accent);
+    --border: var(--min-border);
+    --card: var(--min-card);
+    color-scheme: light;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Top bar */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.topbar-brand {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+.topbar-brand a { color: inherit; }
+.topbar-toggles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.mode-toggle, .style-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+}
+.mode-toggle button, .style-toggle button {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.mode-toggle button[aria-pressed="true"], .style-toggle button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+}
+.audience-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.audience-current { color: var(--muted); }
+.audience-swap {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg) !important;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.audience-swap:hover { opacity: 0.88; }
+@media (max-width: 600px) {
+    .mode-toggle button, .style-toggle button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Maximal-only decor: animated gradient backdrop */
+html[data-mode="maximal"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(165,180,252,0.28), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(249,168,212,0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(251,191,36,0.14), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgDrift 22s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(-2%, 2%, 0) scale(1.08); }
+}
+
+/* Minimal hides all fancy decor */
+html[data-mode="minimal"] body::before { display: none; }
+
+/* Footer */
+footer {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 30px 28px 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+.reader {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Progress bar */
+.progress {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 120;
+    pointer-events: none;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    transition: width 0.1s linear;
+}
+html[data-mode="minimal"] .progress-bar {
+    background: var(--text);
+}
+
+/* Hero / cover */
+.book-hero {
+    text-align: center;
+    padding: clamp(60px, 9vw, 110px) 20px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.cover-wrap {
+    max-width: 360px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+.cover-wrap img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="maximal"] .cover-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(165,180,252,0.25), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(30px);
+}
+html[data-mode="minimal"] .cover-wrap img {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    border-radius: 2px;
+}
+.cover-wrap:hover img { transform: translateY(-4px) scale(1.01); }
+
+.book-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    margin-bottom: 10px;
+}
+html[data-mode="maximal"] .book-title {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+html[data-mode="minimal"] .book-title {
+    font-weight: 700;
+    color: var(--text);
+}
+.book-author {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+html[data-mode="maximal"] .book-author { color: var(--accent); }
+.book-meta {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* TOC drawer */
+.toc-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 110;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.toc-btn:hover { transform: scale(1.05); }
+.toc-btn svg { width: 18px; height: 18px; }
+.toc-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(340px, 85vw);
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    transform: translateX(-105%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 150;
+    overflow-y: auto;
+    padding: 70px 24px 30px;
+}
+.toc-drawer.open { transform: translateX(0); }
+.toc-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.toc-backdrop.open { opacity: 1; pointer-events: auto; }
+.toc-drawer h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+.toc-drawer ol {
+    list-style: none;
+    counter-reset: tocc;
+}
+.toc-drawer ol li {
+    counter-increment: tocc;
+    margin: 0;
+}
+.toc-drawer ol li a {
+    display: block;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: color 0.2s ease, padding 0.2s ease;
+}
+.toc-drawer ol li a::before {
+    content: counter(tocc) ". ";
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+}
+.toc-drawer ol li a:hover {
+    color: var(--accent);
+    padding-left: 10px;
+}
+.toc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+/* Chapters */
+.chapter {
+    margin: 120px 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.chapter.in { opacity: 1; transform: translateY(0); }
+
+/* Full-bleed image band with matte */
+.chapter-figure {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-bottom: 48px;
+    padding: 48px 20px;
+    cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.03), transparent 70%),
+        linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+    transition: padding 0.4s ease;
+}
+html[data-mode="minimal"] .chapter-figure {
+    background: var(--bg);
+    padding: 0;
+    margin-bottom: 32px;
+    width: auto;
+    margin-left: 0;
+    cursor: zoom-in;
+}
+.chapter-image {
+    width: 100%;
+    max-width: 1100px;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: block;
+}
+html[data-mode="minimal"] .chapter-image {
+    border-radius: 2px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    max-width: 640px;
+    margin: 0 auto;
+}
+.chapter-figure:hover .chapter-image { transform: scale(1.005); }
+
+/* Editorial heading: big number + title */
+.chapter-heading {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: clamp(14px, 2.5vw, 32px);
+    margin-bottom: 28px;
+}
+.chapter-bignum {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(4.5rem, 12vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--accent);
+    user-select: none;
+}
+html[data-mode="maximal"] .chapter-bignum {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0;
+    color: transparent;
+    filter: drop-shadow(0 6px 20px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .chapter-bignum {
+    -webkit-text-stroke: 1.2px var(--text);
+    font-weight: 700;
+    font-size: clamp(3rem, 7vw, 5rem);
+    opacity: 0.85;
+}
+.chapter-head-text { min-width: 0; }
+.chapter-kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.chapter-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+    padding: 20px;
+}
+.lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+    transform: scale(0.96);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lightbox.open img { transform: scale(1); }
+.lightbox-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+.chapter-summary p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1.15em;
+    color: var(--text);
+}
+html[data-mode="minimal"] .chapter-summary {
+    font-family: 'Fraunces', Georgia, serif;
+}
+html[data-mode="minimal"] .chapter-summary p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+}
+
+/* Chapter nav arrows */
+.chapter-jump {
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0 0;
+    gap: 10px;
+}
+.chapter-jump a {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+}
+.chapter-jump a:hover {
+    color: var(--text);
+    border-color: var(--text);
+    transform: translateY(-1px);
+}
+.chapter-jump a.next { text-align: right; }
+.chapter-jump a.prev { text-align: left; }
+.chapter-jump span { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 4px; }
+
+/* Current chapter pill */
+.pill {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    font-size: 0.82rem;
+    color: var(--muted);
+    z-index: 90;
+    transition: transform 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pill.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Back cover + footer */
+.back-cover {
+    max-width: 360px;
+    margin: 80px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+html[data-mode="minimal"] .back-cover {
+    border-radius: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+</style>
+</head>
+<body data-kids="1">
+<div class="progress"><div class="progress-bar"></div></div>
+<header class="topbar">
+    <div class="topbar-brand"><a href="../../kids.html">Illustrated Classics</a></div>
+    <div class="topbar-toggles">
+        <div class="audience-toggle" role="group" aria-label="Audience">
+            <span class="audience-current">Kids</span>
+            <a class="audience-swap" href="../../alice_wonderland/index.html">Switch to Adults</a>
+        </div>
+        
+        <div class="mode-toggle" role="group" aria-label="Visual mode">
+            <button type="button" data-mode="minimal">Minimal</button>
+            <button type="button" data-mode="maximal">Maximal</button>
+        </div>
+    </div>
+</header>
+
+<button class="toc-btn" aria-label="Open chapter list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+</button>
+<div class="toc-backdrop"></div>
+<aside class="toc-drawer" aria-label="Chapters">
+    <button class="toc-close" aria-label="Close">×</button>
+    <h3>Alice&#x27;s Adventures in Wonderland</h3>
+    <ol><li><a href="#chapter-1">Curiosity Plunges Into the Unknown</a></li><li><a href="#chapter-2">Growing and Shrinking Through Salty Tears</a></li><li><a href="#chapter-3">Everybody Wins and All Get Prizes</a></li><li><a href="#chapter-4">Too Large for the Rabbit&#x27;s House</a></li><li><a href="#chapter-5">Questions of Size and Self</a></li><li><a href="#chapter-6">Chaos, Cheshire Grins, and Flying Crockery</a></li><li><a href="#chapter-7">Riddles, Rudeness, and Endless Tea</a></li><li><a href="#chapter-8">Painted Roses and Royal Fury</a></li><li><a href="#chapter-9">Morals, Mustard, and the Mock Turtle</a></li><li><a href="#chapter-10">Dancing with Lobsters by the Sea</a></li><li><a href="#chapter-11">A Courtroom of Nonsense and Tarts</a></li><li><a href="#chapter-12">Alice Defies the Court&#x27;s Absurd Justice</a></li></ol>
+</aside>
+
+<section class="book-hero">
+    
+<div class="cover-wrap">
+    <img src="../../alice_wonderland/images_anime/cover.webp" alt="Alice&#x27;s Adventures in Wonderland cover">
+</div>
+    <h1 class="book-title">Alice&#x27;s Adventures in Wonderland</h1>
+    <p class="book-author">Lewis Carroll</p>
+    <p class="book-meta">Kids Edition · 12 Chapters</p>
+</section>
+
+<main class="reader">
+<section class="chapter" id="chapter-1" data-num="1">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_1.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_1.webp" alt="Curiosity Plunges Into the Unknown illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">01</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 1</div>
+            <h2 class="chapter-title">Curiosity Plunges Into the Unknown</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice sat by the river feeling very bored on a hot summer day. Her sister was reading a book with no pictures, and Alice thought that was no fun at all. She was almost too sleepy to make a daisy-chain when something wonderful happened. A White Rabbit with pink eyes ran right past her, talking to itself about being late! The Rabbit was wearing a little coat and even had a tiny watch. Alice thought this was so amazing that she jumped up and chased after it. She followed the Rabbit right down into its hole without even thinking twice.</p>
+<p>Alice fell down, down, down for a very long time. The hole had shelves with books and jars and pictures on the walls. She had time to think about her cat Dinah and wonder silly things. Then she landed softly on a pile of leaves. She found a hall full of locked doors and a beautiful little key. Through a tiny door, she saw the prettiest garden with flowers and fountains. But she was too big to fit through! She found a bottle that said &quot;DRINK ME&quot; and it made her shrink down small. Then she found a cake that said &quot;EAT ME&quot; and wondered what would happen next.</p></div>
+    <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
+</section>
+<section class="chapter" id="chapter-2" data-num="2">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_2.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_2.webp" alt="Growing and Shrinking Through Salty Tears illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">02</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 2</div>
+            <h2 class="chapter-title">Growing and Shrinking Through Salty Tears</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice was having the silliest day! She started growing taller and taller, like a telescope stretching up to the sky. She grew so tall that her feet seemed very far away. She even imagined sending her feet little boots as presents! When she was nine feet tall, she grabbed a tiny golden key. But now she was much too big to fit through the little door to the beautiful garden. This made Alice so sad that she cried and cried. Her tears made a big puddle on the floor.</p>
+<p>Then the White Rabbit hurried by, looking very worried and carrying a fan and gloves. When Alice tried to talk to him, he got scared and ran away, leaving his things behind. Alice picked up the fan and started fanning herself. Something magical happened—she began shrinking! She got smaller and smaller until she slipped right into her own puddle of tears. She swam and swam until she met a Mouse paddling nearby. Alice tried to be friendly, but she kept talking about cats, which made the Mouse upset. Soon more animals joined them in the water—a Duck, a Dodo, and many others. They all swam together toward the shore to see what would happen next.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
+</section>
+<section class="chapter" id="chapter-3" data-num="3">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_3.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_3.webp" alt="Everybody Wins and All Get Prizes illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">03</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 3</div>
+            <h2 class="chapter-title">Everybody Wins and All Get Prizes</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>All the animals sat together on the bank, dripping wet and cold. Their feathers drooped and their fur stuck flat. Everyone wanted to get dry again! The Mouse tried reading a boring history lesson, thinking that would help. But it did not work at all.</p>
+<p>Then the Dodo had a wonderful idea called a Caucus-race. Everyone ran around in a big messy circle. They started and stopped whenever they wanted. When it was over, the Dodo said everybody had won! Alice gave out little candies from her pocket as prizes. She even got a prize too, her own thimble given right back to her. It was all very silly, but the animals looked so serious that Alice did not laugh.</p>
+<p>Later, Alice talked about her cat Dinah back home. But this made the birds nervous, and they all flew away. Poor Alice felt lonely and began to cry softly. Then she heard little footsteps coming closer, and she looked up hopefully.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
+</section>
+<section class="chapter" id="chapter-4" data-num="4">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_4.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_4.webp" alt="Too Large for the Rabbit&#x27;s House illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">04</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 4</div>
+            <h2 class="chapter-title">Too Large for the Rabbit&#x27;s House</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice was still in that strange, wonderful place when the White Rabbit came hurrying by. He was very worried about his missing fan and gloves. The Rabbit thought Alice was his helper, Mary Ann! He sent her to his little house to fetch his things. Alice thought it was so funny to run errands for a rabbit.</p>
+<p>Inside the Rabbit&#x27;s cozy room, Alice found the fan and gloves. But she also saw a little bottle. She took a sip, hoping it would help her grow. It worked much too well! She grew and grew until she filled the whole tiny house. Her arm stuck out the window and her foot went up the chimney. Poor Alice felt very stuck and uncomfortable.</p>
+<p>The Rabbit and his friends tried to get Alice out. Finally, Alice found some little cakes and ate one. She shrank down small again and ran away into the woods. There she rested by a buttercup and spotted something curious nearby. A big blue caterpillar sat very still on top of a tall mushroom.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
+</section>
+<section class="chapter" id="chapter-5" data-num="5">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_5.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_5.webp" alt="Questions of Size and Self illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">05</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 5</div>
+            <h2 class="chapter-title">Questions of Size and Self</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice met a Caterpillar sitting on a mushroom. The Caterpillar asked her a simple question. It said, &quot;Who are you?&quot; But Alice did not know how to answer! She had been so many sizes that day. She felt all mixed up inside. The Caterpillar was not very helpful at all. It just kept asking the same question over and over.</p>
+<p>Then Alice tried to say a poem she knew. But the words came out silly and wrong! The poem was about a funny old man. He stood on his head and did somersaults. He even balanced wiggly eels on his nose! The Caterpillar said the poem was all wrong. Alice had to agree it was very different now.</p>
+<p>Before crawling away, the Caterpillar told Alice something useful. One side of the mushroom would make her grow. The other side would make her shrink. Alice nibbled carefully at both pieces. After some tries, she got back to her right size. She felt so glad! Now she could keep looking for that beautiful garden.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
+</section>
+<section class="chapter" id="chapter-6" data-num="6">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_6.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_6.webp" alt="Chaos, Cheshire Grins, and Flying Crockery illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">06</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 6</div>
+            <h2 class="chapter-title">Chaos, Cheshire Grins, and Flying Crockery</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice stood looking at a funny house in the woods. A footman came running up who looked just like a fish! He knocked on the door and a frog-faced footman answered. The Fish-Footman gave him a big letter saying the Queen wanted the Duchess to play croquet. When they both bowed, their curly hair got tangled together, and Alice laughed so hard she had to hide!</p>
+<p>Inside the house, everything was wild and silly. There was smoke and pepper everywhere, and dishes were flying through the air! The Duchess gave Alice a baby to hold, then rushed off to see the Queen. But as Alice carried the baby outside, something magical happened. Its nose grew longer and pointier until it turned into a little pig! Alice set it down and watched it trot happily into the woods.</p>
+<p>Then Alice met the wonderful Cheshire Cat, sitting in a tree with the biggest smile. The Cat told her everyone here was mad, even himself! He could disappear bit by bit, leaving only his grin floating in the air. Alice thought that was the most curious thing she had ever seen!</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
+</section>
+<section class="chapter" id="chapter-7" data-num="7">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_7.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_7.webp" alt="Riddles, Rudeness, and Endless Tea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">07</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 7</div>
+            <h2 class="chapter-title">Riddles, Rudeness, and Endless Tea</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice found a big tea table under a tree. The March Hare and the Hatter sat at one end. A sleepy Dormouse sat between them, dozing away. &quot;No room!&quot; they shouted, but there was lots of room! Alice sat down anyway.</p>
+<p>This was the silliest tea party ever. The Hatter asked a funny riddle about a raven and a writing desk. Alice tried hard to think of the answer. But guess what? The Hatter did not know the answer either! It was just a nonsense riddle. The Hatter had a strange watch that told the day but not the time. It was always six o&#x27;clock at this party, so it was always teatime. The sleepy Dormouse told a dreamy story about three sisters who lived in a treacle well. But everyone kept interrupting poor Alice when she asked questions.</p>
+<p>Finally Alice had enough of their silliness. She walked away into the woods. Then she found a little door in a tree. She stepped through and found herself back in the hall with the tiny golden key. This time she nibbled some mushroom and became just the right size. At last she could go into the beautiful garden!</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
+</section>
+<section class="chapter" id="chapter-8" data-num="8">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_8.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_8.webp" alt="Painted Roses and Royal Fury illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">08</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 8</div>
+            <h2 class="chapter-title">Painted Roses and Royal Fury</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice walked into a garden and saw something very strange. Three gardeners who looked like playing cards were painting white roses red! They whispered to Alice that they had planted the wrong roses. The Queen would be so angry if she found out.</p>
+<p>Suddenly everyone shouted &quot;The Queen!&quot; and the gardeners hid their faces. A grand parade came marching by with soldiers, fancy people, and children all shaped like playing cards. At the very end came the King and Queen of Hearts. The Queen was loud and bossy and got angry about everything. Alice was brave and stood up tall. She even helped the poor gardeners hide in a big flower pot so they would be safe.</p>
+<p>Then Alice played the silliest croquet game ever. The balls were curly hedgehogs that walked away. The mallets were wiggly flamingoes that kept looking around. Nobody followed any rules and everyone played at the same time. The Cheshire Cat appeared with just his floating head and smiled at all the silliness. What a topsy-turvy day in Wonderland!</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
+</section>
+<section class="chapter" id="chapter-9" data-num="9">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_9.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_9.webp" alt="Morals, Mustard, and the Mock Turtle illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">09</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 9</div>
+            <h2 class="chapter-title">Morals, Mustard, and the Mock Turtle</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice walked arm in arm with the Duchess, who was being very friendly now. Alice thought maybe pepper had made the Duchess grumpy before. She made up a fun rule in her head about how different foods change how people feel. Pepper makes you hot-tempered, vinegar makes you sour, and sweet candy makes children sweet! The Duchess kept finding lessons in everything they talked about, even mustard and flamingos. Alice tried to help, but the Duchess just got more and more confusing. Then the Queen appeared looking very cross, and the Duchess hurried away fast.</p>
+<p>The Queen asked if Alice had met the Mock Turtle yet. Alice had never heard of him! The Queen took Alice to meet a Gryphon sleeping in the sunshine. The Gryphon brought Alice to the Mock Turtle, who sat sighing sadly on a rock. He told Alice all about his school under the sea, where he learned funny subjects like Reeling and Writhing and Mystery instead of reading and writing and history. His lessons got shorter every day until there was a holiday!</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
+</section>
+<section class="chapter" id="chapter-10" data-num="10">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_10.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_10.webp" alt="Dancing with Lobsters by the Sea illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">10</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 10</div>
+            <h2 class="chapter-title">Dancing with Lobsters by the Sea</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The Mock Turtle was feeling very sad and wiped his eyes. The Gryphon helped him feel better by patting his back. Then the Mock Turtle asked Alice a funny question. Had she ever met a lobster? Alice said no, and so they told her about a special dance called the Lobster Quadrille.</p>
+<p>The two friends tried to explain this silly sea dance. There were seals and turtles and salmon all in lines. Everyone had a lobster partner! They would toss the lobsters into the waves and swim after them. It sounded very mixed up and wonderful. Then they danced around Alice and sang a song. The song asked a snail to come and dance. It went &quot;will you, won&#x27;t you, will you, won&#x27;t you&quot; over and over again. Next they made jokes about fish and shoes that made Alice giggle. The Mock Turtle started singing about beautiful soup, but suddenly someone shouted that a trial was starting! The Gryphon grabbed Alice&#x27;s hand and off they ran together.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
+</section>
+<section class="chapter" id="chapter-11" data-num="11">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_11.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_11.webp" alt="A Courtroom of Nonsense and Tarts illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">11</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 11</div>
+            <h2 class="chapter-title">A Courtroom of Nonsense and Tarts</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>The King and Queen of Hearts sat on their thrones looking very important. They were having a trial! All sorts of little birds and animals were there, mixed in with playing cards. The Knave of Hearts stood before them looking very sad. On a table in the middle of the room sat a big dish of tarts, and they looked so yummy that Alice felt hungry just looking at them!</p>
+<p>Alice had never been to a real court before, but she knew what everything was from her books. There was a jury box filled with twelve funny creatures all writing on slates. They were writing down their own names so they would not forget them! Alice thought this was very silly. The White Rabbit read out that the Knave had stolen the Queen&#x27;s tarts. Then the Mad Hatter came to tell what he knew, but he just talked about tea and got very confused. Alice started to feel strange because she was growing bigger again! Finally the White Rabbit called out the next name, and Alice got a big surprise. The name he called was hers!</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
+</section>
+<section class="chapter" id="chapter-12" data-num="12">
+    <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_12.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_12.webp" alt="Alice Defies the Court&#x27;s Absurd Justice illustration" loading="lazy"></figure>
+    <header class="chapter-heading">
+        <div class="chapter-bignum" aria-hidden="true">12</div>
+        <div class="chapter-head-text">
+            <div class="chapter-kicker">Chapter 12</div>
+            <h2 class="chapter-title">Alice Defies the Court&#x27;s Absurd Justice</h2>
+        </div>
+    </header>
+    <div class="chapter-summary"><p>Alice jumped up so fast that she knocked over the jury box. All twelve jurymen tumbled down like goldfish spilling from a bowl. She quickly picked them up and put them back, even though one little lizard ended up upside down and looked very sad until she turned him right way up.</p>
+<p>The King said Alice must tell what she knew about the case. She said she knew nothing at all. Then he made up a silly rule that anyone too tall must leave. Alice pointed out this made no sense, and the King turned very pale. The Queen got upset and wanted to punish Alice before the trial was even finished. Alice had grown so big now that she wasn&#x27;t scared anymore. She stood up tall and said, &quot;You&#x27;re nothing but a pack of cards!&quot; Suddenly all the cards flew up in the air around her. Then Alice woke up on the riverbank with her head in her sister&#x27;s lap. It had all been a wonderful dream. She told her sister everything and ran off happily to have tea.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><span></span></nav>
+</section>
+<img class="back-cover" src="../../alice_wonderland/images_anime/back_cover.webp" alt="Back cover">
+</main>
+
+<div class="pill"></div>
+
+<footer>
+    <p>From Project Gutenberg · Generated with AI</p>
+</footer>
+
+<script>
+(function() {
+    const html = document.documentElement;
+    const savedMode = localStorage.getItem('site-mode') || 'maximal';
+    const savedStyle = localStorage.getItem('site-style') || 'cinematic';
+    html.setAttribute('data-mode', savedMode);
+    html.setAttribute('data-style', savedStyle);
+    document.addEventListener('DOMContentLoaded', function() {
+        const modeBtns = document.querySelectorAll('.mode-toggle button');
+        const styleBtns = document.querySelectorAll('.style-toggle button');
+
+        function syncMode() {
+            const m = html.getAttribute('data-mode');
+            modeBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+        }
+        function syncStyle() {
+            const s = html.getAttribute('data-style');
+            styleBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.style === s ? 'true' : 'false'));
+        }
+        function applyStyle(newStyle) {
+            html.setAttribute('data-style', newStyle);
+            localStorage.setItem('site-style', newStyle);
+            // Landing cards: swap cover img + primary Read link
+            document.querySelectorAll('.card').forEach(card => {
+                const img = card.querySelector('.cover-link img');
+                const link = card.querySelector('.cover-link');
+                const readBtn = card.querySelector('.btn.primary');
+                const cin = card.dataset.cinematic;
+                const ani = card.dataset.anime;
+                const hasAni = ani && ani !== '';
+                const target = (newStyle === 'anime' && hasAni) ? ani : cin;
+                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
+                if (img && target) img.src = target;
+                if (link && href) link.href = href;
+                if (readBtn && href) readBtn.href = href;
+            });
+            // Book viewer: navigate to sibling page
+            const swap = document.body.dataset.stylePage;
+            if (swap && swap !== newStyle) {
+                const target = document.body.dataset.siblingHref;
+                if (target) window.location.href = target;
+            }
+            syncStyle();
+        }
+        modeBtns.forEach(b => b.addEventListener('click', function() {
+            const m = b.dataset.mode;
+            html.setAttribute('data-mode', m);
+            localStorage.setItem('site-mode', m);
+            syncMode();
+        }));
+        styleBtns.forEach(b => b.addEventListener('click', function() {
+            applyStyle(b.dataset.style);
+        }));
+        syncMode();
+        // Initial landing apply so cards reflect saved style on first paint
+        if (document.querySelector('.card')) applyStyle(savedStyle);
+        else syncStyle();
+    });
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading progress
+    const bar = document.querySelector('.progress-bar');
+    const onScroll = () => {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (scrolled / max * 100) + '%' : '0%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal chapters
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '-60px' });
+    document.querySelectorAll('.chapter').forEach(c => io.observe(c));
+
+    // TOC drawer
+    const tocBtn = document.querySelector('.toc-btn');
+    const drawer = document.querySelector('.toc-drawer');
+    const backdrop = document.querySelector('.toc-backdrop');
+    const closeBtn = document.querySelector('.toc-close');
+    function openToc() { drawer.classList.add('open'); backdrop.classList.add('open'); }
+    function closeToc() { drawer.classList.remove('open'); backdrop.classList.remove('open'); }
+    tocBtn.addEventListener('click', openToc);
+    backdrop.addEventListener('click', closeToc);
+    closeBtn.addEventListener('click', closeToc);
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeToc));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToc();
+    });
+
+    // Current-chapter pill
+    const pill = document.querySelector('.pill');
+    const chapters = Array.from(document.querySelectorAll('.chapter'));
+    const io2 = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const title = e.target.querySelector('.chapter-title').textContent;
+                const num = e.target.dataset.num;
+                pill.textContent = `Ch ${num} · ${title}`;
+                pill.classList.add('show');
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    chapters.forEach(c => io2.observe(c));
+
+    // Keyboard chapter nav
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const y = window.scrollY + window.innerHeight / 3;
+        let idx = chapters.findIndex(c => c.offsetTop > y);
+        if (idx === -1) idx = chapters.length;
+        const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // Lightbox
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = '<button class="lightbox-close" aria-label="Close">×</button><img alt="">';
+    document.body.appendChild(lightbox);
+    const lbImg = lightbox.querySelector('img');
+    const lbClose = lightbox.querySelector('.lightbox-close');
+    function openLb(src) {
+        lbImg.src = src;
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.chapter-figure').forEach(fig => {
+        fig.addEventListener('click', () => openLb(fig.dataset.full || fig.querySelector('img').src));
+    });
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox || e.target === lbClose) closeLb();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
+    });
+});
+</script>
+</body>
+</html>
