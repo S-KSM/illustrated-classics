@@ -89,7 +89,14 @@ body {
     letter-spacing: -0.01em;
 }
 .topbar-brand a { color: inherit; }
-.mode-toggle {
+.topbar-toggles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.mode-toggle, .style-toggle {
     display: inline-flex;
     gap: 2px;
     padding: 3px;
@@ -97,7 +104,7 @@ body {
     border-radius: 999px;
     background: var(--card);
 }
-.mode-toggle button {
+.mode-toggle button, .style-toggle button {
     font: inherit;
     padding: 6px 14px;
     border-radius: 999px;
@@ -111,9 +118,15 @@ body {
     text-transform: uppercase;
     transition: background 0.25s ease, color 0.25s ease;
 }
-.mode-toggle button[aria-pressed="true"] {
+.mode-toggle button[aria-pressed="true"], .style-toggle button[aria-pressed="true"] {
     background: var(--text);
     color: var(--bg);
+}
+@media (max-width: 600px) {
+    .mode-toggle button, .style-toggle button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
 }
 
 /* Maximal-only decor: animated gradient backdrop */
@@ -399,9 +412,15 @@ html[data-mode="maximal"] .card-author {
 
 <header class="topbar">
     <div class="topbar-brand"><a href="index.html">Illustrated Classics</a></div>
-    <div class="mode-toggle" role="group" aria-label="Visual mode">
-        <button type="button" data-mode="minimal">Minimal</button>
-        <button type="button" data-mode="maximal">Maximal</button>
+    <div class="topbar-toggles">
+        <div class="style-toggle" role="group" aria-label="Art style">
+            <button type="button" data-style="cinematic">Cinematic</button>
+            <button type="button" data-style="anime">Anime</button>
+        </div>
+        <div class="mode-toggle" role="group" aria-label="Visual mode">
+            <button type="button" data-mode="minimal">Minimal</button>
+            <button type="button" data-mode="maximal">Maximal</button>
+        </div>
     </div>
 </header>
 
@@ -419,7 +438,7 @@ html[data-mode="maximal"] .card-author {
     </div>
 </div>
 <main class="grid">
-        <article class="card" data-title="A Christmas Carol" data-author="Charles Dickens" data-genre="Victorian Fiction / Holiday Classic">
+        <article class="card" data-slug="christmas_carol" data-cinematic="christmas_carol/images_cinematic/cover.webp" data-anime="christmas_carol/images_anime/cover.webp" data-title="A Christmas Carol" data-author="Charles Dickens" data-genre="Victorian Fiction / Holiday Classic">
             <a class="cover-link" href="christmas_carol/index.html">
                 <img src="christmas_carol/images_cinematic/cover.webp" alt="A Christmas Carol cover" loading="lazy">
             </a>
@@ -429,11 +448,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Victorian Fiction / Holiday Classic</p>
                 <div class="card-actions">
                     <a class="btn primary" href="christmas_carol/index.html">Read</a>
-                    <a class="btn ghost" href="christmas_carol/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Alice&#x27;s Adventures in Wonderland" data-author="Lewis Carroll" data-genre="Children&#x27;s Fantasy">
+        <article class="card" data-slug="alice_wonderland" data-cinematic="alice_wonderland/images_cinematic/cover.webp" data-anime="alice_wonderland/images_anime/cover.webp" data-title="Alice&#x27;s Adventures in Wonderland" data-author="Lewis Carroll" data-genre="Children&#x27;s Fantasy">
             <a class="cover-link" href="alice_wonderland/index.html">
                 <img src="alice_wonderland/images_cinematic/cover.webp" alt="Alice&#x27;s Adventures in Wonderland cover" loading="lazy">
             </a>
@@ -443,11 +461,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Children&#x27;s Fantasy</p>
                 <div class="card-actions">
                     <a class="btn primary" href="alice_wonderland/index.html">Read</a>
-                    <a class="btn ghost" href="alice_wonderland/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Dracula" data-author="Bram Stoker" data-genre="Gothic Horror">
+        <article class="card" data-slug="dracula" data-cinematic="dracula/images_cinematic/cover.webp" data-anime="dracula/images_anime/cover.webp" data-title="Dracula" data-author="Bram Stoker" data-genre="Gothic Horror">
             <a class="cover-link" href="dracula/index.html">
                 <img src="dracula/images_cinematic/cover.webp" alt="Dracula cover" loading="lazy">
             </a>
@@ -457,11 +474,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Gothic Horror</p>
                 <div class="card-actions">
                     <a class="btn primary" href="dracula/index.html">Read</a>
-                    <a class="btn ghost" href="dracula/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Frankenstein; or, The Modern Prometheus" data-author="Mary Shelley" data-genre="Gothic Horror">
+        <article class="card" data-slug="frankenstein" data-cinematic="frankenstein/images_cinematic/cover.webp" data-anime="frankenstein/images_anime/cover.webp" data-title="Frankenstein; or, The Modern Prometheus" data-author="Mary Shelley" data-genre="Gothic Horror">
             <a class="cover-link" href="frankenstein/index.html">
                 <img src="frankenstein/images_cinematic/cover.webp" alt="Frankenstein; or, The Modern Prometheus cover" loading="lazy">
             </a>
@@ -471,11 +487,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Gothic Horror</p>
                 <div class="card-actions">
                     <a class="btn primary" href="frankenstein/index.html">Read</a>
-                    <a class="btn ghost" href="frankenstein/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Peter Pan" data-author="J.M. Barrie" data-genre="Children&#x27;s Fantasy">
+        <article class="card" data-slug="peter_pan" data-cinematic="peter_pan/images_cinematic/cover.webp" data-anime="peter_pan/images_anime/cover.webp" data-title="Peter Pan" data-author="J.M. Barrie" data-genre="Children&#x27;s Fantasy">
             <a class="cover-link" href="peter_pan/index.html">
                 <img src="peter_pan/images_cinematic/cover.webp" alt="Peter Pan cover" loading="lazy">
             </a>
@@ -485,11 +500,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Children&#x27;s Fantasy</p>
                 <div class="card-actions">
                     <a class="btn primary" href="peter_pan/index.html">Read</a>
-                    <a class="btn ghost" href="peter_pan/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Pride and Prejudice" data-author="Jane Austen" data-genre="Romance">
+        <article class="card" data-slug="pride_prejudice" data-cinematic="pride_prejudice/images_cinematic/cover.webp" data-anime="pride_prejudice/images_anime/cover.webp" data-title="Pride and Prejudice" data-author="Jane Austen" data-genre="Romance">
             <a class="cover-link" href="pride_prejudice/index.html">
                 <img src="pride_prejudice/images_cinematic/cover.webp" alt="Pride and Prejudice cover" loading="lazy">
             </a>
@@ -499,11 +513,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Romance</p>
                 <div class="card-actions">
                     <a class="btn primary" href="pride_prejudice/index.html">Read</a>
-                    <a class="btn ghost" href="pride_prejudice/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Strange Case of Dr Jekyll and Mr Hyde" data-author="Robert Louis Stevenson" data-genre="Gothic Horror">
+        <article class="card" data-slug="jekyll_hyde" data-cinematic="jekyll_hyde/images_cinematic/cover.webp" data-anime="jekyll_hyde/images_anime/cover.webp" data-title="Strange Case of Dr Jekyll and Mr Hyde" data-author="Robert Louis Stevenson" data-genre="Gothic Horror">
             <a class="cover-link" href="jekyll_hyde/index.html">
                 <img src="jekyll_hyde/images_cinematic/cover.webp" alt="Strange Case of Dr Jekyll and Mr Hyde cover" loading="lazy">
             </a>
@@ -513,11 +526,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Gothic Horror</p>
                 <div class="card-actions">
                     <a class="btn primary" href="jekyll_hyde/index.html">Read</a>
-                    <a class="btn ghost" href="jekyll_hyde/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The Great Gatsby" data-author="F. Scott Fitzgerald" data-genre="Literary Fiction">
+        <article class="card" data-slug="great_gatsby" data-cinematic="great_gatsby/images_cinematic/cover.webp" data-anime="great_gatsby/images_anime/cover.webp" data-title="The Great Gatsby" data-author="F. Scott Fitzgerald" data-genre="Literary Fiction">
             <a class="cover-link" href="great_gatsby/index.html">
                 <img src="great_gatsby/images_cinematic/cover.webp" alt="The Great Gatsby cover" loading="lazy">
             </a>
@@ -527,11 +539,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Literary Fiction</p>
                 <div class="card-actions">
                     <a class="btn primary" href="great_gatsby/index.html">Read</a>
-                    <a class="btn ghost" href="great_gatsby/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The Legend of Sleepy Hollow" data-author="Washington Irving" data-genre="Gothic Fiction">
+        <article class="card" data-slug="sleepy_hollow" data-cinematic="sleepy_hollow/images_cinematic/cover.webp" data-anime="sleepy_hollow/images_anime/cover.webp" data-title="The Legend of Sleepy Hollow" data-author="Washington Irving" data-genre="Gothic Fiction">
             <a class="cover-link" href="sleepy_hollow/index.html">
                 <img src="sleepy_hollow/images_cinematic/cover.webp" alt="The Legend of Sleepy Hollow cover" loading="lazy">
             </a>
@@ -541,11 +552,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Gothic Fiction</p>
                 <div class="card-actions">
                     <a class="btn primary" href="sleepy_hollow/index.html">Read</a>
-                    <a class="btn ghost" href="sleepy_hollow/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The Odyssey" data-author="Samuel Butler" data-genre="Epic Poetry Translation">
+        <article class="card" data-slug="the_odyssey" data-cinematic="the_odyssey/images_cinematic/cover.webp" data-anime="the_odyssey/images_anime/cover.webp" data-title="The Odyssey" data-author="Samuel Butler" data-genre="Epic Poetry Translation">
             <a class="cover-link" href="the_odyssey/index.html">
                 <img src="the_odyssey/images_cinematic/cover.webp" alt="The Odyssey cover" loading="lazy">
             </a>
@@ -555,11 +565,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Epic Poetry Translation</p>
                 <div class="card-actions">
                     <a class="btn primary" href="the_odyssey/index.html">Read</a>
-                    <a class="btn ghost" href="the_odyssey/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The Picture of Dorian Gray" data-author="Oscar Wilde" data-genre="Gothic Fiction">
+        <article class="card" data-slug="dorian_gray" data-cinematic="dorian_gray/images_cinematic/cover.webp" data-anime="dorian_gray/images_anime/cover.webp" data-title="The Picture of Dorian Gray" data-author="Oscar Wilde" data-genre="Gothic Fiction">
             <a class="cover-link" href="dorian_gray/index.html">
                 <img src="dorian_gray/images_cinematic/cover.webp" alt="The Picture of Dorian Gray cover" loading="lazy">
             </a>
@@ -569,11 +578,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Gothic Fiction</p>
                 <div class="card-actions">
                     <a class="btn primary" href="dorian_gray/index.html">Read</a>
-                    <a class="btn ghost" href="dorian_gray/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The Secret Garden" data-author="Frances Hodgson Burnett" data-genre="Children&#x27;s Fiction">
+        <article class="card" data-slug="secret_garden" data-cinematic="secret_garden/images_cinematic/cover.webp" data-anime="secret_garden/images_anime/cover.webp" data-title="The Secret Garden" data-author="Frances Hodgson Burnett" data-genre="Children&#x27;s Fiction">
             <a class="cover-link" href="secret_garden/index.html">
                 <img src="secret_garden/images_cinematic/cover.webp" alt="The Secret Garden cover" loading="lazy">
             </a>
@@ -583,11 +591,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Children&#x27;s Fiction</p>
                 <div class="card-actions">
                     <a class="btn primary" href="secret_garden/index.html">Read</a>
-                    <a class="btn ghost" href="secret_garden/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The Time Machine" data-author="H.G. Wells" data-genre="Science Fiction">
+        <article class="card" data-slug="time_machine" data-cinematic="time_machine/images_cinematic/cover.webp" data-anime="time_machine/images_anime/cover.webp" data-title="The Time Machine" data-author="H.G. Wells" data-genre="Science Fiction">
             <a class="cover-link" href="time_machine/index.html">
                 <img src="time_machine/images_cinematic/cover.webp" alt="The Time Machine cover" loading="lazy">
             </a>
@@ -597,11 +604,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Science Fiction</p>
                 <div class="card-actions">
                     <a class="btn primary" href="time_machine/index.html">Read</a>
-                    <a class="btn ghost" href="time_machine/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The War of the Worlds" data-author="H.G. Wells" data-genre="Science Fiction">
+        <article class="card" data-slug="war_of_the_worlds" data-cinematic="war_of_the_worlds/images_cinematic/cover.webp" data-anime="war_of_the_worlds/images_anime/cover.webp" data-title="The War of the Worlds" data-author="H.G. Wells" data-genre="Science Fiction">
             <a class="cover-link" href="war_of_the_worlds/index.html">
                 <img src="war_of_the_worlds/images_cinematic/cover.webp" alt="The War of the Worlds cover" loading="lazy">
             </a>
@@ -611,11 +617,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Science Fiction</p>
                 <div class="card-actions">
                     <a class="btn primary" href="war_of_the_worlds/index.html">Read</a>
-                    <a class="btn ghost" href="war_of_the_worlds/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="The Wonderful Wizard of Oz" data-author="L. Frank Baum" data-genre="Children&#x27;s Fantasy">
+        <article class="card" data-slug="wizard_of_oz" data-cinematic="wizard_of_oz/images_cinematic/cover.webp" data-anime="wizard_of_oz/images_anime/cover.webp" data-title="The Wonderful Wizard of Oz" data-author="L. Frank Baum" data-genre="Children&#x27;s Fantasy">
             <a class="cover-link" href="wizard_of_oz/index.html">
                 <img src="wizard_of_oz/images_cinematic/cover.webp" alt="The Wonderful Wizard of Oz cover" loading="lazy">
             </a>
@@ -625,11 +630,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Children&#x27;s Fantasy</p>
                 <div class="card-actions">
                     <a class="btn primary" href="wizard_of_oz/index.html">Read</a>
-                    <a class="btn ghost" href="wizard_of_oz/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Treasure Island" data-author="Robert Louis Stevenson" data-genre="Adventure Fiction">
+        <article class="card" data-slug="treasure_island" data-cinematic="treasure_island/images_cinematic/cover.webp" data-anime="treasure_island/images_anime/cover.webp" data-title="Treasure Island" data-author="Robert Louis Stevenson" data-genre="Adventure Fiction">
             <a class="cover-link" href="treasure_island/index.html">
                 <img src="treasure_island/images_cinematic/cover.webp" alt="Treasure Island cover" loading="lazy">
             </a>
@@ -639,11 +643,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Adventure Fiction</p>
                 <div class="card-actions">
                     <a class="btn primary" href="treasure_island/index.html">Read</a>
-                    <a class="btn ghost" href="treasure_island/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Twenty Thousand Leagues Under the Sea" data-author="Jules Verne" data-genre="Science Fiction Adventure">
+        <article class="card" data-slug="20000_leagues" data-cinematic="20000_leagues/images_cinematic/cover.webp" data-anime="20000_leagues/images_anime/cover.webp" data-title="Twenty Thousand Leagues Under the Sea" data-author="Jules Verne" data-genre="Science Fiction Adventure">
             <a class="cover-link" href="20000_leagues/index.html">
                 <img src="20000_leagues/images_cinematic/cover.webp" alt="Twenty Thousand Leagues Under the Sea cover" loading="lazy">
             </a>
@@ -653,11 +656,10 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Science Fiction Adventure</p>
                 <div class="card-actions">
                     <a class="btn primary" href="20000_leagues/index.html">Read</a>
-                    <a class="btn ghost" href="20000_leagues/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
-        <article class="card" data-title="Wuthering Heights" data-author="Emily Brontë" data-genre="Gothic Romance">
+        <article class="card" data-slug="wuthering_heights" data-cinematic="wuthering_heights/images_cinematic/cover.webp" data-anime="wuthering_heights/images_anime/cover.webp" data-title="Wuthering Heights" data-author="Emily Brontë" data-genre="Gothic Romance">
             <a class="cover-link" href="wuthering_heights/index.html">
                 <img src="wuthering_heights/images_cinematic/cover.webp" alt="Wuthering Heights cover" loading="lazy">
             </a>
@@ -667,7 +669,6 @@ html[data-mode="maximal"] .card-author {
                 <p class="card-genre">Gothic Romance</p>
                 <div class="card-actions">
                     <a class="btn primary" href="wuthering_heights/index.html">Read</a>
-                    <a class="btn ghost" href="wuthering_heights/index_anime.html">Anime</a>
                 </div>
             </div>
         </article>
@@ -679,21 +680,60 @@ html[data-mode="maximal"] .card-author {
 <script>
 (function() {
     const html = document.documentElement;
-    const saved = localStorage.getItem('site-mode') || 'maximal';
-    html.setAttribute('data-mode', saved);
+    const savedMode = localStorage.getItem('site-mode') || 'maximal';
+    const savedStyle = localStorage.getItem('site-style') || 'cinematic';
+    html.setAttribute('data-mode', savedMode);
+    html.setAttribute('data-style', savedStyle);
     document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.mode-toggle button');
-        function sync() {
+        const modeBtns = document.querySelectorAll('.mode-toggle button');
+        const styleBtns = document.querySelectorAll('.style-toggle button');
+
+        function syncMode() {
             const m = html.getAttribute('data-mode');
-            buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+            modeBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
         }
-        buttons.forEach(b => b.addEventListener('click', function() {
+        function syncStyle() {
+            const s = html.getAttribute('data-style');
+            styleBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.style === s ? 'true' : 'false'));
+        }
+        function applyStyle(newStyle) {
+            html.setAttribute('data-style', newStyle);
+            localStorage.setItem('site-style', newStyle);
+            // Landing cards: swap cover img + primary Read link
+            document.querySelectorAll('.card').forEach(card => {
+                const img = card.querySelector('.cover-link img');
+                const link = card.querySelector('.cover-link');
+                const readBtn = card.querySelector('.btn.primary');
+                const cin = card.dataset.cinematic;
+                const ani = card.dataset.anime;
+                const hasAni = ani && ani !== '';
+                const target = (newStyle === 'anime' && hasAni) ? ani : cin;
+                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
+                if (img && target) img.src = target;
+                if (link && href) link.href = href;
+                if (readBtn && href) readBtn.href = href;
+            });
+            // Book viewer: navigate to sibling page
+            const swap = document.body.dataset.stylePage;
+            if (swap && swap !== newStyle) {
+                const target = document.body.dataset.siblingHref;
+                if (target) window.location.href = target;
+            }
+            syncStyle();
+        }
+        modeBtns.forEach(b => b.addEventListener('click', function() {
             const m = b.dataset.mode;
             html.setAttribute('data-mode', m);
             localStorage.setItem('site-mode', m);
-            sync();
+            syncMode();
         }));
-        sync();
+        styleBtns.forEach(b => b.addEventListener('click', function() {
+            applyStyle(b.dataset.style);
+        }));
+        syncMode();
+        // Initial landing apply so cards reflect saved style on first paint
+        if (document.querySelector('.card')) applyStyle(savedStyle);
+        else syncStyle();
     });
 })();
 </script>

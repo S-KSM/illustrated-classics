@@ -89,7 +89,14 @@ body {
     letter-spacing: -0.01em;
 }
 .topbar-brand a { color: inherit; }
-.mode-toggle {
+.topbar-toggles {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.mode-toggle, .style-toggle {
     display: inline-flex;
     gap: 2px;
     padding: 3px;
@@ -97,7 +104,7 @@ body {
     border-radius: 999px;
     background: var(--card);
 }
-.mode-toggle button {
+.mode-toggle button, .style-toggle button {
     font: inherit;
     padding: 6px 14px;
     border-radius: 999px;
@@ -111,9 +118,15 @@ body {
     text-transform: uppercase;
     transition: background 0.25s ease, color 0.25s ease;
 }
-.mode-toggle button[aria-pressed="true"] {
+.mode-toggle button[aria-pressed="true"], .style-toggle button[aria-pressed="true"] {
     background: var(--text);
     color: var(--bg);
+}
+@media (max-width: 600px) {
+    .mode-toggle button, .style-toggle button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
 }
 
 /* Maximal-only decor: animated gradient backdrop */
@@ -459,13 +472,19 @@ html[data-mode="minimal"] .back-cover {
 
 </style>
 </head>
-<body>
+<body data-style-page="cinematic" data-sibling-href="index_anime.html">
 <div class="progress"><div class="progress-bar"></div></div>
 <header class="topbar">
     <div class="topbar-brand"><a href="../index.html">← All books</a></div>
-    <div class="mode-toggle" role="group" aria-label="Visual mode">
-        <button type="button" data-mode="minimal">Minimal</button>
-        <button type="button" data-mode="maximal">Maximal</button>
+    <div class="topbar-toggles">
+        <div class="style-toggle" role="group" aria-label="Art style">
+            <button type="button" data-style="cinematic">Cinematic</button>
+            <button type="button" data-style="anime">Anime</button>
+        </div>
+        <div class="mode-toggle" role="group" aria-label="Visual mode">
+            <button type="button" data-mode="minimal">Minimal</button>
+            <button type="button" data-mode="maximal">Maximal</button>
+        </div>
     </div>
 </header>
 
@@ -857,21 +876,60 @@ html[data-mode="minimal"] .back-cover {
 <script>
 (function() {
     const html = document.documentElement;
-    const saved = localStorage.getItem('site-mode') || 'maximal';
-    html.setAttribute('data-mode', saved);
+    const savedMode = localStorage.getItem('site-mode') || 'maximal';
+    const savedStyle = localStorage.getItem('site-style') || 'cinematic';
+    html.setAttribute('data-mode', savedMode);
+    html.setAttribute('data-style', savedStyle);
     document.addEventListener('DOMContentLoaded', function() {
-        const buttons = document.querySelectorAll('.mode-toggle button');
-        function sync() {
+        const modeBtns = document.querySelectorAll('.mode-toggle button');
+        const styleBtns = document.querySelectorAll('.style-toggle button');
+
+        function syncMode() {
             const m = html.getAttribute('data-mode');
-            buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+            modeBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
         }
-        buttons.forEach(b => b.addEventListener('click', function() {
+        function syncStyle() {
+            const s = html.getAttribute('data-style');
+            styleBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.style === s ? 'true' : 'false'));
+        }
+        function applyStyle(newStyle) {
+            html.setAttribute('data-style', newStyle);
+            localStorage.setItem('site-style', newStyle);
+            // Landing cards: swap cover img + primary Read link
+            document.querySelectorAll('.card').forEach(card => {
+                const img = card.querySelector('.cover-link img');
+                const link = card.querySelector('.cover-link');
+                const readBtn = card.querySelector('.btn.primary');
+                const cin = card.dataset.cinematic;
+                const ani = card.dataset.anime;
+                const hasAni = ani && ani !== '';
+                const target = (newStyle === 'anime' && hasAni) ? ani : cin;
+                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
+                if (img && target) img.src = target;
+                if (link && href) link.href = href;
+                if (readBtn && href) readBtn.href = href;
+            });
+            // Book viewer: navigate to sibling page
+            const swap = document.body.dataset.stylePage;
+            if (swap && swap !== newStyle) {
+                const target = document.body.dataset.siblingHref;
+                if (target) window.location.href = target;
+            }
+            syncStyle();
+        }
+        modeBtns.forEach(b => b.addEventListener('click', function() {
             const m = b.dataset.mode;
             html.setAttribute('data-mode', m);
             localStorage.setItem('site-mode', m);
-            sync();
+            syncMode();
         }));
-        sync();
+        styleBtns.forEach(b => b.addEventListener('click', function() {
+            applyStyle(b.dataset.style);
+        }));
+        syncMode();
+        // Initial landing apply so cards reflect saved style on first paint
+        if (document.querySelector('.card')) applyStyle(savedStyle);
+        else syncStyle();
     });
 })();
 </script>
