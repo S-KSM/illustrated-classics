@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="maximal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Illustrated Classics · Toggleable edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --max-bg: #07060f;
+    --max-bg-soft: #11102a;
+    --max-text: #f4f4f7;
+    --max-muted: #9aa0b4;
+    --max-accent-1: #a5b4fc;
+    --max-accent-2: #f9a8d4;
+    --max-accent-3: #fbbf24;
+    --max-border: rgba(255,255,255,0.08);
+    --max-card: rgba(255,255,255,0.04);
+    --max-glow: 0 0 80px rgba(165,180,252,0.35);
+
+    --min-bg: #faf8f4;
+    --min-text: #1a1a1a;
+    --min-muted: #6b6b6b;
+    --min-accent: #1a1a1a;
+    --min-border: #e2ded5;
+    --min-card: #ffffff;
+}
+
+html[data-mode="maximal"] {
+    --bg: var(--max-bg);
+    --bg-soft: var(--max-bg-soft);
+    --text: var(--max-text);
+    --muted: var(--max-muted);
+    --accent: var(--max-accent-1);
+    --accent-2: var(--max-accent-2);
+    --accent-3: var(--max-accent-3);
+    --border: var(--max-border);
+    --card: var(--max-card);
+    color-scheme: dark;
+}
+html[data-mode="minimal"] {
+    --bg: var(--min-bg);
+    --bg-soft: var(--min-bg);
+    --text: var(--min-text);
+    --muted: var(--min-muted);
+    --accent: var(--min-accent);
+    --accent-2: var(--min-accent);
+    --accent-3: var(--min-accent);
+    --border: var(--min-border);
+    --card: var(--min-card);
+    color-scheme: light;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Top bar */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.topbar-brand {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+.topbar-brand a { color: inherit; }
+.mode-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+}
+.mode-toggle button {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.mode-toggle button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+}
+
+/* Maximal-only decor: animated gradient backdrop */
+html[data-mode="maximal"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(165,180,252,0.28), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(249,168,212,0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(251,191,36,0.14), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgDrift 22s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(-2%, 2%, 0) scale(1.08); }
+}
+
+/* Minimal hides all fancy decor */
+html[data-mode="minimal"] body::before { display: none; }
+
+/* Footer */
+footer {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 30px 28px 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+/* Hero */
+.hero {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: clamp(60px, 10vw, 140px) 28px clamp(40px, 6vw, 80px);
+    text-align: center;
+    position: relative;
+}
+.hero h1 {
+    font-family: 'Fraunces', 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    margin-bottom: 22px;
+}
+html[data-mode="maximal"] .hero h1 {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 45%, var(--accent-3) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 8px 28px rgba(165,180,252,0.25));
+}
+html[data-mode="minimal"] .hero h1 {
+    color: var(--text);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    font-size: clamp(2.4rem, 6.5vw, 4.5rem);
+}
+.hero p.tagline {
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0 auto;
+}
+.hero .count {
+    display: inline-block;
+    margin-top: 26px;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Controls */
+.controls {
+    max-width: 1240px;
+    margin: 0 auto 40px;
+    padding: 0 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+}
+.search {
+    flex: 1 1 280px;
+    position: relative;
+}
+.search input {
+    width: 100%;
+    padding: 14px 18px 14px 46px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+.search input:focus {
+    border-color: var(--text);
+}
+.search::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    width: 18px; height: 18px;
+    transform: translateY(-50%);
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") center/contain no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") center/contain no-repeat;
+    color: var(--muted);
+    pointer-events: none;
+}
+.chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.chip {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.chip:hover { color: var(--text); border-color: var(--text); }
+.chip[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+}
+
+/* Grid */
+.grid {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 28px;
+}
+.card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card.in {
+    opacity: 1;
+    transform: translateY(0);
+}
+html[data-mode="maximal"] .card:hover {
+    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(165,180,252,0.2);
+    transform: translateY(-4px);
+}
+html[data-mode="minimal"] .card:hover {
+    border-color: var(--text);
+    transform: translateY(-2px);
+}
+.cover-link {
+    display: block;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    background: #000;
+}
+.cover-link img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+}
+html[data-mode="maximal"] .card:hover .cover-link img {
+    transform: scale(1.06);
+    filter: saturate(1.15) brightness(1.03);
+}
+html[data-mode="minimal"] .cover-link img {
+    filter: grayscale(0.15);
+}
+html[data-mode="minimal"] .card:hover .cover-link img {
+    filter: grayscale(0);
+    transform: scale(1.02);
+}
+.card-body {
+    padding: 18px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 4px;
+}
+.card-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 1.22;
+    color: var(--text);
+}
+html[data-mode="minimal"] .card-title {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+.card-author {
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+html[data-mode="maximal"] .card-author {
+    color: var(--accent);
+}
+.card-genre {
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+}
+.card-actions {
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+}
+.btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    border: 1px solid transparent;
+}
+.btn.primary {
+    background: var(--text);
+    color: var(--bg);
+}
+.btn.primary:hover { opacity: 0.9; }
+.btn.ghost {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+}
+.btn.ghost:hover { border-color: var(--text); }
+
+.empty {
+    max-width: 1240px;
+    margin: 40px auto;
+    padding: 40px 28px;
+    text-align: center;
+    color: var(--muted);
+}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="topbar-brand"><a href="index.html">Illustrated Classics</a></div>
+    <div class="mode-toggle" role="group" aria-label="Visual mode">
+        <button type="button" data-mode="minimal">Minimal</button>
+        <button type="button" data-mode="maximal">Maximal</button>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Illustrated Classics</h1>
+    <p class="tagline">Public-domain novels, re-imagined chapter-by-chapter with AI art. Toggle Minimal or Maximal at the top.</p>
+    <span class="count">20 books · 2 styles each</span>
+</section>
+<div class="controls">
+    <label class="search" aria-label="Search books">
+        <input id="search" type="search" placeholder="Search title or author…" autocomplete="off">
+    </label>
+    <div class="chips" role="group" aria-label="Filter by genre">
+        <button class="chip" data-genre="all" aria-pressed="true" type="button">All</button><button class="chip" data-genre="Adventure Fiction" aria-pressed="false" type="button">Adventure Fiction</button><button class="chip" data-genre="Children&#x27;s Fantasy" aria-pressed="false" type="button">Children&#x27;s Fantasy</button><button class="chip" data-genre="Children&#x27;s Fiction" aria-pressed="false" type="button">Children&#x27;s Fiction</button><button class="chip" data-genre="Dystopian Fiction" aria-pressed="false" type="button">Dystopian Fiction</button><button class="chip" data-genre="Epic Poetry Translation" aria-pressed="false" type="button">Epic Poetry Translation</button><button class="chip" data-genre="Gothic Fiction" aria-pressed="false" type="button">Gothic Fiction</button><button class="chip" data-genre="Gothic Horror" aria-pressed="false" type="button">Gothic Horror</button><button class="chip" data-genre="Gothic Romance" aria-pressed="false" type="button">Gothic Romance</button><button class="chip" data-genre="Literary Fiction" aria-pressed="false" type="button">Literary Fiction</button><button class="chip" data-genre="Political Satire" aria-pressed="false" type="button">Political Satire</button><button class="chip" data-genre="Romance" aria-pressed="false" type="button">Romance</button><button class="chip" data-genre="Science Fiction" aria-pressed="false" type="button">Science Fiction</button><button class="chip" data-genre="Science Fiction Adventure" aria-pressed="false" type="button">Science Fiction Adventure</button><button class="chip" data-genre="Victorian Fiction / Holiday Classic" aria-pressed="false" type="button">Victorian Fiction / Holiday Classic</button>
+    </div>
+</div>
+<main class="grid">
+        <article class="card" data-title="1984" data-author="George Orwell" data-genre="Dystopian Fiction">
+            <a class="cover-link" href="1984/index.html">
+                <img src="1984/images_cinematic/cover.webp" alt="1984 cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">1984</h2>
+                <p class="card-author">George Orwell</p>
+                <p class="card-genre">Dystopian Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="1984/index.html">Read</a>
+                    <a class="btn ghost" href="1984/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="A Christmas Carol" data-author="Charles Dickens" data-genre="Victorian Fiction / Holiday Classic">
+            <a class="cover-link" href="christmas_carol/index.html">
+                <img src="christmas_carol/images_cinematic/cover.webp" alt="A Christmas Carol cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">A Christmas Carol</h2>
+                <p class="card-author">Charles Dickens</p>
+                <p class="card-genre">Victorian Fiction / Holiday Classic</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="christmas_carol/index.html">Read</a>
+                    <a class="btn ghost" href="christmas_carol/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Alice&#x27;s Adventures in Wonderland" data-author="Lewis Carroll" data-genre="Children&#x27;s Fantasy">
+            <a class="cover-link" href="alice_wonderland/index.html">
+                <img src="alice_wonderland/images_cinematic/cover.webp" alt="Alice&#x27;s Adventures in Wonderland cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Alice&#x27;s Adventures in Wonderland</h2>
+                <p class="card-author">Lewis Carroll</p>
+                <p class="card-genre">Children&#x27;s Fantasy</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="alice_wonderland/index.html">Read</a>
+                    <a class="btn ghost" href="alice_wonderland/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Animal Farm" data-author="George Orwell" data-genre="Political Satire">
+            <a class="cover-link" href="animal_farm/index.html">
+                <img src="animal_farm/images_cinematic/cover.webp" alt="Animal Farm cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Animal Farm</h2>
+                <p class="card-author">George Orwell</p>
+                <p class="card-genre">Political Satire</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="animal_farm/index.html">Read</a>
+                    <a class="btn ghost" href="animal_farm/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Dracula" data-author="Bram Stoker" data-genre="Gothic Horror">
+            <a class="cover-link" href="dracula/index.html">
+                <img src="dracula/images_cinematic/cover.webp" alt="Dracula cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Dracula</h2>
+                <p class="card-author">Bram Stoker</p>
+                <p class="card-genre">Gothic Horror</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="dracula/index.html">Read</a>
+                    <a class="btn ghost" href="dracula/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Frankenstein; or, The Modern Prometheus" data-author="Mary Shelley" data-genre="Gothic Horror">
+            <a class="cover-link" href="frankenstein/index.html">
+                <img src="frankenstein/images_cinematic/cover.webp" alt="Frankenstein; or, The Modern Prometheus cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Frankenstein; or, The Modern Prometheus</h2>
+                <p class="card-author">Mary Shelley</p>
+                <p class="card-genre">Gothic Horror</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="frankenstein/index.html">Read</a>
+                    <a class="btn ghost" href="frankenstein/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Peter Pan" data-author="J.M. Barrie" data-genre="Children&#x27;s Fantasy">
+            <a class="cover-link" href="peter_pan/index.html">
+                <img src="peter_pan/images_cinematic/cover.webp" alt="Peter Pan cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Peter Pan</h2>
+                <p class="card-author">J.M. Barrie</p>
+                <p class="card-genre">Children&#x27;s Fantasy</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="peter_pan/index.html">Read</a>
+                    <a class="btn ghost" href="peter_pan/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Pride and Prejudice" data-author="Jane Austen" data-genre="Romance">
+            <a class="cover-link" href="pride_prejudice/index.html">
+                <img src="pride_prejudice/images_cinematic/cover.webp" alt="Pride and Prejudice cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Pride and Prejudice</h2>
+                <p class="card-author">Jane Austen</p>
+                <p class="card-genre">Romance</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="pride_prejudice/index.html">Read</a>
+                    <a class="btn ghost" href="pride_prejudice/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Strange Case of Dr Jekyll and Mr Hyde" data-author="Robert Louis Stevenson" data-genre="Gothic Horror">
+            <a class="cover-link" href="jekyll_hyde/index.html">
+                <img src="jekyll_hyde/images_cinematic/cover.webp" alt="Strange Case of Dr Jekyll and Mr Hyde cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Strange Case of Dr Jekyll and Mr Hyde</h2>
+                <p class="card-author">Robert Louis Stevenson</p>
+                <p class="card-genre">Gothic Horror</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="jekyll_hyde/index.html">Read</a>
+                    <a class="btn ghost" href="jekyll_hyde/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The Great Gatsby" data-author="F. Scott Fitzgerald" data-genre="Literary Fiction">
+            <a class="cover-link" href="great_gatsby/index.html">
+                <img src="great_gatsby/images_cinematic/cover.webp" alt="The Great Gatsby cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The Great Gatsby</h2>
+                <p class="card-author">F. Scott Fitzgerald</p>
+                <p class="card-genre">Literary Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="great_gatsby/index.html">Read</a>
+                    <a class="btn ghost" href="great_gatsby/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The Legend of Sleepy Hollow" data-author="Washington Irving" data-genre="Gothic Fiction">
+            <a class="cover-link" href="sleepy_hollow/index.html">
+                <img src="sleepy_hollow/images_cinematic/cover.webp" alt="The Legend of Sleepy Hollow cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The Legend of Sleepy Hollow</h2>
+                <p class="card-author">Washington Irving</p>
+                <p class="card-genre">Gothic Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="sleepy_hollow/index.html">Read</a>
+                    <a class="btn ghost" href="sleepy_hollow/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The Odyssey" data-author="Samuel Butler" data-genre="Epic Poetry Translation">
+            <a class="cover-link" href="the_odyssey/index.html">
+                <img src="the_odyssey/images_cinematic/cover.webp" alt="The Odyssey cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The Odyssey</h2>
+                <p class="card-author">Samuel Butler</p>
+                <p class="card-genre">Epic Poetry Translation</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="the_odyssey/index.html">Read</a>
+                    <a class="btn ghost" href="the_odyssey/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The Picture of Dorian Gray" data-author="Oscar Wilde" data-genre="Gothic Fiction">
+            <a class="cover-link" href="dorian_gray/index.html">
+                <img src="dorian_gray/images_cinematic/cover.webp" alt="The Picture of Dorian Gray cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The Picture of Dorian Gray</h2>
+                <p class="card-author">Oscar Wilde</p>
+                <p class="card-genre">Gothic Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="dorian_gray/index.html">Read</a>
+                    <a class="btn ghost" href="dorian_gray/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The Secret Garden" data-author="Frances Hodgson Burnett" data-genre="Children&#x27;s Fiction">
+            <a class="cover-link" href="secret_garden/index.html">
+                <img src="secret_garden/images_cinematic/cover.webp" alt="The Secret Garden cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The Secret Garden</h2>
+                <p class="card-author">Frances Hodgson Burnett</p>
+                <p class="card-genre">Children&#x27;s Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="secret_garden/index.html">Read</a>
+                    <a class="btn ghost" href="secret_garden/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The Time Machine" data-author="H.G. Wells" data-genre="Science Fiction">
+            <a class="cover-link" href="time_machine/index.html">
+                <img src="time_machine/images_cinematic/cover.webp" alt="The Time Machine cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The Time Machine</h2>
+                <p class="card-author">H.G. Wells</p>
+                <p class="card-genre">Science Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="time_machine/index.html">Read</a>
+                    <a class="btn ghost" href="time_machine/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The War of the Worlds" data-author="H.G. Wells" data-genre="Science Fiction">
+            <a class="cover-link" href="war_of_the_worlds/index.html">
+                <img src="war_of_the_worlds/images_cinematic/cover.webp" alt="The War of the Worlds cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The War of the Worlds</h2>
+                <p class="card-author">H.G. Wells</p>
+                <p class="card-genre">Science Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="war_of_the_worlds/index.html">Read</a>
+                    <a class="btn ghost" href="war_of_the_worlds/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="The Wonderful Wizard of Oz" data-author="L. Frank Baum" data-genre="Children&#x27;s Fantasy">
+            <a class="cover-link" href="wizard_of_oz/index.html">
+                <img src="wizard_of_oz/images_cinematic/cover.webp" alt="The Wonderful Wizard of Oz cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">The Wonderful Wizard of Oz</h2>
+                <p class="card-author">L. Frank Baum</p>
+                <p class="card-genre">Children&#x27;s Fantasy</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="wizard_of_oz/index.html">Read</a>
+                    <a class="btn ghost" href="wizard_of_oz/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Treasure Island" data-author="Robert Louis Stevenson" data-genre="Adventure Fiction">
+            <a class="cover-link" href="treasure_island/index.html">
+                <img src="treasure_island/images_cinematic/cover.webp" alt="Treasure Island cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Treasure Island</h2>
+                <p class="card-author">Robert Louis Stevenson</p>
+                <p class="card-genre">Adventure Fiction</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="treasure_island/index.html">Read</a>
+                    <a class="btn ghost" href="treasure_island/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Twenty Thousand Leagues Under the Sea" data-author="Jules Verne" data-genre="Science Fiction Adventure">
+            <a class="cover-link" href="20000_leagues/index.html">
+                <img src="20000_leagues/images_cinematic/cover.webp" alt="Twenty Thousand Leagues Under the Sea cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Twenty Thousand Leagues Under the Sea</h2>
+                <p class="card-author">Jules Verne</p>
+                <p class="card-genre">Science Fiction Adventure</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="20000_leagues/index.html">Read</a>
+                    <a class="btn ghost" href="20000_leagues/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+        <article class="card" data-title="Wuthering Heights" data-author="Emily Brontë" data-genre="Gothic Romance">
+            <a class="cover-link" href="wuthering_heights/index.html">
+                <img src="wuthering_heights/images_cinematic/cover.webp" alt="Wuthering Heights cover" loading="lazy">
+            </a>
+            <div class="card-body">
+                <h2 class="card-title">Wuthering Heights</h2>
+                <p class="card-author">Emily Brontë</p>
+                <p class="card-genre">Gothic Romance</p>
+                <div class="card-actions">
+                    <a class="btn primary" href="wuthering_heights/index.html">Read</a>
+                    <a class="btn ghost" href="wuthering_heights/index_anime.html">Anime</a>
+                </div>
+            </div>
+        </article>
+</main>
+<p class="empty" id="empty" style="display:none;">No books match your filter.</p>
+<footer>
+    <p>Texts from Project Gutenberg · Illustrations by Gemini Nano Banana · Summaries by Claude</p>
+</footer>
+<script>
+(function() {
+    const html = document.documentElement;
+    const saved = localStorage.getItem('site-mode') || 'maximal';
+    html.setAttribute('data-mode', saved);
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.mode-toggle button');
+        function sync() {
+            const m = html.getAttribute('data-mode');
+            buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+        }
+        buttons.forEach(b => b.addEventListener('click', function() {
+            const m = b.dataset.mode;
+            html.setAttribute('data-mode', m);
+            localStorage.setItem('site-mode', m);
+            sync();
+        }));
+        sync();
+    });
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Fade-in on scroll
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '-40px' });
+    document.querySelectorAll('.card').forEach(c => io.observe(c));
+
+    // Filter: search + genre
+    const search = document.getElementById('search');
+    const chips = document.querySelectorAll('.chip');
+    const cards = document.querySelectorAll('.card');
+    let activeGenre = 'all';
+    function apply() {
+        const q = (search.value || '').trim().toLowerCase();
+        let visible = 0;
+        cards.forEach(c => {
+            const g = c.dataset.genre || '';
+            const t = (c.dataset.title || '').toLowerCase();
+            const a = (c.dataset.author || '').toLowerCase();
+            const matchG = activeGenre === 'all' || g === activeGenre;
+            const matchQ = !q || t.includes(q) || a.includes(q);
+            const ok = matchG && matchQ;
+            c.style.display = ok ? '' : 'none';
+            if (ok) visible++;
+        });
+        document.getElementById('empty').style.display = visible ? 'none' : 'block';
+    }
+    search.addEventListener('input', apply);
+    chips.forEach(ch => ch.addEventListener('click', function() {
+        activeGenre = ch.dataset.genre;
+        chips.forEach(x => x.setAttribute('aria-pressed', x === ch ? 'true' : 'false'));
+        apply();
+    }));
+});
+</script>
+</body>
+</html>

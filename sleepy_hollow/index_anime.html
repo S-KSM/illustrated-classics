@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="maximal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Legend of Sleepy Hollow · Anime Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --max-bg: #07060f;
+    --max-bg-soft: #11102a;
+    --max-text: #f4f4f7;
+    --max-muted: #9aa0b4;
+    --max-accent-1: #a5b4fc;
+    --max-accent-2: #f9a8d4;
+    --max-accent-3: #fbbf24;
+    --max-border: rgba(255,255,255,0.08);
+    --max-card: rgba(255,255,255,0.04);
+    --max-glow: 0 0 80px rgba(165,180,252,0.35);
+
+    --min-bg: #faf8f4;
+    --min-text: #1a1a1a;
+    --min-muted: #6b6b6b;
+    --min-accent: #1a1a1a;
+    --min-border: #e2ded5;
+    --min-card: #ffffff;
+}
+
+html[data-mode="maximal"] {
+    --bg: var(--max-bg);
+    --bg-soft: var(--max-bg-soft);
+    --text: var(--max-text);
+    --muted: var(--max-muted);
+    --accent: var(--max-accent-1);
+    --accent-2: var(--max-accent-2);
+    --accent-3: var(--max-accent-3);
+    --border: var(--max-border);
+    --card: var(--max-card);
+    color-scheme: dark;
+}
+html[data-mode="minimal"] {
+    --bg: var(--min-bg);
+    --bg-soft: var(--min-bg);
+    --text: var(--min-text);
+    --muted: var(--min-muted);
+    --accent: var(--min-accent);
+    --accent-2: var(--min-accent);
+    --accent-3: var(--min-accent);
+    --border: var(--min-border);
+    --card: var(--min-card);
+    color-scheme: light;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Top bar */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.topbar-brand {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+.topbar-brand a { color: inherit; }
+.mode-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+}
+.mode-toggle button {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.mode-toggle button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+}
+
+/* Maximal-only decor: animated gradient backdrop */
+html[data-mode="maximal"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(165,180,252,0.28), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(249,168,212,0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(251,191,36,0.14), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgDrift 22s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(-2%, 2%, 0) scale(1.08); }
+}
+
+/* Minimal hides all fancy decor */
+html[data-mode="minimal"] body::before { display: none; }
+
+/* Footer */
+footer {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 30px 28px 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+.reader {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Progress bar */
+.progress {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 120;
+    pointer-events: none;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    transition: width 0.1s linear;
+}
+html[data-mode="minimal"] .progress-bar {
+    background: var(--text);
+}
+
+/* Hero / cover */
+.book-hero {
+    text-align: center;
+    padding: clamp(60px, 9vw, 110px) 20px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.cover-wrap {
+    max-width: 360px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+.cover-wrap img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="maximal"] .cover-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(165,180,252,0.25), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(30px);
+}
+html[data-mode="minimal"] .cover-wrap img {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    border-radius: 2px;
+}
+.cover-wrap:hover img { transform: translateY(-4px) scale(1.01); }
+
+.book-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    margin-bottom: 10px;
+}
+html[data-mode="maximal"] .book-title {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+html[data-mode="minimal"] .book-title {
+    font-weight: 700;
+    color: var(--text);
+}
+.book-author {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+html[data-mode="maximal"] .book-author { color: var(--accent); }
+.book-meta {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* TOC drawer */
+.toc-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 110;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.toc-btn:hover { transform: scale(1.05); }
+.toc-btn svg { width: 18px; height: 18px; }
+.toc-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(340px, 85vw);
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    transform: translateX(-105%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 150;
+    overflow-y: auto;
+    padding: 70px 24px 30px;
+}
+.toc-drawer.open { transform: translateX(0); }
+.toc-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.toc-backdrop.open { opacity: 1; pointer-events: auto; }
+.toc-drawer h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+.toc-drawer ol {
+    list-style: none;
+    counter-reset: tocc;
+}
+.toc-drawer ol li {
+    counter-increment: tocc;
+    margin: 0;
+}
+.toc-drawer ol li a {
+    display: block;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: color 0.2s ease, padding 0.2s ease;
+}
+.toc-drawer ol li a::before {
+    content: counter(tocc) ". ";
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+}
+.toc-drawer ol li a:hover {
+    color: var(--accent);
+    padding-left: 10px;
+}
+.toc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+/* Chapters */
+.chapter {
+    margin: 80px 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.chapter.in { opacity: 1; transform: translateY(0); }
+.chapter-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="minimal"] .chapter-image {
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    display: block;
+}
+.chapter-number {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+html[data-mode="maximal"] .chapter-number {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.chapter-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+}
+html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+.chapter-summary p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1.15em;
+    color: var(--text);
+}
+html[data-mode="minimal"] .chapter-summary {
+    font-family: 'Fraunces', Georgia, serif;
+}
+html[data-mode="minimal"] .chapter-summary p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+}
+
+/* Chapter nav arrows */
+.chapter-jump {
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0 0;
+    gap: 10px;
+}
+.chapter-jump a {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+}
+.chapter-jump a:hover {
+    color: var(--text);
+    border-color: var(--text);
+    transform: translateY(-1px);
+}
+.chapter-jump a.next { text-align: right; }
+.chapter-jump a.prev { text-align: left; }
+.chapter-jump span { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 4px; }
+
+/* Current chapter pill */
+.pill {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    font-size: 0.82rem;
+    color: var(--muted);
+    z-index: 90;
+    transition: transform 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pill.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Back cover + footer */
+.back-cover {
+    max-width: 360px;
+    margin: 80px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+html[data-mode="minimal"] .back-cover {
+    border-radius: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+</style>
+</head>
+<body>
+<div class="progress"><div class="progress-bar"></div></div>
+<header class="topbar">
+    <div class="topbar-brand"><a href="../index.html">← All books</a></div>
+    <div class="mode-toggle" role="group" aria-label="Visual mode">
+        <button type="button" data-mode="minimal">Minimal</button>
+        <button type="button" data-mode="maximal">Maximal</button>
+    </div>
+</header>
+
+<button class="toc-btn" aria-label="Open chapter list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+</button>
+<div class="toc-backdrop"></div>
+<aside class="toc-drawer" aria-label="Chapters">
+    <button class="toc-close" aria-label="Close">×</button>
+    <h3>The Legend of Sleepy Hollow</h3>
+    <ol><li><a href="#chapter-1">A Drowsy, Enchanted Valley&#x27;s Haunted Legacy</a></li><li><a href="#chapter-2">A Tale&#x27;s Moral Playfully Debated</a></li></ol>
+</aside>
+
+<section class="book-hero">
+    
+<div class="cover-wrap">
+    <img src="images_anime/cover.webp" alt="The Legend of Sleepy Hollow cover">
+</div>
+    <h1 class="book-title">The Legend of Sleepy Hollow</h1>
+    <p class="book-author">Washington Irving</p>
+    <p class="book-meta">Anime Edition · 2 Chapters · <a href="index.html" style="color:inherit;text-decoration:underline;">Cinematic edition →</a></p>
+</section>
+
+<main class="reader">
+<section class="chapter" id="chapter-1" data-num="1">
+    <img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Drowsy, Enchanted Valley&#x27;s Haunted Legacy illustration" loading="lazy">
+    <div class="chapter-number">Chapter 1</div>
+    <h2 class="chapter-title">A Drowsy, Enchanted Valley&#x27;s Haunted Legacy</h2>
+    <div class="chapter-summary"><p>Nestled within a broad expanse of the Hudson River, where Dutch navigators of old would shorten sail and invoke the protection of St. Nicholas upon crossing the Tappan Zee, lies the drowsy village of Tarry Town—so named, they say, for the tendency of local husbands to linger overlong at the tavern. Not two miles distant rests a sequestered glen, cradled among high hills, where a brook murmurs softly and the only sounds disturbing the profound stillness are the whistle of a quail or the tapping of a woodpecker. This enchanted hollow, home to descendants of the original Dutch settlers, has long borne the name Sleepy Hollow, for a dreamy influence pervades its very atmosphere, bewitching all who dwell there with visions, trances, and marvelous beliefs. Chief among the spectral inhabitants haunting this region is the Headless Horseman—said to be the ghost of a Hessian trooper who lost his head to a cannonball during the Revolutionary War and now rides nightly in furious quest of it.</p>
+<p>Into this spell-bound valley came Ichabod Crane, a lanky Connecticut schoolmaster whose angular frame and long snipe nose made him resemble nothing so much as a scarecrow eloped from a cornfield. Though he ruled his humble schoolhouse with the birch rod, Ichabod tempered justice with discrimination, reserving the severest corrections for the sturdiest Dutch urchins while showing leniency to the meek. His meager salary compelled him to board among the families of his pupils, rendering himself useful by assisting with farm labor and ingratiating himself with mothers by dandling their children. He served also as the neighborhood&#x27;s singing-master, and his nasal melodies echoing from the church gallery were a source of considerable personal vanity.</p>
+<p>Ichabod possessed an insatiable appetite for the marvelous, devouring Cotton Mather&#x27;s tales of witchcraft and spending long evenings with Dutch wives listening to stories of ghosts, goblins, and particularly the Galloping Hessian. Yet the terrors these tales conjured during his solitary walks home through the darkened countryside were as nothing compared to the perplexity visited upon him by a woman—Katrina Van Tassel, the coquettish daughter of a prosperous Dutch farmer whose abundant lands and groaning larder set Ichabod&#x27;s imagination aflame with visions of roasted pigs and juicy hams, of turning such wealth to cash and striking westward.</p>
+<p>Standing formidably between Ichabod and his ambitions was Brom Bones, a burly, roystering hero whose feats of strength made him the undisputed champion of the countryside and whose rough gallantries had long been directed at the blooming Katrina. Too prudent to challenge such a rival openly, Ichabod pursued his courtship quietly, suffering the practical jokes Brom and his gang inflicted upon him until, one fine autumn afternoon, an invitation arrived to a quilting frolic at Van Tassel&#x27;s mansion.</p>
+<p>Mounted upon the broken-down plow-horse Gunpowder, Ichabod cut a grotesque figure as he shambled through the golden autumn landscape toward the festivities, where he feasted magnificently and danced with such abandon that he captured the admiration of all assembled. But something went amiss during his private interview with Katrina, for he departed crestfallen, riding homeward through the witching darkness with all the ghost stories he had heard that evening crowding upon his mind. Near the haunted bridge by the old church, a monstrous figure on a powerful black steed emerged from the shadows—headless, carrying its ghastly burden upon the pommel of its saddle. A desperate chase ensued, ending with the goblin hurling its head at the terrified schoolmaster.</p>
+<p>Come morning, only Ichabod&#x27;s hat and a shattered pumpkin were found beside the bridge. The schoolmaster vanished from Sleepy Hollow forever, though rumors eventually surfaced that he had fled to a distant county, studied law, and become a justice. Brom Bones, who soon after led Katrina triumphantly to the altar, always laughed knowingly when the tale was told—yet the old country wives maintain to this day that Ichabod was spirited away by supernatural means, and plowboys loitering homeward still fancy they hear his melancholy psalm tunes drifting through the tranquil solitudes of that haunted glen.</p></div>
+    <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
+</section>
+<section class="chapter" id="chapter-2" data-num="2">
+    <img class="chapter-image" src="images_anime/chapter_2.webp" alt="A Tale&#x27;s Moral Playfully Debated illustration" loading="lazy">
+    <div class="chapter-number">Chapter 2</div>
+    <h2 class="chapter-title">A Tale&#x27;s Moral Playfully Debated</h2>
+    <div class="chapter-summary"><p>The tale now committed to these pages came to the chronicler&#x27;s ears in very nearly the same fashion as it has been set down here—related aloud at a Corporation meeting in the venerable city of Manhattoes, where the most distinguished and sagacious burghers of that ancient place had gathered in their customary assembly. The gentleman who delivered the narrative was a figure of pleasant, if somewhat careworn, aspect: shabby in his pepper-and-salt attire, bearing a face that mingled sadness with good humor in equal measure, and carrying about him the unmistakable air of one whose purse had grown lighter than his spirits. Indeed, one could not help but suspect that his considerable efforts to amuse the company sprang from circumstances that made entertainment a necessity rather than a mere pastime.</p>
+<p>When at last the story reached its conclusion, laughter and approval rippled through the assembled worthies—most enthusiastically, it must be noted, from two or three deputy aldermen who had spent the better portion of the telling in peaceful slumber and therefore greeted the ending with the fresh delight of men who had missed everything preceding it. Yet not all present surrendered so readily to merriment. One gentleman in particular, tall and dry in his bearing, with eyebrows that beetled most formidably over a grave and rather severe countenance, remained unmoved throughout the general hilarity. He folded his arms, inclined his head, and fixed his gaze upon the floor with the deliberate air of a man turning some weighty doubt over in his mind. Here was one of those cautious souls who refuses to laugh except upon the firmest of grounds—when reason and law stand squarely on his side.</p>
+<p>Once the company&#x27;s mirth had run its course and silence settled once more upon the room, this skeptical gentleman assumed a posture of judicial inquiry, one arm resting upon the elbow of his chair, the other planted akimbo at his side. With a slight but exceedingly sage motion of his head and a pronounced contraction of his brow, he demanded to know what moral the story intended to convey and what, precisely, it went to prove.</p>
+<p>The storyteller, who had just raised a glass of wine to his lips as rightful refreshment after his labors, paused in his motion. He regarded his interrogator with an expression of infinite deference before lowering the glass slowly to the table. The tale, he explained with mock gravity, was intended most logically to demonstrate that no situation in life exists without its advantages and pleasures—provided one possesses the wit to take a joke as it comes. Furthermore, he who chooses to run races with goblin troopers must expect rough riding for his troubles. And therefore—ergo—for a country schoolmaster to be refused the hand of a Dutch heiress constitutes nothing less than a certain step toward high preferment in the state.</p>
+<p>The cautious gentleman knit his brows tenfold closer at this explanation, finding himself sorely puzzled by such peculiar ratiocination, while the shabby fellow in pepper-and-salt regarded him with something approaching a triumphant leer. At length the skeptic observed that this was all very well, but he thought the story rather extravagant—there were one or two points upon which he entertained serious doubts.</p>
+<p>&quot;Faith, sir,&quot; replied the storyteller with a careless wave, &quot;as to that matter, I don&#x27;t believe one-half of it myself.&quot;</p>
+<p>And so the tale passes from the narrator&#x27;s lips into the chronicler&#x27;s hands, carrying with it all the mischief and mystery that such stories tend to accumulate—leaving the reader to determine what portion, if any, deserves belief.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><span></span></nav>
+</section>
+<img class="back-cover" src="images_anime/back_cover.webp" alt="Back cover">
+</main>
+
+<div class="pill"></div>
+
+<footer>
+    <p>From Project Gutenberg · Generated with AI</p>
+</footer>
+
+<script>
+(function() {
+    const html = document.documentElement;
+    const saved = localStorage.getItem('site-mode') || 'maximal';
+    html.setAttribute('data-mode', saved);
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.mode-toggle button');
+        function sync() {
+            const m = html.getAttribute('data-mode');
+            buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+        }
+        buttons.forEach(b => b.addEventListener('click', function() {
+            const m = b.dataset.mode;
+            html.setAttribute('data-mode', m);
+            localStorage.setItem('site-mode', m);
+            sync();
+        }));
+        sync();
+    });
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading progress
+    const bar = document.querySelector('.progress-bar');
+    const onScroll = () => {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (scrolled / max * 100) + '%' : '0%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal chapters
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '-60px' });
+    document.querySelectorAll('.chapter').forEach(c => io.observe(c));
+
+    // TOC drawer
+    const tocBtn = document.querySelector('.toc-btn');
+    const drawer = document.querySelector('.toc-drawer');
+    const backdrop = document.querySelector('.toc-backdrop');
+    const closeBtn = document.querySelector('.toc-close');
+    function openToc() { drawer.classList.add('open'); backdrop.classList.add('open'); }
+    function closeToc() { drawer.classList.remove('open'); backdrop.classList.remove('open'); }
+    tocBtn.addEventListener('click', openToc);
+    backdrop.addEventListener('click', closeToc);
+    closeBtn.addEventListener('click', closeToc);
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeToc));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToc();
+    });
+
+    // Current-chapter pill
+    const pill = document.querySelector('.pill');
+    const chapters = Array.from(document.querySelectorAll('.chapter'));
+    const io2 = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const title = e.target.querySelector('.chapter-title').textContent;
+                const num = e.target.dataset.num;
+                pill.textContent = `Ch ${num} · ${title}`;
+                pill.classList.add('show');
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    chapters.forEach(c => io2.observe(c));
+
+    // Keyboard chapter nav
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const y = window.scrollY + window.innerHeight / 3;
+        let idx = chapters.findIndex(c => c.offsetTop > y);
+        if (idx === -1) idx = chapters.length;
+        const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+</body>
+</html>

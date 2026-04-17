@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="maximal">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Wonderful Wizard of Oz · Anime Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --max-bg: #07060f;
+    --max-bg-soft: #11102a;
+    --max-text: #f4f4f7;
+    --max-muted: #9aa0b4;
+    --max-accent-1: #a5b4fc;
+    --max-accent-2: #f9a8d4;
+    --max-accent-3: #fbbf24;
+    --max-border: rgba(255,255,255,0.08);
+    --max-card: rgba(255,255,255,0.04);
+    --max-glow: 0 0 80px rgba(165,180,252,0.35);
+
+    --min-bg: #faf8f4;
+    --min-text: #1a1a1a;
+    --min-muted: #6b6b6b;
+    --min-accent: #1a1a1a;
+    --min-border: #e2ded5;
+    --min-card: #ffffff;
+}
+
+html[data-mode="maximal"] {
+    --bg: var(--max-bg);
+    --bg-soft: var(--max-bg-soft);
+    --text: var(--max-text);
+    --muted: var(--max-muted);
+    --accent: var(--max-accent-1);
+    --accent-2: var(--max-accent-2);
+    --accent-3: var(--max-accent-3);
+    --border: var(--max-border);
+    --card: var(--max-card);
+    color-scheme: dark;
+}
+html[data-mode="minimal"] {
+    --bg: var(--min-bg);
+    --bg-soft: var(--min-bg);
+    --text: var(--min-text);
+    --muted: var(--min-muted);
+    --accent: var(--min-accent);
+    --accent-2: var(--min-accent);
+    --accent-3: var(--min-accent);
+    --border: var(--min-border);
+    --card: var(--min-card);
+    color-scheme: light;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Top bar */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+}
+.topbar-brand {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+.topbar-brand a { color: inherit; }
+.mode-toggle {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--card);
+}
+.mode-toggle button {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+.mode-toggle button[aria-pressed="true"] {
+    background: var(--text);
+    color: var(--bg);
+}
+
+/* Maximal-only decor: animated gradient backdrop */
+html[data-mode="maximal"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(165,180,252,0.28), transparent 60%),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(249,168,212,0.22), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 110%, rgba(251,191,36,0.14), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+    animation: bgDrift 22s ease-in-out infinite alternate;
+}
+@keyframes bgDrift {
+    from { transform: translate3d(0,0,0) scale(1); }
+    to   { transform: translate3d(-2%, 2%, 0) scale(1.08); }
+}
+
+/* Minimal hides all fancy decor */
+html[data-mode="minimal"] body::before { display: none; }
+
+/* Footer */
+footer {
+    max-width: 1200px;
+    margin: 100px auto 0;
+    padding: 30px 28px 60px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+
+.reader {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Progress bar */
+.progress {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 120;
+    pointer-events: none;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    transition: width 0.1s linear;
+}
+html[data-mode="minimal"] .progress-bar {
+    background: var(--text);
+}
+
+/* Hero / cover */
+.book-hero {
+    text-align: center;
+    padding: clamp(60px, 9vw, 110px) 20px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.cover-wrap {
+    max-width: 360px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+.cover-wrap img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="maximal"] .cover-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(165,180,252,0.25), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(30px);
+}
+html[data-mode="minimal"] .cover-wrap img {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    border-radius: 2px;
+}
+.cover-wrap:hover img { transform: translateY(-4px) scale(1.01); }
+
+.book-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    margin-bottom: 10px;
+}
+html[data-mode="maximal"] .book-title {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+html[data-mode="minimal"] .book-title {
+    font-weight: 700;
+    color: var(--text);
+}
+.book-author {
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+html[data-mode="maximal"] .book-author { color: var(--accent); }
+.book-meta {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* TOC drawer */
+.toc-btn {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 110;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    backdrop-filter: blur(14px);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.toc-btn:hover { transform: scale(1.05); }
+.toc-btn svg { width: 18px; height: 18px; }
+.toc-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(340px, 85vw);
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    transform: translateX(-105%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 150;
+    overflow-y: auto;
+    padding: 70px 24px 30px;
+}
+.toc-drawer.open { transform: translateX(0); }
+.toc-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 140;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.toc-backdrop.open { opacity: 1; pointer-events: auto; }
+.toc-drawer h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+}
+.toc-drawer ol {
+    list-style: none;
+    counter-reset: tocc;
+}
+.toc-drawer ol li {
+    counter-increment: tocc;
+    margin: 0;
+}
+.toc-drawer ol li a {
+    display: block;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.4;
+    transition: color 0.2s ease, padding 0.2s ease;
+}
+.toc-drawer ol li a::before {
+    content: counter(tocc) ". ";
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+}
+.toc-drawer ol li a:hover {
+    color: var(--accent);
+    padding-left: 10px;
+}
+.toc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+/* Chapters */
+.chapter {
+    margin: 80px 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.chapter.in { opacity: 1; transform: translateY(0); }
+.chapter-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-mode="minimal"] .chapter-image {
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 520px;
+    margin: 0 auto 28px;
+    display: block;
+}
+.chapter-number {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+html[data-mode="maximal"] .chapter-number {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.chapter-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+}
+html[data-mode="minimal"] .chapter-title { font-weight: 600; letter-spacing: -0.025em; }
+.chapter-summary p {
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1.15em;
+    color: var(--text);
+}
+html[data-mode="minimal"] .chapter-summary {
+    font-family: 'Fraunces', Georgia, serif;
+}
+html[data-mode="minimal"] .chapter-summary p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+}
+
+/* Chapter nav arrows */
+.chapter-jump {
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0 0;
+    gap: 10px;
+}
+.chapter-jump a {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+}
+.chapter-jump a:hover {
+    color: var(--text);
+    border-color: var(--text);
+    transform: translateY(-1px);
+}
+.chapter-jump a.next { text-align: right; }
+.chapter-jump a.prev { text-align: left; }
+.chapter-jump span { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 4px; }
+
+/* Current chapter pill */
+.pill {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(18px);
+    font-size: 0.82rem;
+    color: var(--muted);
+    z-index: 90;
+    transition: transform 0.35s ease, opacity 0.3s ease;
+    opacity: 0;
+    max-width: calc(100vw - 40px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pill.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Back cover + footer */
+.back-cover {
+    max-width: 360px;
+    margin: 80px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+html[data-mode="minimal"] .back-cover {
+    border-radius: 2px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+
+</style>
+</head>
+<body>
+<div class="progress"><div class="progress-bar"></div></div>
+<header class="topbar">
+    <div class="topbar-brand"><a href="../index.html">← All books</a></div>
+    <div class="mode-toggle" role="group" aria-label="Visual mode">
+        <button type="button" data-mode="minimal">Minimal</button>
+        <button type="button" data-mode="maximal">Maximal</button>
+    </div>
+</header>
+
+<button class="toc-btn" aria-label="Open chapter list">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg>
+</button>
+<div class="toc-backdrop"></div>
+<aside class="toc-drawer" aria-label="Chapters">
+    <button class="toc-close" aria-label="Close">×</button>
+    <h3>The Wonderful Wizard of Oz</h3>
+    <ol><li><a href="#chapter-1">A Gray Life Before the Storm</a></li><li><a href="#chapter-2">Gray Prairie, Rising Storm</a></li><li><a href="#chapter-3">A Strange Land and Its Little People</a></li><li><a href="#chapter-4">A Friendly Witch Begins Her Journey</a></li><li><a href="#chapter-5">A Scarecrow&#x27;s First Days Alive</a></li><li><a href="#chapter-6">A Rusted Friend Joins the Journey</a></li><li><a href="#chapter-7">A Cowardly King Joins the Journey</a></li><li><a href="#chapter-8">Leaping Chasms in the Dark Forest</a></li><li><a href="#chapter-9">The Scarecrow Stranded in the River</a></li><li><a href="#chapter-10">Tiny Heroes Save the Cowardly Lion</a></li><li><a href="#chapter-11">The Green Land and Its Mysteries</a></li><li><a href="#chapter-12">A City Bathed in Emerald Light</a></li><li><a href="#chapter-13">The Witch&#x27;s Wrath Unleashed</a></li><li><a href="#chapter-14">Reunited at the Yellow Castle</a></li><li><a href="#chapter-15">Lost in Fields of Yellow Flowers</a></li><li><a href="#chapter-16">The Man Behind the Screen</a></li><li><a href="#chapter-17">Bran, Silk, and Bottled Courage</a></li><li><a href="#chapter-18">Oz and Dorothy Build Their Escape</a></li><li><a href="#chapter-19">A New Hope in the South</a></li><li><a href="#chapter-20">Journey South Through Enchanted Forests</a></li><li><a href="#chapter-21">A Fragile Land of Living Porcelain</a></li><li><a href="#chapter-22">The Lion Claims His Forest Throne</a></li><li><a href="#chapter-23">Over the Hill to Glinda&#x27;s Castle</a></li><li><a href="#chapter-24">Glinda&#x27;s Gift and Farewell Blessings</a></li></ol>
+</aside>
+
+<section class="book-hero">
+    
+<div class="cover-wrap">
+    <img src="images_anime/cover.webp" alt="The Wonderful Wizard of Oz cover">
+</div>
+    <h1 class="book-title">The Wonderful Wizard of Oz</h1>
+    <p class="book-author">L. Frank Baum</p>
+    <p class="book-meta">Anime Edition · 24 Chapters · <a href="index.html" style="color:inherit;text-decoration:underline;">Cinematic edition →</a></p>
+</section>
+
+<main class="reader">
+<section class="chapter" id="chapter-1" data-num="1">
+    <img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Gray Life Before the Storm illustration" loading="lazy">
+    <div class="chapter-number">Chapter 1</div>
+    <h2 class="chapter-title">A Gray Life Before the Storm</h2>
+    <div class="chapter-summary"><p>I appreciate you sharing this task, but I need to point out an issue: the text you&#x27;ve provided isn&#x27;t actually &quot;Chapter XXIV. Home Again&quot; from *The Wonderful Wizard of Oz*.</p>
+<p>What you&#x27;ve shared is L. Frank Baum&#x27;s **Introduction** to the book—his author&#x27;s preface dated April 1900, where he explains his philosophy for writing a &quot;modernized fairy tale&quot; without the frightening elements of older stories.</p>
+<p>The actual Chapter XXIV, &quot;Home Again,&quot; is the final chapter of the book where Dorothy uses the Silver Shoes to return to Kansas, discovers they fell off during her magical journey, and is reunited with Aunt Em on the farm.</p>
+<p>Would you like me to:</p>
+<p>1. **Write a summary of the actual Chapter XXIV** (&quot;Home Again&quot;) based on the original text, or
+2. **Summarize this Introduction** that you&#x27;ve provided?</p>
+<p>Also, I notice the style profile is listed as &quot;unavailable.&quot; If you can provide Baum&#x27;s style characteristics or another sample of his writing, I can better mimic his voice. Otherwise, I can work from my knowledge of his prose style from *The Wonderful Wizard of Oz*.</p>
+<p>Please let me know how you&#x27;d like to proceed!</p></div>
+    <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
+</section>
+<section class="chapter" id="chapter-2" data-num="2">
+    <img class="chapter-image" src="images_anime/chapter_2.webp" alt="Gray Prairie, Rising Storm illustration" loading="lazy">
+    <div class="chapter-number">Chapter 2</div>
+    <h2 class="chapter-title">Gray Prairie, Rising Storm</h2>
+    <div class="chapter-summary"><p>Dorothy lived at the very heart of the great Kansas prairies, in a world painted entirely in gray. Her home was a simple one-room house shared with Uncle Henry, a worn and solemn farmer, and Aunt Em, his equally weathered wife. The lumber for that modest dwelling had been hauled by wagon across miles of flat, sun-scorched earth, and it showed in every rough-hewn board. Inside stood only what necessity demanded: a rusty cookstove, a cupboard, a table, a few chairs, and the beds tucked into corners. Beneath the floor lay the cyclone cellar—a small, dark hole carved into the ground, reached by trap door and ladder, waiting for the day when the prairie winds would turn murderous.</p>
+<p>Everything Dorothy could see from her doorway stretched gray and endless to the horizon. The sun had long ago baked the land into a cracked, colorless mass. Even the grass had surrendered its green, burned to the same dull shade as the sky, the earth, and the house itself. This grayness had seeped into Aunt Em too, who had arrived years before as a young, pretty bride but had since been drained of all color and joy by the relentless sun and wind. She never smiled now, and Dorothy&#x27;s laughter still startled her like something foreign and strange. Uncle Henry fared no better—gray from beard to boot, he worked from dawn until dark without ever knowing what happiness felt like.</p>
+<p>Only Toto kept Dorothy from fading into the same colorless existence. The little black dog with his silky hair and twinkling eyes was her constant companion, her source of play and laughter in a world that had forgotten both.</p>
+<p>But on this particular day, no one was playing. Uncle Henry watched the sky from the doorstep, his face tight with worry. The gray overhead had deepened into something ominous. Dorothy stood in the doorway clutching Toto, and even Aunt Em paused from her dishes to look. From the north came a low moan of wind, bending the long grass in waves. From the south came a sharp whistle, and the grass rippled there too.</p>
+<p>Uncle Henry leapt to his feet. &quot;There&#x27;s a cyclone coming, Em,&quot; he called, then ran toward the sheds to see to the animals. Aunt Em threw open the trap door and screamed for Dorothy to follow, disappearing down the ladder into darkness. But Toto had jumped free and hidden under the bed, and Dorothy would not leave without him.</p>
+<p>She had just caught the trembling dog and started across the room when the wind shrieked and the house shuddered so violently that she tumbled to the floor. Then came the impossible—the house began to spin, rising slowly into the air as if caught in some giant&#x27;s hand. The north and south winds had collided directly where the little dwelling stood, lifting it to the very eye of the cyclone, where the air hung strangely still. Higher and higher the house rose, then sailed away, carried across miles of sky as easily as a feather on a breath.</p>
+<p>Though darkness pressed in and the wind howled like something alive, Dorothy found the motion surprisingly gentle after those first terrifying whirls. She sat quietly on the floor while Toto barked and scrambled about, once tumbling through the open trap door before the strange pressure of air held him suspended by his ears. Dorothy pulled him back up and latched the door shut against further accidents.</p>
+<p>Hours crawled past. Slowly her fear gave way to a lonely calm. She stopped wondering whether the house would dash to pieces when it fell and simply resolved to wait and see what fate had in store. At last she crawled across the swaying floor to her little bed, and Toto curled up beside her.</p>
+<p>Despite the groaning house and wailing wind, Dorothy&#x27;s eyes grew heavy, and she drifted into sleep—unaware of just how far from Kansas the cyclone was carrying her, or what strange and colorful world awaited when she finally woke.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
+</section>
+<section class="chapter" id="chapter-3" data-num="3">
+    <img class="chapter-image" src="images_anime/chapter_3.webp" alt="A Strange Land and Its Little People illustration" loading="lazy">
+    <div class="chapter-number">Chapter 3</div>
+    <h2 class="chapter-title">A Strange Land and Its Little People</h2>
+    <div class="chapter-summary"><p>Dorothy awoke with such a jolt that she caught her breath, wondering what on earth had happened, while Toto pressed his cold little nose against her face and whined most pitifully. But the house had stopped moving at last, and bright sunshine flooded through the window, so she sprang from her soft bed and ran to open the door, her little dog at her heels.</p>
+<p>What she saw made her cry out in pure amazement. The cyclone had set her farmhouse down—rather gently, for a cyclone—in the midst of a country more beautiful than anything Dorothy had ever seen in all her days on the dry, gray Kansas prairies. Lovely patches of green grass spread all about, dotted with stately trees heavy with luscious fruits. Gorgeous flowers bloomed on every side, and birds of brilliant plumage sang sweetly in the bushes. A sparkling brook rushed along between green banks, murmuring in a voice that seemed to welcome the little girl from that dusty, colorless land she had known.</p>
+<p>While Dorothy stood marveling at these wonders, she noticed a group of the queerest people approaching her. They were not tall like grown folks, yet not very small either—about Dorothy&#x27;s own height, though they looked many years older. Three were men dressed all in blue, with round pointed hats trimmed with tinkling bells and well-polished boots rolled at the top. The fourth was a little old woman whose face was covered with wrinkles, her white hair nearly matching her white gown sprinkled with glittering stars. She walked rather stiffly, but came right up to Dorothy while the others hung back, whispering nervously.</p>
+<p>The little woman made a low bow and welcomed Dorothy as a noble Sorceress, thanking her for killing the Wicked Witch of the East and freeing the Munchkins from bondage. Dorothy was utterly bewildered—she had never killed anything in her life! But when the old woman pointed to the corner of the house, Dorothy gave a cry of fright. There, sticking out from under the heavy beam, were two feet shod in silver shoes with pointed toes. The house had fallen directly upon the Witch.</p>
+<p>Dorothy&#x27;s dismay was met with calm reassurance. The little woman explained that she was the Witch of the North—a good witch, beloved by the people—and that only two wicked witches had ever existed in Oz: the one now dead, and another who ruled the West. When Dorothy mentioned that Aunt Em had told her all witches were dead years ago, the Witch of the North explained that civilized countries had lost their magic folk long ago, but the Land of Oz remained cut off from the world, keeping its witches and wizards—including the Great Wizard Oz himself, who lived in the City of Emeralds and was more powerful than all the rest.</p>
+<p>As they spoke, the Munchkins shouted and pointed—the dead Witch had dried up entirely in the sun, leaving nothing but those silver shoes, which the Witch of the North gave to Dorothy as her rightful prize.</p>
+<p>But when Dorothy asked how she might return home to Kansas, the Munchkins and the Witch only shook their heads. Great deserts surrounded Oz on every side, and the Wicked Witch of the West would enslave anyone who passed her way. Poor Dorothy began to sob at the thought of being trapped forever among strangers, and the tender-hearted Munchkins wept with her. Then the Witch of the North performed a bit of magic, balancing her cap on her nose until it transformed into a slate bearing the message: *Let Dorothy go to the City of Emeralds.*</p>
+<p>There, perhaps, the Great Wizard might help her. The Witch could not accompany Dorothy on the long journey through lands both pleasant and terrible, but she kissed the girl gently on the forehead, leaving a shining mark that would protect her from harm. With directions to follow the road of yellow brick, Dorothy watched as the three Munchkins bowed and departed through the trees, and the little old Witch whirled three times on her heel and vanished into thin air.</p>
+<p>Now Dorothy stood alone with Toto at her feet, the silver shoes waiting inside and a strange road stretching before her toward whatever wonders—or dangers—the City of Emeralds might hold.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
+</section>
+<section class="chapter" id="chapter-4" data-num="4">
+    <img class="chapter-image" src="images_anime/chapter_4.webp" alt="A Friendly Witch Begins Her Journey illustration" loading="lazy">
+    <div class="chapter-number">Chapter 4</div>
+    <h2 class="chapter-title">A Friendly Witch Begins Her Journey</h2>
+    <div class="chapter-summary"><p>Left to her own devices in the little Munchkin house, Dorothy found herself practical and undaunted. Hunger sent her to the cupboard for bread and butter, which she shared with faithful Toto, and down to the sparkling brook for fresh water. When Toto scampered off to bark at birds in the nearby trees, Dorothy discovered delicious fruit hanging from the branches—a fine addition to her simple breakfast.</p>
+<p>With her belly satisfied, the girl turned her attention to preparing for the long journey ahead. She had but one other dress, a blue and white checked gingham somewhat faded from many washings, yet still pretty enough. Dorothy washed carefully, donned the clean frock, and tied her pink sunbonnet upon her head. She filled a little basket with bread, covering it neatly with a white cloth. But when she looked down at her worn leather shoes, she knew they would never survive the road to the Emerald City.</p>
+<p>It was then her eyes fell upon the silver shoes lying on the table—those very shoes that had belonged to the Wicked Witch of the East. They fit Dorothy perfectly, as though made for her feet alone, and she knew they would carry her far without wearing out.</p>
+<p>With Toto trotting soberly behind her, Dorothy locked the door, pocketed the key, and set off. She found the road of yellow brick easily enough and walked briskly along, her silver shoes tinkling merrily against the hard surface. The sun shone bright, birds sang sweetly, and the countryside revealed itself as remarkably pretty—neat blue fences lining fields abundant with grain and vegetables. The Munchkins were clearly fine farmers. As Dorothy passed their round, dome-roofed houses, all painted in their favorite blue, the people emerged to bow low before her, grateful to the girl who had freed them from the Wicked Witch&#x27;s bondage.</p>
+<p>By evening, weary from walking, Dorothy came upon a larger house where men and women danced on the green lawn while five little fiddlers played merrily. A table overflowed with fruits, nuts, pies, and cakes. These were friends of Boq, one of the richest Munchkins, celebrating their newfound freedom. They welcomed Dorothy warmly, offering supper and a bed for the night.</p>
+<p>Boq himself waited upon her, and when he noticed her silver shoes, he declared her a great sorceress. The white in her checked dress, he explained, was the color of witches, while the blue honored the Munchkins. Dorothy hardly knew how to respond—she was only an ordinary girl carried here by chance and cyclone, yet everyone insisted on seeing her as something more.</p>
+<p>She slept soundly on blue sheets, Toto curled upon a blue rug beside her. Come morning, after a hearty breakfast and amusement watching a Munchkin baby play with Toto—dogs being unknown curiosities in this land—Dorothy asked Boq about the journey ahead. He confessed he had never been to the Emerald City, warning that while this country was pleasant, rough and dangerous places lay between her and her destination.</p>
+<p>Though worried, Dorothy resolved not to turn back. Only the Great Oz could send her home to Kansas.</p>
+<p>Miles down the yellow brick road, she stopped to rest upon a fence beside a cornfield. There stood a Scarecrow—straw-stuffed, dressed in faded blue Munchkin clothes, perched high on a pole. Dorothy studied his painted face thoughtfully, and then one of his eyes slowly winked at her. The figure nodded in friendly greeting.</p>
+<p>When the Scarecrow spoke, confessing how tedious it was to hang there day and night, Dorothy lifted him from his pole. Light as straw, he bowed gratefully, feeling like a new man. Learning of Dorothy&#x27;s quest, he revealed his own sorrow: being stuffed with straw, he had no brains at all. Might Oz give him some?</p>
+<p>Dorothy could not promise, but she invited him to join her. They walked together toward the yellow brick road, the Scarecrow gallantly carrying her basket, confessing along the way the one thing he truly feared—a lighted match.</p>
+<p>And so the unlikely companions continued onward, their path stretching toward whatever wonders and perils awaited beyond the pleasant Munchkin farmland.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
+</section>
+<section class="chapter" id="chapter-5" data-num="5">
+    <img class="chapter-image" src="images_anime/chapter_5.webp" alt="A Scarecrow&#x27;s First Days Alive illustration" loading="lazy">
+    <div class="chapter-number">Chapter 5</div>
+    <h2 class="chapter-title">A Scarecrow&#x27;s First Days Alive</h2>
+    <div class="chapter-summary"><p>The yellow brick road, which had carried Dorothy so smoothly from the land of the Munchkins, grew troublesome as the hours wore on. The bricks lay uneven and broken in places, with gaps where they had crumbled away entirely or gone missing, leaving holes that required navigating. Toto bounded over these obstacles with ease, and Dorothy stepped carefully around them, but the Scarecrow—possessing no brains to warn him of such hazards—walked straight into every hole and tumbled full length upon the hard surface. Yet he never suffered any hurt from these spills, and each time Dorothy helped him to his feet, they laughed together at his clumsiness as though it were the finest joke in all of Oz.</p>
+<p>The countryside grew lonelier as they traveled. The neat farms and pleasant orchards gave way to neglected land, fewer houses, and a creeping sense of desolation that settled over everything. When noon arrived, they rested beside a little brook, and Dorothy ate her bread while the Scarecrow explained why he could not join her—his painted mouth would need cutting to admit food, and then his straw stuffing would spill out and ruin the shape of his head entirely.</p>
+<p>Their conversation turned to Kansas, and Dorothy told her companion all about the gray prairies and the cyclone that had swept her away. The Scarecrow could not fathom why anyone would wish to leave beautiful Oz for such a dreary place, but Dorothy spoke a truth he could not comprehend: there is no place like home, no matter how gray or how plain. The Scarecrow admitted that perhaps if everyone&#x27;s heads were stuffed with straw, they would all choose beauty over belonging—and Kansas would stand empty.</p>
+<p>When Dorothy asked for a story, the Scarecrow offered the only tale he knew: his own brief existence. He had been made only two days before, painted into being piece by piece—first his ears, through which he heard the farmer and his Munchkin companion discussing their work, then his eyes, which opened upon the world with fresh curiosity. He watched his own body take shape and felt proud when they declared him as good as any man. But his pride withered on the pole where he was left standing in the cornfield. An old crow saw through the deception at once, pronouncing him merely stuffed with straw and feasting on the corn without fear. Yet that same crow offered comfort and wisdom: brains, he said, were the only things worth having, whether one be crow or man. From that moment, the Scarecrow had longed for brains of his own—and Dorothy&#x27;s arrival had given him hope that the Great Oz might grant his wish.</p>
+<p>As afternoon stretched toward evening, the road led them into a vast forest where the trees grew so thick and tall that their branches knit together overhead, blotting out the sky. Darkness gathered beneath the canopy, but the Scarecrow reasoned simply that if the road went into the forest, it must come out again—and since the Emerald City lay at its end, they had no choice but to follow. When night fell completely and Dorothy could see nothing at all, she took the Scarecrow&#x27;s arm, for he could see as well in darkness as in daylight, and Toto&#x27;s sharp eyes guided them too.</p>
+<p>At last the Scarecrow spotted a small cottage built of logs and branches standing among the trees, and there Dorothy found a bed of dried leaves where she could rest her weary body. She fell asleep almost at once with Toto curled beside her, while the Scarecrow—who never tired and never slept—stood watch in the corner, waiting patiently for morning to bring whatever new adventures the road might hold.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
+</section>
+<section class="chapter" id="chapter-6" data-num="6">
+    <img class="chapter-image" src="images_anime/chapter_6.webp" alt="A Rusted Friend Joins the Journey illustration" loading="lazy">
+    <div class="chapter-number">Chapter 6</div>
+    <h2 class="chapter-title">A Rusted Friend Joins the Journey</h2>
+    <div class="chapter-summary"><p>Morning light filtered through the forest trees as Dorothy woke to find Toto already about his business of chasing birds and squirrels, while the Scarecrow stood patiently in his corner, ever watchful and waiting. The practical matter of water soon presented itself—Dorothy needed to wash away the road dust and wet her throat enough to manage the dry bread that remained. The Scarecrow, contemplating her needs with genuine curiosity, remarked on the inconvenience of being made of flesh, though he allowed that possessing brains made such bother worthwhile.</p>
+<p>They found a spring of clear water where Dorothy refreshed herself and took her breakfast, noting with quiet worry how little bread remained in her basket. She was grateful, at least, that her straw companion required no food.</p>
+<p>It was a deep groan that startled them both—a sound of such longing and weariness that they could not ignore it. Following the strange noise through the trees, Dorothy discovered something glinting in a shaft of sunlight: a man made entirely of tin, standing frozen beside a half-chopped tree, his axe raised high as if caught mid-swing. He had been groaning for more than a year, he told them, rusted solid and helpless, waiting for someone to hear him.</p>
+<p>Dorothy&#x27;s tender heart moved her to action at once. She fetched an oil-can from the Tin Woodman&#x27;s cottage and set about freeing him, joint by joint—first his neck, then his arms, then his legs—while the Scarecrow helped work the stiff parts until they moved freely again. The Tin Woodman lowered his axe with a sigh of deep satisfaction, grateful beyond measure for his release.</p>
+<p>When he learned of their journey to the Emerald City and their hopes of what the Great Oz might grant them, the Tin Woodman grew thoughtful. Might Oz give him a heart? Dorothy supposed it would be as easy as giving the Scarecrow brains, and so their party grew by one more hopeful traveler. The Tin Woodman shouldered his axe, Dorothy tucked the oil-can safely in her basket against future rains, and together they returned to the road of yellow brick.</p>
+<p>The Woodman proved his worth almost immediately, chopping through a tangle of branches that blocked their way. And as they walked, he shared his sorrowful history—how he had once been a man of flesh who loved a beautiful Munchkin girl, how the Wicked Witch of the East had enchanted his axe to thwart their marriage, causing it to cut away his limbs one by one. Each time, a clever tinsmith had replaced what was lost with shining tin, until at last the axe split his very body in two. The tinsmith fashioned him a tin torso, but in losing his flesh, the Woodman had lost his heart—and with it, all his love.</p>
+<p>Now, after a year of standing frozen in the forest, he understood what mattered most. Brains were well enough, but it was the heart that brought happiness, and happiness was the finest thing in the world.</p>
+<p>The Scarecrow disagreed, insisting that brains must come first, for what use was a heart to a fool? Dorothy listened to their gentle debate and found herself unable to choose between them. She only knew that if she could return to Kansas and Aunt Em, nothing else would matter quite so much.</p>
+<p>But as the yellow bricks stretched onward beneath their feet, a more pressing worry gnawed at her—the bread was nearly gone, and unlike her companions of tin and straw, Dorothy could not simply go on without being fed.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
+</section>
+<section class="chapter" id="chapter-7" data-num="7">
+    <img class="chapter-image" src="images_anime/chapter_7.webp" alt="A Cowardly King Joins the Journey illustration" loading="lazy">
+    <div class="chapter-number">Chapter 7</div>
+    <h2 class="chapter-title">A Cowardly King Joins the Journey</h2>
+    <div class="chapter-summary"><p>The journey through the thick woods grew ever more treacherous as Dorothy and her peculiar companions pressed onward along the yellow brick road, now nearly hidden beneath a carpet of dried branches and dead leaves. Few birds sang in this gloomy stretch of forest, for they preferred the open country where sunshine flowed freely, and in their place came only the deep, unsettling growls of wild creatures lurking unseen among the shadowed trees. Dorothy&#x27;s heart quickened at these sounds, though she knew not what made them. Little Toto, however, understood perfectly well, and he stayed pressed close against the girl&#x27;s side, too wise even to bark in reply.</p>
+<p>When Dorothy asked the Tin Woodman how much longer they must endure this dark passage, he could offer no certain answer, having never traveled to the Emerald City himself. Yet he spoke of his father&#x27;s long-ago journey and assured her that while the road remained dangerous, the country grew beautiful as one drew nearer to where Oz dwelt. He reminded her that she bore the Good Witch&#x27;s kiss upon her forehead as protection, and that neither he nor the Scarecrow could truly be harmed—though poor Toto, being flesh and blood, would require their vigilant care.</p>
+<p>No sooner had these words left his tin lips than a terrible roar shattered the forest stillness, and a great Lion bounded into the road before them. With one mighty swipe of his paw, he sent the Scarecrow spinning through the air, then turned his sharp claws upon the Tin Woodman, who clattered to the ground though his metal body remained unmarked. When brave little Toto rushed forward barking at this fearsome beast, and the Lion opened his tremendous jaws to bite, Dorothy threw all caution aside. She rushed at the Lion and slapped him soundly upon his nose, scolding him for his cruelty toward a poor little dog.</p>
+<p>To everyone&#x27;s astonishment, the great Lion did not retaliate but instead hung his massive head in shame, confessing what had always been his secret burden: he was nothing but a coward. Despite being large as a small horse and regarded everywhere as the King of Beasts, he lived in constant fear. He had learned that his mighty roar frightened every creature into flight, and so his cowardice had never been tested—but he knew the truth of his own trembling heart.</p>
+<p>The Scarecrow declared this wasn&#x27;t right for a king, and the Lion wept, wiping tears with the tip of his tail. When the Tin Woodman suggested he might have heart disease, the Lion considered that perhaps having no heart at all would cure him of his cowardice. Upon learning that each traveler journeyed to ask something of the Great Oz—brains for the Scarecrow, a heart for the Tin Woodman, and passage home to Kansas for Dorothy—the Lion wondered if the Wizard might grant him courage. His companions assured him this seemed no more impossible than their own requests, and so the Cowardly Lion joined their company, his stately strides falling in beside Dorothy as they continued their quest.</p>
+<p>The remainder of that day passed peacefully, though one small incident revealed much about the Tin Woodman&#x27;s curious nature. When he accidentally stepped upon a beetle and killed it, he wept so many tears of sorrow that the salt water rusted his jaws shut, and only the Scarecrow&#x27;s quick thinking with the oil-can restored his speech. From then on, the Tin Woodman walked with extraordinary care, stepping gently over every ant and insect, explaining that without a heart to guide him, he must be doubly vigilant never to cause harm.</p>
+<p>As the unlikely fellowship moved deeper into the forest, Toto gradually overcame his fear of those great jaws that had nearly crushed him, and before long, the little dog and the Cowardly Lion had become the most unexpected of friends—though greater dangers surely awaited them on the road ahead.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
+</section>
+<section class="chapter" id="chapter-8" data-num="8">
+    <img class="chapter-image" src="images_anime/chapter_8.webp" alt="Leaping Chasms in the Dark Forest illustration" loading="lazy">
+    <div class="chapter-number">Chapter 8</div>
+    <h2 class="chapter-title">Leaping Chasms in the Dark Forest</h2>
+    <div class="chapter-summary"><p>Night fell upon the travelers before they could find proper shelter, and so they made their camp beneath the spreading branches of a great forest tree, its thick canopy serving well enough to shield them from the evening dew. The Tin Woodman proved his usefulness at once, chopping a fine pile of wood with his axe, and Dorothy built up a splendid fire that chased away the loneliness creeping into her heart. She and Toto shared the last of their bread between them, and the girl wondered with some worry what they might find for breakfast.</p>
+<p>The Lion, ever practical in his own way, offered to hunt a deer for Dorothy&#x27;s meal, remarking with some bemusement on her peculiar preference for cooked food. But the Tin Woodman begged him not to, confessing he would surely weep at the death of a poor deer, and then his jaws would rust again. So the Lion slipped away into the darkness to find his own supper—what it was, no one ever learned, for he kept the matter to himself. The Scarecrow, meanwhile, discovered a tree heavy with nuts and set about filling Dorothy&#x27;s basket, though his padded hands proved terribly clumsy for such delicate work. He dropped nearly as many as he gathered, yet he did not mind the slow going, for the task kept him safely distant from the fire and its dangerous sparks. When Dorothy lay down to sleep, he covered her tenderly with dry leaves, and she slumbered warm and snug until morning light.</p>
+<p>The new day began pleasantly enough, with Dorothy washing her face in a little brook before the companions set out once more toward the Emerald City. But this day would prove eventful indeed. Within an hour&#x27;s walk, they discovered a tremendous ditch cutting across the yellow brick road, so wide and deep and lined with jagged rocks that their journey seemed suddenly impossible. Dorothy&#x27;s heart sank as she asked what could be done, and even the Tin Woodman confessed he hadn&#x27;t the faintest idea.</p>
+<p>It was the Scarecrow who reasoned through the problem, and the Cowardly Lion who provided the solution—he believed he could leap across, carrying each companion on his back in turn. The Scarecrow bravely volunteered to go first, sensibly noting that a fall would harm him least of all. The great beast crouched at the edge, then sprang magnificently through the air to land safely on the far side. One by one he carried them all across, and they rested afterward while the Lion caught his breath.</p>
+<p>The forest grew darker and more forbidding beyond the ditch, and soon the Lion whispered of the Kalidahs—terrible creatures with bears&#x27; bodies and tigers&#x27; heads, whose claws could tear him in two. Dorothy shuddered at the thought. Before long, they faced another gulf, far too wide for even the Lion to jump. The Scarecrow suggested felling a great tree to serve as a bridge, and the Tin Woodman&#x27;s sharp axe made quick work of it. But just as they began to cross, two Kalidahs came rushing toward them with horrible growls.</p>
+<p>The Lion roared so fiercely that even the monsters paused, but they soon pressed forward again. In a moment of desperate cleverness, the Scarecrow called for the Woodman to chop away their end of the tree-bridge. The axe fell swift and true, and the tree plunged into the gulf with both snarling beasts upon it, dashing them to pieces on the rocks below.</p>
+<p>Shaken but alive, the travelers pressed on with renewed urgency, walking so quickly that Dorothy grew tired and rode upon the Lion&#x27;s back. At last the trees thinned, and by afternoon they reached a broad, swift-flowing river. Beyond it lay a beautiful country of green meadows and flowering fields, and the yellow brick road continuing on toward their destination. The Scarecrow proposed building a raft, and the tireless Tin Woodman set to work chopping trees. Night came before the task was finished, so they made camp by the riverbank, and Dorothy fell asleep dreaming of the Emerald City and the wonderful Wizard who would surely send her home.</p>
+<p>But rivers, as the companions would soon learn, have currents of their own and care nothing for the plans of travelers.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
+</section>
+<section class="chapter" id="chapter-9" data-num="9">
+    <img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Scarecrow Stranded in the River illustration" loading="lazy">
+    <div class="chapter-number">Chapter 9</div>
+    <h2 class="chapter-title">The Scarecrow Stranded in the River</h2>
+    <div class="chapter-summary"><p>The morning dawned bright and promising for our little band of travelers, who rose from their rest refreshed and brimming with hope. Dorothy made a fine breakfast of peaches and plums plucked fresh from the trees along the riverbank, eating as contentedly as any princess might. The dark forest with all its discouragements now lay safely behind them, and ahead stretched a lovely, sun-drenched country that seemed to call them onward toward the Emerald City.</p>
+<p>Yet between them and that beautiful land flowed the broad river, cutting off their path. The Tin Woodman had nearly finished constructing their raft, and after fastening a few more logs together with wooden pins, they were ready to cross. Dorothy settled herself in the middle with Toto held close in her arms, while the Cowardly Lion&#x27;s great weight caused the raft to tip alarmingly when he stepped aboard. The Scarecrow and the Tin Woodman steadied things by standing opposite, each armed with a long pole to push them through the water.</p>
+<p>All went well enough at first, but midway across, the swift current caught hold of the raft and swept it downstream, carrying them ever farther from the road of yellow brick. The water deepened until even the long poles could not find bottom. Each companion voiced their fear of what failure would mean—no brains for the Scarecrow, no courage for the Lion, no heart for the Tin Woodman, and no return to Kansas for Dorothy. In his desperate effort to push them forward, the Scarecrow thrust his pole so firmly into the riverbed mud that when the raft swept away, he found himself stranded, clinging to that pole in the middle of the rushing water.</p>
+<p>The Cowardly Lion proved his hidden bravery then, plunging into the river and swimming with all his might while the Tin Woodman held fast to the tip of his tail. Together they pulled the raft to shore, though the current had carried them far from their road.</p>
+<p>They walked along the pretty riverbank, hoping to find their way back, when they spotted their poor friend still perched upon his pole, looking terribly lonely and sad. Fortune smiled upon them in the form of a kind Stork who, learning the Scarecrow was stuffed only with straw, flew out and carried him safely back to his companions. Such joy followed their reunion that the Scarecrow sang &quot;Tol-de-ri-de-oh!&quot; at every step.</p>
+<p>The countryside grew ever more beautiful as they traveled on, the ground becoming carpeted with flowers of every hue—yellow and white, blue and purple, and great brilliant clusters of scarlet poppies. Dorothy breathed in their spicy scent with delight, not knowing the deadly danger. For when too many poppies grow together, their powerful odor causes any creature of flesh to fall into an endless sleep.</p>
+<p>Soon Dorothy&#x27;s eyes grew impossibly heavy, and despite her companions&#x27; urging, she collapsed among the crimson blossoms. Little Toto fell beside her, and even the great Lion could feel himself succumbing. The Scarecrow sent the Lion running ahead while he and the Tin Woodman—neither being made of flesh and therefore untroubled by the poison—fashioned a chair of their hands and arms to carry the sleeping girl and her dog.</p>
+<p>On and on they walked through the seemingly endless field of deadly flowers until they came upon the Lion himself, lying motionless among the poppies. He had fallen just short of the sweet green grass beyond, too heavy for them to move. With sorrowful hearts, they left their cowardly friend behind, carrying Dorothy to a pretty spot by the river where fresh breezes might revive her, and there they waited—hoping that somehow fortune would smile upon them once more.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
+</section>
+<section class="chapter" id="chapter-10" data-num="10">
+    <img class="chapter-image" src="images_anime/chapter_10.webp" alt="Tiny Heroes Save the Cowardly Lion illustration" loading="lazy">
+    <div class="chapter-number">Chapter 10</div>
+    <h2 class="chapter-title">Tiny Heroes Save the Cowardly Lion</h2>
+    <div class="chapter-summary"><p>As the Scarecrow stood surveying the countryside beside Dorothy, he reckoned they could not be far now from the road of yellow brick, having traveled nearly as great a distance as the river had carried them astray. But before the Tin Woodman could offer his reply, a low growl reached his tin ears, and turning his head upon its well-oiled hinges, he beheld a fearsome sight bounding through the grass toward them.</p>
+<p>A great yellow Wildcat came racing across the field, its ears pressed flat against its skull, its mouth stretched wide to reveal two rows of wicked teeth, and its eyes burning red as twin balls of fire. Yet the Woodman quickly perceived that the beast was not hunting them at all—it was chasing a tiny gray field mouse that scurried desperately before it. Though the Tin Woodman possessed no heart within his hollow chest, he understood at once that it was wrong for such a terrible creature to destroy something so small and harmless.</p>
+<p>Without hesitation, he raised his sharp axe, and as the Wildcat bounded past, he delivered a swift blow that severed the beast&#x27;s head clean from its body. The creature tumbled at his feet in two pieces, and the little mouse, finding itself suddenly free from danger, stopped short and crept cautiously toward its rescuer.</p>
+<p>In a squeaky voice, the mouse offered its thanks, but the Woodman humbly waved away such gratitude, explaining that having no heart, he was particularly careful to help all those in need of a friend—even if only a mouse. At this, the tiny creature drew itself up indignantly and declared that she was no ordinary mouse, but rather the Queen of all the Field Mice.</p>
+<p>Scarcely had the Woodman made his bow when dozens of mice came scampering up, bowing so low to their sovereign that they nearly stood upon their heads. The Queen proclaimed that henceforth all her subjects must serve the funny tin man who had saved her life. Yet their solemn oath was interrupted when Toto, awakening from his sleep, spotted the gathering of mice and leaped joyfully into their midst, scattering them in terror.</p>
+<p>The Tin Woodman caught the little dog in his arms and held him fast, calling the mice back with promises of safety. When they had cautiously returned, one of the largest among them asked how they might repay their debt. The Scarecrow, seizing upon the moment despite his straw-stuffed head, proposed that the mice might save their friend the Cowardly Lion, who lay sleeping in the deadly poppy bed.</p>
+<p>Though the Queen trembled at the thought of approaching a lion, the Scarecrow assured her this particular lion was a coward who would never harm their friends. And so a plan was hatched: thousands of mice would be summoned, each bringing a length of string, while the Tin Woodman fashioned a sturdy truck from tree limbs to carry the great beast.</p>
+<p>The mice arrived in vast numbers—big and little and middle-sized—each bearing string in its mouth. Dorothy, awakening from her enchanted sleep, found herself surrounded by thousands of timid little creatures and was properly introduced to their dignified Queen. Together they harnessed the mice to the truck, and though it was a thousand times larger than any single mouse, the combined strength of the multitude pulled it with ease.</p>
+<p>With tremendous effort, they loaded the sleeping Lion onto the truck, and the Queen hurriedly ordered her people forward, fearing the poppies might claim them too. The Woodman and Scarecrow pushed from behind until at last they rolled their friend free of the poisonous flowers and into the sweet air of the green fields beyond.</p>
+<p>Dorothy thanked the mice warmly for saving her beloved companion, and the little creatures scampered home through the grass. The Queen departed last, promising that should they ever need help again, they had only to call from the field, and her people would come.</p>
+<p>As the travelers settled beside the still-sleeping Lion to await his awakening, the Scarecrow fetched Dorothy fruit from a nearby tree, and she ate her simple dinner in the peaceful meadow—though none could say how long it might be before their great friend stirred again.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
+</section>
+<section class="chapter" id="chapter-11" data-num="11">
+    <img class="chapter-image" src="images_anime/chapter_11.webp" alt="The Green Land and Its Mysteries illustration" loading="lazy">
+    <div class="chapter-number">Chapter 11</div>
+    <h2 class="chapter-title">The Green Land and Its Mysteries</h2>
+    <div class="chapter-summary"><p>The Cowardly Lion slumbered long among the poppies, his great tawny body drinking in their poisonous perfume, but at last he awakened and rolled himself off the truck, blinking in wonder to find himself still among the living. When his companions told him how the tiny field mice had dragged him to safety, the Lion could not help but laugh at the strangeness of it all—that such small creatures should save one who had always thought himself so big and terrible, while mere flowers had nearly claimed his life.</p>
+<p>With the Lion restored to his full strength, the little band set off once more through the soft, fresh grass until they found their way back to the road of yellow brick. The country about them had grown beautiful beyond measure, and they rejoiced to leave the dark forest and its many dangers far behind. Soon they noticed that everything around them had taken on a decidedly green hue—the fences, the farmhouses, even the clothing of the people who peered at them from doorways but dared not approach on account of the great Lion padding alongside them.</p>
+<p>Dorothy declared this must surely be the Land of Oz, and they were drawing near their destination at last. Yet the Scarecrow observed that these folk seemed far less friendly than the Munchkins had been, and he worried they might find no shelter for the night. Dorothy, hungry for something more substantial than fruit, resolved to ask at the next farmhouse they passed.</p>
+<p>A cautious woman answered the door, eyeing the Lion with considerable alarm. But when Dorothy assured her that her companion was not only tame but a great coward who would be more frightened of them than they of him, the woman relented and welcomed the strange company inside. There they found her husband, laid up with an injured leg, and two children, all marveling at their unusual guests.</p>
+<p>When the travelers revealed they were bound for the Emerald City to see the Great Oz, the man grew thoughtful. He had visited that beautiful and wonderful place many times, he told them, yet never once had he—nor anyone he knew of—been permitted to see the Wizard face to face. Oz was said to sit forever in his Throne Room, never venturing out, appearing to different people in different forms: sometimes as a bird, sometimes an elephant, sometimes a cat or a fairy. What his true form might be, no living person could tell.</p>
+<p>Still, the man assured them that if anyone could grant their wishes, it was Oz. The Wizard had brains to spare for the Scarecrow, a collection of hearts for the Tin Woodman, and a great pot of courage covered with a golden plate for the Lion. As for Dorothy&#x27;s Kansas—well, Oz could do anything, so surely he could find it. The difficulty would be getting him to see them at all.</p>
+<p>After a good supper and a restful night, the travelers set out at sunrise and soon beheld a beautiful green glow brightening in the sky before them. By afternoon they had reached the great wall surrounding the Emerald City, where a magnificent gate studded with glittering emeralds stood at the end of the yellow brick road.</p>
+<p>A little green man greeted them inside—the Guardian of the Gates—and when he learned they wished to see Oz, he sat down in astonishment. Before he would take them to the Palace, however, he insisted they must each wear spectacles with green lenses, locked fast around their heads, lest the brightness of the city blind them forever. With everyone properly fitted—even little Toto—the Guardian took up a great golden key and led them through the portal into the dazzling streets beyond.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
+</section>
+<section class="chapter" id="chapter-12" data-num="12">
+    <img class="chapter-image" src="images_anime/chapter_12.webp" alt="A City Bathed in Emerald Light illustration" loading="lazy">
+    <div class="chapter-number">Chapter 12</div>
+    <h2 class="chapter-title">A City Bathed in Emerald Light</h2>
+    <div class="chapter-summary"><p>Even with eyes shielded behind green spectacles, Dorothy and her companions found themselves quite dazzled by the brilliance that greeted them at every turn. The Emerald City lived up to its name in ways beyond imagining—green marble houses studded with sparkling gems lined streets paved in the same verdant stone, emeralds gleaming between every block. The window panes shone green, the very sky wore a green tint, and even the sun&#x27;s rays fell upon them in shades of green.</p>
+<p>The citizens, all dressed in green clothes with greenish skin, regarded the strangely assorted company with wondering eyes. Children fled behind their mothers at the sight of the Lion, though no one spoke a word to the travelers. Green candy and green popcorn, green shoes and green hats filled the shop windows, and at one stand a man sold green lemonade to children who paid with green pennies. There were no horses to be seen—only little green carts pushed by hand. Everyone appeared happy, contented, and prosperous in this remarkable place.</p>
+<p>The Guardian of the Gates led them to the Palace of Oz, a grand building standing exactly in the center of the City, where a soldier with a long green beard admitted them into a magnificent room of green carpet and emerald-studded furniture. The soldier disappeared to carry their message to the Wizard, and when he returned at last, he delivered curious news: Oz would see them, but only one visitor each day, and none had ever actually laid eyes upon him—the soldier himself had spoken to him only from behind a screen. The Wizard had shown particular interest upon hearing of Dorothy&#x27;s silver shoes and the mark upon her forehead.</p>
+<p>A green maiden with lovely green hair showed each traveler to their quarters. Dorothy&#x27;s room was the sweetest imaginable, with silk sheets, a green velvet counterpane, and a tiny fountain spraying green perfume into the air. That night, each companion passed the hours according to their nature—the Scarecrow stood stupidly in one spot watching a spider spin its web, the Tin Woodman lay moving his joints to keep them working, and the Lion rolled himself up like a cat and purred himself to sleep.</p>
+<p>The next morning, Dorothy entered the Throne Room alone and found herself before an enormous Head—bald, without body or limbs, sitting upon a throne of green marble. When the great voice demanded to know who she was, Dorothy answered bravely: &quot;I am Dorothy, the Small and Meek. I have come to you for help.&quot; She wished only to return to Kansas, to Aunt Em and Uncle Henry. But the Wizard&#x27;s answer struck her heart cold—she must first kill the Wicked Witch of the West.</p>
+<p>Dorothy wept and protested that she had never killed anything willingly, but Oz would not relent. She returned to her friends in despair and cried herself to sleep.</p>
+<p>On the following days, each companion entered the Throne Room in turn—and each beheld a different form of Oz. The Scarecrow saw a beautiful winged Lady; the Tin Woodman faced a terrible five-eyed Beast; and the Lion trembled before a fierce Ball of Fire. Yet to each, the Wizard gave the same demand: kill the Wicked Witch of the West, and your wish shall be granted.</p>
+<p>When they gathered again, Dorothy voiced what they all felt: &quot;What shall we do now?&quot; The Lion answered simply—they must journey to the land of the Winkies and destroy the Witch themselves. Though Dorothy declared she did not want to kill anybody, even to see Aunt Em again, and each friend confessed their own fears and limitations, they resolved to go together. The Tin Woodman sharpened his axe, the Scarecrow stuffed himself with fresh straw, and the green girl filled Dorothy&#x27;s basket with provisions.</p>
+<p>They retired early that night, sleeping soundly until awakened by the crowing of a green cock and the cackling of a hen who had laid a green egg—for tomorrow, their most perilous journey would begin.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
+</section>
+<section class="chapter" id="chapter-13" data-num="13">
+    <img class="chapter-image" src="images_anime/chapter_13.webp" alt="The Witch&#x27;s Wrath Unleashed illustration" loading="lazy">
+    <div class="chapter-number">Chapter 13</div>
+    <h2 class="chapter-title">The Witch&#x27;s Wrath Unleashed</h2>
+    <div class="chapter-summary"><p>The soldier with the green whiskers led Dorothy and her companions back through the gleaming streets to the Guardian of the Gates, who unlocked their spectacles and returned them to his great box before politely opening the gate. When Dorothy inquired which road led to the Wicked Witch of the West, the Guardian offered a troubling reply: there was no road at all, for no one ever wished to go that way. Finding the Witch, he explained, would be easy enough—she would find them first and make them all her slaves. The Scarecrow declared their intention to destroy her instead, and the Guardian, surprised but cautious, warned them to keep to the West, where the sun sets, and take care, for the Witch was wicked and fierce.</p>
+<p>They bade him farewell and set off across fields of soft grass dotted with daisies and buttercups. Dorothy discovered that her pretty silk dress, once green in the Emerald City, had turned pure white, as had the ribbon around Toto&#x27;s neck. The landscape grew rougher and hillier as they traveled, with no farms or houses to be found. By afternoon, the sun beat hot upon their faces, and Dorothy, Toto, and the Lion lay down to sleep while the Woodman and the Scarecrow kept watch.</p>
+<p>Now the Wicked Witch of the West had but one eye, yet it was as powerful as a telescope and could see everywhere. From her castle door, she spied Dorothy sleeping with her friends and grew furious to find strangers in her country. She blew upon a silver whistle, summoning forty fierce wolves to tear them to pieces. But the Tin Woodman met them with his sharp axe and slew every last one. The next morning, the Witch saw her wolves lying dead and blew her whistle twice, sending a great flock of wild crows to peck out their eyes. The Scarecrow stood his ground and twisted the neck of every crow until all forty lay dead beside him.</p>
+<p>Enraged, the Witch blew three times and sent a swarm of stinging bees. The Scarecrow had the Woodman scatter his straw over Dorothy, Toto, and the Lion, while the bees broke their stings against the Woodman&#x27;s tin and perished. When even her Winkie slaves fled at the Lion&#x27;s roar, the Witch turned to her last and greatest power: the Golden Cap, which could summon the Winged Monkeys three times. She had used it twice before—once to enslave the Winkies and once to drive out the Great Oz himself. Now she used it for the final time.</p>
+<p>The Winged Monkeys descended upon the travelers, dropping the Tin Woodman onto sharp rocks, pulling the straw from the Scarecrow, and binding the Lion with ropes. But when their leader approached Dorothy, he saw the mark of the Good Witch&#x27;s kiss upon her forehead and dared not harm her, for the Power of Good was greater than the Power of Evil. They carried her gently to the Witch&#x27;s castle and departed forever.</p>
+<p>The Witch trembled at the sight of Dorothy&#x27;s Silver Shoes but saw the innocence in the child&#x27;s eyes and knew she did not understand their power. She set Dorothy to work in the kitchen and attempted to harness the Lion, but he roared so fiercely she dared not enter his yard. Each night, Dorothy secretly fed him, and together they dreamed of escape.</p>
+<p>The Witch longed desperately for the Silver Shoes and finally devised a cunning trick, making an iron bar invisible on the kitchen floor. Dorothy stumbled and lost one shoe, which the Witch snatched away. Furious, Dorothy demanded its return, and when the Witch laughed and refused, the little girl grabbed a bucket of water and dashed it over her. The Witch shrieked in terror and began to melt away like brown sugar, crying out that she had been wicked but never thought a little girl would be her end.</p>
+<p>When nothing remained but a shapeless brown mass, Dorothy swept it out the door, retrieved her silver shoe, and ran to tell the Lion the glorious news—the Wicked Witch of the West was no more, and they were prisoners no longer.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
+</section>
+<section class="chapter" id="chapter-14" data-num="14">
+    <img class="chapter-image" src="images_anime/chapter_14.webp" alt="Reunited at the Yellow Castle illustration" loading="lazy">
+    <div class="chapter-number">Chapter 14</div>
+    <h2 class="chapter-title">Reunited at the Yellow Castle</h2>
+    <div class="chapter-summary"><p>When word reached the Cowardly Lion that the Wicked Witch had been reduced to nothing more than a puddle by a simple bucket of water, his relief was immense. Dorothy wasted no time in unlocking the gate of his prison, and together they made their way into the castle, where the girl&#x27;s thoughts turned immediately to those who had suffered under the Witch&#x27;s cruelty. She gathered the yellow Winkies and delivered the news they had scarcely dared to dream: they were slaves no longer.</p>
+<p>The rejoicing that followed was extraordinary. These gentle folk had labored under the Witch&#x27;s harsh hand for more years than they cared to remember, and now they declared the day a holiday forevermore, filling the castle with feasting and dancing. Yet even amid such celebration, the Lion&#x27;s heart remained troubled. If only the Scarecrow and the Tin Woodman were with them, he said, his happiness would be complete.</p>
+<p>Dorothy, ever faithful to her friends, asked whether a rescue might be possible. The Lion thought they could try, and when they put the question to the Winkies, those grateful people declared they would do anything in their power for the girl who had freed them from bondage.</p>
+<p>And so a search party set out across the land, traveling through that day and into the next until they reached a rocky plain where a pitiful sight awaited them. There lay the Tin Woodman, battered and bent beyond recognition, his axe rusted and broken beside him. The Winkies lifted him with great tenderness while Dorothy shed quiet tears for her old friend, and even the Lion wore a look of solemn sorrow.</p>
+<p>Back at the Yellow Castle, Dorothy inquired whether any among the Winkies were tinsmiths. Indeed there were, and they came with their baskets of tools, setting to work with remarkable dedication. For three days and four nights they labored—hammering and twisting, bending and soldering, polishing and pounding—until at last the Tin Woodman stood restored to his old form. He bore several patches now, but being no vain creature, he minded them not at all.</p>
+<p>When he walked into Dorothy&#x27;s room to thank her, the Woodman wept tears of pure joy, and Dorothy had to wipe each one carefully with her apron lest his joints rust. Her own tears flowed freely too, though these required no such attention. The Lion, meanwhile, dabbed at his eyes so often with his tail that he was obliged to dry it in the courtyard sun.</p>
+<p>Still their company remained incomplete. The Scarecrow must be found, and so once more they journeyed forth, this time to the tall tree where the Winged Monkeys had scattered his clothes among the branches. The trunk stood too smooth for climbing, but the Tin Woodman—now wielding an axe with a handle of solid gold, crafted by a Winkie goldsmith, its blade polished to gleaming silver—made quick work of chopping it down. Dorothy gathered the clothes, the Winkies stuffed them with fresh clean straw, and behold: the Scarecrow stood before them once more, whole and grateful.</p>
+<p>Reunited at last, the friends enjoyed several peaceful days at the castle. But soon Dorothy&#x27;s thoughts drifted homeward to Aunt Em, and she reminded her companions that the Wizard&#x27;s promise still awaited them. Tomorrow, they agreed, they would set out for the Emerald City.</p>
+<p>The Winkies bade them farewell with heavy hearts, showering them with gifts: golden collars for Toto and the Lion, a diamond bracelet for Dorothy, a gold-headed walking stick for the Scarecrow, and a jeweled silver oil-can for the Tin Woodman. Dorothy, rummaging through the Witch&#x27;s cupboard for provisions, discovered a pretty Golden Cap and placed it upon her head, unaware of the powerful charm it held.</p>
+<p>With three cheers from their Winkie friends ringing in their ears, the travelers turned their faces eastward toward the Emerald City, where promises waited to be claimed and destinies waited to be fulfilled.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
+</section>
+<section class="chapter" id="chapter-15" data-num="15">
+    <img class="chapter-image" src="images_anime/chapter_15.webp" alt="Lost in Fields of Yellow Flowers illustration" loading="lazy">
+    <div class="chapter-number">Chapter 15</div>
+    <h2 class="chapter-title">Lost in Fields of Yellow Flowers</h2>
+    <div class="chapter-summary"><p>With the Wicked Witch vanquished and the Golden Cap now in Dorothy&#x27;s possession, the four travelers set out to return to the Emerald City—yet they soon discovered that finding their way back proved far more difficult than the journey there had been. When they had first sought the Witch, she had spied them coming and sent her Winged Monkeys to carry them through the air. Now, walking on their own two feet (and four paws, in Toto&#x27;s case), they found themselves hopelessly turned about in the great fields of buttercups and yellow daisies that stretched endlessly before them.</p>
+<p>They knew they must travel east, toward the rising sun, and started off confidently enough. But when noon arrived and the sun hung directly overhead, they could no longer tell east from west, and so they wandered, lost among the sweet-smelling flowers. Night fell, the moon rose bright and silver, and they slept peacefully in the fragrant fields—all except the Scarecrow and the Tin Woodman, who needed no rest and kept silent watch.</p>
+<p>Morning brought clouds that hid the sun, yet still they pressed onward, trusting in Dorothy&#x27;s simple wisdom: &quot;If we walk far enough, I am sure we shall sometime come to some place.&quot; But days passed, and the scarlet fields offered no landmarks, no signs of the Emerald City. One by one, the companions began to despair. The Scarecrow grumbled about never receiving his brains; the Tin Woodman lamented that he could scarcely wait for his heart; the Cowardly Lion whimpered that he lacked the courage to tramp forever without arriving anywhere. Even little Toto, for the first time in his life, was too weary to chase a passing butterfly.</p>
+<p>It was then that Dorothy thought of the field mice and the little silver whistle the Queen had given her. She blew upon it, and within minutes the pattering of tiny feet announced the arrival of many small gray mice, their Queen among them. When Dorothy explained their predicament, the Queen informed them—rather matter-of-factly—that they had been walking the wrong direction entirely, with the Emerald City at their backs all along.</p>
+<p>But the Queen had noticed something else: the Golden Cap upon Dorothy&#x27;s head. Why not use its charm, she suggested, and summon the Winged Monkeys? They could carry the travelers to Oz in less than an hour. Dorothy had not known the Cap possessed any magic, but the Queen explained that the charm was written inside. With a hasty warning that the Monkeys were full of mischief and loved to plague mice, the Queen scampered away with her subjects.</p>
+<p>Dorothy read the strange words carefully—&quot;Ep-pe, pep-pe, kak-ke!&quot; standing on her left foot, &quot;Hil-lo, hol-lo, hel-lo!&quot; on her right, and &quot;Ziz-zy, zuz-zy, zik!&quot; on both—and immediately the sky filled with the chattering and flapping of wings as the Winged Monkeys descended. Their King bowed low and asked what she commanded. When she requested passage to the Emerald City, the Monkeys lifted each traveler gently into the air.</p>
+<p>During the flight, the Monkey King told Dorothy the tale of how his people came to be bound by the Golden Cap—a story of mischief, a princess-sorceress named Gayelette, her beloved Quelala, and a prank involving the river that had cost the Monkeys their freedom forever. Three times must they obey whoever wears the Cap, and now that Cap belonged to Dorothy.</p>
+<p>Before the story had finished, the green shining walls of the Emerald City appeared below, and the Monkeys set the travelers down gently before the gates, their King bowing once more before flying swiftly away with his band.</p>
+<p>&quot;That was a good ride,&quot; Dorothy declared, and the Lion agreed it had been a quick way out of their troubles—though none of them yet knew what reception awaited them behind those emerald walls.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
+</section>
+<section class="chapter" id="chapter-16" data-num="16">
+    <img class="chapter-image" src="images_anime/chapter_16.webp" alt="The Man Behind the Screen illustration" loading="lazy">
+    <div class="chapter-number">Chapter 16</div>
+    <h2 class="chapter-title">The Man Behind the Screen</h2>
+    <div class="chapter-summary"><p>The four travelers returned to the great gate of Emerald City as conquering heroes, though they did not yet know the hollow nature of the victory that awaited them within the Palace walls. The Guardian of the Gates could scarcely believe his eyes when he saw them standing there, alive and whole, for who had ever visited the Wicked Witch of the West and returned to tell of it? When he learned that Dorothy had melted the terrible creature, he bowed so low before the little girl from Kansas that his nose nearly touched the ground.</p>
+<p>Word of their triumph spread through the city like wildfire, and a great crowd followed them to the Palace, yet the Great Oz himself remained strangely silent. One day passed, then another, and still no summons came from the Throne Room. The waiting grew tiresome and vexing, for had they not suffered hardships and slavery at the Wizard&#x27;s bidding? At last the Scarecrow sent a message of his own—if Oz would not receive them at once, they would call upon the Winged Monkeys to help them discover whether the great Wizard kept his promises. This threat worked wonderfully well, for Oz had met those creatures before and had no wish to meet them again.</p>
+<p>When they entered the Throne Room the following morning, they found it utterly empty, more dreadful in its stillness than any of the terrible forms they had seen before. A great Voice echoed from the dome above, claiming to be everywhere yet invisible, but the travelers would not be put off any longer. They demanded what had been promised them—brains, heart, courage, and passage home to Kansas.</p>
+<p>Then the Lion, thinking to frighten the Wizard into action, let loose such a fierce and dreadful roar that little Toto jumped away in alarm and knocked over a screen standing in the corner. Behind it stood not a great Head nor a lovely Lady nor a terrible Beast nor a Ball of Fire, but merely a little old man with a bald head and a wrinkled face, trembling with fear.</p>
+<p>&quot;I am Oz, the Great and Terrible,&quot; he confessed in a quavering voice, &quot;but please don&#x27;t strike me, and I&#x27;ll do anything you want.&quot;</p>
+<p>The truth came tumbling out. The great Wizard was nothing but a common man from Omaha, a ventriloquist and balloonist who had been carried to this strange land by accident. Finding the people believed him powerful because he had descended from the clouds, he had let them go on believing it, ordering them to build the Emerald City and wearing green spectacles upon every nose so that all they saw appeared green. The great Head was paper and wire, the lovely Lady a dress and mask, the terrible Beast sewn skins and wooden slats, the Ball of Fire merely oiled cotton set aflame.</p>
+<p>&quot;You&#x27;re a humbug,&quot; said the Scarecrow in a grieved tone, and the little man agreed that this was exactly so.</p>
+<p>Yet even a humbug may possess a certain wisdom. Oz told the Scarecrow that experience, not brains, brings knowledge; he told the Lion that true courage means facing danger despite one&#x27;s fear; he warned the Tin Woodman that hearts bring mostly unhappiness. But seeing their desperate need to believe, he promised to provide what they asked—brains, courage, and heart—the very next morning. As for Dorothy, he would need a few days to devise a way to carry her back over the desert to Kansas.</p>
+<p>They agreed to keep his secret and departed in surprisingly high spirits, for even a humbug&#x27;s promises seemed better than none at all, and tomorrow held the hope of wishes fulfilled.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
+</section>
+<section class="chapter" id="chapter-17" data-num="17">
+    <img class="chapter-image" src="images_anime/chapter_17.webp" alt="Bran, Silk, and Bottled Courage illustration" loading="lazy">
+    <div class="chapter-number">Chapter 17</div>
+    <h2 class="chapter-title">Bran, Silk, and Bottled Courage</h2>
+    <div class="chapter-summary"><p>Morning came to the Emerald City, and with it arrived the hour the Scarecrow had long awaited. He gathered his companions together with an announcement that fairly trembled with anticipation—he was going to Oz at last, to receive the brains he had journeyed so far to obtain. When he returned, he declared, he would be as other men are.</p>
+<p>Dorothy, in her simple and honest way, told him she had always liked him just as he was. But the Scarecrow, though touched by her kindness, remained convinced that surely she would think more of him once she heard the splendid thoughts his new brain would produce. And so, with cheerful goodbyes upon his painted lips, he made his way to the Throne Room and rapped upon the door.</p>
+<p>Inside, he found the little man who was Oz sitting by the window, apparently lost in deep thought. The Scarecrow announced his purpose, and Oz, ever practical, explained that he would need to remove the Scarecrow&#x27;s head entirely to place the brains in their proper position. The Scarecrow agreed readily enough—what did he care about losing his head, so long as it came back better than before?</p>
+<p>The Wizard set to work. He unfastened the Scarecrow&#x27;s head and emptied out all the straw within. Then, retreating to his back room, he measured out a quantity of bran and mixed it thoroughly with a great many pins and needles. This curious mixture he packed into the top of the Scarecrow&#x27;s head, stuffing the remaining space with straw to hold everything in place. When the head was fastened on once more, Oz proclaimed with evident satisfaction that the Scarecrow would hereafter be a great man, for he had been given a lot of *bran-new* brains.</p>
+<p>The Scarecrow returned to his friends, his head bulging noticeably at the top. Dorothy observed him with curiosity, and when she asked how he felt, he answered with perfect earnestness that he felt wise indeed—and that once he grew accustomed to his brains, he would know everything. The Tin Woodman noticed the pins and needles protruding from his friend&#x27;s head, and the Lion remarked that this was surely proof the Scarecrow was sharp.</p>
+<p>Next came the Tin Woodman&#x27;s turn. Oz cut a small square hole in his tin breast and placed within it a pretty heart made of silk and stuffed with sawdust. The Woodman asked if it was a kind heart, and Oz assured him it was very kind indeed. The patch was soldered neatly back into place, and the Woodman departed, overflowing with gratitude.</p>
+<p>The Cowardly Lion followed, and Oz presented him with a square green bottle whose contents he poured into a carved dish. Courage, the Wizard explained, was always inside a person—therefore this liquid could only become courage once swallowed. The Lion drank every drop and declared himself full of courage at last.</p>
+<p>Left alone, Oz allowed himself a small, knowing smile. How easy it had been to satisfy them all, for they had imagined he could do anything. But Dorothy&#x27;s wish—to return to Kansas—that would require something far beyond imagination, and the little humbug hadn&#x27;t the faintest idea how it might be accomplished.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
+</section>
+<section class="chapter" id="chapter-18" data-num="18">
+    <img class="chapter-image" src="images_anime/chapter_18.webp" alt="Oz and Dorothy Build Their Escape illustration" loading="lazy">
+    <div class="chapter-number">Chapter 18</div>
+    <h2 class="chapter-title">Oz and Dorothy Build Their Escape</h2>
+    <div class="chapter-summary"><p>Three days of silence passed, and they were sad days indeed for Dorothy. While she waited and wondered, her friends found themselves quite content with their newfound gifts. The Scarecrow spoke of wonderful thoughts rattling about in his head, though he would share none of them, for he believed no one could possibly understand such brilliant ideas but himself. The Tin Woodman walked about with great satisfaction, feeling his heart knocking gently against his tin breast, and he declared to Dorothy that this new heart was far kinder and more tender than the flesh-and-blood one he had possessed so long ago. As for the Cowardly Lion, he feared nothing now—not an army of soldiers, not even a dozen of those terrible Kalidahs could make him tremble.</p>
+<p>And so each member of their little party was satisfied, each one except Dorothy, who longed more than ever for the Kansas prairies and the little farmhouse where Aunt Em would be waiting.</p>
+<p>On the fourth day, her patience was rewarded. Oz summoned her to the Throne Room, where he greeted her with welcome news: he believed he had found a way to carry her out of this strange country. Kansas itself he could not promise, for he hadn&#x27;t the faintest notion which direction it lay, but crossing the great desert—that was the first step, and after that, surely she could find her way home.</p>
+<p>The little man explained his plan with the enthusiasm of one who had given the matter considerable thought. A balloon had brought him to this land, and a cyclone had delivered Dorothy. It seemed only fitting that the air should carry her back again. He could not conjure a cyclone, of course, but a balloon—that he could make. There was silk aplenty in the Palace, and glue enough to coat it. The only trouble was the gas; there was none to be found in all the land. Hot air would have to do instead, though it came with its own dangers. Should the air cool, the balloon would sink, and they would find themselves stranded in the deadly desert.</p>
+<p>Dorothy&#x27;s heart leaped at one small word. *We*, he had said. The Wizard intended to go with her! He confessed readily enough that he was weary of being a humbug, tired of hiding in his rooms for fear his people would discover the truth. He longed to return to the circus life he had known before the balloon had carried him away to this peculiar place.</p>
+<p>Together they set to work, Dorothy with needle and thread, Oz with scissors and silk. Strip by strip they fashioned the balloon—light green, dark green, emerald green—until after three days of patient labor they had sewn together a magnificent bag of silk, more than twenty feet long. Oz painted the inside with thin glue to hold the air, and a great clothes basket was fastened beneath with sturdy ropes.</p>
+<p>When at last the balloon stood ready before the Palace, all the people of the Emerald City gathered to watch. Oz announced that he was departing to visit a brother Wizard who lived among the clouds, and he named the Scarecrow as ruler in his absence. The Tin Woodman built a roaring fire, and as Oz held the silken bag above the flames, it swelled and rose until the basket barely touched the ground.</p>
+<p>&quot;Come, Dorothy! Hurry!&quot; the Wizard called, climbing into the basket.</p>
+<p>But Dorothy could not find Toto. The little dog had dashed into the crowd, barking furiously at a kitten, and by the time she scooped him into her arms and ran back—*crack!* went the ropes, and the balloon rose swiftly into the sky without her.</p>
+<p>She screamed for him to come back, but the Wizard could only call down his farewells as he floated higher and higher, until at last he disappeared altogether. Whether he ever reached Omaha, no one could say, but the people of the Emerald City remembered him fondly and took comfort in the wise Scarecrow he had left to govern them.</p>
+<p>Still, Dorothy&#x27;s heart sank as she watched her last hope drift away on the wind, leaving her stranded once more in a land far from home.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
+</section>
+<section class="chapter" id="chapter-19" data-num="19">
+    <img class="chapter-image" src="images_anime/chapter_19.webp" alt="A New Hope in the South illustration" loading="lazy">
+    <div class="chapter-number">Chapter 19</div>
+    <h2 class="chapter-title">A New Hope in the South</h2>
+    <div class="chapter-summary"><p>Dorothy&#x27;s heart grew heavy with the weight of lost hope as she watched her chance to return to Kansas float away with the Wizard&#x27;s balloon. Yet even through her bitter tears, she could not help but feel a quiet relief that she had not been swept up into the sky in that uncertain contraption. And though Oz had proven himself no true wizard at all, she felt sorry to see him go, as did her loyal companions.</p>
+<p>The Tin Woodman approached her with characteristic tenderness, declaring that he should be most ungrateful indeed if he failed to mourn the man who had bestowed upon him his lovely heart. He wished to weep, he said, if Dorothy would be so kind as to wipe away his tears before they caused him to rust. This she did with great care, watching each tear and catching it with a towel, and when he had finished his mourning, he oiled himself thoroughly with his jeweled oil-can to guard against any mishap.</p>
+<p>Meanwhile, the Scarecrow had assumed his new position as ruler of the Emerald City, and the people took great pride in him. &quot;There is not another city in all the world ruled by a stuffed man,&quot; they boasted, and so far as anyone knew, they were quite right in saying so.</p>
+<p>The following morning, the four travelers gathered in the Throne Room to discuss their situation. The Scarecrow, seated grandly upon the big throne, remarked upon their good fortune—he was well satisfied with his rise from a farmer&#x27;s pole to ruler of a beautiful city. The Tin Woodman declared himself content with his new heart, and the Lion spoke modestly of his newfound courage. Yet Dorothy could not share in their satisfaction. She wanted only to return to Kansas, to Aunt Em and Uncle Henry.</p>
+<p>The Scarecrow thought so hard that the pins and needles began to stick out of his brains, and at last he suggested summoning the Winged Monkeys. Dorothy&#x27;s heart leaped with joy, and she rushed to fetch the Golden Cap. But her hope was quickly dashed—the Monkey King explained that his kind belonged to this country alone and could never cross the desert into Kansas. Dorothy had wasted one of her precious wishes to no purpose.</p>
+<p>Once more the Scarecrow set himself to thinking, his head bulging so horribly that Dorothy feared it might burst. He called for the soldier with the green whiskers, who timidly entered the Throne Room and suggested that Glinda, the Good Witch of the South, might know a way across the desert. Her castle stood at its very edge, and she was said to be both powerful and kind.</p>
+<p>Though the soldier warned that the road south was full of dangers—wild beasts and a race of queer men who despised strangers—Dorothy&#x27;s companions refused to let her travel alone. The Lion longed for the woods once more, the Tin Woodman offered his axe, and the Scarecrow declared he would never leave Dorothy&#x27;s side, for she had lifted him from his pole and brought him all his good fortune.</p>
+<p>And so, with hearts full of gratitude and resolve, the four friends agreed to set out together the very next morning, ready to face whatever perils awaited them on the long road to the Land of the South.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
+</section>
+<section class="chapter" id="chapter-20" data-num="20">
+    <img class="chapter-image" src="images_anime/chapter_20.webp" alt="Journey South Through Enchanted Forests illustration" loading="lazy">
+    <div class="chapter-number">Chapter 20</div>
+    <h2 class="chapter-title">Journey South Through Enchanted Forests</h2>
+    <div class="chapter-summary"><p>The morning of departure dawned bright and clear as Dorothy kissed the pretty green girl farewell, and the little company—Scarecrow, Tin Woodman, Lion, and faithful Toto—shook hands with the soldier whose green whiskers had become so familiar to them during their time in the Emerald City. At the great gate, the Guardian expressed his wonder that anyone would willingly leave such a beautiful place to venture into unknown troubles, yet he dutifully unlocked and collected their green spectacles, returning them to their proper box, and sent them off with many good wishes.</p>
+<p>Before they departed, the Guardian reminded the Scarecrow of his new responsibility as ruler, urging him to return as soon as possible. The Scarecrow, ever loyal to his friends, agreed he would do so—but only after seeing Dorothy safely home to Kansas. Dorothy herself offered heartfelt gratitude for the kindness shown her in the lovely city, though the Guardian gently told her not to trouble herself with thanks. They would have gladly kept her among them, he said, but if her heart was set on Kansas, he hoped she would find her way.</p>
+<p>And so the outer gate swung open, and the travelers stepped forth into the sunshine, turning their faces toward the Land of the South where Glinda the Good was said to dwell. Their spirits soared with renewed hope. Dorothy felt certain she would reach home at last, while the Scarecrow and Tin Woodman took genuine pleasure in being useful to their dear friend. The Lion breathed deep the country air, whisking his tail in pure joy at leaving city life behind—for it had not agreed with him at all, and he was eager to prove his newfound courage to the wild beasts. Little Toto scampered about, chasing moths and butterflies, barking with unrestrained delight.</p>
+<p>Pausing to take one last look at the Emerald City—its towers and steeples rising behind green walls, the Palace dome gleaming above all—the companions reflected on the Wizard they had known. The Tin Woodman felt his heart rattling contentedly in his breast; the Scarecrow praised the brains Oz had given him; the Lion wished only that Oz had taken some of his own courage. Dorothy remained silent, for the Wizard had failed to keep his promise to her—yet she forgave him, remembering he was a good man, even if he had been a poor wizard.</p>
+<p>They traveled all that first day through green fields and bright flowers, sleeping peacefully beneath the stars. By morning they reached a thick wood that stretched endlessly in both directions, leaving them no choice but to pass through it. When the Scarecrow attempted to walk beneath a great spreading tree, its branches suddenly seized him, lifted him from the ground, and flung him back among his startled companions. Undeterred—for such treatment could not hurt him—the Scarecrow tried again at another tree, only to be tossed aside once more.</p>
+<p>It was the Tin Woodman who solved their dilemma. Shouldering his axe, he marched toward the hostile tree, and when its branch bent down to grab him, he chopped through it with fierce determination. The tree shuddered as if in pain, allowing him to pass safely. The others rushed after him, though poor Toto was caught and shaken by a smaller branch until the Woodman freed him with another swift stroke.</p>
+<p>The remaining trees let them pass without incident, and the travelers concluded that only the first row possessed this strange power—forest policemen, perhaps, meant to discourage strangers. They walked easily through the rest of the wood until they emerged at its edge, only to find themselves facing an unexpected obstacle: a high, smooth wall of white china, gleaming like the surface of a dish and rising above their heads.</p>
+<p>Dorothy asked what they should do now, and the resourceful Tin Woodman declared he would build a ladder, for there was no question—they must certainly climb over and discover what strange land awaited them on the other side.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
+</section>
+<section class="chapter" id="chapter-21" data-num="21">
+    <img class="chapter-image" src="images_anime/chapter_21.webp" alt="A Fragile Land of Living Porcelain illustration" loading="lazy">
+    <div class="chapter-number">Chapter 21</div>
+    <h2 class="chapter-title">A Fragile Land of Living Porcelain</h2>
+    <div class="chapter-summary"><p>While the Tin Woodman busied himself constructing a ladder from forest timber, Dorothy surrendered to weariness and slept, the Lion curling beside her with faithful Toto nestled close. The Scarecrow, who had no need of rest, watched his friend work and puzzled aloud over the mysterious wall that blocked their path—what strange substance composed it, and what purpose it served. But the practical Woodman advised him not to strain his brains on the matter; they would discover what lay beyond once they had climbed over.</p>
+<p>The ladder, though clumsy in appearance, proved sturdy enough for their purposes. The Scarecrow ascended first, so awkward in his movements that Dorothy had to follow close behind to prevent him tumbling backward. When his stuffed head crested the wall&#x27;s top, he could only exclaim, &quot;Oh, my!&quot; Dorothy urged him onward, and when she too peered over, the same words escaped her lips. Toto scrambled up and immediately set to barking until Dorothy hushed him, and the Lion and Tin Woodman followed, each uttering that same astonished cry upon beholding the scene below.</p>
+<p>Spread before them lay a country unlike any they had encountered—a vast expanse with a floor smooth and white as the bottom of a fine platter. Dotted across this gleaming surface stood houses painted in the brightest colors imaginable, none reaching higher than Dorothy&#x27;s waist. Pretty barns enclosed by delicate fences contained cows, sheep, horses, pigs, and chickens, all fashioned entirely of china. Most wondrous of all were the inhabitants themselves: milkmaids and shepherdesses in brightly colored bodices with golden spots adorning their gowns, princesses resplendent in silver and purple, shepherds in striped knee breeches with golden buckles, princes wearing jeweled crowns and ermine robes, and clowns in ruffled costumes with round red spots upon their cheeks. Every last one of them—clothes and all—was made of china, the tallest standing no higher than Dorothy&#x27;s knee.</p>
+<p>Unable to pull up the heavy ladder, the travelers descended by the simple expedient of letting the Scarecrow tumble down first, then jumping upon his soft straw body to cushion their landing. They patted him back into shape and set off southward through this fragile realm. Almost immediately disaster struck: a china milkmaid&#x27;s cow, startled by their approach, kicked over her stool and pail and sent the milkmaid herself crashing to the ground. The cow&#x27;s leg snapped clean off, the pail shattered, and the milkmaid&#x27;s elbow was badly nicked. Despite Dorothy&#x27;s sincere apologies, the little woman gathered her broken cow and limped away, casting reproachful glances at the clumsy strangers.</p>
+<p>Dorothy next encountered a beautiful china Princess who begged not to be chased, for if she ran, she might fall and break. Even mended, the Princess explained, one was never quite so pretty—as evidenced by Mr. Joker, a cracked clown covered in repair lines who recited impertinent verses and stood upon his head despite the damage it caused him. Dorothy, enchanted by the Princess&#x27;s beauty, offered to carry her back to Kansas to stand upon Aunt Em&#x27;s mantel. But the Princess declined with gentle firmness: in their own country, the china people could move and speak freely, while those taken away became forever stiff, able only to stand and look pretty.</p>
+<p>Respecting this wish, Dorothy bid farewell, and the travelers proceeded with great care until they reached a lower wall on the country&#x27;s far side. They scrambled over by standing upon the Lion&#x27;s back, though in his final leap he accidentally smashed a china church with his tail. Dorothy reflected that they had been fortunate to cause no greater harm than a broken leg and a ruined church among such brittle folk. The Scarecrow agreed, adding with quiet gratitude that there were worse fates than being made of straw—at least he could not be so easily shattered.</p>
+<p>With the delicate china country behind them, the companions pressed onward, the southern horizon beckoning them ever closer to their journey&#x27;s end.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
+</section>
+<section class="chapter" id="chapter-22" data-num="22">
+    <img class="chapter-image" src="images_anime/chapter_22.webp" alt="The Lion Claims His Forest Throne illustration" loading="lazy">
+    <div class="chapter-number">Chapter 22</div>
+    <h2 class="chapter-title">The Lion Claims His Forest Throne</h2>
+    <div class="chapter-summary"><p>After descending from the china wall, the travelers found themselves trudging through a most disagreeable stretch of country—boggy marshlands choked with tall, rank grass that concealed treacherous muddy holes beneath their feet. They picked their way carefully, stepping with caution until at last they reached solid ground. Yet even then the wilderness seemed to grow wilder still, and after a long, tiresome push through tangled underbrush, they emerged into a forest unlike any they had encountered before. The trees here were ancient giants, bigger and older than any the companions had ever seen.</p>
+<p>The Lion surveyed his surroundings with unmistakable joy. &quot;This forest is perfectly delightful,&quot; he declared. &quot;Never have I seen a more beautiful place.&quot; The Scarecrow found it rather gloomy, but the Lion would hear none of it. He remarked upon the softness of the dried leaves underfoot, the rich green moss clinging to the old trees, and proclaimed that no wild beast could wish for a pleasanter home. Dorothy wondered aloud whether wild beasts might already inhabit such a place, and the Lion supposed there must be some, though none showed themselves just then.</p>
+<p>They walked on until darkness forced them to stop. Dorothy, Toto, and the Lion lay down to sleep while the Tin Woodman and Scarecrow kept their faithful watch. When morning came, they resumed their journey, and before long a low rumble reached their ears—the growling of many wild animals gathered together. Toto whimpered, but the others pressed forward until they came upon an opening in the wood where hundreds of beasts had assembled: tigers, elephants, bears, wolves, foxes, and creatures of every variety one might find in a natural history. Dorothy felt a moment&#x27;s fear, but the Lion recognized this as a meeting, and from the snarling and growling, he judged these animals were in considerable trouble.</p>
+<p>The moment the beasts caught sight of the Lion, a hush fell over the great assemblage. The biggest tiger approached and bowed low. &quot;Welcome, O King of Beasts!&quot; he said. &quot;You have come in good time to fight our enemy and bring peace to all the animals of the forest once more.&quot; The tiger explained their plight: a tremendous monster had come among them, a spider-like creature with a body as big as an elephant and eight legs as long as tree trunks. It seized animals and devoured them, and none felt safe while it lived.</p>
+<p>The Lion listened quietly, then asked if other lions dwelt in this forest. The tiger admitted there had been some, but the monster had eaten them all—and besides, none had been nearly so large and brave as he. With characteristic directness, the Lion proposed his terms: if he destroyed their enemy, would the beasts bow down and obey him as King of the Forest? A mighty roar confirmed their agreement.</p>
+<p>Bidding his companions farewell and leaving them in the beasts&#x27; care, the Lion marched proudly toward the oak trees where the spider lurked. He found the hideous creature asleep—its body covered in coarse black hair, its mouth lined with teeth a foot long. But the Lion noticed that its head was joined to its pudgy body by a neck as slender as a wasp&#x27;s waist. Seizing his advantage, he sprang upon the monster&#x27;s back and with one tremendous blow of his heavy paw, knocked the spider&#x27;s head clean from its body.</p>
+<p>When the Lion returned to the waiting beasts and announced their enemy was no more, they bowed before him as their King. He accepted their allegiance and promised to return and rule over them—just as soon as Dorothy was safely on her way to Kansas.</p>
+<p>With this new title secured and his courage proven beyond doubt, the Lion rejoined his companions, ready to continue the journey that would carry them ever closer to the Emerald City and the fulfillment of all their hopes.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
+</section>
+<section class="chapter" id="chapter-23" data-num="23">
+    <img class="chapter-image" src="images_anime/chapter_23.webp" alt="Over the Hill to Glinda&#x27;s Castle illustration" loading="lazy">
+    <div class="chapter-number">Chapter 23</div>
+    <h2 class="chapter-title">Over the Hill to Glinda&#x27;s Castle</h2>
+    <div class="chapter-summary"><p>The forest released them at last, its shadows falling away behind as the four travelers emerged into open country—only to find their path blocked by a steep hill bristling with great hunks of rock from base to summit.</p>
+<p>&quot;That will be a hard climb,&quot; the Scarecrow observed, studying the rugged slope with his painted eyes, &quot;but we must get over the hill, nevertheless.&quot;</p>
+<p>He took the lead, as he often did now, and the others followed close behind. They had scarcely reached the first boulder when a rough voice rang out across the stones, commanding them to keep back. The Scarecrow demanded to know who spoke, and a head appeared above the rock—a strange, flat-topped head set upon a thick, wrinkled neck. The creature declared the hill belonged to his kind, and none were permitted to cross.</p>
+<p>But cross they must, the Scarecrow insisted, for they were bound for the country of the Quadlings. When the strange man stepped fully into view, the travelers beheld the oddest being they had yet encountered: short, stout, with that peculiar flat head, and possessing no arms whatsoever. The Scarecrow, thinking such a helpless-looking fellow could pose no threat, announced his intention to pass regardless of objection.</p>
+<p>He had taken but a single bold step when the creature&#x27;s head shot forward like a battering ram, propelled by that thick neck stretching impossibly fast. The flat top of his skull struck the Scarecrow square in the middle, sending him tumbling head over heels back down the slope. The head snapped back into place, and the Hammer-Head laughed harshly at his handiwork.</p>
+<p>Hundreds of similar creatures revealed themselves then, one lurking behind every rock, their boisterous laughter echoing across the hillside. The Cowardly Lion, his pride stung by their mockery, let loose a tremendous roar and charged up the slope—only to meet the same fate, bowled over by another shooting head and sent rolling down like a great tawny ball.</p>
+<p>Dorothy helped her friends to their feet, the Lion bruised and sore, admitting that no one could withstand such opponents. What could they possibly do?</p>
+<p>It was the Tin Woodman who remembered: Dorothy still possessed the Golden Cap, and one command yet remained to her. She placed the cap upon her head, spoke the magic words, and in moments the Winged Monkeys appeared before her, their King bowing low to receive her orders.</p>
+<p>&quot;Carry us over the hill to the country of the Quadlings,&quot; Dorothy said, and it was done. The monkeys swept them up—Dorothy, her three companions, and little Toto—and bore them through the air over the hill while the Hammer-Heads below yelled in fury, shooting their heads skyward but finding their targets forever out of reach.</p>
+<p>When the monkeys set them down in that beautiful southern land, their King reminded Dorothy this was the final summoning. They bid each other farewell, and the Winged Monkeys vanished into the sky.</p>
+<p>The country of the Quadlings spread before them in warmth and plenty—fields of ripening grain divided by well-paved roads, pretty brooks spanned by sturdy bridges, and everything painted a cheerful bright red. The Quadlings themselves proved as pleasant as their land, short and fat and good-natured, dressed all in red against the green grass. A farmer&#x27;s wife welcomed the travelers kindly, offering them a generous dinner with cakes, cookies, and milk for Toto, then directed them southward toward Glinda&#x27;s castle.</p>
+<p>They walked on through that charming countryside until a beautiful castle rose before them, its gates guarded by three young women in handsome red uniforms trimmed with gold. When Dorothy declared her purpose—to see the Good Witch who ruled there—the soldier asked her name and disappeared inside. She returned moments later with welcome news: Glinda would receive them at once.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
+</section>
+<section class="chapter" id="chapter-24" data-num="24">
+    <img class="chapter-image" src="images_anime/chapter_24.webp" alt="Glinda&#x27;s Gift and Farewell Blessings illustration" loading="lazy">
+    <div class="chapter-number">Chapter 24</div>
+    <h2 class="chapter-title">Glinda&#x27;s Gift and Farewell Blessings</h2>
+    <div class="chapter-summary"><p>Before presenting themselves to the great Witch of the South, Dorothy and her companions took care to make themselves proper and presentable, as one ought to do when seeking an audience with so powerful a personage. Dorothy washed the dust of travel from her face and set her hair to rights, while the Lion gave his mane a mighty shake, the Scarecrow patted his straw into respectable shape, and the Tin Woodman polished his tin until it gleamed and oiled every joint until they moved without the slightest squeak.</p>
+<p>Thus prepared, they followed the soldier girl into a grand chamber where Glinda sat upon a throne fashioned entirely of rubies. She was beautiful and young, with rich red hair that tumbled in ringlets over her shoulders, and though her gown was white as snow, her eyes were the kindest blue as they rested upon the little girl from Kansas.</p>
+<p>Dorothy told her story from the very beginning—how the cyclone had swept her to this strange land, how she had gathered her dear companions along the Yellow Brick Road, and all the wonderful and terrible adventures that had befallen them since. Her greatest wish, she explained, was simply to return home, for surely Aunt Em would think something dreadful had happened to her, and unless the crops proved better than last year, Uncle Henry could hardly afford to put on mourning.</p>
+<p>Glinda kissed Dorothy&#x27;s sweet upturned face and promised she could indeed show her the way home—but only in exchange for the Golden Cap. Dorothy surrendered it gladly, for it was of no further use to her, and Glinda smiled, saying she would need the Winged Monkeys&#x27; service exactly three times.</p>
+<p>The Good Witch then turned to Dorothy&#x27;s companions and asked each what he would do once Dorothy had gone. The Scarecrow would return to rule the Emerald City; the Tin Woodman wished to govern the Winkies, who had been so kind to him; and the Lion longed to reign over the grand forest beyond the Hammer-Heads, where the beasts had made him their King. Glinda promised that each of her three commands to the Winged Monkeys would carry one friend safely to his kingdom, and afterward she would give the Golden Cap to the Monkey King so that his band might be free forevermore.</p>
+<p>At last Dorothy reminded Glinda that she had not yet revealed how to return to Kansas. The answer was simpler than anyone had imagined: the Silver Shoes Dorothy had worn since her very first day in Oz possessed the power to carry her anywhere in the world in just three steps. Had she only known, she might have gone home at once—but then, as her friends quickly pointed out, the Scarecrow would never have gained his brains, the Tin Woodman would never have received his heart, and the Lion would have remained a coward forever.</p>
+<p>Dorothy agreed that she was glad to have helped them, but now that each had what he most desired—and a kingdom besides—it was time for her to go. She embraced the Lion and kissed him tenderly, kissed the weeping Tin Woodman despite the danger to his joints, and hugged the soft, stuffed Scarecrow tight, finding tears upon her own cheeks at this sorrowful parting.</p>
+<p>Taking Toto solemnly in her arms, Dorothy clapped her heels together three times and commanded the shoes to take her home to Aunt Em. Instantly she whirled through the air so swiftly that only the wind whistling past her ears told her she was moving at all. Three steps later she tumbled onto the broad Kansas prairie, right before the new farmhouse Uncle Henry had built after the cyclone carried the old one away. Toto leaped from her arms and ran barking toward the barn, and Dorothy stood up to find herself in her stocking-feet—for the Silver Shoes had fallen off somewhere over the desert and were lost forever.</p>
+<p>She had scarcely caught her breath before a familiar figure came running from the farmhouse door, and Dorothy&#x27;s heart swelled with a joy no magic could ever match.</p></div>
+    <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><span></span></nav>
+</section>
+<img class="back-cover" src="images_anime/back_cover.webp" alt="Back cover">
+</main>
+
+<div class="pill"></div>
+
+<footer>
+    <p>From Project Gutenberg · Generated with AI</p>
+</footer>
+
+<script>
+(function() {
+    const html = document.documentElement;
+    const saved = localStorage.getItem('site-mode') || 'maximal';
+    html.setAttribute('data-mode', saved);
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.mode-toggle button');
+        function sync() {
+            const m = html.getAttribute('data-mode');
+            buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m ? 'true' : 'false'));
+        }
+        buttons.forEach(b => b.addEventListener('click', function() {
+            const m = b.dataset.mode;
+            html.setAttribute('data-mode', m);
+            localStorage.setItem('site-mode', m);
+            sync();
+        }));
+        sync();
+    });
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Reading progress
+    const bar = document.querySelector('.progress-bar');
+    const onScroll = () => {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = max > 0 ? (scrolled / max * 100) + '%' : '0%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal chapters
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+            }
+        });
+    }, { rootMargin: '-60px' });
+    document.querySelectorAll('.chapter').forEach(c => io.observe(c));
+
+    // TOC drawer
+    const tocBtn = document.querySelector('.toc-btn');
+    const drawer = document.querySelector('.toc-drawer');
+    const backdrop = document.querySelector('.toc-backdrop');
+    const closeBtn = document.querySelector('.toc-close');
+    function openToc() { drawer.classList.add('open'); backdrop.classList.add('open'); }
+    function closeToc() { drawer.classList.remove('open'); backdrop.classList.remove('open'); }
+    tocBtn.addEventListener('click', openToc);
+    backdrop.addEventListener('click', closeToc);
+    closeBtn.addEventListener('click', closeToc);
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeToc));
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeToc();
+    });
+
+    // Current-chapter pill
+    const pill = document.querySelector('.pill');
+    const chapters = Array.from(document.querySelectorAll('.chapter'));
+    const io2 = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const title = e.target.querySelector('.chapter-title').textContent;
+                const num = e.target.dataset.num;
+                pill.textContent = `Ch ${num} · ${title}`;
+                pill.classList.add('show');
+            }
+        });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    chapters.forEach(c => io2.observe(c));
+
+    // Keyboard chapter nav
+    document.addEventListener('keydown', e => {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const y = window.scrollY + window.innerHeight / 3;
+        let idx = chapters.findIndex(c => c.offsetTop > y);
+        if (idx === -1) idx = chapters.length;
+        const target = e.key === 'ArrowRight' ? chapters[idx] : chapters[Math.max(0, idx - 2)];
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+});
+</script>
+</body>
+</html>
