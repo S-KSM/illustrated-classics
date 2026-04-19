@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-mode="maximal">
+<html lang="en" data-mode="astro-nomad">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Alice&#x27;s Adventures in Wonderland · Kids Edition</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 <style>
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,6 +32,19 @@ img { display: block; max-width: 100%; }
     --min-accent: #1a1a1a;
     --min-border: #e2ded5;
     --min-card: #ffffff;
+
+    --anom-bg: #fdf8ef;
+    --anom-bg-soft: #f7efdf;
+    --anom-text: #1a1a1a;
+    --anom-ink-soft: #5a564e;
+    --anom-muted: #8a8578;
+    --anom-coral: #ff6b6b;
+    --anom-citrus: #ffd43b;
+    --anom-mint: #51cf66;
+    --anom-sky: #74c0fc;
+    --anom-lilac: #d0bfff;
+    --anom-border: #e8dfc9;
+    --anom-card: #ffffff;
 }
 
 html[data-mode="maximal"] {
@@ -56,6 +69,18 @@ html[data-mode="minimal"] {
     --accent-3: var(--min-accent);
     --border: var(--min-border);
     --card: var(--min-card);
+    color-scheme: light;
+}
+html[data-mode="astro-nomad"] {
+    --bg: var(--anom-bg);
+    --bg-soft: var(--anom-bg-soft);
+    --text: var(--anom-text);
+    --muted: var(--anom-muted);
+    --accent: var(--anom-coral);
+    --accent-2: var(--anom-citrus);
+    --accent-3: var(--anom-mint);
+    --border: var(--anom-border);
+    --card: var(--anom-card);
     color-scheme: light;
 }
 
@@ -172,6 +197,51 @@ html[data-mode="maximal"] body::before {
 
 /* Minimal hides all fancy decor */
 html[data-mode="minimal"] body::before { display: none; }
+html[data-mode="astro-nomad"] body::before { display: none; }
+
+/* Astro-nomad floating shapes — landing only */
+.bg-shapes { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; display: none; }
+html[data-mode="astro-nomad"] .bg-shapes { display: block; }
+.bg-shapes .shape { position: absolute; opacity: 0.55; animation: anomFloat 18s ease-in-out infinite; }
+.bg-shapes .s1 { top: 8%; left: 6%; width: 110px; animation-delay: 0s; }
+.bg-shapes .s2 { top: 14%; right: 8%; width: 80px; animation-delay: -4s; }
+.bg-shapes .s3 { bottom: 22%; left: 10%; width: 130px; animation-delay: -8s; }
+.bg-shapes .s4 { bottom: 8%; right: 14%; width: 90px; animation-delay: -12s; }
+.bg-shapes .s5 { top: 60%; left: 48%; width: 60px; animation-delay: -6s; opacity: 0.35; }
+@keyframes anomFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(12px, -18px) rotate(4deg); }
+    50% { transform: translate(-8px, 14px) rotate(-3deg); }
+    75% { transform: translate(16px, 6px) rotate(5deg); }
+}
+@media (max-width: 640px) { .bg-shapes .shape { opacity: 0.3; } }
+
+/* Astro-nomad topbar tweaks */
+html[data-mode="astro-nomad"] .topbar-brand {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+html[data-mode="astro-nomad"] .topbar-brand::before {
+    content: "";
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--anom-coral);
+    animation: anomPulse 2.4s ease-in-out infinite;
+}
+@keyframes anomPulse {
+    0%, 100% { transform: scale(1); background: var(--anom-coral); }
+    33% { transform: scale(1.15); background: var(--anom-citrus); }
+    66% { transform: scale(0.92); background: var(--anom-mint); }
+}
+html[data-mode="astro-nomad"] .mode-toggle button[aria-pressed="true"],
+html[data-mode="astro-nomad"] .style-toggle button[aria-pressed="true"] {
+    background: var(--anom-coral);
+    color: #fff;
+}
 
 /* Footer */
 footer {
@@ -591,6 +661,84 @@ html[data-mode="minimal"] .back-cover {
     box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 }
 
+/* ---- Astro-nomad book page ---- */
+html[data-mode="astro-nomad"] .book-title {
+    color: var(--anom-text);
+    font-style: italic;
+    font-weight: 900;
+}
+html[data-mode="astro-nomad"] .book-author {
+    color: var(--anom-coral);
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+html[data-mode="astro-nomad"] .book-meta { color: var(--anom-muted); }
+html[data-mode="astro-nomad"] .cover-wrap img {
+    border-radius: 12px;
+    box-shadow: 0 24px 50px -18px rgba(26,26,26,0.35);
+}
+html[data-mode="astro-nomad"] .cover-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: radial-gradient(ellipse at center, rgba(255,212,59,0.35), transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(30px);
+}
+html[data-mode="astro-nomad"] .chapter-figure {
+    background: var(--anom-bg-soft);
+    padding: 40px 20px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+html[data-mode="astro-nomad"] .chapter-image {
+    border-radius: 12px;
+    box-shadow: 0 20px 50px -12px rgba(26,26,26,0.25);
+}
+html[data-mode="astro-nomad"] .chapter-bignum {
+    color: var(--anom-coral);
+    -webkit-text-stroke: 0;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    filter: none;
+    font-style: italic;
+}
+html[data-mode="astro-nomad"] .chapter-kicker {
+    color: var(--anom-coral);
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+}
+html[data-mode="astro-nomad"] .chapter-title {
+    font-weight: 800;
+}
+html[data-mode="astro-nomad"] .chapter-summary {
+    font-family: 'Fraunces', Georgia, serif;
+}
+html[data-mode="astro-nomad"] .chapter-summary p {
+    font-size: 1.12rem;
+    line-height: 1.8;
+    color: var(--anom-text);
+}
+html[data-mode="astro-nomad"] .progress-bar {
+    background: linear-gradient(90deg, var(--anom-coral), var(--anom-citrus), var(--anom-mint));
+}
+html[data-mode="astro-nomad"] .back-cover {
+    border-radius: 12px;
+    box-shadow: 0 24px 50px -18px rgba(26,26,26,0.3);
+}
+html[data-mode="astro-nomad"] .toc-drawer h3 { color: var(--anom-text); }
+html[data-mode="astro-nomad"] .toc-drawer ol li a:hover { color: var(--anom-coral); }
+html[data-mode="astro-nomad"] .chapter-jump a:hover {
+    color: var(--anom-coral);
+    border-color: var(--anom-coral);
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -604,6 +752,7 @@ html[data-mode="minimal"] .back-cover {
         </div>
         
         <div class="mode-toggle" role="group" aria-label="Visual mode">
+            <button type="button" data-mode="astro-nomad">Astro-nomad</button>
             <button type="button" data-mode="minimal">Minimal</button>
             <button type="button" data-mode="maximal">Maximal</button>
         </div>
@@ -805,7 +954,7 @@ html[data-mode="minimal"] .back-cover {
 <script>
 (function() {
     const html = document.documentElement;
-    const savedMode = localStorage.getItem('site-mode') || 'maximal';
+    const savedMode = localStorage.getItem('site-mode') || 'astro-nomad';
     const savedStyle = localStorage.getItem('site-style') || 'cinematic';
     html.setAttribute('data-mode', savedMode);
     html.setAttribute('data-style', savedStyle);
