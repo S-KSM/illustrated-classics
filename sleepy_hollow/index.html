@@ -863,6 +863,134 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="fals
     .paywall-shape { width: 100px; height: 100px; }
 }
 
+
+/* ---- Topbar auth slot ---- */
+.topbar-auth-slot { display: inline-flex; align-items: center; }
+.auth-btn {
+    font: inherit;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.auth-btn:hover { border-color: var(--text); }
+html[data-mode="astro-nomad"] .auth-btn[data-action="signin"] {
+    background: var(--anom-coral);
+    color: #fff;
+    border-color: var(--anom-coral);
+}
+html[data-mode="astro-nomad"] .auth-btn[data-action="signin"]:hover {
+    background: var(--anom-text);
+    border-color: var(--anom-text);
+}
+
+/* ---- Sign-in modal ---- */
+.signin-modal {
+    position: fixed; inset: 0; z-index: 300;
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 24px;
+}
+.signin-modal.open { display: flex; }
+.signin-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(26, 26, 26, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+.signin-card {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 40px 36px 32px;
+    box-shadow: 0 40px 80px -30px rgba(26, 26, 26, 0.35);
+}
+html[data-mode="astro-nomad"] .signin-card { border: 1.5px solid var(--anom-coral); }
+.signin-close {
+    position: absolute; top: 14px; right: 16px;
+    background: transparent; border: none;
+    font-size: 1.8rem; line-height: 1;
+    color: var(--muted); cursor: pointer;
+    padding: 4px 10px;
+}
+.signin-close:hover { color: var(--text); }
+.signin-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900; font-style: italic;
+    font-size: 2rem; letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+.signin-sub {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+.signin-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+#signin-form input[type="email"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font: inherit;
+    font-size: 1rem;
+    background: #fdf8ef;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+}
+#signin-form input[type="email"]:focus { border-color: var(--text); }
+html[data-mode="astro-nomad"] #signin-form input[type="email"]:focus { border-color: var(--anom-coral); }
+.signin-cta {
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px 16px;
+    border: none;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+    background: var(--text);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+html[data-mode="astro-nomad"] .signin-cta { background: var(--anom-coral); }
+.signin-cta:hover { transform: translateY(-1px); }
+.signin-cta:disabled { opacity: 0.6; cursor: default; transform: none; }
+.signin-msg {
+    margin-top: 14px;
+    font-size: 0.9rem;
+    color: var(--muted);
+    min-height: 1em;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+.signin-msg.show { opacity: 1; }
+html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
+
 </style>
 </head>
 <body data-style-page="cinematic" data-sibling-href="index_anime.html">
@@ -882,6 +1010,9 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="fals
             <button type="button" data-mode="astro-nomad">Astro-nomad</button>
             <button type="button" data-mode="minimal">Minimal</button>
             <button type="button" data-mode="maximal">Maximal</button>
+        </div>
+        <div class="topbar-auth-slot">
+            <button class="auth-btn" data-action="signin">Sign in</button>
         </div>
     </div>
 </header>
@@ -1110,6 +1241,180 @@ document.addEventListener('DOMContentLoaded', function() {
         if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
     } catch (e) {}
 })();
+</script>
+
+<div id="signin-modal" class="signin-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="signin-backdrop" data-action="signin-close"></div>
+    <div class="signin-card" role="document">
+        <button class="signin-close" data-action="signin-close" aria-label="Close">×</button>
+        <h2 class="signin-title">Welcome in.</h2>
+        <p class="signin-sub">We'll email you a magic link — no password needed.</p>
+        <form id="signin-form" autocomplete="on">
+            <label class="signin-label" for="signin-email">Email</label>
+            <input id="signin-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+            <button type="submit" class="signin-cta">Send me a link</button>
+        </form>
+        <p class="signin-msg" role="status" aria-live="polite"></p>
+    </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SB_URL = 'https://pwaprvmsmcvwzxqhjhpm.supabase.co';
+const SB_ANON = 'sb_publishable_LwE5Ct1OZX-Stvw-K8Y7LA_gFVdnroG';
+const API = 'https://api.ai-may-i.com';
+
+const supabase = createClient(SB_URL, SB_ANON, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+
+async function apiMe(token) {
+    const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+    try {
+        const r = await fetch(API + '/me', { headers });
+        if (!r.ok) return null;
+        return await r.json();
+    } catch (e) { return null; }
+}
+
+async function syncState() {
+    const { data: { session } } = await supabase.auth.getSession();
+    const body = document.body;
+
+    if (!session) {
+        body.setAttribute('data-auth', 'out');
+        body.setAttribute('data-entitled', '0');
+        updateTopbar(null);
+        updatePaywall(false);
+        return;
+    }
+
+    body.setAttribute('data-auth', 'in');
+    const me = await apiMe(session.access_token);
+    const entitled = !!(me && me.entitled);
+    body.setAttribute('data-entitled', entitled ? '1' : '0');
+    updateTopbar(me || { authenticated: true, user: { email: session.user.email } });
+    updatePaywall(entitled);
+}
+
+function updatePaywall(entitled) {
+    const body = document.body;
+    const hasLocked = !!document.querySelector('.chapter[data-free="false"]');
+    if (entitled || !hasLocked) {
+        if (body.getAttribute('data-paywall') === 'show') body.removeAttribute('data-paywall');
+    } else {
+        body.setAttribute('data-paywall', 'show');
+    }
+}
+
+function updateTopbar(me) {
+    const slot = document.querySelector('.topbar-auth-slot');
+    if (!slot) return;
+    if (me && me.authenticated) {
+        const name = (me.user && me.user.email) || 'Account';
+        slot.innerHTML = '<button class="auth-btn" data-action="manage" title="Sign out">' + name + '</button>';
+    } else {
+        slot.innerHTML = '<button class="auth-btn" data-action="signin">Sign in</button>';
+    }
+}
+
+function openSignIn() {
+    const m = document.getElementById('signin-modal');
+    if (!m) return;
+    m.classList.add('open');
+    m.setAttribute('aria-hidden', 'false');
+    const input = document.getElementById('signin-email');
+    if (input) setTimeout(() => input.focus(), 50);
+}
+function closeSignIn() {
+    const m = document.getElementById('signin-modal');
+    if (!m) return;
+    m.classList.remove('open');
+    m.setAttribute('aria-hidden', 'true');
+    const msg = m.querySelector('.signin-msg');
+    if (msg) msg.classList.remove('show');
+    const f = document.getElementById('signin-form');
+    if (f) f.reset();
+}
+
+document.addEventListener('click', async (e) => {
+    const el = e.target.closest && e.target.closest('[data-action]');
+    if (!el) return;
+    const action = el.dataset.action;
+
+    if (action === 'signin') { e.preventDefault(); openSignIn(); }
+    else if (action === 'signin-close') { closeSignIn(); }
+    else if (action === 'subscribe') {
+        e.preventDefault();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) { openSignIn(); return; }
+        await startCheckout(session.access_token, 'monthly');
+    }
+    else if (action === 'manage') {
+        e.preventDefault();
+        if (confirm('Sign out?')) {
+            await supabase.auth.signOut();
+            location.reload();
+        }
+    }
+});
+
+const form = document.getElementById('signin-form');
+if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = form.email.value.trim();
+        const btn = form.querySelector('.signin-cta');
+        const msg = document.querySelector('.signin-msg');
+        if (!email) return;
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        const base = location.pathname.startsWith('/classics/') ? '/classics/' : '/';
+        const { error } = await supabase.auth.signInWithOtp({
+            email,
+            options: { emailRedirectTo: location.origin + base + 'auth/callback.html' }
+        });
+        btn.disabled = false;
+        btn.textContent = 'Send me a link';
+        if (error) {
+            msg.textContent = 'Could not send link. Try again?';
+        } else {
+            msg.textContent = 'Check your inbox for a magic link.';
+            form.reset();
+        }
+        msg.classList.add('show');
+    });
+}
+
+async function startCheckout(token, plan) {
+    try {
+        const r = await fetch(API + '/stripe/checkout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ plan })
+        });
+        if (!r.ok) {
+            const err = await r.text();
+            alert('Checkout failed: ' + err);
+            return;
+        }
+        const data = await r.json();
+        location.href = data.url;
+    } catch (e) {
+        alert('Checkout error: ' + e.message);
+    }
+}
+
+supabase.auth.onAuthStateChange(() => syncState());
+syncState();
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSignIn();
+});
 </script>
 </body>
 </html>
