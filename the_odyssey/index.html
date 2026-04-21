@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="cinematic" data-sibling-href="index_anime.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="The Gods Convene, A Hero Waits illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -806,7 +930,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Please let me know how you&#x27;d like to proceed, and I&#x27;ll be happy to help.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="Assembly at Ithaca Begins illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -831,7 +955,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 - Explain Butler&#x27;s theory about the Odyssey&#x27;s composition mentioned here?</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Telemachus Awakens to His Father&#x27;s Legacy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -850,7 +992,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>*As morning light prepared to break over Ithaca, Telemachus readied himself to face the assembly of his people and speak at last as a man.*</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Telemachus Demands Justice From Ithaca illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -868,7 +1010,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, with the goddess at his side and hope kindling in his heart, the son of Ulysses set forth upon the wine-dark sea to seek the truth of his father&#x27;s fate.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Telemachus Seeks His Father&#x27;s Fate illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -887,7 +1029,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The following morning, Nestor honored the goddess with proper sacrifice—a broad-browed heifer with gilded horns—while his household prepared Telemachus for his journey. Young Polycaste bathed the prince and anointed him with oil until he emerged looking like a god himself. At last, with Pisistratus as companion and guide, Telemachus mounted the chariot. The horses flew forward across the open country, the high citadel of Pylos diminishing behind them, as they made their way toward Lacedaemon and whatever truths Menelaus might reveal about the fate of long-lost Ulysses.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Splendor and Sorrow in Sparta illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -905,7 +1047,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As Penelope rose from troubled sleep with renewed hope, the suitors sailed to the rocky islet of Asteris, positioning themselves in its hidden harbor—a deadly trap awaiting Telemachus&#x27;s return.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Calypso&#x27;s Island and the Gods&#x27; Decree illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -924,7 +1066,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Exhausted beyond speech or breath, Ulysses crawled into a thicket of olive trees, buried himself beneath dry leaves like an ember preserved against the cold, and surrendered to the merciful sleep that Minerva poured upon him—though somewhere nearby, unknown to him, the daughter of a king was about to receive a dream of her own.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Nausicaa at the River&#x27;s Edge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -944,7 +1086,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the sun descended and the wagon rolled toward the city, Ulysses took his place in the goddess&#x27;s grove and lifted his voice in prayer, beseeching Minerva to grant him kindness among these strangers—though even now, Neptune&#x27;s wrath remained unspent, and the road to Ithaca stretched long before him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Veiled Stranger in the Gleaming Palace illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -964,7 +1106,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Grateful beyond measure, Ulysses prayed that Zeus would grant Alcinous undying fame for such generosity. Then the maids prepared a bed in the gatehouse, and the weary wanderer, wrapped in red rugs and woollen cloaks, surrendered at last to sleep—while in the inner chambers, Alcinous lay beside his queen, and all the palace settled into darkness before the dawn that would determine whether Ulysses might finally sail for home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Feasts, Games, and Hidden Tears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -984,7 +1126,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The king silenced the music and spoke directly to his guest: the time for concealment had ended; he must reveal his name, his homeland, and the source of sorrows that made him weep at songs of Troy.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Ulysses Reveals His Name and Trials illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1005,7 +1147,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Neptune heard that prayer, and though the Greeks escaped the hurled boulders and rejoined their fleet, the curse now clung to them as they sailed onward into unknown waters, their brief triumph shadowed by griefs yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Winds Unbound and Giants Awakened illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1024,7 +1166,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With instructions for summoning the dead now branded in his mind, Odysseus roused his men for this darkest of voyages—though in the confusion, young Elpenor fell drunkenly from Circe&#x27;s roof, his neck breaking, his soul plunging ahead of them into that realm of shadows where they all must now follow.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Odysseus Summons the Restless Dead illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1042,7 +1184,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At last, as thousands of ghosts pressed close with appalling cries, Odysseus grew fearful that Proserpine might send forth the dreaded Gorgon. He hastened back to his ship, and his men rowed out upon the river Oceanus until a fair wind rose to carry them onward—toward Circe&#x27;s island once more, where new warnings and fresh trials awaited them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Deadly Trials Beyond Circe&#x27;s Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1062,7 +1204,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now his story complete, Odysseus fell silent, leaving only the question of what lay ahead—and whether the Phaeacians would grant him the homeward passage he so desperately sought.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Homeward Bound in Deathlike Slumber illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1081,7 +1223,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With a touch of her wand, Minerva transformed him into a withered beggar, and thus disguised, Ulysses prepared to reclaim all that was his—beginning with a visit to his faithful swineherd, while the goddess herself departed for Sparta to bring Telemachus home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Swineherd&#x27;s Loyal Welcome illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1100,7 +1242,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus the king rested under his own servant&#x27;s roof, unknown and unrecognized, as the storm raged through the darkness around them—though dawn would bring new trials and new deceptions before father could find son once more.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="The Son&#x27;s Urgent Return to Ithaca illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1116,7 +1258,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As dawn broke over Ithaca, Telemachus&#x27;s ship made harbor. The young prince sent his vessel onward to the city while he struck out alone toward the swine-pens, pausing only to arrange hospitality for Theoclymenus with his friend Piraeus. Another omen appeared—a hawk tearing at a dove—and the seer proclaimed that Telemachus&#x27;s house would remain supreme in Ithaca. With a stout bronze-tipped spear in hand, the son strode toward the homestead where dwelt the excellent swineherd, not knowing that within that humble hut, a far greater reunion awaited him than any he could have imagined.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="The Father Revealed to His Son illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1139,7 +1281,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>That evening, Athena restored Ulysses to his beggar&#x27;s guise before Eumaeus returned. The three men shared their supper in the humble hut, and when the meal was done, they lay down to rest—though for Ulysses, sleep must have come slowly, his mind turning over the bloody work that lay ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="Homecoming, Insults, and Hidden Recognition illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1156,7 +1298,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But Ulysses, through Eumaeus, asked her to wait until nightfall, when the suitors&#x27; raucous presence would not threaten their conversation—and as Penelope spoke of this, Telemachus sneezed so mightily that the whole house rang with the sound, an omen she took to mean not one suitor would escape alive.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="The Beggar&#x27;s Brawl at the Door illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1173,7 +1315,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet in that quiet house, Ulysses remained by the dying braziers, brooding on things that should surely come to pass, as the night drew ever closer to the hour of reckoning.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Arms Removed, A Scar Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1192,7 +1334,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With this fateful declaration hanging in the air between them, Penelope withdrew to her chamber to weep upon her lonely couch, while Ulysses remained below, the hour of reckoning drawing ever nearer.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="Restless Night Before the Reckoning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1209,7 +1351,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Penelope sat listening from her chamber as the suitors feasted in ignorant merriment, unaware that their banquet was drawing to its bloody close—for a goddess and a brave man were preparing to serve them a supper more gruesome than any they could imagine.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="Penelope&#x27;s Challenge and the Bow illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1226,7 +1368,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then Ulysses turned the bow this way and that, examining it for damage, and strung it as easily as a bard fits a new string to his lyre. The gut sang sweetly under his touch, and Zeus thundered from heaven in answer. Taking an arrow from the table, Ulysses drew and let fly—and the shaft passed clean through every axe-hole into the courtyard beyond. He turned to his son with words of quiet triumph, speaking of supper and song, though his meaning carried darker promise. At his signal, Telemachus armed himself with sword and spear and took his place beside his father, ready for what must follow.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Ulysses Reclaims His Hall in Blood illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1248,7 +1390,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet the cleansing of the great hall was but preparation for a more delicate trial—the reunion that awaited above, where Penelope had slumbered through the carnage, guarded by some god&#x27;s gentle hand.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="Penelope Tests the Stranger by the Fire illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1268,7 +1410,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Dawn finally rose, Ulysses armed himself alongside Telemachus, Eumaeus, and Philoetius, and they slipped from the city under cover of Minerva&#x27;s darkness—for though husband and wife were reunited, the reckoning with Ithaca&#x27;s grieving families had only begun.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_26.webp"><img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="Whispers Among the Asphodel Dead illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1446,6 +1588,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

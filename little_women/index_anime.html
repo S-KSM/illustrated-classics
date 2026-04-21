@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="anime" data-sibling-href="index.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="Four Sisters by the Fire illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -801,7 +925,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so the March sisters began their pilgrimage anew, armed with love, good intentions, and the promise of Christmas morning—when the true nature of their journey would reveal itself in four small books waiting beneath four hopeful pillows.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="Gifts, Goodness, and Humble Offerings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -819,7 +943,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>So the day closed in warmth and gratitude, the little books on their pillows a reminder that the pilgrimage toward goodness had only just begun.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="A New Year&#x27;s Eve Invitation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -836,7 +978,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, with a new friendship kindled and the memory of waltzing in an empty hall, the sisters drifted toward sleep, unaware of how thoroughly this chance meeting with their young neighbor would soon weave itself into the fabric of their days.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="Shouldering the Daily Burdens illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -854,7 +996,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet resolutions, as the girls well knew, are easier made than kept, and the very next day would bring fresh trials to test their pilgrim spirits.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Crossing the Hedge to Friendship illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -873,7 +1015,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo, never one to shrink from a challenge, grinned at the prospect of the lions yet to be conquered on the path ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="Beth&#x27;s Courage and the Grand Piano illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -892,7 +1034,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And yet, even as the March household marveled at Beth&#x27;s transformation, life beyond their little circle was quietly shifting, carrying with it changes none of them had yet imagined.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="Pickled Limes and Schoolroom Justice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -908,7 +1050,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The lesson settles into Amy&#x27;s heart that evening as Laurie, playing chess with Jo, praises Beth&#x27;s musical gift—a gift Beth herself scarcely recognizes. Watching her modest sister blush and hide her face, Amy begins to understand what her mother means. &quot;It&#x27;s nice to have accomplishments and be elegant,&quot; she reflects, &quot;but not to show off or get perked up.&quot; Jo caps the sermon with a quip about wearing all one&#x27;s bonnets at once, and the family&#x27;s laughter signals that Amy&#x27;s valley of humiliation, painful as it has been, may yet yield the fruit of genuine growth—a lesson she will carry with her as the sisters navigate the challenges still to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Jo&#x27;s Fury and Amy&#x27;s Revenge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -925,7 +1067,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo listened, humbled and hopeful, resolving to watch and pray over her &quot;bosom enemy.&quot; When Amy stirred and opened her arms, the sisters embraced without a word, and everything was forgiven in one hearty kiss—leaving Jo to carry into the days ahead a hard-won lesson about the cost of anger and the grace of reconciliation.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="Meg&#x27;s Taste of Fashionable Life illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -943,7 +1085,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As mother and daughters clasped hands in renewed understanding, Jo sensed that Meg had grown and changed during her fortnight away, drifting toward a world of admirers and romance where Jo could not easily follow—a world whose threshold she herself might one day be called to cross.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="Sisters, Secrets, and the Pickwick Club illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -960,7 +1102,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The P.O. flourished wonderfully, carrying tragedies and cravats, poetry and pickles, garden seeds and puppies, even a love letter from Mr. Laurence&#x27;s smitten gardener to Hannah, passed through Jo&#x27;s care to much laughter. None of them could have dreamed then how many love letters that little post office would hold in the years to come—or how swiftly such years would arrive, bringing changes none could foresee.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="Summer Idleness Teaches Its Lesson illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -979,7 +1121,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With her daughters gathered close, Mrs. March offered her quiet benediction: have regular hours for work and play, make each day both useful and pleasant, and life would become a beautiful success. The girls promised to remember—and this time, they truly did, carrying that hard-won wisdom forward into the summer days that lay ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="Summer Picnics and Secret Encouragements illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -996,7 +1138,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet the mild adventures of Camp Laurence would soon give way to sterner lessons, as autumn approached with its own particular trials of temper, patience, and sisterly devotion.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="Dreams and Schemes in the Pines illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1015,7 +1157,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so the summer drew toward its close, with hearts full of dreams both spoken and secret—dreams that would, in time, be tested against the stubborn stuff of real life.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="Secrets, Manuscripts, and Friendly Warnings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1033,7 +1175,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even amid such joy, the shadow of Laurie&#x27;s other secret lingers—Mr. Brooke&#x27;s romantic intentions toward Meg—and one senses that the changes Jo dreads may arrive sooner than any of them expect.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="November&#x27;s Dark Turn illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1051,7 +1193,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet that night, when the house had fallen silent and Meg lay sleepless with anxious thoughts, she heard a stifled sob from her sister&#x27;s pillow. Jo, who never sniveled over trifles, was weeping quietly for her shorn locks—the vain part of her making a private moan for what was lost. And as the clocks struck midnight, Mrs. March moved softly from bed to bed, smoothing coverlets and pressing fervent kisses upon each sleeping face, until the moon broke through the clouds as if to whisper that light always waits behind the darkness—a comfort she would carry with her into the uncertain days ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="A Brave Farewell and Faithful Resolve illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1068,7 +1210,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Together, these letters painted a portrait of the March household carrying on with courage, humor, and love—a family keeping busy and hopeful, just as Marmee had asked, while awaiting her return and the good news that Father was, at last, beginning to mend.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="Beth&#x27;s Quiet Devotion and Heavy Burden illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1087,7 +1229,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As Beth lay pale and feverish upon their mother&#x27;s bed, the true test of the little household had only just begun.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Beth&#x27;s Fever and a Family&#x27;s Vigil illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1105,7 +1247,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As dawn broke over a world transformed into glittering snow, Meg placed a half-opened rose beside her sister&#x27;s pillow—and from below came the sound of bells, Hannah&#x27;s cry, and Laurie&#x27;s joyful whisper: &quot;Girls, she&#x27;s come! She&#x27;s come!&quot;</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="Exile, Duty, and Hidden Treasures illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1122,7 +1264,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, while the small household at home held its breath over Beth&#x27;s fever, Amy&#x27;s childish heart was growing wiser in ways she had never expected, preparing her for whatever news might come across the miles.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="Mother&#x27;s Return and Quiet Healing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1139,7 +1281,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, with Beth safely past her crisis and new currents stirring beneath the surface of the household, the March family stood poised on the threshold of changes none of them could quite forestall.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="Laurie&#x27;s Prank and Its Consequences illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1156,7 +1298,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus, as the family prepared for Father&#x27;s long-awaited return, new currents stirred beneath the cheerful surface of the little house, currents that would carry them all toward whatever awaited in the chapters yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_22.webp"><img class="chapter-image" src="images_anime/chapter_22.webp" alt="Recovery, Reunion, and Christmas Joy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1173,7 +1315,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as the family savored this interval of peace, the currents of change ran beneath the surface—Mr. Brooke&#x27;s devoted presence, Meg&#x27;s blushes, and Jo&#x27;s dark glowers hinting that new trials and transformations awaited the little pilgrims in the chapters yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_23.webp"><img class="chapter-image" src="images_anime/chapter_23.webp" alt="Meg&#x27;s Romantic Resolve Tested illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1191,7 +1333,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even Jo&#x27;s grief softened as the family gathered that evening, the old room brightening with the glow of first romance. Laurie promised to stand by her always, and as Jo&#x27;s eyes traveled slowly around that beloved circle—Father and Mother reliving their own love story, the engaged couple lost in dreams, Beth peaceful with old Mr. Laurence, and Laurie smiling at her in the glass—she could not wish the picture much improved. So the curtain falls upon the four sisters, their futures trembling with possibility, awaiting only the world&#x27;s invitation to raise it once more.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_24.webp"><img class="chapter-image" src="images_anime/chapter_24.webp" alt="Peacetime and Preparations for New Beginnings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1210,7 +1352,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As Jo and Laurie stroll away from the Dovecote together, she lectures him on his spending and his hideous short haircut, while he teases her about crying at weddings and warns that she&#x27;ll be next to marry. Jo bristles at the very notion, declaring herself too busy for such nonsense—but Laurie&#x27;s parting prophecy lingers in the air like a half-spoken promise, even as the household turns its eyes toward tomorrow, when Meg will leave girlhood behind forever.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_25.webp"><img class="chapter-image" src="images_anime/chapter_25.webp" alt="Roses, Love, and New Beginnings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1227,7 +1369,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As guests departed, Meg changed into her dove-colored traveling suit and, with full eyes, assured Marmee that marriage would never diminish her love for home. And so, with flowers in her hands and June sunshine brightening her happy face, she walked the quiet distance to her new little house on her husband&#x27;s arm—embarking upon married life even as her sisters prepared to face the changes her absence would bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_26.webp"><img class="chapter-image" src="images_anime/chapter_26.webp" alt="Ambition, Talent, and Youthful Experiments illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1245,7 +1387,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With her artistic ambitions thus tempered and her social pretensions gently checked, Amy was perhaps better prepared for the larger world that awaited her—one that would soon offer opportunities far beyond the scope of drawing classes and neighborhood luncheons.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_27.webp"><img class="chapter-image" src="images_anime/chapter_27.webp" alt="Jo&#x27;s Sensational Literary Ambitions Ignite illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1263,7 +1405,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With Spartan firmness, Jo chopped her first-born manuscript ruthlessly, following everyone&#x27;s advice and thereby pleasing no one. The published book earned three hundred dollars and a bewildering array of criticism so contradictory that Jo hardly knew whether she had written something promising or broken all ten commandments. Yet from this buffeting she emerged wiser and stronger, able to laugh at her poor little book while still believing in it, ready to rise and try again—for the literary lessons of this chapter were only the beginning of her education as a writer.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_28.webp"><img class="chapter-image" src="images_anime/chapter_28.webp" alt="Meg&#x27;s First Lessons in Housekeeping illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1279,7 +1421,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But the year&#x27;s deepest experience came at midsummer, when Laurie burst into the Dovecote to find not one baby but two—twins, a boy and a girl, whom he promptly christened Demi and Daisy. And so the little family grew, carrying its hard-won lessons of patience and forgiveness into whatever joys and trials the coming seasons might bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_29.webp"><img class="chapter-image" src="images_anime/chapter_29.webp" alt="Jo&#x27;s Reluctant Social Debut illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1296,7 +1438,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo, blissfully unaware that her contrary temper had just cost her a great happiness, walked home feeling only that calls had their usual bad effect upon her constitution—never guessing what that whispered conversation between the aunts would soon mean for Amy&#x27;s future.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_30.webp"><img class="chapter-image" src="images_anime/chapter_30.webp" alt="Amy&#x27;s Fall and Rise at the Fair illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1314,7 +1456,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the steamer carries Amy toward the Old World, she clings to Laurie at the gangway, extracting his promise to watch over those she loves, little suspecting how soon that vow might be tested by fortune&#x27;s hand.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_31.webp"><img class="chapter-image" src="images_anime/chapter_31.webp" alt="Across the Sea to England illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1329,7 +1471,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet as Amy seals her letter and prepares for the next stage of the journey, the shadow of Beth&#x27;s failing health lingers between the lines, and the reader senses that events at home may soon demand a different kind of courage altogether.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_32.webp"><img class="chapter-image" src="images_anime/chapter_32.webp" alt="Beth&#x27;s Secret Heart Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1346,7 +1488,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the coach carried Jo toward the bustle of New York and its promise of new scenes and independence, Laurie&#x27;s parting whisper echoed in her ears: *&quot;It won&#x27;t do a bit of good, Jo. My eye is on you.&quot;* She laughed it off, but somewhere beneath her lightened heart a small foreboding lingered—a sense that this particular trial of the heart would not mend so easily as those that came before, and that the miles between home and the great city could not outrun what waited there to be faced.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_33.webp"><img class="chapter-image" src="images_anime/chapter_33.webp" alt="A New Nest in New York illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1364,7 +1506,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Her words end on a note of quiet contentment, yet there is a tremor beneath—Laurie&#x27;s name appears only in passing, Beth&#x27;s health is mentioned with anxious hope, and Jo&#x27;s heart, for all its independence, seems to be opening wider than she yet realizes.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_34.webp"><img class="chapter-image" src="images_anime/chapter_34.webp" alt="Jo&#x27;s Dangerous Descent Into Sensation Writing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1382,7 +1524,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And yet, as the train pulled away and the Professor returned to his empty rooms, one could not help but wonder whether friendship alone would prove sufficient for either of them in the chapters yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><a class="next" href="#chapter-35"><span>Next</span>Chapter 35</a></nav>
 </section>
-<section class="chapter" id="chapter-35" data-num="35">
+<section class="chapter" id="chapter-35" data-num="35" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_35.webp"><img class="chapter-image" src="images_anime/chapter_35.webp" alt="Laurie&#x27;s Declaration and Jo&#x27;s Refusal illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">35</div>
@@ -1401,7 +1543,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>He straightened himself, murmured that it was all right, and walked away without looking back—and Jo knew, with an ache that would not soon fade, that the boy Laurie she had loved so well as a friend would never come again, and that whatever lay ahead for them both must be something altogether different.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-34"><span>Previous</span>Chapter 34</a><a class="next" href="#chapter-36"><span>Next</span>Chapter 36</a></nav>
 </section>
-<section class="chapter" id="chapter-36" data-num="36">
+<section class="chapter" id="chapter-36" data-num="36" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_36.webp"><img class="chapter-image" src="images_anime/chapter_36.webp" alt="Drifting Away by the Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">36</div>
@@ -1418,7 +1560,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo leaned down and kissed that tranquil face, silently dedicating herself, soul and body, to her sister&#x27;s remaining days. When they returned home, no words were needed; Father and Mother saw plainly what they had prayed to be spared from seeing, and as Marmee stretched out her arms for help, Jo went to comfort her without a word—knowing now that the sacred duty of standing by her parents through the coming sorrow had already begun.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-35"><span>Previous</span>Chapter 35</a><a class="next" href="#chapter-37"><span>Next</span>Chapter 37</a></nav>
 </section>
-<section class="chapter" id="chapter-37" data-num="37">
+<section class="chapter" id="chapter-37" data-num="37" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_37.webp"><img class="chapter-image" src="images_anime/chapter_37.webp" alt="Amy and Laurie Reunite Abroad illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">37</div>
@@ -1435,7 +1577,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What fruit these impressions may bear, and how the shadow on Laurie&#x27;s heart may lift or deepen, only time and further chapters shall reveal.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-36"><span>Previous</span>Chapter 36</a><a class="next" href="#chapter-38"><span>Next</span>Chapter 38</a></nav>
 </section>
-<section class="chapter" id="chapter-38" data-num="38">
+<section class="chapter" id="chapter-38" data-num="38" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_38.webp"><img class="chapter-image" src="images_anime/chapter_38.webp" alt="Domestic Trials of Young Motherhood illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">38</div>
@@ -1455,7 +1597,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as the Brooke household found its peaceful rhythm, other members of the March family were navigating waters far less tranquil—for love has a way of arriving unbidden, and the heart does not always choose its hour wisely.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-37"><span>Previous</span>Chapter 37</a><a class="next" href="#chapter-39"><span>Next</span>Chapter 39</a></nav>
 </section>
-<section class="chapter" id="chapter-39" data-num="39">
+<section class="chapter" id="chapter-39" data-num="39" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_39.webp"><img class="chapter-image" src="images_anime/chapter_39.webp" alt="Roses, Thorns, and Drifting Hearts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">39</div>
@@ -1472,7 +1614,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, as the winter season at Nice went on without him, both young people found themselves changed by their encounter—Amy more certain of what she wanted from life, and Laurie, at last, beginning to stir from the stupor of his heartbreak toward something that might yet prove worthy of him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-38"><span>Previous</span>Chapter 38</a><a class="next" href="#chapter-40"><span>Next</span>Chapter 40</a></nav>
 </section>
-<section class="chapter" id="chapter-40" data-num="40">
+<section class="chapter" id="chapter-40" data-num="40" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_40.webp"><img class="chapter-image" src="images_anime/chapter_40.webp" alt="Beth&#x27;s Sacred Farewell illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">40</div>
@@ -1491,7 +1633,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now the family must learn to walk forward without her gentle presence, carrying her memory as both wound and balm into whatever days awaited them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-39"><span>Previous</span>Chapter 39</a><a class="next" href="#chapter-41"><span>Next</span>Chapter 41</a></nav>
 </section>
-<section class="chapter" id="chapter-41" data-num="41">
+<section class="chapter" id="chapter-41" data-num="41" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_41.webp"><img class="chapter-image" src="images_anime/chapter_41.webp" alt="Laurie&#x27;s Heart and Ambitions Transform illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">41</div>
@@ -1509,7 +1651,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>So it was that two hearts, schooled by sorrow and taught by time, found in each other the comfort and hope they needed—and began together a new chapter neither had foreseen.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-40"><span>Previous</span>Chapter 40</a><a class="next" href="#chapter-42"><span>Next</span>Chapter 42</a></nav>
 </section>
-<section class="chapter" id="chapter-42" data-num="42">
+<section class="chapter" id="chapter-42" data-num="42" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_42.webp"><img class="chapter-image" src="images_anime/chapter_42.webp" alt="Grief&#x27;s Slow Path to Healing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">42</div>
@@ -1528,7 +1670,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But the rain would not fall forever, and spring, with all its possibilities, was surely drawing near.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-41"><span>Previous</span>Chapter 41</a><a class="next" href="#chapter-43"><span>Next</span>Chapter 43</a></nav>
 </section>
-<section class="chapter" id="chapter-43" data-num="43">
+<section class="chapter" id="chapter-43" data-num="43" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_43.webp"><img class="chapter-image" src="images_anime/chapter_43.webp" alt="Laurie&#x27;s Return and Joyful Revelation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">43</div>
@@ -1543,7 +1685,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Professor was welcomed into the family circle as though he had always belonged there, the children claiming his knees, Mr. March discovering a kindred intellect, and Jo knitting industriously to hide the joy that threatened to betray her. When at last they sang together—she warbling tunelessly, he pouring German feeling into the old song about the land where citrons bloom—the tender invitation in his voice seemed meant for her alone. After the guests departed and the house grew quiet, Jo slipped away to bed, wondering what business had really brought him. Had she glimpsed him later, kissing her photograph in the dark of his room, she might have guessed the answer—but that revelation, like so much else, would have to wait for what tomorrow might bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-42"><span>Previous</span>Chapter 42</a><a class="next" href="#chapter-44"><span>Next</span>Chapter 44</a></nav>
 </section>
-<section class="chapter" id="chapter-44" data-num="44">
+<section class="chapter" id="chapter-44" data-num="44" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_44.webp"><img class="chapter-image" src="images_anime/chapter_44.webp" alt="Newlyweds Plan Their Future Together illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">44</div>
@@ -1560,7 +1702,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, with one young couple&#x27;s future secured in mutual purpose and affection, the family&#x27;s attention turns toward another match—one that would require neither fortune nor worldly advantage, only the courage to speak what the heart already knows.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-43"><span>Previous</span>Chapter 43</a><a class="next" href="#chapter-45"><span>Next</span>Chapter 45</a></nav>
 </section>
-<section class="chapter" id="chapter-45" data-num="45">
+<section class="chapter" id="chapter-45" data-num="45" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_45.webp"><img class="chapter-image" src="images_anime/chapter_45.webp" alt="Twins Learning Life and Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">45</div>
@@ -1578,7 +1720,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Why Aunt Dodo afterward caught Demi in the china closet and squeezed him breathless with affection instead of scolding him, then rewarded him with bread and jelly, remained a mystery the small philosopher could never solve—though readers of keener perception might guess that a certain question about great boys and great girls had prompted in Jo a surge of feeling she could express only through unexpected tenderness toward the small cupid who had, quite unwittingly, spoken aloud what others dared not say.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-44"><span>Previous</span>Chapter 44</a><a class="next" href="#chapter-46"><span>Next</span>Chapter 46</a></nav>
 </section>
-<section class="chapter" id="chapter-46" data-num="46">
+<section class="chapter" id="chapter-46" data-num="46" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_46.webp"><img class="chapter-image" src="images_anime/chapter_46.webp" alt="Under the Umbrella at Last illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">46</div>
@@ -1597,7 +1739,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They spoke of patience, of waiting, of duties still to be fulfilled—he to his boys out West, she to her work at home—yet both were content, for love made all the rest easy to bear. And when at last they reached the March doorstep, Jo led her lover in from the night and storm and loneliness to the household light and warmth and peace, shutting the door upon the crowning moment of both their lives—a moment that promised, in its very simplicity, the beginning of something rich and enduring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-45"><span>Previous</span>Chapter 45</a><a class="next" href="#chapter-47"><span>Next</span>Chapter 47</a></nav>
 </section>
-<section class="chapter" id="chapter-47" data-num="47">
+<section class="chapter" id="chapter-47" data-num="47" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_47.webp"><img class="chapter-image" src="images_anime/chapter_47.webp" alt="A School for Little Lads illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">47</div>
@@ -1774,6 +1916,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

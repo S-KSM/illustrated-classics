@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="anime" data-sibling-href="index.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="The Ocean&#x27;s Mysterious Leviathan Awakens illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -802,7 +926,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The seas, they insisted, must be rid of this terror—whatever the cost, whatever the means required to hunt it down.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="A Naturalist Weighs the Evidence illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -821,7 +945,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>It was an offer that no naturalist of genuine scientific ambition could possibly refuse—though Aronnax could scarcely have imagined the extraordinary circumstances into which that acceptance would deliver him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="A Fateful Letter Changes Everything illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -839,7 +981,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The departure from Brooklyn Pier unfolded amid scenes of considerable spectacle. Five hundred thousand throats raised successive cheers as thousands of handkerchiefs waved farewell. The frigate passed between saluting forts, hoisted her thirty-nine-starred colours thrice in response, and navigated the narrow channel past Sandy Hook Point. When at last the pilot descended to his waiting schooner and the escort vessels fell away at the lightship, the *Abraham Lincoln* turned her prow toward darker waters—and as eight bells struck and the lights of Fire Island vanished in the northwest, she ran at full steam onto the mysterious Atlantic, bearing her passengers toward adventures whose strangeness would strain the credulity of even the most receptive reader.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="The Skeptical Harpooner&#x27;s Introduction illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -856,7 +998,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Canadian found himself shaken by these calculations, conceding that if such animals existed, they must indeed be as formidably constructed as the professor described—yet still he withheld full conviction, until the narrator posed the question that hung unanswered in the salt air between them: if no such creature existed, how then could one explain what had befallen the *Scotia*?</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Ned Land&#x27;s Skill and Fruitless Searching illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -873,7 +1015,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Two days passed in feverish vigilance. Bacon was trailed to attract the creature; small craft radiated outward exploring every patch of ocean. Yet the fourth of November arrived without revelation. On the evening of the fifth, with the deadline mere hours distant, the narrator stood at the starboard netting beside Conseil, contemplating their imminent failure and the ridicule awaiting them in France. Conseil was mid-sentence, preparing some observation regarding savants exposing themselves unwisely, when his words were forever interrupted—for cutting through the general silence came the unmistakable voice of Ned Land, crying out that the very object of their months-long pursuit had appeared upon their weather beam.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="The Glowing Beast Circles the Frigate illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -892,7 +1034,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What followed in those desperate waters would prove more extraordinary still than all that had preceded it.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="Adrift in Darkness With Conseil illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -910,7 +1052,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Throughout that interminable night we clung to its iron back, hearing fugitive sounds—words of command—emanating from within. At daybreak, as the craft began to sink beneath us, Ned Land&#x27;s frustrated kicks summoned forth a figure who vanished as quickly as he appeared. Moments later, eight masked men emerged silently from the vessel&#x27;s interior and drew us down into the bowels of their formidable machine—a descent that promised answers to mysteries far deeper than any ocean.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Captives in the Electric Darkness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -928,7 +1070,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As sleep claimed him at last, the Professor sensed—or fancied he sensed—the machine descending into the lowest beds of the sea, carrying them ever deeper into mysteries that the coming hours would surely illuminate.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="Captives Await Air and Answers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -947,7 +1089,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With this unexpected command hanging in the close air of their prison, it became evident that their mysterious captor had at last determined to reveal himself and his intentions.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Captain Reveals Himself illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -966,7 +1108,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As I seated myself at his invitation, I understood that the true revelations were only now to begin—that the secrets of the *Nautilus* itself would shortly be laid before me.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="Powering the Deep with Ocean&#x27;s Energy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -983,7 +1125,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet questions multiplied in Aronnax&#x27;s scientific mind: how did the vessel navigate the crushing pressures of the depths, and how did it return to the surface? Captain Nemo&#x27;s response carried an ominous undertone—since the Professor might never leave the submarine boat, he would learn everything in the saloon, their usual study, where the full secrets of the *Nautilus* awaited revelation.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="Anatomy of the Nautilus Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1000,7 +1142,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Aronnax stared at this singular person, uncertain whether he confronted genius or madness, truth or elaborate fiction. Only time, he knew, would render its verdict—and time, aboard the *Nautilus*, promised revelations stranger still than figures and dimensions could convey.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="Charting the Pacific&#x27;s Warm Current illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1017,7 +1159,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>For two hours an aquatic army escorted them—green labre, banded mullet, Japanese scombrus with blue bodies and silvery heads, spider lampreys and serpents six feet long—each species more brilliant than the last, drawn by the electric focus like birds to flame. When iron panels finally closed upon this enchanting vision, Aronnax dined upon hawksbill turtle soup and emperor-holocanthus superior to salmon, then retired to his couch of zostera as the *Nautilus* glided rapidly through the Black River&#x27;s current—carrying him deeper into mysteries yet unrevealed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="Mysterious Silence and a Hunting Invitation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1034,7 +1176,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When morning came, Captain Nemo awaited them in the saloon, offering no explanation for his eight-day absence. Over breakfast—fish, holothuridæ, sea-weed, and water flavoured with fermented *Rhodomenia palmata*—he revealed that this hunt would be submarine, conducted with Rouquayrol breathing apparatus, Ruhmkorff electrical lamps, and air-guns firing glass capsules charged with electricity sufficient to fell any creature with a single touch. Aronnax&#x27;s objections dissolved before the Captain&#x27;s crushing technical explanations, and with nothing left but to take up his gun, the Professor followed Nemo aft, collecting Ned and Conseil as they proceeded toward the cell where their extraordinary walking-dress awaited them, on the threshold of an adventure beneath the waves unlike any the surface world had ever known.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="Exploring the Ocean&#x27;s Sunlit Floor illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1051,7 +1193,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After an hour and a half, near noon, they had descended to one hundred and five yards, enduring six atmospheres of pressure, the magical colours fading to a reddish twilight. It was then that Captain Nemo halted, waiting for the Professor to join him before pointing toward an obscure mass looming in the submarine shadows—the forest of the Island of Crespo, precisely as promised, and a spectacle that awaited their exploration with all the mystery the depths could offer.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="Wonders of the Underwater Wilderness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1069,7 +1211,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The return journey brought encounters both magnificent and terrifying: a valuable sea-otter fell to the Captain&#x27;s gun, an albatross was shot from beneath the waves, and—most harrowing of all—two formidable tintoreas, those monstrous sharks with iron jaws and phosphorescent gleams, passed within inches of the prone explorers, who escaped by providence alone. Worn utterly from want of food and sleep, Aronnax at last regained the *Nautilus*, marveling at the wonders and perils of this surprising excursion—though he could not yet suspect what further mysteries Captain Nemo&#x27;s vessel would soon reveal.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="The Living Ocean&#x27;s Depths Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1085,7 +1227,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The profound silence that had fallen upon the observers—Aronnax, Conseil, and Ned Land alike—spoke more eloquently than any words to the terrible mysteries that the ocean conceals within her depths, mysteries that the *Nautilus* would continue to unveil as she pressed ever onward through waters both wondrous and terrible.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Coral Tombs and Lost Expeditions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1104,7 +1246,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>His words hung in the submarine twilight, and I understood then that we had witnessed more than history preserved in salt water—we had glimpsed something of Captain Nemo&#x27;s own soul, his kinship with those who find their final rest beneath the waves, far from the world of men that had failed them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="Stranded in Treacherous Coral Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1121,7 +1263,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>To general astonishment, Captain Nemo granted permission for an excursion ashore, and by eight o&#x27;clock the three companions departed in the ship&#x27;s boat, armed with guns and hatchets. Ned Land, irrepressible in his joy at the prospect of fresh game, vowed to consume tiger itself should no other quadruped present itself—and at half-past eight, their craft ran softly aground upon the sandy shores of Gilboa, where the forests awaited with all their unknown dangers and promised delights.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="Tropical Bounty and Forest Treasures illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1141,7 +1283,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But before the harpooner could elaborate upon this seditious proposition, a stone fell at their feet—an interruption whose implications would demand immediate and careful consideration.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="Savages at the Shore illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1159,7 +1301,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the paralysed Papuans retreated in terror and the company rubbed the unfortunate Canadian&#x27;s bruised dignity, the *Nautilus*—lifted by the final waves of the tide at the exact fortieth minute the Captain had predicted—quit her coral bed and swept majestically through the dangerous passes of Torres Strait, leaving behind an island of bewildered savages and carrying forward into open waters whatever mysteries yet awaited beneath the sea.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_22.webp"><img class="chapter-image" src="images_anime/chapter_22.webp" alt="Drifting Through Phosphorescent Seas illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1177,7 +1319,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Whatever secret Captain Nemo meant to conceal from us, whatever vision upon that horizon had so violently transfigured him, the answer would have to wait—for now, all awareness dissolved into complete and utter insensibility.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_23.webp"><img class="chapter-image" src="images_anime/chapter_23.webp" alt="Death and Tears Beneath the Waves illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1195,7 +1337,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet the mysteries of the *Nautilus* and her enigmatic commander were far from exhausted, and the Professor sensed that deeper revelations awaited in the leagues of ocean still to be traversed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_24.webp"><img class="chapter-image" src="images_anime/chapter_24.webp" alt="Mysteries of the Deep Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1213,7 +1355,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so we pressed onward through those mysterious Indian waters, toward whatever revelations—or catastrophes—awaited us in the chapters yet to unfold.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_25.webp"><img class="chapter-image" src="images_anime/chapter_25.webp" alt="The Pearl Fisheries of Ceylon illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1231,7 +1373,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus stood the three companions upon the eve of their submarine expedition—one paralyzed by trepidation, one sustained by professional pride, and one animated by unwavering loyalty—all preparing to descend into waters where creatures of considerable menace awaited their arrival.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_26.webp"><img class="chapter-image" src="images_anime/chapter_26.webp" alt="Dangers of the Pearl Beds illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1251,7 +1393,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>This declaration hung in the air between them, promising revelations yet to come concerning the mysterious captain&#x27;s true history and the nature of his self-imposed exile beneath the waves.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_27.webp"><img class="chapter-image" src="images_anime/chapter_27.webp" alt="Passage Through Ancient Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1268,7 +1410,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus, with the revelation of yet another marvel concealed within the earth&#x27;s geography, the *Nautilus* prepared to thread a passage that Nature had carved long before human engineers dreamed of conquering the isthmus above.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_28.webp"><img class="chapter-image" src="images_anime/chapter_28.webp" alt="The Dugong Hunt in the Red Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1285,7 +1427,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As Captain Nemo uttered the single word &quot;The Mediterranean,&quot; Aronnax could only marvel at this feat of navigation through channels no chart had ever recorded—though what wonders and perils awaited them in those ancient waters, he had yet to discover.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_29.webp"><img class="chapter-image" src="images_anime/chapter_29.webp" alt="Escape Plans in European Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1303,7 +1445,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>By the sixteenth of February, the *Nautilus* had departed the deep basin between Rhodes and Alexandria, doubled Cape Matapan, and left the Grecian Archipelago astern—carrying with her the unresolved mysteries of Captain Nemo&#x27;s gold, his secret correspondents, and the uncertain fate of three captives whose hopes for liberty remained as turbulent as the volcanic seas they had just escaped.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_30.webp"><img class="chapter-image" src="images_anime/chapter_30.webp" alt="A Swift Passage Through Haunted Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1319,7 +1461,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>By the early morning hours of the 18th of February, the *Nautilus* had descended into the deepest basin of the Mediterranean and approached the Straits of Gibraltar. Here the vessel took advantage of that lower counter-current—long theorized but only recently proven to exist—which carries the surplus waters of the Mediterranean back into the Atlantic, restoring the equilibrium that evaporation alone cannot maintain. Through this narrow pass the submarine advanced swiftly, affording the narrator one fleeting glimpse of the submerged ruins of the Temple of Hercules before the *Nautilus* emerged at last into the open Atlantic, where new wonders and fresh mysteries awaited.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_31.webp"><img class="chapter-image" src="images_anime/chapter_31.webp" alt="The Escape Plan Takes Shape illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1336,7 +1478,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Here was the source of Captain Nemo&#x27;s millions, heir direct to treasures torn from the Incas and the conquered of Cortez. Yet when Aronnax suggested these riches might prove barren, Nemo&#x27;s response came with unexpected animation—an impassioned declaration that these treasures served suffering beings and oppressed races, victims to be avenged, miserable creatures to be consoled. In that moment of unguarded emotion, Aronnax understood at last for whom those millions were destined, and the escape attempt faded into the shadows of more pressing mysteries yet to unfold.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_32.webp"><img class="chapter-image" src="images_anime/chapter_32.webp" alt="The Atlantic&#x27;s Sunken Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1355,7 +1497,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At last he rose, cast one final look across the immense plain, and bade me follow him down the mountain and through the mineral forest, until the lantern of the *Nautilus* guided us home just as dawn began to whiten the ocean&#x27;s surface—leaving me to wonder what other secrets these depths yet concealed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_33.webp"><img class="chapter-image" src="images_anime/chapter_33.webp" alt="Into the Heart of a Volcano illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1373,7 +1515,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Whatever his intentions, by the following day the *Nautilus* had departed her volcanic sanctuary and steered clear of all land, gliding once more through the Atlantic depths toward mysteries yet unrevealed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_34.webp"><img class="chapter-image" src="images_anime/chapter_34.webp" alt="A Meadow in the Atlantic illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1390,7 +1532,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as we recovered from this breathtaking demonstration of his vessel&#x27;s capabilities, I sensed that our voyage toward Cape Horn would soon bring challenges of an altogether different nature.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><a class="next" href="#chapter-35"><span>Next</span>Chapter 35</a></nav>
 </section>
-<section class="chapter" id="chapter-35" data-num="35">
+<section class="chapter" id="chapter-35" data-num="35" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_35.webp"><img class="chapter-image" src="images_anime/chapter_35.webp" alt="Ned Land&#x27;s Restless Longing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">35</div>
@@ -1407,7 +1549,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Ned Land, confronted with this wholesale slaughter, found his enthusiasm considerably dampened; he pronounced it butchery rather than hunting, a massacre unworthy of a true sportsman&#x27;s harpoon. The Captain&#x27;s pointed response—&quot;Every one to his own&quot;—accompanied by a penetrating gaze, suggested depths of meaning that boded ill for future relations between the two men. As the crew harvested milk from a slain mother whale, the narrator resolved to observe the Canadian&#x27;s movements with redoubled vigilance, sensing that the imprisonment aboard the *Nautilus* was approaching some manner of crisis from which none might emerge unscathed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-34"><span>Previous</span>Chapter 34</a><a class="next" href="#chapter-36"><span>Next</span>Chapter 36</a></nav>
 </section>
-<section class="chapter" id="chapter-36" data-num="36">
+<section class="chapter" id="chapter-36" data-num="36" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_36.webp"><img class="chapter-image" src="images_anime/chapter_36.webp" alt="Frozen Cathedrals of the Antarctic illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">36</div>
@@ -1425,7 +1567,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What wonders awaited us in those uncharted polar waters, I could scarcely imagine—but I knew that whatever lay ahead would test both vessel and crew in ways none of us had yet foreseen.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-35"><span>Previous</span>Chapter 35</a><a class="next" href="#chapter-37"><span>Next</span>Chapter 37</a></nav>
 </section>
-<section class="chapter" id="chapter-37" data-num="37">
+<section class="chapter" id="chapter-37" data-num="37" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_37.webp"><img class="chapter-image" src="images_anime/chapter_37.webp" alt="First Footsteps on the Antarctic Shore illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">37</div>
@@ -1445,7 +1587,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But the polar night was descending, and with it, as I would soon discover, came perils that would test the *Nautilus* and all her company to their uttermost limits.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-36"><span>Previous</span>Chapter 36</a><a class="next" href="#chapter-38"><span>Next</span>Chapter 38</a></nav>
 </section>
-<section class="chapter" id="chapter-38" data-num="38">
+<section class="chapter" id="chapter-38" data-num="38" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_38.webp"><img class="chapter-image" src="images_anime/chapter_38.webp" alt="Trapped Beneath the Turning Ice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">38</div>
@@ -1462,7 +1604,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The tunnel, however, proved obstructed, and the submarine was forced into retrograde motion. The narrator affected a confidence he did not possess, assuring his companions that they would simply exit through the southern opening. Yet when a second shock struck from behind at twenty-five minutes past eight, and Captain Nemo entered the saloon with gravity written upon his features, the terrible truth was confirmed: the iceberg had shifted, closing every outlet, and the *Nautilus* was blocked up entirely—imprisoned beneath hundreds of feet of ice with no apparent means of escape.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-37"><span>Previous</span>Chapter 37</a><a class="next" href="#chapter-39"><span>Next</span>Chapter 39</a></nav>
 </section>
-<section class="chapter" id="chapter-39" data-num="39">
+<section class="chapter" id="chapter-39" data-num="39" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_39.webp"><img class="chapter-image" src="images_anime/chapter_39.webp" alt="Trapped Beneath the Ice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">39</div>
@@ -1480,7 +1622,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They had escaped the ice-tomb; yet as the crew drew ragged breaths of salvation, one could not help but wonder what fresh perils awaited them in the waters ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-38"><span>Previous</span>Chapter 38</a><a class="next" href="#chapter-40"><span>Next</span>Chapter 40</a></nav>
 </section>
-<section class="chapter" id="chapter-40" data-num="40">
+<section class="chapter" id="chapter-40" data-num="40" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_40.webp"><img class="chapter-image" src="images_anime/chapter_40.webp" alt="Gasping Northward Through Atlantic Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">40</div>
@@ -1498,7 +1640,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as I contemplated nature&#x27;s delicate balance, the *Nautilus* pressed northward still, and I could not help wondering what strange designs Captain Nemo harbored for us in the waters ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-39"><span>Previous</span>Chapter 39</a><a class="next" href="#chapter-41"><span>Next</span>Chapter 41</a></nav>
 </section>
-<section class="chapter" id="chapter-41" data-num="41">
+<section class="chapter" id="chapter-41" data-num="41" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_41.webp"><img class="chapter-image" src="images_anime/chapter_41.webp" alt="Monsters of Legend and Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">41</div>
@@ -1516,7 +1658,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>It was a grief that hinted at depths within the Captain yet unexplored, and as the *Nautilus* prepared to resume its mysterious voyage, one could not help but wonder what further revelations—or tragedies—awaited in the leagues ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-40"><span>Previous</span>Chapter 40</a><a class="next" href="#chapter-42"><span>Next</span>Chapter 42</a></nav>
 </section>
-<section class="chapter" id="chapter-42" data-num="42">
+<section class="chapter" id="chapter-42" data-num="42" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_42.webp"><img class="chapter-image" src="images_anime/chapter_42.webp" alt="Grief, Currents, and Captive Longings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">42</div>
@@ -1533,7 +1675,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as the storm subsided in those dark, tranquil depths, I sensed that the tempest within Ned Land&#x27;s breast had only just begun to gather its full and terrible force.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-41"><span>Previous</span>Chapter 41</a><a class="next" href="#chapter-43"><span>Next</span>Chapter 43</a></nav>
 </section>
-<section class="chapter" id="chapter-43" data-num="43">
+<section class="chapter" id="chapter-43" data-num="43" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_43.webp"><img class="chapter-image" src="images_anime/chapter_43.webp" alt="The Atlantic Cable&#x27;s Silent Depths illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">43</div>
@@ -1551,7 +1693,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>In that moment, watching the Captain contemplate this watery tomb of revolutionary martyrdom, I felt I had glimpsed something essential about the man—though whether this revelation would bring us closer to understanding his true nature, or lead us deeper into mystery, remained yet to be discovered.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-42"><span>Previous</span>Chapter 42</a><a class="next" href="#chapter-44"><span>Next</span>Chapter 44</a></nav>
 </section>
-<section class="chapter" id="chapter-44" data-num="44">
+<section class="chapter" id="chapter-44" data-num="44" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_44.webp"><img class="chapter-image" src="images_anime/chapter_44.webp" alt="Vengeance Surfaces From the Deep illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">44</div>
@@ -1570,7 +1712,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The massacre complete, the mystery of Nemo&#x27;s vengeance at last partially illuminated, the prisoners found themselves more desperate than ever to escape—and circumstances would soon force their hand in ways none could foresee.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-43"><span>Previous</span>Chapter 43</a><a class="next" href="#chapter-45"><span>Next</span>Chapter 45</a></nav>
 </section>
-<section class="chapter" id="chapter-45" data-num="45">
+<section class="chapter" id="chapter-45" data-num="45" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_45.webp"><img class="chapter-image" src="images_anime/chapter_45.webp" alt="Flight Into the Unknown North illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">45</div>
@@ -1587,7 +1729,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What fate awaited the three companions in that terrible gulf, and whether Captain Nemo met his end in those crushing waters, remained to be discovered when consciousness returned.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-44"><span>Previous</span>Chapter 44</a><a class="next" href="#chapter-46"><span>Next</span>Chapter 46</a></nav>
 </section>
-<section class="chapter" id="chapter-46" data-num="46">
+<section class="chapter" id="chapter-46" data-num="46" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_46.webp"><img class="chapter-image" src="images_anime/chapter_46.webp" alt="Survivors Reflect on an Incredible Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">46</div>
@@ -1763,6 +1905,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

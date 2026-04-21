@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_1.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_1.webp" alt="A Door&#x27;s Dark Secret Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -793,7 +917,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Every Sunday, Utterson took a long walk with his cousin Richard Enfield. They did not talk very much, but they enjoyed being together. One day, they passed a strange building with an old, ugly door. It had no windows and looked forgotten and sad. Enfield told a story about that door. One dark night, he saw a grumpy little man bump into a young girl and knock her down. The man did not even say sorry. People got very angry with him. The mean man went through that strange door and came back with money to make things right. His name was Hyde. When Utterson heard this name, his face grew worried. He knew something secret about that door, and it made him think of his dear friend, Doctor Henry Jekyll.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_2.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_2.webp" alt="A Will That Breeds Dark Suspicion illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -806,7 +930,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Utterson visited another friend named Lanyon to ask about Hyde. But Lanyon did not know anyone by that name. He said he and Jekyll had not been close friends for a while now. So Utterson decided to find Hyde himself. He waited by a little door on a quiet street night after night. Finally, a small man came walking up. It was Hyde. Utterson spoke to him, but Hyde was not friendly at all. He seemed strange and unpleasant in a way that was hard to explain. Later, Utterson talked to Jekyll about the will and about Hyde. Jekyll looked worried but said everything was fine. He asked Utterson to promise to help Hyde if anything happened. Utterson promised, even though he still felt something was not quite right.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_3.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_3.webp" alt="Moonlit Murder in the Fogbound Lane illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -819,7 +961,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The police came and found a letter in the old man&#x27;s pocket. It had Utterson&#x27;s name on it. When Utterson arrived, he felt so sad. The old man was someone important, and the broken walking stick belonged to Doctor Jekyll. Utterson and a police officer went to find Hyde&#x27;s home in a foggy part of the city. Hyde&#x27;s rooms were fancy inside, but he was gone. His clothes were thrown everywhere, and papers were burned in the fireplace. No one could find Hyde anywhere. He had disappeared like a shadow.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_4.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_4.webp" alt="Jekyll&#x27;s Fevered Promise of Escape illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -832,7 +974,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Inside, Jekyll sat by the fire looking very, very sick. His hands were cold and his voice sounded different. He told Utterson that something bad had happened to an important man in town, and that Hyde was the one who did it. Jekyll promised he would never see Hyde again, not ever. He seemed so worried and upset. He showed Utterson a letter that Hyde had written, saying goodbye. But later, Utterson found out something strange. No letter had come through the front door that day. Where did it really come from? This made Utterson feel puzzled and a little bit scared inside.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_5.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_5.webp" alt="Jekyll&#x27;s Brief Peace Shatters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -845,7 +987,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Doctor Jekyll changed in a wonderful way! He came out of his house and started seeing his friends again. He was kind and helpful to everyone, and his face looked happy and bright. For two whole months, everything felt calm and good. But then something strange happened. Jekyll stopped answering his door when Utterson came to visit. He stayed inside and would not see anyone. Utterson went to visit their friend Lanyon instead, but Lanyon looked very sick and scared. He would not talk about Jekyll at all. Soon after, Lanyon passed away and left a sealed letter for Utterson. The letter had to stay closed until something happened to Jekyll. Utterson kept it safe, but he felt very worried about his friend hiding alone in his house.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_6.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_6.webp" alt="The Window&#x27;s Glimpse of Horror illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -858,7 +1000,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The two friends decided to peek into the courtyard nearby. They wanted to check on their dear friend, Doctor Jekyll. The courtyard felt cool and shadowy, but the sky above still glowed with sunset colors. There in a window sat Jekyll, looking very, very sad. Utterson called up to him and asked how he was feeling. Jekyll said he felt low but that things would change soon. Utterson invited him to come walk with them. Jekyll looked like he wanted to say yes, but he shook his head. He said he could not leave his room. Then something strange happened. Jekyll&#x27;s face changed in a scary way, just for a moment. He quickly shut the window. The two friends walked away in silence, both feeling worried and puzzled about what they had seen.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_7.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_7.webp" alt="The Dreadful Night at Jekyll&#x27;s Door illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -871,7 +1013,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Utterson went with Poole back to the house. The other helpers were scared and huddled by the fire. Utterson and Poole walked to the locked door and listened. They heard footsteps pacing inside, but they did not sound like Jekyll&#x27;s. Poole was very sure something bad had happened. So together, they broke down the door. Inside they found the room looking cozy, with a fire and tea things set out. But Jekyll was not there. On the floor lay Hyde, who had gotten very sick. And on the table, Utterson found letters from Jekyll asking him to read an important story that would explain everything.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_8.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_8.webp" alt="The Documents That Explain Everything illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -884,7 +1026,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>It was getting late, almost ten o&#x27;clock at night. Utterson said he would go home to read the papers in his quiet study. He promised to come back before midnight. Then they would figure out what to do next. The two men left the strange room together and locked the door behind them. Downstairs, the servants sat by the fire, looking worried and waiting for news. Utterson walked through the dark streets to his office, feeling very tired. Two letters waited for him there, ready to tell him the whole truth about his friend Henry Jekyll.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_9.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_9.webp" alt="Lanyon&#x27;s Midnight Mission for Jekyll illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -896,7 +1038,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>One evening, Doctor Lanyon got a very strange letter from his old friend Jekyll. They had been friends since they were boys at school together. The letter asked Lanyon to do something very important right away. Jekyll said he needed help more than he had ever needed anything before. He asked Lanyon to go to his house, find a special drawer with some powders and a little bottle inside, and bring these things home. Then, at midnight, a stranger would come to get them. Jekyll promised that if Lanyon did this, everything would be okay. But if he did not help, something terrible might happen. Lanyon thought the whole thing sounded very odd and a bit worrying. But he cared about his friend so much that he decided to do exactly what Jekyll asked. Now Lanyon waits in his quiet house, wondering who will knock on his door when the clock strikes twelve.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_10.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_10.webp" alt="Lanyon&#x27;s Midnight Encounter With Horror illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -908,7 +1050,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Lanyon got a strange letter from his friend Jekyll. The letter asked him to go to Jekyll&#x27;s house and find a special drawer. Lanyon thought his friend might be confused, but he wanted to help. So he went that night with some helpers who unlocked a door. Inside he found the drawer with powders and a little bottle of red liquid. He brought everything home and waited. At midnight, a small, nervous man knocked on the door. The visitor seemed scared and wore clothes that were much too big for him. He asked Lanyon for a glass and mixed the powders with the red liquid. The mixture bubbled and changed colors in a wonderful way. Then the visitor drank it. Something amazing happened next. The small man changed right before Lanyon&#x27;s eyes. He became someone else entirely. It was Jekyll! Lanyon could hardly believe what he had seen that strange night.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../jekyll_hyde/images_anime/chapter_11.webp"><img class="chapter-image" src="../../jekyll_hyde/images_anime/chapter_11.webp" alt="The Soul&#x27;s Divided Nature Confessed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1082,6 +1224,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

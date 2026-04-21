@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_1.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_1.webp" alt="A Rich Bachelor Arrives at Netherfield illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -792,7 +916,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>A young man named Bingley has moved into a big, fancy house nearby. He is rich and not married yet. This is very exciting news! At the Bennet house, Mama Bennet rushes to tell Papa Bennet all about it. She has five daughters, and she hopes one of them might marry this nice new neighbor someday. But first, Papa Bennet must go visit him. That is how people made new friends back then. Papa Bennet likes to tease Mama Bennet. He pretends he will not go, just to make her flustered. He jokes and jokes until she gets all worked up. Papa Bennet has a favorite daughter named Lizzy. He thinks she is very clever. Mama Bennet says that is not fair because all their girls are wonderful. These two parents are very different from each other, but they have been married a long, long time. Now everyone is waiting to meet the new neighbor.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_2.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_2.webp" alt="Mr. Bennet&#x27;s Secret Visit Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -805,7 +929,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>While Elizabeth was fixing up a pretty hat, Mr. Bennet started dropping little hints. Mrs. Bennet got grumpy because she thought they would never meet the new neighbor. Then Mr. Bennet told them his secret at last. He had visited Mr. Bingley already! Mrs. Bennet was so surprised she could hardly speak. Then she became very happy and excited. She even forgot she had been upset at all. She started thinking about when Mr. Bingley might come visit them back. The whole family spent the rest of the evening wondering when they might have him over for dinner.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_3.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_3.webp" alt="First Impressions at the Assembly Ball illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -818,7 +960,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Soon there was a big dance in the village. Bingley came with his sisters and his friend, Darcy. Bingley was cheerful and kind to everyone he met. He danced and smiled and made many new friends. But Darcy was quiet and kept to himself. He did not dance much and seemed a bit grumpy. Elizabeth heard Darcy say something not very nice about her. She felt a little hurt but laughed it off. Jane had a lovely time dancing with Bingley twice. The younger sisters danced and danced until the night was over. Mother came home feeling very happy and proud of her girls.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_4.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_4.webp" alt="Sisters Reflect on Character and Fortune illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -831,7 +973,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Bingley and his friend Darcy were very different from each other. Bingley was cheerful and made friends easily wherever he went. Darcy was quieter and sometimes seemed a bit grumpy. Bingley thought the party was wonderful and Jane was lovely. Darcy did not have as much fun. But the two men were still good friends. And Bingley&#x27;s sisters said Jane seemed sweet, which made Bingley very happy indeed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_5.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_5.webp" alt="Neighbors Dissect the Ball&#x27;s Events illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -844,7 +986,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Everyone wanted to talk about Mr. Bingley. Charlotte told them something exciting she had heard. Mr. Bingley said Jane was the prettiest girl at the whole ball! Mrs. Bennet was very happy to hear this news. Then Charlotte teased Elizabeth about Mr. Darcy. He had said something not very nice about Elizabeth at the dance. Mrs. Bennet said Mr. Darcy was proud and not friendly at all. But kind Jane thought maybe he was just shy around new people. Elizabeth said she might forgive Mr. Darcy for being proud, but her feelings were still a little hurt. The families laughed and talked together until it was time to go home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_6.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_6.webp" alt="Guarded Hearts and Shifting Glances illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -858,7 +1000,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Something surprising was happening too. Darcy had thought Elizabeth was plain at first. But now he kept watching her and listening when she talked. He liked her sparkly eyes and her funny way of speaking. At a party, he even wanted to dance with her. When Miss Bingley teased him about Elizabeth, Darcy just smiled quietly to himself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_7.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_7.webp" alt="Officers, Entails, and a Fateful Invitation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -871,7 +1013,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One day, a letter came inviting Jane to dinner at Netherfield. Mrs. Bennet had a sneaky idea. She made Jane ride a horse instead of taking the carriage because rain clouds were gathering. She hoped Jane would have to stay overnight. The rain did come, and poor Jane got very wet and caught a cold. When Elizabeth heard her sister was sick, she walked all the way to Netherfield to take care of her. Elizabeth got quite muddy on her walk, but she did not mind one bit. Mr. Bingley was very kind and invited Elizabeth to stay until Jane felt better.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_8.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_8.webp" alt="Mud, Manners, and Fine Eyes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -886,7 +1028,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Elizabeth read a book instead of playing cards. Jane felt a little worse that night, so Bingley made sure she had everything she needed to feel cozy and cared for.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_9.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_9.webp" alt="Mrs. Bennet&#x27;s Triumphant Visit to Netherfield illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -899,7 +1041,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Mrs. Bennet saw that Jane was getting better, she felt happy. But she also wanted Jane to stay at Netherfield a little longer so she could spend more time with kind Mr. Bingley. Mrs. Bennet talked and talked at breakfast. She said many things that made Elizabeth feel shy and embarrassed. She bragged about Jane and said not-so-nice things about their neighbor Charlotte. Elizabeth tried to have a nice chat with Mr. Bingley about watching people and learning about them. Before leaving, young Lydia reminded Mr. Bingley about the ball he promised to have. He said yes, they would dance once Jane felt well again. After her family left, Elizabeth hurried back upstairs to sit with her dear sister.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_10.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_10.webp" alt="Wit and Words in the Drawing Room illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -913,7 +1055,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later there was music, and Darcy asked Elizabeth to dance. She said no in a playful way that made him smile. Miss Bingley noticed Darcy looking at Elizabeth quite a lot and felt a bit jealous. But Elizabeth did not worry about what Darcy thought of her. She was just glad Jane felt well enough to come downstairs, and she looked forward to going home soon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_11.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_11.webp" alt="An Evening of Artful Pursuits illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -926,7 +1068,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Darcy sat reading a book while Miss Bingley tried hard to get his attention. She picked up a book too, but she kept looking at Darcy instead of reading. Then Miss Bingley asked Elizabeth to walk around the room with her. This made Darcy look up from his book at last. Elizabeth and Darcy started talking and teasing each other in a clever way. They did not always agree, but their conversation was lively and interesting. Miss Bingley wanted them to stop talking, so she asked for music instead. Everyone gathered around the piano, and the evening ended with songs and safer fun.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_12.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_12.webp" alt="Departures and Guarded Hearts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -940,7 +1082,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>On Sunday morning, the sisters finally went home to Longbourn. Their mother fussed about them leaving too soon. But their father was quietly happy to have his girls back again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_13.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_13.webp" alt="The Arrival of Mr. Collins illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -953,7 +1095,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Collins arrived, he was a tall young man with very proper manners. He said many nice things about the house and told the sisters how pretty they all were. He even said kind things about dinner, though he did ask a funny question that made Mother a little huffy. Collins seemed to want everyone to like him very much. He tried so hard to be polite that it made the family smile. Father thought their new guest might be quite amusing to have around.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_14.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_14.webp" alt="Mr. Collins Praises His Noble Patroness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -967,7 +1109,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Collins tried to read a serious book out loud. But young Lydia wanted to chat about other things instead! Collins felt a bit grumpy, so he played a board game with Father Bennet while everyone tried to be extra polite.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_15.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_15.webp" alt="Mr Collins Shifts His Sights to Elizabeth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -980,7 +1122,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later that day, everyone walked into town together. There they met a new young man named Wickham. He was handsome and kind, and everyone liked talking to him. Then something odd happened. Darcy rode up on his horse, and when he saw Wickham, both men looked very uncomfortable. They barely said hello to each other. Elizabeth noticed this and wondered what it meant. She could tell there was a story there, but nobody knew what it was yet.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_16.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_16.webp" alt="Wickham&#x27;s Charming Revelations Begin illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -992,7 +1134,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>That evening, the Bennet sisters went to their aunt&#x27;s cozy house for a party. Elizabeth was happy to see Mr. Wickham there. He was a friendly young officer with a nice smile. He came to sit right next to Elizabeth, and they talked together. At first they just chatted about the rainy weather. But soon Wickham told her something surprising. He said he used to know Mr. Darcy&#x27;s family very well. He said Darcy&#x27;s father had been very kind to him. But now, Wickham explained, Darcy was not being fair to him at all. Elizabeth felt sorry for Wickham. She thought Darcy must not be a nice person. Wickham seemed so gentle and honest as he told his story. All evening, Elizabeth enjoyed talking with him. On the carriage ride home, she could not stop thinking about everything he had said. She believed every word.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_17.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_17.webp" alt="Jane&#x27;s Generous Doubt and Dancing Plans illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1005,7 +1147,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then something exciting happened! The Bingley family came to visit with wonderful news. There would be a fancy ball at Netherfield next Tuesday! Everyone in the family was so happy about the party. Elizabeth dreamed about dancing. Kitty and Lydia talked about all the fun they would have. Even Mary said she would go. Then Collins asked Elizabeth to dance with him at the ball. She said yes before she could think, even though she had hoped to dance with Wickham first. Now she would have to wait for the party and see what happened.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_18.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_18.webp" alt="Sparring Steps at the Netherfield Ball illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1019,7 +1161,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth&#x27;s family also made her feel embarrassed that night. Her mother talked too loudly, and her sister Mary played piano not very well. Elizabeth wished the evening would just be over.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_19.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_19.webp" alt="Mr. Collins Proposes with Methodical Certainty illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1032,7 +1174,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Collins gave a very long speech about why he wanted to get married. He talked about his job and his grand neighbor Lady Catherine. He even mentioned that someday he would own their house. He thought Elizabeth would be pleased by all these reasons. But Elizabeth was not pleased at all. She told him no, thank you. She said it very clearly. But Collins did not believe her! He thought she was just being shy and would say yes later. Elizabeth tried again and again to explain that she really meant no. Still, Collins smiled and said he would wait for her to change her mind. Elizabeth finally left the room, feeling quite frustrated. She hoped her father might help Collins understand.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_20.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_20.webp" alt="A Father&#x27;s Wry Ultimatum illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1046,7 +1188,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Mother kept asking Elizabeth to change her mind all day long. She asked Jane to help too. But nothing worked. Collins felt a bit embarrassed, but he was not really sad. He decided to stop asking Elizabeth to marry him. Meanwhile, their friend Charlotte came to visit. She watched everything very quietly and seemed to be thinking about something interesting.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_21.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_21.webp" alt="A Letter Shatters Jane&#x27;s Hopes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1060,7 +1202,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But then something sad happened. Jane got a letter from Caroline Bingley. It said that Bingley and his whole family had left for London. They were not coming back. Caroline wrote that Bingley might marry someone else. Poor Jane felt so worried and confused. Elizabeth did not believe Caroline&#x27;s words. She thought Caroline just wanted to keep Bingley away from Jane. Elizabeth hugged her sister and told her not to give up hope.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_22.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_22.webp" alt="Charlotte&#x27;s Calculated Pursuit of Security illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1074,7 +1216,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Charlotte went to tell Elizabeth the big news. Elizabeth was very surprised! She did not expect her friend to marry Mr. Collins. Charlotte explained that she wanted a nice, cozy home. Elizabeth felt a little confused and worried about her dear friend. She hoped Charlotte would be happy in her new life.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_23.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_23.webp" alt="Mrs. Bennet&#x27;s Unending Resentment illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1088,7 +1230,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Charlotte&#x27;s mother felt proud and visited often. But Elizabeth felt sad because things felt different with Charlotte now. She and her dear sister Jane grew even closer instead. Collins sent a cheerful letter saying he would visit again soon. Meanwhile, everyone wondered if Bingley would ever come back to the neighborhood. Jane missed him but kept her feelings quiet inside her heart.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_24.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_24.webp" alt="Hope Extinguished, Sisters Consoling illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1100,7 +1242,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>A letter came from Caroline Bingley with sad news. The Bingleys were staying in London for the whole winter. They were not coming back to the countryside at all. Jane felt her heart sink when she read those words. She had hoped Bingley might return, but now that hope was gone. Elizabeth felt upset too, mostly because she hated seeing her dear sister so sad. Jane tried to be brave about it all. She told Elizabeth she would be just fine and would soon forget about Bingley. Elizabeth thought Jane was being wonderfully kind and good. The two sisters talked together and comforted each other. Elizabeth was also feeling unhappy because her friend Charlotte was going to marry someone Elizabeth did not like very much. Jane reminded her to be understanding of other people&#x27;s choices. As the cold winter days went on, the sisters leaned on each other and felt a little better.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_25.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_25.webp" alt="The Gardiners Bring Comfort and Counsel illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1114,7 +1256,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Aunt Gardiner had a cozy chat with Elizabeth about Jane. She had a good idea. Maybe Jane could come stay with them in London for a while! A new place might help Jane feel better. Jane said yes, and she felt a little hopeful inside. When Christmas week ended, Jane traveled to London with her dear aunt and uncle.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_26.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_26.webp" alt="Farewells and Fading Intimacies illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1129,7 +1271,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Wickham started spending time with a different young lady now. Elizabeth was surprised that she did not feel very sad about it at all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_27.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_27.webp" alt="Departures and Lingering Attachments illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1143,7 +1285,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth traveled with Sir William Lucas and his daughter Maria. They talked a lot, but Elizabeth did not find them very interesting. When they reached London, Jane was waiting at the window. Elizabeth was so glad to see her looking well. Then came wonderful news. Her aunt and uncle invited her on a summer trip to see beautiful lakes and mountains! Elizabeth felt so happy she could hardly wait. Now she was ready to continue her journey to visit Charlotte.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_28.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_28.webp" alt="Arrival at Hunsford Parsonage illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1157,7 +1299,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The next day, two fancy ladies stopped by in a carriage. They invited everyone to have dinner at the grand house called Rosings. Elizabeth would soon meet the famous Lady Catherine, and she felt a little flutter of excitement in her tummy.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_29.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_29.webp" alt="An Audience with Lady Catherine illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1171,7 +1313,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At dinner, Lady Catherine was tall and bossy. She liked to give advice about everything. She asked Elizabeth many questions about her family. Elizabeth answered in a kind but clever way. Lady Catherine seemed surprised that Elizabeth was so bold and playful. After dinner, they played cards. Collins kept saying thank you over and over. Elizabeth thought the whole evening was quite funny and silly.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_30.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_30.webp" alt="Charlotte&#x27;s Quiet Strategy at Hunsford illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1184,7 +1326,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Lady Catherine visited the house sometimes and had something to say about everything. She told them how to arrange their furniture and even looked at what they were eating. Elizabeth did not mind too much. She enjoyed talking with Charlotte and taking walks in a pretty grove nearby where she could be alone and peaceful. Soon Elizabeth heard that Darcy was coming to visit Lady Catherine. The next day he arrived with his cousin, Colonel Fitzwilliam, who was friendly and nice to talk to. Darcy was quiet as always and did not say much to Elizabeth.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_31.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_31.webp" alt="Sparring at the Pianoforte illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1197,7 +1339,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth sat at the piano and began to play music. Colonel Fitzwilliam asked her to play, and Darcy came closer to listen. Elizabeth teased Darcy about being so quiet at parties. Darcy explained that he found it hard to talk to people he did not know well. Elizabeth laughed and said she understood because she did not always practice her piano either. They smiled at each other. Lady Catherine kept interrupting with advice about how Elizabeth should play better. But Elizabeth just kept playing until it was time to go home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_32.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_32.webp" alt="Awkward Silences and Hidden Intentions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1211,7 +1353,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Charlotte wondered if maybe Darcy liked Elizabeth, even though he was so quiet. He and his cousin Colonel Fitzwilliam kept visiting the little house. The Colonel was cheerful and fun to talk to. But Darcy stayed mysterious, watching Elizabeth with a look no one could quite understand.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_33.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_33.webp" alt="Unexpected Encounters and Revealing Conversations illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1224,7 +1366,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>On another walk, she met Colonel Fitzwilliam, Darcy&#x27;s kind cousin. They chatted about many things, and then the Colonel said something that made Elizabeth&#x27;s heart sink. He mentioned that Darcy had stopped a friend from getting married. Elizabeth knew right away he meant Bingley and her dear sister Jane. Darcy had kept them apart because he thought Jane&#x27;s family was not grand enough. Elizabeth felt very upset and sad for her sister. Her head began to ache from thinking about it all. She stayed home that evening instead of visiting the big house, needing time alone with her swirling thoughts.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_34.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_34.webp" alt="A Most Unwelcome Proposal illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1238,7 +1380,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>She told him no, she would not marry him. They had a big argument about Jane and about Wickham too. Darcy looked very hurt and surprised. Then he left quickly. Elizabeth sat alone feeling all mixed up inside. She had tears in her eyes. When she heard a carriage coming, she hurried to her room. She needed time to think about this very strange evening.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><a class="next" href="#chapter-35"><span>Next</span>Chapter 35</a></nav>
 </section>
-<section class="chapter" id="chapter-35" data-num="35">
+<section class="chapter" id="chapter-35" data-num="35" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_35.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_35.webp" alt="A Letter Demands Her Justice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">35</div>
@@ -1252,7 +1394,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>It was Darcy! He called her name and handed her a letter. He said he had been waiting to give it to her. Then he walked away quickly. Elizabeth opened the letter, feeling very curious. It was very long, covering two whole sheets of paper! In it, Darcy explained why he had done certain things. He wanted her to understand his side of the story. He also shared something private about his younger sister. Elizabeth finished reading, but her mind was still spinning with all she had learned.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-34"><span>Previous</span>Chapter 34</a><a class="next" href="#chapter-36"><span>Next</span>Chapter 36</a></nav>
 </section>
-<section class="chapter" id="chapter-36" data-num="36">
+<section class="chapter" id="chapter-36" data-num="36" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_36.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_36.webp" alt="Prejudice Shattered by Painful Truth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">36</div>
@@ -1265,7 +1407,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But then she read the part about Wickham. Darcy told a very different story than Wickham had told her. Elizabeth wanted to believe Wickham was good and Darcy was wrong. She put the letter down, but she picked it right back up again. She read it carefully, thinking hard about everything. Slowly, she began to see that maybe Darcy was telling the truth. Maybe Wickham was not as kind as he seemed. Elizabeth felt very embarrassed. She had been so sure she was right, but now she saw things differently. She went for a long walk to think about everything she had learned about others and about herself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-35"><span>Previous</span>Chapter 35</a><a class="next" href="#chapter-37"><span>Next</span>Chapter 37</a></nav>
 </section>
-<section class="chapter" id="chapter-37" data-num="37">
+<section class="chapter" id="chapter-37" data-num="37" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_37.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_37.webp" alt="Unpleasant Recollections and Solitary Walks illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">37</div>
@@ -1279,7 +1421,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Elizabeth was alone, she took long walks to think. She kept remembering Darcy&#x27;s letter and thinking about everything he had written. Her feelings were all mixed up. Sometimes she felt grateful, and sometimes she felt sorry about things. On her last evening there, Lady Catherine gave more helpful tips about the trip. Then Elizabeth said goodbye to everyone and got ready to travel home, with lots of thoughts swirling in her head.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-36"><span>Previous</span>Chapter 36</a><a class="next" href="#chapter-38"><span>Next</span>Chapter 38</a></nav>
 </section>
-<section class="chapter" id="chapter-38" data-num="38">
+<section class="chapter" id="chapter-38" data-num="38" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_38.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_38.webp" alt="Farewells and Secrets to Keep illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">38</div>
@@ -1291,7 +1433,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Elizabeth&#x27;s time visiting Charlotte was ending. On her last morning, Collins talked and talked. He said his little house was humble, but he hoped Elizabeth had a nice stay. He seemed very proud of living near the grand Lady Catherine. Elizabeth thanked him politely. She truly had enjoyed her six weeks with her dear friend Charlotte. Collins said he and Charlotte were perfectly happy together. Elizabeth felt a little sad watching Charlotte, but her friend seemed content with her quiet life tending her home and her chickens. When the carriage came, Collins walked Elizabeth outside. He asked her to give his greetings to everyone in her family. Then Elizabeth rode away with Maria, who chattered about all the fun things she would tell people back home. Elizabeth thought quietly about secrets she would keep to herself. They arrived in London, where Jane was waiting. Elizabeth wanted to tell Jane about something surprising that had happened. But she decided to wait until they were home, where they could talk in private.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-37"><span>Previous</span>Chapter 37</a><a class="next" href="#chapter-39"><span>Next</span>Chapter 39</a></nav>
 </section>
-<section class="chapter" id="chapter-39" data-num="39">
+<section class="chapter" id="chapter-39" data-num="39" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_39.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_39.webp" alt="Lydia&#x27;s Frivolous Homecoming illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">39</div>
@@ -1304,7 +1446,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When they got to Longbourn, everyone was happy to see them. Their mother said how lovely Jane looked. Their father smiled and told Elizabeth he was glad she was back. Neighbors came to visit and the house was full of cheerful noise. Lydia&#x27;s voice was the loudest of all, telling funny stories about her week. Elizabeth was glad to be home with her family again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-38"><span>Previous</span>Chapter 38</a><a class="next" href="#chapter-40"><span>Next</span>Chapter 40</a></nav>
 </section>
-<section class="chapter" id="chapter-40" data-num="40">
+<section class="chapter" id="chapter-40" data-num="40" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_40.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_40.webp" alt="Sisters Share Shocking Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">40</div>
@@ -1318,7 +1460,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The sisters decided to keep what they learned about Wickham quiet for now. Elizabeth felt better after talking to Jane, but she still had one secret she kept to herself. She noticed that Jane seemed a little sad sometimes, missing someone she cared about. Elizabeth wished she could help her sister feel happy again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-39"><span>Previous</span>Chapter 39</a><a class="next" href="#chapter-41"><span>Next</span>Chapter 41</a></nav>
 </section>
-<section class="chapter" id="chapter-41" data-num="41">
+<section class="chapter" id="chapter-41" data-num="41" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_41.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_41.webp" alt="Lydia&#x27;s Brighton Invitation Sparks Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">41</div>
@@ -1332,7 +1474,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Before Lydia left, Elizabeth saw Wickham one last time. She noticed he was not as nice as she once thought. They said goodbye politely, and Lydia went off on her big adventure.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-40"><span>Previous</span>Chapter 40</a><a class="next" href="#chapter-42"><span>Next</span>Chapter 42</a></nav>
 </section>
-<section class="chapter" id="chapter-42" data-num="42">
+<section class="chapter" id="chapter-42" data-num="42" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_42.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_42.webp" alt="A Marriage&#x27;s Lessons in Disappointment illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">42</div>
@@ -1346,7 +1488,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth learned that a grand house called Pemberley was nearby. It belonged to Darcy. She felt nervous about visiting, but found out he was not home. Now she could go see his beautiful house without feeling shy.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-41"><span>Previous</span>Chapter 41</a><a class="next" href="#chapter-43"><span>Next</span>Chapter 43</a></nav>
 </section>
-<section class="chapter" id="chapter-43" data-num="43">
+<section class="chapter" id="chapter-43" data-num="43" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_43.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_43.webp" alt="Pemberley Reveals Its Master&#x27;s True Nature illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">43</div>
@@ -1360,7 +1502,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then something unexpected happened. Elizabeth walked outside and saw Mr. Darcy himself standing nearby. They both turned pink with surprise. But Mr. Darcy was so friendly and gentle. He even asked to meet Elizabeth&#x27;s aunt and uncle. He invited them to come back and visit. As Elizabeth rode away, she kept thinking about how different he seemed now.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-42"><span>Previous</span>Chapter 42</a><a class="next" href="#chapter-44"><span>Next</span>Chapter 44</a></nav>
 </section>
-<section class="chapter" id="chapter-44" data-num="44">
+<section class="chapter" id="chapter-44" data-num="44" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_44.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_44.webp" alt="An Unexpected Visit at Lambton illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">44</div>
@@ -1374,7 +1516,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Mr. Darcy was being so friendly and warm to everyone. Elizabeth could hardly believe how much he had changed. The visitors stayed for a nice long while. They invited Elizabeth and her family to dinner at Pemberley. That night, Elizabeth lay awake thinking. She was starting to care about Mr. Darcy very much.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-43"><span>Previous</span>Chapter 43</a><a class="next" href="#chapter-45"><span>Next</span>Chapter 45</a></nav>
 </section>
-<section class="chapter" id="chapter-45" data-num="45">
+<section class="chapter" id="chapter-45" data-num="45" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_45.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_45.webp" alt="An Awkward Visit to Pemberley illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">45</div>
@@ -1388,7 +1530,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Miss Bingley said unkind things about how Elizabeth looked. But Darcy surprised everyone by saying he thought Elizabeth was one of the most beautiful women he knew. On the way home, Elizabeth kept thinking about Darcy and smiling to herself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-44"><span>Previous</span>Chapter 44</a><a class="next" href="#chapter-46"><span>Next</span>Chapter 46</a></nav>
 </section>
-<section class="chapter" id="chapter-46" data-num="46">
+<section class="chapter" id="chapter-46" data-num="46" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_46.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_46.webp" alt="Lydia&#x27;s Disgrace Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">46</div>
@@ -1401,7 +1543,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth felt so sad and scared for her family. Then Darcy came to visit, and she was too upset to hide her feelings. She told him everything that had happened. Elizabeth wished she had warned her family about Wickham before. She worried that Darcy would think badly of her family now. Darcy was kind and promised to keep the secret, but he looked very serious when he left. Soon Elizabeth was in a carriage, hurrying home to be with Jane.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-45"><span>Previous</span>Chapter 45</a><a class="next" href="#chapter-47"><span>Next</span>Chapter 47</a></nav>
 </section>
-<section class="chapter" id="chapter-47" data-num="47">
+<section class="chapter" id="chapter-47" data-num="47" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_47.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_47.webp" alt="Doubt, Fear, and Wickham&#x27;s True Character illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">47</div>
@@ -1415,7 +1557,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When they finally reached home, Elizabeth hugged her sister Jane. Their father had already left to look for Lydia in the big city. Their mother was crying and very upset. Everyone in the house felt worried and scared. Jane showed Elizabeth a letter that Lydia had written. Lydia sounded happy and excited, but Elizabeth knew her little sister did not understand how much trouble she was in. The whole family waited and hoped for good news.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-46"><span>Previous</span>Chapter 46</a><a class="next" href="#chapter-48"><span>Next</span>Chapter 48</a></nav>
 </section>
-<section class="chapter" id="chapter-48" data-num="48">
+<section class="chapter" id="chapter-48" data-num="48" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_48.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_48.webp" alt="Whispers of Wickham&#x27;s Wickedness Spread illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">48</div>
@@ -1428,7 +1570,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Father came home tired from looking everywhere. He felt sorry that he had not listened to Elizabeth&#x27;s warnings before. He wished he had been more careful. Elizabeth was sad about her sister, but she was also thinking about Darcy. She worried that because of all this trouble, she might never see him again. The whole house felt quiet and heavy, like a rainy day that would not end. Everyone hoped things would get better soon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-47"><span>Previous</span>Chapter 47</a><a class="next" href="#chapter-49"><span>Next</span>Chapter 49</a></nav>
 </section>
-<section class="chapter" id="chapter-49" data-num="49">
+<section class="chapter" id="chapter-49" data-num="49" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_49.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_49.webp" alt="A Marriage Bargained and Bought illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">49</div>
@@ -1441,7 +1583,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth ran fast and found him first. He was holding a letter from their Uncle Gardiner. When Jane caught up, Elizabeth read the letter out loud. It said their youngest sister Lydia had been found in London. She was going to get married to Wickham after all. Jane felt so happy and relieved. Elizabeth and their father were glad too, but they were also quiet and thoughtful. They knew Uncle Gardiner must have helped a great deal to make this happen. When their mother heard the news, she was so excited she could talk of nothing else. She wanted to plan the wedding right away. Elizabeth went to her room to think quietly by herself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-48"><span>Previous</span>Chapter 48</a><a class="next" href="#chapter-50"><span>Next</span>Chapter 50</a></nav>
 </section>
-<section class="chapter" id="chapter-50" data-num="50">
+<section class="chapter" id="chapter-50" data-num="50" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_50.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_50.webp" alt="A Father&#x27;s Regret and Resolve illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">50</div>
@@ -1455,7 +1597,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth felt sad too. She had told someone special about Lydia running away. Now she worried what he might think of her family. She wished things could be different. Soon Lydia and Wickham would come to visit, and Elizabeth tried to be brave.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-49"><span>Previous</span>Chapter 49</a><a class="next" href="#chapter-51"><span>Next</span>Chapter 51</a></nav>
 </section>
-<section class="chapter" id="chapter-51" data-num="51">
+<section class="chapter" id="chapter-51" data-num="51" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_51.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_51.webp" alt="Lydia Returns Unashamed and Triumphant illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">51</div>
@@ -1467,7 +1609,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Lydia and Wickham came home to visit the Bennet family after getting married. Sweet Jane worried that Lydia might feel shy or sorry. But Lydia was not shy at all! She bounced in happy and excited, wanting everyone to say nice things about her wedding. Wickham smiled his friendly smile at everyone. Elizabeth felt a little embarrassed because Lydia was being so loud and silly. Lydia talked and talked with her mother, both of them chattering away like happy birds. She told stories about her wedding day and showed off her shiny new ring. At dinner, Lydia wanted to sit in the special grown-up seat because she was married now. During the visit, Elizabeth noticed something surprising. Lydia mentioned that Darcy had been at the wedding! Elizabeth was so curious. Why would Darcy be there? Lydia would not explain. So Elizabeth quickly wrote a letter to her Aunt Gardiner, hoping to find out this wonderful mystery.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-50"><span>Previous</span>Chapter 50</a><a class="next" href="#chapter-52"><span>Next</span>Chapter 52</a></nav>
 </section>
-<section class="chapter" id="chapter-52" data-num="52">
+<section class="chapter" id="chapter-52" data-num="52" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_52.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_52.webp" alt="Darcy&#x27;s Secret Role Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">52</div>
@@ -1479,7 +1621,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>A letter came for Elizabeth, and it was full of surprises. She took it to a quiet spot in the woods to read. Her aunt had written to tell her something amazing. It was Darcy who had helped her sister Lydia! He had traveled all the way to London to find her. Lydia had run away with Wickham, and everyone was so worried. But Darcy worked very hard to make things right. He talked to many people and used his own money to help. He made sure Lydia and Wickham got married properly. Elizabeth felt many things at once when she read this. She felt thankful and surprised and a little shy about it all. Had Darcy done this because he still cared for her? The thought made her heart beat fast. Later, she saw Wickham walking nearby. They talked politely, but Elizabeth knew secrets now that she had not known before. Then she heard someone new arriving at the house.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-51"><span>Previous</span>Chapter 51</a><a class="next" href="#chapter-53"><span>Next</span>Chapter 53</a></nav>
 </section>
-<section class="chapter" id="chapter-53" data-num="53">
+<section class="chapter" id="chapter-53" data-num="53" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_53.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_53.webp" alt="Bingley&#x27;s Return Stirs Old Hopes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">53</div>
@@ -1493,7 +1635,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Bingley finally visited, he brought a surprise friend—Darcy came too! Elizabeth felt her heart flutter with wonder. Bingley seemed very happy to see Jane again. He kept walking over to talk with her. The visit felt a bit awkward, but Elizabeth noticed something sweet. Maybe good things were beginning to happen for Jane after all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-52"><span>Previous</span>Chapter 52</a><a class="next" href="#chapter-54"><span>Next</span>Chapter 54</a></nav>
 </section>
-<section class="chapter" id="chapter-54" data-num="54">
+<section class="chapter" id="chapter-54" data-num="54" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_54.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_54.webp" alt="Teasing Silence and Uncertain Hearts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">54</div>
@@ -1506,7 +1648,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jane came outside too, feeling happy. She had seen Bingley again and felt better now. Elizabeth smiled because she could tell Jane still liked him very much. A few days later, everyone came for dinner at their house. Bingley sat right next to Jane, just like old times. Elizabeth felt glad to see them together. But Darcy sat far away from her all evening. She wanted to talk to him, but there was never a good moment. Sometimes she noticed him looking her way, and she kept looking at him too. When bedtime came, Elizabeth still wondered what Darcy was thinking. Her heart felt hopeful but also a little mixed up.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-53"><span>Previous</span>Chapter 53</a><a class="next" href="#chapter-55"><span>Next</span>Chapter 55</a></nav>
 </section>
-<section class="chapter" id="chapter-55" data-num="55">
+<section class="chapter" id="chapter-55" data-num="55" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_55.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_55.webp" alt="Mrs. Bennet&#x27;s Schemes Bear Fruit illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">55</div>
@@ -1519,7 +1661,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One morning, Bingley went hunting with Mr. Bennet, and they had a lovely time talking together. Later that day, Elizabeth walked into the drawing room and found Jane and Bingley standing close together, looking very happy. Bingley quickly left the room, and Jane hugged her sister tight. Jane was glowing with joy! She said she was the happiest person in the whole world. Bingley asked Mr. Bennet if he could marry Jane, and everyone was so pleased. The whole family celebrated that evening. From then on, Bingley visited Longbourn every single day, and Jane smiled brighter than ever before.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-54"><span>Previous</span>Chapter 54</a><a class="next" href="#chapter-56"><span>Next</span>Chapter 56</a></nav>
 </section>
-<section class="chapter" id="chapter-56" data-num="56">
+<section class="chapter" id="chapter-56" data-num="56" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_56.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_56.webp" alt="Lady Catherine&#x27;s Unwelcome Demand illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">56</div>
@@ -1531,7 +1673,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>A quiet morning at Longbourn was interrupted by a fancy carriage rolling up to the house. No one knew who it could be at such an early hour. Bingley took Jane for a walk in the garden while Elizabeth and her mother waited to see who had come. To everyone&#x27;s surprise, it was Lady Catherine, Darcy&#x27;s very grand aunt. She was not in a friendly mood at all. She barely said hello and made unkind remarks about the house being too small. Then she asked Elizabeth to walk outside with her, and it was clear she would not take no for an answer. Once they were alone, Lady Catherine said she had heard Elizabeth might marry Darcy. She was very upset about this and wanted Elizabeth to promise she would never do it. But Elizabeth stayed calm and brave. She said she would only do what made her happy. Lady Catherine left in a huff, and Elizabeth wondered if Darcy would hear about their strange meeting.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-55"><span>Previous</span>Chapter 55</a><a class="next" href="#chapter-57"><span>Next</span>Chapter 57</a></nav>
 </section>
-<section class="chapter" id="chapter-57" data-num="57">
+<section class="chapter" id="chapter-57" data-num="57" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_57.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_57.webp" alt="Lady Catherine&#x27;s Shadow Over Netherfield illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">57</div>
@@ -1544,7 +1686,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The next day, Elizabeth&#x27;s father called her to his room. He had a funny letter from Collins. The letter said people were talking about Elizabeth and Darcy getting married! Elizabeth&#x27;s father laughed and laughed. He thought it was so silly. He did not believe Darcy liked Elizabeth at all. Elizabeth tried to smile along with him. But inside, she felt sad and mixed up. She did not know what would happen next. Would Darcy come back to visit? Or would he stay away? Elizabeth could only wait and wonder.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-56"><span>Previous</span>Chapter 56</a><a class="next" href="#chapter-58"><span>Next</span>Chapter 58</a></nav>
 </section>
-<section class="chapter" id="chapter-58" data-num="58">
+<section class="chapter" id="chapter-58" data-num="58" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_58.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_58.webp" alt="A Walk Toward Understanding illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">58</div>
@@ -1557,7 +1699,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>During the walk, Bingley and Jane fell behind to talk by themselves. Soon Elizabeth and Darcy were walking alone too. Elizabeth felt brave and thanked Darcy for helping her family. Darcy said he had helped because he cared about her so much. Then he told Elizabeth that he still loved her. Elizabeth&#x27;s heart felt happy because her feelings had changed too. She liked him very much now. They walked and walked, talking about everything. Darcy told her that he had learned to be kinder and less proud. Elizabeth had helped him see how to be a better person. They talked about their friends Jane and Bingley too. Finally they walked back home together, feeling wonderfully happy about their new love.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-57"><span>Previous</span>Chapter 57</a><a class="next" href="#chapter-59"><span>Next</span>Chapter 59</a></nav>
 </section>
-<section class="chapter" id="chapter-59" data-num="59">
+<section class="chapter" id="chapter-59" data-num="59" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_59.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_59.webp" alt="Confessions Between Sisters at Midnight illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">59</div>
@@ -1570,7 +1712,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The next day, Elizabeth had to tell her parents. She felt a little nervous. Her father was surprised at first, but Elizabeth told him how much she truly cared for Darcy. She explained all the helpful things Darcy had done for their family. Soon her father understood and gave his blessing. Her mother was so excited she could barely speak! She kept talking about how wonderful everything would be. Elizabeth smiled and slipped away, feeling warm and happy that everyone finally knew her secret.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-58"><span>Previous</span>Chapter 58</a><a class="next" href="#chapter-60"><span>Next</span>Chapter 60</a></nav>
 </section>
-<section class="chapter" id="chapter-60" data-num="60">
+<section class="chapter" id="chapter-60" data-num="60" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_60.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_60.webp" alt="Love&#x27;s Beginnings and Lady Catherine&#x27;s Usefulness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">60</div>
@@ -1582,7 +1724,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Elizabeth and Darcy were so happy to be engaged. Elizabeth asked him when he first started to love her. Darcy smiled and said he could not remember exactly when it happened. He was already in love before he even knew it had started. Elizabeth teased him about why he liked her. She had not always been nice to him. Darcy said he loved how lively and interesting she was. She was different from everyone else, and that made her special to him. They talked about how shy they had both been before. Lady Catherine had tried to keep them apart, but it only made Darcy braver. Elizabeth laughed and said Lady Catherine had actually helped them without meaning to. Elizabeth wrote a joyful letter to her aunt, saying she was the happiest person in the world. Everyone sent letters everywhere. Friends and family were excited. Some people were truly happy, and some just pretended. Elizabeth looked forward to their wonderful life together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-59"><span>Previous</span>Chapter 59</a><a class="next" href="#chapter-61"><span>Next</span>Chapter 61</a></nav>
 </section>
-<section class="chapter" id="chapter-61" data-num="61">
+<section class="chapter" id="chapter-61" data-num="61" data-free="false">
     <figure class="chapter-figure" data-full="../../pride_prejudice/images_anime/chapter_61.webp"><img class="chapter-image" src="../../pride_prejudice/images_anime/chapter_61.webp" alt="Settled Fates and Family Fortunes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">61</div>
@@ -1755,6 +1897,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

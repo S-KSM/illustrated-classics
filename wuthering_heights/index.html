@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="cinematic" data-sibling-href="index_anime.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Misanthropist&#x27;s Heaven Awaits illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -802,7 +926,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With curiosity now thoroughly kindled by this strange household and its stranger master, Lockwood prepares to venture once more unto the windswept heights.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Cold Welcome and Strange Company illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -819,7 +943,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>It was the housekeeper Zillah who finally intervened, splashing cold water on his bleeding nose and leading him, sick and trembling, back inside. There was nothing for it but to accept shelter beneath that inhospitable roof, where the very air seemed poisoned with old hatreds and unspoken griefs—mysteries that Lockwood could not yet fathom but which pressed upon him with the weight of the snowbound night itself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="The Secret Room and Catherine&#x27;s Ghost illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -837,7 +979,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Shaken and bewildered by this display of anguish whose cause lay beyond his comprehension, Lockwood descended to the back-kitchen to wait for dawn. The morning brought only further inhospitality—Joseph&#x27;s silent contempt, Hareton&#x27;s inarticulate surliness, and Heathcliff berating his daughter-in-law for idleness. At first light, Lockwood escaped into the frozen air, Heathcliff accompanying him partway across the treacherous moor before leaving him at Thrushcross Park&#x27;s entrance. By noon, benumbed and exhausted, Lockwood reached home—yet his thoughts remained tangled in the mysteries of Wuthering Heights, and the spectral voice still echoed in his memory, crying out across twenty years of wandering.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Nelly Dean Begins Her Tale illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -855,7 +997,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>She had believed him incapable of vengeance, she admitted—but in that belief, she had been utterly deceived, as the coming tale would prove.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="A Father&#x27;s Decline and Quiet Passing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -872,7 +1014,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Their heart-breaking cries echoed through the Heights. Later that night, when the household had quieted, the two children sat wakeful past midnight, comforting each other with innocent visions of heaven more beautiful than any parson could paint. And listening to their tender talk, one could only wish that such peace might shelter them always—though the changes that Hindley&#x27;s return would bring suggested otherwise.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Wild Freedom and Cruel New Order illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -890,7 +1032,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>My warning that more trouble would follow proved prophetic. Mr. Linton himself arrived the next day to lecture Hindley on his failures as guardian, and the consequences fell swiftly: Heathcliff was forbidden to speak a single word to Catherine upon pain of dismissal, and Mrs. Earnshaw was charged with restraining her wild sister-in-law through cunning rather than force—for force, with Catherine, would prove utterly impossible.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Cathy&#x27;s Transformation and Heathcliff&#x27;s Humiliation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -912,7 +1054,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Nelly paused in her tale, suggesting Mr. Lockwood must be weary, but he insisted she continue without leaping over years—and so she prepared to carry the story forward into the summer of 1778.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="A Birth, a Death, and Descent illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -929,7 +1071,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>News of Hindley&#x27;s return—drunk and dangerous as ever—sent Edgar galloping home and Catherine fleeing to her chamber, while Nelly busied herself hiding young Hareton and removing the shot from the master&#x27;s fowling-piece, preparing as best she could for another night of madness at Wuthering Heights. The storm gathering over this infernal house had only just begun to show its true fury.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="A Father&#x27;s Drunken Rage and Ruin illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -944,7 +1086,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Catherine&#x27;s slow recovery brought her to Thrushcross Grange under Mrs. Linton&#x27;s care—a kindness that cost the old woman and her husband their lives when they too succumbed to the fever. Three years later, Catherine married Edgar Linton, and Nelly was compelled to leave Wuthering Heights and young Hareton behind, following her mistress into a new life at the Grange where the consequences of that stormy night&#x27;s confessions would continue to unfold.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Heathcliff&#x27;s Return to Thrushcross Grange illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -961,7 +1103,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Nelly resolved to watch his movements closely, her heart cleaving to her master&#x27;s side, for she felt that an evil beast now prowled between the fold and its straying sheep, waiting for the moment to spring and destroy.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Ghosts of Childhood and Corruption illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -978,7 +1120,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>That night, when Edgar quietly demands she choose between himself and Heathcliff, Catherine succumbs to a violent fit—grinding her teeth, dashing her head against the sofa, her lips flecked with blood. She locks herself in her chamber and refuses all food, while Edgar retreats to his library and Isabella evades his attempts to warn her away from her worthless suitor. The household fractures into silence and estrangement, each party nursing wounds that fester in isolation—a darkness settling over Thrushcross Grange that promises yet deeper sorrows to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Fever Dreams and Feathers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -996,7 +1138,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The consequences of that dark night would ripple outward, binding together love and hatred, the Heights and the Grange, in ways none of them yet imagined.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="A Bride&#x27;s Desperate Confession illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1012,7 +1154,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus the tangled fates of the two houses drew ever tighter, with Catherine hovering between life and death at the Grange while Isabella found herself imprisoned in a nightmare at the Heights, and the dark promise of Heathcliff&#x27;s vengeance looming over them all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="The Grange&#x27;s Cold Farewell to Isabella illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1030,7 +1172,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The letter now rests in Nelly&#x27;s possession, a spark waiting to ignite what flames may follow when Catherine learns that Heathcliff still haunts her world, demanding entrance once more into her fractured existence.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="A Final Embrace Before Death illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1049,7 +1191,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As darkness gathered over the Grange, it seemed certain that whatever fragile peace had remained was now irrevocably shattered—and that the hours ahead would bring either death or some reckoning none of them could escape.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="A Birth, a Death, and Grief illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1067,7 +1209,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With Catherine now laid to rest between the civilized Grange and the wild moors she loved, those left behind must somehow forge onward, though Heathcliff&#x27;s terrible curse suggests that death may prove no barrier to the bond between them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Isabella&#x27;s Flight Through the Storm illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1085,7 +1227,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus did Heathcliff&#x27;s grip tighten over both houses, while within the Grange, little Cathy grew under her father&#x27;s tender watch—unknowing of the darkness that would one day reach for her.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="A Sheltered Child&#x27;s Forbidden Longings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1101,7 +1243,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Cathy rejected Hareton&#x27;s peace-offering of a terrier pup, and they departed for home, every soul among them out of sorts. Nelly extracted a promise of secrecy, knowing Edgar&#x27;s distress should he learn of this forbidden excursion—and knowing too that word of young Linton&#x27;s imminent arrival had surely reached Heathcliff&#x27;s ears through the servants&#x27; revelations. After all her willfulness, Cathy kept her pledge for Nelly&#x27;s sake, proving herself still, beneath the sauciness, a sweet little girl whose world had now cracked open to reveal troubling mysteries beyond the sheltered boundaries of Thrushcross Park.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="A Fragile Cousin Arrives at Thrushcross illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1120,7 +1262,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Joseph departed with a warning that hung heavy in the air: tomorrow, Heathcliff would come himself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Father Claimed, a Home Lost illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1137,7 +1279,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The parting proved wrenching, with Linton crying out in desperate repetition as Nelly slipped away: &quot;Don&#x27;t leave me! I&#x27;ll not stay here!&quot; But the latch fell firm, and the brief guardianship ended with the sound of Minny&#x27;s hooves carrying her mistress back toward the Grange, leaving the fragile boy to whatever mercies awaited him within those dark walls.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="Linton&#x27;s Decline and Cathy&#x27;s Restless Wandering illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1156,7 +1298,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as the ashes settled in the grate, the seeds of connection had been sown, and one sensed that neither burned letters nor parental warnings would long keep these young cousins apart.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="A Lonely Blossom and Autumn Tears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1172,7 +1314,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>That evening, Cathy lay weeping silently in the library while her father slept unaware in his chamber. No argument Nelly offered could dislodge the doubt Heathcliff had planted. The girl declared she would have no peace until she saw for herself whether Linton truly needed her. And so, against her better judgment, Nelly found herself the very next day riding beside her wilful young mistress toward Wuthering Heights, driven by the faint hope that Linton&#x27;s own behaviour might dispel the cruel lies his father had so cunningly sown.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="A Sickroom Visit and Bitter Truths illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1189,7 +1331,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The wetness of that morning&#x27;s excursion laid me up for three weeks with illness, and during my confinement, Catherine proved herself the most devoted nurse imaginable—dividing her days between her father&#x27;s room and my bedside with tireless affection. Yet the evenings were her own, and though I noticed the fresh colour in her cheeks and the pinkness of her fingers when she came to bid me good-night, I foolishly attributed it to the warmth of the library fire rather than questioning where my young mistress truly spent those quiet hours after tea.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Secret Rides to Wuthering Heights illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1207,7 +1349,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What consequences would follow from this revelation, neither Catherine nor I could then foresee.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="A Father&#x27;s Fading Hope and Fear illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1225,7 +1367,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As summer approached, the fragile arrangement took hold—though none yet perceived how swiftly time was running out for all concerned.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_26.webp"><img class="chapter-image" src="images_cinematic/chapter_26.webp" alt="A Fading Cousin on the Heath illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1242,7 +1384,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet as they rode away from that heath where Linton lay consumed by dread of his father&#x27;s approach, neither could have foreseen how thoroughly Heathcliff&#x27;s designs would entangle them in the visits to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_27.webp"><img class="chapter-image" src="images_cinematic/chapter_27.webp" alt="A Trap Among the Heather illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1261,7 +1403,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At seven, Heathcliff came for Catherine alone, leaving Nelly imprisoned. For five nights and four days she remained locked away, seeing only Hareton once each morning—a model jailor, surly and deaf to all appeals for justice or compassion—while somewhere beyond those walls, a forced marriage and a dying father&#x27;s last hours unfolded without her.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_28.webp"><img class="chapter-image" src="images_cinematic/chapter_28.webp" alt="The Captive Bride&#x27;s Bitter Inheritance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1278,7 +1420,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even in death, Heathcliff&#x27;s reach extended into Thrushcross Grange—Green arrived to impose his master&#x27;s will upon the household, dismissing servants and attempting to override Edgar&#x27;s burial wishes. Catherine, now bearing the name Mrs. Linton Heathcliff, was permitted only to remain until her father&#x27;s hurried funeral concluded, and the shadow of Wuthering Heights waited to reclaim her.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_29.webp"><img class="chapter-image" src="images_cinematic/chapter_29.webp" alt="Heathcliff Claims His Bitter Inheritance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1296,7 +1438,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>From the window, Nelly watched them descend through the garden, Heathcliff&#x27;s arm fixed through Catherine&#x27;s despite her resistance, until the alley of trees swallowed them from sight—carrying the young mistress toward whatever grim fate awaited her in that house of gathering shadows.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_30.webp"><img class="chapter-image" src="images_cinematic/chapter_30.webp" alt="Alone Among Enemies illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1314,7 +1456,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus concluded Nelly Dean&#x27;s long narrative, and Lockwood, though still recovering from his illness, resolved to quit this inhospitable country—to ride once more to Wuthering Heights, settle his affairs with his landlord, and flee to London before another brutal winter could claim him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_31.webp"><img class="chapter-image" src="images_cinematic/chapter_31.webp" alt="Captive Beauty and Forbidden Books illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1331,7 +1473,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet such fancies belong to fairy tales, and Wuthering Heights permits no easy escapes—only the slow burning of hope and the bitter education of hearts too proud or too wounded to yield.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_32.webp"><img class="chapter-image" src="images_cinematic/chapter_32.webp" alt="The Moors Transformed by Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1349,7 +1491,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet the tale remains incomplete—for Heathcliff&#x27;s strange and solitary end has yet to be told, and the shadows of that haunted house have not yet released their final secrets.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_33.webp"><img class="chapter-image" src="images_cinematic/chapter_33.webp" alt="Primroses and Defiance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1368,7 +1510,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A change was approaching, he said, and he stood already within its shadow—though whether that change would prove his salvation or his final destruction, neither he nor I could yet divine.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_34.webp"><img class="chapter-image" src="images_cinematic/chapter_34.webp" alt="The Threshold of Heaven illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1546,6 +1688,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

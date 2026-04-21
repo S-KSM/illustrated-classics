@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_1.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_1.webp" alt="The Darlings Before the Adventure illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -794,7 +918,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One day, their mother heard the children talking about someone named Peter Pan. Wendy said he was a magical boy who lived with fairies and never grew up. Their mother wondered if he was real. Then one night, while everyone was sleeping, the nursery window blew open. A boy flew in with a tiny, glowing light beside him. He was Peter Pan, and something amazing was about to happen.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_2.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_2.webp" alt="A Shadow Caught, a Family Undone illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -808,7 +932,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A week later, something important happened. The family was getting ready to go out for dinner. Father got upset when dog hair got on his nice pants. He decided Nana should stay outside in the yard. Mother felt worried about this, but Father wanted things his way. The children went to bed, and Mother kissed them goodnight. Michael said something very sweet to her. Then the parents walked out into the starry night, not knowing that an adventure was about to begin.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_3.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_3.webp" alt="The Night Peter Found His Shadow illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -822,7 +964,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Peter told Wendy about a magical place called Neverland, full of mermaids and adventures. He said he could teach her to fly! Tinker Bell sprinkled fairy dust on Wendy, John, and Michael. They floated up, up, up to the ceiling! Then, with Peter leading the way, all four children flew out the window into the starry night sky.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_4.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_4.webp" alt="Journeying Through Skies and Uncertainty illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -836,7 +978,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Finally, the Neverland appeared below them, sparkling and magical. The children saw lagoons and flamingos and caves, just like in their dreams. Then darkness came, and a loud booming sound scattered them apart. Peter was blown one way, John and Michael another, and Wendy found herself alone with only tiny Tinker Bell nearby. The little fairy&#x27;s light glowed ahead, and Wendy followed it down through the dark sky.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_5.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_5.webp" alt="Neverland Awakens to the Hunt illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -850,7 +992,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The lost boys wore cozy bear costumes and hid in the bushes. There was sweet Tootles, cheerful Nibs, proud Slightly, honest Curly, and the twins. When they heard pirates coming, they quickly slipped down into their secret home under some big hollow trees. Then something amazing appeared in the sky. It was a tired white bird floating down toward them. But it was not really a bird at all. It was Wendy, and she needed help.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_6.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_6.webp" alt="A Mother&#x27;s Arrival and Narrow Escape illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -863,7 +1005,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then something wonderful happened! Wendy&#x27;s arm moved, and she whispered softly. She was alive! The arrow had hit a special button Peter gave her. That little gift had kept her safe. Peter was so relieved. The boys wanted to help Wendy feel better, so they built a cozy little house right around her while she rested. They used soft things and made it snug and warm. When Wendy woke up, she loved her tiny home. The boys asked her to be their mother, and even though she was just a girl, she said she would try her best. That night, she tucked them all into bed, and everyone felt safe and happy together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_7.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_7.webp" alt="Wendy&#x27;s Enchanted Domestic Underground illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -877,7 +1019,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Wendy loved taking care of everyone. She cooked and sewed and played house, and a friendly pet wolf followed her everywhere. But sometimes she worried that her brothers were starting to forget their real parents back home. So Wendy asked them questions about Mother and Father to help them remember. Every day brought new adventures, and soon something exciting would happen at a magical place called the Mermaids&#x27; Lagoon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_8.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_8.webp" alt="Shadows Stir the Singing Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -890,7 +1032,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One quiet afternoon, the children were resting on a big rock when something felt strange. The sunny sky grew dark and cold. Peter woke up fast and whispered, &quot;Pirates! Dive!&quot; Everyone splashed into the water to hide. The pirates had captured Tiger Lily, the brave chief&#x27;s daughter. Clever Peter used a trick voice to help set her free. Then he had to fight Captain Hook on the slippery rock. Peter got hurt, and Wendy was very tired. A kite string floated down and carried Wendy safely home. Peter waited alone on the rock, feeling scared but also very brave inside.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_9.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_9.webp" alt="A Desperate Rescue on the Lagoon illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -903,7 +1045,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then Peter saw something floating toward him. At first he thought it was a piece of paper. But it was not paper at all! It was a brave bird called the Never bird. She was paddling her nest across the water like a little boat. She wanted to save Peter! She pushed her nest right up to the rock so Peter could climb in and float to safety. There were two beautiful eggs in the nest. Peter gently put the eggs into a hat floating nearby. The bird was so happy! Peter sailed away in the nest, and the Never bird floated in the hat with her eggs. They both waved goodbye. When Peter got home, Wendy and the boys were so glad to see him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_10.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_10.webp" alt="Domestic Bliss Before the Storm illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -916,7 +1058,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One special evening, all the children sat down for a make-believe tea party. There was so much laughing and chattering and silly arguing over pretend food! Poor Tootles asked if he could have an important job, but the answer was always no. He did not complain though. Peter came back with yummy nuts for everyone. The children begged Peter and Wendy to dance, and they did! Later the children put on their nightgowns and had wonderful pillow fights. They sang songs and told stories and felt so very happy together. None of them knew that a big adventure was about to begin. Finally they climbed into bed, ready for Wendy to tell their favorite story.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_11.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_11.webp" alt="A Mother&#x27;s Window Left Unbarred illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -930,7 +1072,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>John and Michael suddenly wanted to go home right away. They missed their mother. The lost boys were invited to come to London too. But Peter said no. He wanted to stay a boy forever. Everyone got ready to leave, feeling a little sad to say goodbye.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_12.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_12.webp" alt="Treachery at the Piccaninny Camp illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -943,7 +1085,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Hook really wanted to find Peter Pan and Wendy and all the boys. Peter made Hook so angry that the captain could not sleep at night. Down below in their cozy home, the children heard all the noise up above. They wondered who had won the fight. Peter said if their friends won, they would hear the happy sound of a drum. Then Hook found the drum and told Smee to beat it twice. The children thought their friends had won and cheered with joy. But the tricky pirates were waiting quietly above, ready to catch them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_13.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_13.webp" alt="Capture, Secrets, and a Dark Descent illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -957,7 +1099,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Little Tinker Bell came to wake Peter up. She told him the pirates had taken Wendy and the boys. Peter grabbed the medicine cup, but brave Tink drank it first to save him. She got very sick, and her light started to fade. Peter asked all the children everywhere to clap their hands if they believed in fairies. So many children clapped that Tink got better and her light grew bright again. Peter was so happy and so relieved. Now he had to go rescue his friends from the pirate ship.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_14.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_14.webp" alt="The Lonely Torment of Captain Hook illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -969,7 +1111,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>The pirate ship floated in the dark water at night. It was very quiet except for Smee sewing at his machine. Smee was a funny pirate who did not know how silly he looked. The other pirates played card games on the deck. But Captain Hook walked alone, feeling very sad inside. He should have felt happy because he had captured the boys. But instead he felt terribly lonely and worried about everything. He kept wondering if he was being good enough. His heart felt heavy and mixed up. Then Hook brought the children up from below the ship. He wanted some of them to become pirates. But the boys all said no thank you. They remembered what their mothers would want. John and Michael were especially brave and refused. Wendy stood tall and proud, not scared at all. Then everyone heard a ticking sound coming closer. Hook got very frightened and hid. But when the boys looked over the side of the ship, they saw something wonderful. It was Peter Pan climbing up, perfectly fine and ready to help them!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_15.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_15.webp" alt="The Crocodile&#x27;s Tick Becomes Peter&#x27;s Weapon illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -982,7 +1124,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Peter swam out to the pirate ship where the children were being held. When the pirates heard the ticking, they got so scared! They thought the crocodile had come aboard. Peter used their fright to help free Wendy and the boys. He found a key and let them all go. Then a great chase happened all around the ship. The pirates were so frightened that most of them ran away. Captain Hook and Peter had one last sword fight, and Peter was very brave. In the end, Hook jumped into the sea and was gone. Wendy tucked all the tired children into cozy beds on the ship. Soon they would sail home together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_16.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_16.webp" alt="Waiting Hearts and Open Windows illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -995,7 +1137,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Back at the nursery, the Darling family had been so sad. Father felt very sorry about what happened, and Mother waited by the window every single night. She never closed it, not even once. She missed her children so much that her heart hurt. One night, Peter flew in first with Tinker Bell. He thought about playing a trick, but then he saw how sad Mother looked. He could tell she loved Wendy very, very much. So Peter did something kind instead. He left the window open for them. When Wendy, John, and Michael finally flew home, they found Mother waiting. She wrapped her arms around all three children and held them tight. Outside the window, Peter watched the happy family. He felt a little lonely, but he had done a good thing.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="../../peter_pan/images_anime/chapter_17.webp"><img class="chapter-image" src="../../peter_pan/images_anime/chapter_17.webp" alt="The Promise of Spring Cleaning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1169,6 +1311,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

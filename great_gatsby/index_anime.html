@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="anime" data-sibling-href="index.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Stranger Arrives in West Egg illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -801,7 +925,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Nick looked again, Gatsby had vanished into the unquiet darkness, leaving only questions that the summer would soon begin to answer.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="The Valley of Ashes and Its Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -818,7 +942,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What followed in those increasingly blurred hours would reveal still more about the careless brutality of Tom Buchanan and the desperate yearnings of those who orbit the wealthy, drawn like grey moths toward a flame that will ultimately consume them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="Whispers and Pretensions in the City illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -838,7 +980,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The violence I had witnessed would not leave me easily, and in the days that followed, I found my thoughts returning again and again to those mysterious lights across the water from my own small house—to my neighbor Gatsby, about whom Catherine had whispered such strange rumors, and whose parties seemed to promise something altogether different from the sordid spectacle I had just survived.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="Gatsby&#x27;s Mysterious Past Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -856,7 +998,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>In truth, that summer held more than parties—my days of honest labor downtown, brief romantic entanglements that dissolved like morning mist, and the gradual discovery that Jordan Baker, golf champion and careful avoider of shrewd men, was incurably dishonest, the kind of careless driver who depended on others to keep out of her way. And yet, as one who suspects himself of at least one cardinal virtue, I recognized that before anything could begin with Jordan, something else—someone else, back home—had to end, and it was this tangle of obligations that occupied my thoughts when Jordan&#x27;s party called again, summoning me toward whatever amazing revelation Gatsby had shared with her in that Gothic library.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -874,7 +1016,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As darkness fell over Central Park and children&#x27;s voices rose like crickets through the twilight, I drew Jordan closer, suddenly aware that I too had become one of the pursuing, caught up in that ancient current that would soon pull us all toward its inevitable shore.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -891,7 +1033,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as Klipspringer played sentimental songs in the music-room and excitement crackled through the rainy dusk, I caught bewilderment flickering across Gatsby&#x27;s face—the first faint suspicion that Daisy, however radiant, could never match the illusion he had constructed over five long years, an illusion fed by creative passion and decked with every bright feather that drifted his way. Still, when she murmured something low in his ear, he turned toward her with a rush of emotion, held by that fluctuating, feverish voice that could never be over-dreamed. I left them there together, possessed by intense life, and descended the marble steps alone into the rain—aware, perhaps before either of them, that what had been won in that luminous afternoon might already contain the seeds of its own unraveling.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="The Invention of Jay Gatsby illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -907,7 +1049,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>I have set down this history to explode the wild rumors about Gatsby&#x27;s antecedents—rumors that weren&#x27;t even faintly true. During a pause in my association with his affairs, Tom Buchanan appeared unexpectedly at Gatsby&#x27;s house with a riding party, and the awkward encounter that followed—Tom&#x27;s gruff dismissal, the lady&#x27;s insincere invitation, the group&#x27;s hasty departure before Gatsby could fetch his car—revealed the vast social gulf that no amount of money could bridge. The following Saturday, Tom brought Daisy to one of Gatsby&#x27;s parties, and I watched her see West Egg through eyes that found it appalling in its raw vigor and obtrusive fate. Later, alone with Gatsby among the crushed flowers and discarded favors, I heard him insist that the past could be repeated, that everything could be fixed just as it was before—and I glimpsed the impossible thing he sought: not merely Daisy herself, but some idea of himself that had gone into loving her, recoverable only if he could return to a certain starting place and begin again. But even as I listened, something elusive—a fragment of lost words, an uncommunicable rhythm—stirred in my memory and died unspoken, leaving only the sense that what Gatsby reached for was already receding before him, borne back ceaselessly into the irretrievable past.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="The Hottest Day&#x27;s Simmering Tensions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -926,7 +1068,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, I found Gatsby standing in the shrubbery outside the Buchanans&#x27; house, keeping vigil. Daisy had been driving, he confessed, but he would take the blame. Through the pantry window, I glimpsed Tom and Daisy sitting together over untouched chicken and ale, their hands touching, conspiring in that unmistakable intimacy of long marriage. And there I left Gatsby in the moonlight—watching over nothing, still believing in a dream that had already died in the stifling heat of that Plaza afternoon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Long Secret Finally Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -945,7 +1087,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now there remained only the gathering of the wreckage, and no one, it seemed, willing to claim it.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Loneliness of the Aftermath illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1123,6 +1265,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

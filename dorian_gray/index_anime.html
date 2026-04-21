@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="anime" data-sibling-href="index.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="Art&#x27;s Beautiful and Useless Truth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -802,7 +926,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With these principles established—beauty as its own justification, morality banished from the aesthetic realm, the artist absolved of all obligation save the pursuit of perfection—the stage is set for a tale that shall test every doctrine against the dangerous substance of lived experience.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="The Seduction of a Beautiful Soul illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -819,7 +943,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Their discourse turned to the nature of the attachment itself—Basil admitted that Dorian sometimes treated his devotion carelessly, like an ornament for a summer&#x27;s day—before Harry recalled where he had heard the name: from his aunt, Lady Agatha, who had described a serious young philanthropist destined for East End charity work. Basil&#x27;s alarm at this connection proved well-founded, for scarcely had he begged Harry not to spoil or influence his friend when the butler appeared with an announcement that would change everything: Mr. Dorian Gray had arrived and was waiting in the studio.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="Lord Henry&#x27;s Dangerous Philosophy Unveiled illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -837,7 +979,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the door closes upon the departing pair, Basil flings himself upon the sofa, pain etched across his features—for he understands, perhaps better than anyone, that something precious has been corrupted, that the innocent boy who entered his studio that morning has already begun to disappear, replaced by something Lord Henry has awakened and shaped in his own image.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="A Lineage of Beauty and Tragedy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -854,7 +996,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When the luncheon dispersed, Mr. Erskine pronounced Lord Henry &quot;extremely dangerous&quot; and invited him to Treadley to expound his philosophy over Burgundy. But it was Dorian who claimed him, touching his arm at the door, murmuring that he must come—for no one talked so wonderfully. Lord Henry smiled; he had talked quite enough for one day. All he wanted now was to look at life, and Dorian was welcome to look at it with him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Sibyl Vane and the Theatre of Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -871,7 +1013,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The evening settled into scarlet and gold beyond the windows, and Harry dressed for dinner, musing on that young fiery-colored life and its uncertain trajectory. But when he returned home near midnight, a telegram waited on the hall table, bearing news that rendered all philosophical speculation suddenly concrete: Dorian Gray was engaged to marry Sibyl Vane.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="A Sister&#x27;s Dangerous Prince Charming illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -888,7 +1030,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And somewhere across London, Dorian Gray prepares to watch his beloved Juliet perform, unaware that a rough colonial-bound sailor has just sworn, with all the fierce simplicity of youth, to be his executioner should love prove false.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="Love&#x27;s Sudden and Foolish Blossoming illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -905,7 +1047,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Inside awaited Sibyl Vane, and with her, a revelation none of them could yet anticipate.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="The Night Sibyl Vane&#x27;s Art Died illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -922,7 +1064,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as birdsong seemed to speak of love renewed, the portrait waited behind its screen, patient as conscience, ready to record whatever sins the coming days might bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="The Portrait&#x27;s First Terrible Truth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -940,7 +1082,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Drawing the screen back before the painting, Dorian smiled and dressed for the opera, where Lord Henry waited, leaning over his chair—the tempter eternally at his shoulder as the young man stepped fully into the life that had been chosen for him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Art of Unfeeling illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -956,7 +1098,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Dorian breathes relief; the peril has passed. He feels pity for Basil&#x27;s romantic devotion but dismisses the confession as merely an admission of excessive admiration—nothing more. Still, he refuses absolutely to sit again, declaring there is something fatal about a portrait, that it possesses a life of its own. After Hallward departs, Dorian smiles to himself at how he has extracted a secret rather than surrendering his own. Yet the smile fades into determination: the portrait must be hidden away at all costs, for he cannot risk such a moment of near-discovery again—and with that resolution, he rings for his servant to secure the canvas from all future intrusion.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="The Schoolroom&#x27;s Secret Burden illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -974,7 +1116,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so began an influence that would shape the years to come, as insidious and transformative as the portrait hidden away in that dusty schoolroom above.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="The Mirror and the Monster Within illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -992,7 +1134,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And yet, even as he assembled his glittering distractions, the portrait waited behind its curtain—patient, hideous, and increasingly difficult to ignore.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="A Foggy Night&#x27;s Fatal Reckoning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1011,7 +1153,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Basil agreed to follow, though he sensed already that his midnight train was lost to him—and perhaps something more.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="The Soul Revealed in Canvas illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1030,7 +1172,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The murder had been swift, the evidence manageable. Basil had departed at eleven for Paris—so the servants believed—and with his reserved habits, months would pass before suspicion arose. Everything could be destroyed by then. After establishing an alibi with his drowsy valet, Dorian retired to the library and withdrew a Blue Book from the shelves, turning its pages until he found precisely what he sought: the address of Alan Campbell, the one man who might help him dispose of what remained upstairs.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="Sunlight on Blood-Stained Memory illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1048,7 +1190,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But salvation, as Dorian is learning, exacts its own corrupting price—and the portrait upstairs bears witness to debts that chemistry cannot dissolve.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="A Mask of Grace and Guilt illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1066,7 +1208,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then his gaze fell upon a Florentine cabinet of ebony and ivory. Within its secret drawer lay a small Chinese box, elaborately wrought, containing a green paste of heavy, persistent odour. He hesitated, smiled strangely, then put it back—for now. As midnight struck bronze blows upon the dusky air, Dorian crept from his house dressed commonly, a muffler wrapped round his throat, and hailed a hansom bound for some distant address near the river, where darker consolations awaited him still.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="The Desperate Search for Oblivion illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1084,7 +1226,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now, as James stood trembling in the gaslit dark with this impossible revelation burning through him, the hunt for Dorian Gray had only truly begun.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Paradox and Wit at Tea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1104,7 +1246,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The hunter had found his quarry, and Selby Royal&#x27;s elegant walls offered no true sanctuary from the justice that had finally arrived at Dorian Gray&#x27;s door.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="Shadows of Conscience and Fatal Chance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1121,7 +1263,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet safety, for a soul so thoroughly corrupted, could only ever prove the most treacherous of illusions.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="The Final Mask Shatters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1139,7 +1281,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They parted with promises to ride together in the morning, Lord Henry mentioning that the lilacs in the park had never been so lovely since the year they first met. At the door, Dorian hesitated as though some final confession pressed against his lips—then sighed, and went out into the night, leaving behind him only the honey-coloured moon and the lingering notes of Chopin, and carrying with him whatever terrible knowledge now weighed upon a soul he had only recently begun to believe he possessed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="The Soul&#x27;s Final Reckoning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1318,6 +1460,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

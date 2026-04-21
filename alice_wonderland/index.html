@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="cinematic" data-sibling-href="index_anime.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="Curiosity Plunges Into the Unknown illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -800,7 +924,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A glass box beneath the table offered hope: a small cake marked &quot;EAT ME&quot; in currants. Alice reasoned that growing larger would let her reach the key, while growing smaller would let her creep under the door—either way, the garden would be hers. She ate the cake and waited, hand pressed to her head, to see which way the world would shift next.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="Growing and Shrinking Through Salty Tears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -818,7 +942,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At last, the Mouse agreed to tell Alice its history once they reached shore, and it was indeed high time to go, for the pool had grown remarkably crowded with curious creatures—a Duck, a Dodo, a Lory, an Eaglet, and several others—all making their way toward dry land and whatever strange adventures awaited them there.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="chapter" id="chapter-3" data-num="3" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Everybody Wins and All Get Prizes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -837,7 +961,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But in a little while, a faint pattering of footsteps reached her ears, and she looked up eagerly, hoping the Mouse had relented—or perhaps that someone new entirely was approaching through that strange and curious world.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Too Large for the Rabbit&#x27;s House illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -856,7 +980,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Leaning against a buttercup to rest—for she was quite the wrong size for such adventures—Alice pondered the great question of what she ought to eat or drink next, when her gaze fell upon a large mushroom nearby, and upon its top sat a large blue caterpillar, smoking a hookah in perfect stillness, taking not the smallest notice of her or of anything else.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="Questions of Size and Self illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -873,7 +997,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After much careful nibbling at both mushroom pieces, Alice at last restored herself to her proper height, feeling quite strange after so long at wrong sizes. Half her plan was accomplished; now she must reach that beautiful garden. Coming upon a little house about four feet high, she prudently nibbled herself down to nine inches before approaching, for it would never do to frighten whoever lived there out of their wits.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="Chaos, Cheshire Grins, and Flying Crockery illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -891,7 +1015,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Following the Cat&#x27;s direction, she soon came in sight of a house with chimneys shaped like ears and a roof thatched with fur, and nibbling a bit more mushroom to adjust her height, she approached rather timidly, half-wishing she had gone to see the Hatter instead—for suppose the March Hare should prove raving mad after all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="Riddles, Rudeness, and Endless Tea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -907,7 +1031,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And yet Wonderland&#x27;s curiosities would not leave her be, for she soon noticed a door leading directly into a tree, and thinking that everything was curious today, she stepped through—only to find herself once more in the long hall with the little glass table, where she meant to manage rather better this time, and where, at last, with the golden key and a careful nibble of mushroom, she found her way into the beautiful garden.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Painted Roses and Royal Fury illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -925,7 +1049,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And it was in precisely this state of magnificent confusion that the Duchess herself appeared, ready to offer Alice some rather pointed observations about morals, meanings, and the curious nature of Wonderland&#x27;s justice.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Morals, Mustard, and the Mock Turtle illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -942,7 +1066,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Mock Turtle&#x27;s history proved a melancholy and meandering affair. Once, he sighed, he had been a *real* Turtle. There followed an elaborate account of his undersea education—Reeling and Writhing, Ambition and Distraction, Mystery and Seaography, Drawling and Fainting in Coils—each subject a delightfully twisted echo of Alice&#x27;s own schooling. The lessons, the Gryphon explained, were called so because they *lessened* from day to day, ten hours dwindling to nine and onward until the eleventh day brought holiday. When Alice inquired about the twelfth, however, the Gryphon cut her off decisively; it was quite enough about lessons, and high time to hear about the games.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Dancing with Lobsters by the Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -961,7 +1085,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Gryphon seized Alice by the hand and hurried her away at once, leaving the song unfinished, while behind them, carried faintly on the breeze, came the last lingering notes of that beautiful, beautiful Soup—and ahead, whatever mysterious trial now awaited them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="A Courtroom of Nonsense and Tarts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -978,7 +1102,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Alice watched the White Rabbit fumble through his list, thinking how very little evidence they had gathered thus far—when, to her astonishment, the Rabbit called out in his shrill little voice the name that she least expected to hear: *&quot;Alice!&quot;*</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Alice Defies the Court&#x27;s Absurd Justice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1158,6 +1282,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

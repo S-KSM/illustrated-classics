@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="cinematic" data-sibling-href="index_anime.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="Dreams of Eternal Light and Glory illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -800,7 +924,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus, with the stranger&#x27;s full-toned voice swelling in his ears and those melancholy lustrous eyes dwelling upon him, Walton prepares to transcribe a history that he knows must be strange and harrowing—the story of the storm that wrecked so gallant a vessel upon its fatal course.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="A Family Forged in Grief and Devotion illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -818,7 +942,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet how little did I then comprehend the weight of such possessive devotion, or foresee the terrible symmetry between the orphans my family gathered and the destruction I would one day bring upon all I cherished most.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Seeds of Obsession and Harmony illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -836,7 +978,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But that victory, I must confess, would prove dreadfully short-lived, for destiny&#x27;s immutable laws had long since decreed my destruction, and the path to my ruin was merely delayed, not abandoned.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Mother&#x27;s Sacrifice and Farewell illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -852,7 +994,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus ended a day memorable above all others, for it decided the future destiny that would lead him down paths from which there could be no return.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Secret of Life and Death illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -869,7 +1011,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now, looking back, I perceive what I could not then acknowledge: that any pursuit which weakens our affections and destroys our taste for simple pleasures is unlawful, unfit for the human mind. But I was deaf to such wisdom then, sustained only by feverish purpose as my labours drew toward their terrible conclusion, my body wrecked, my nerves shattered, my soul already marked by the shadow of guilt—though the deed itself remained yet undone.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Creature Wakes to Horror illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -885,7 +1027,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What followed was a nervous fever lasting several months, during which faithful Henry served as Victor&#x27;s sole nurse, concealing the severity of his illness from his aged father and beloved Elizabeth to spare them grief. Victor raved incessantly of the monster, his words dismissed by Clerval as the wanderings of a disturbed mind, though their persistent recurrence suggested some terrible origin. Recovery came slowly, marked by spring&#x27;s arrival—the young buds shooting forth from trees outside Victor&#x27;s window mirroring the gradual revival of joy and affection in his own breast. Yet as convalescence restored Victor&#x27;s spirits and Clerval at last mentioned correspondence awaiting him, a letter from Elizabeth lying unopened for days, one sensed that the shadow of that November creation had not truly departed—it had merely receded, biding its time beyond the threshold of Victor&#x27;s fragile peace.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="A Letter from Home and Justine&#x27;s Story illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -903,7 +1045,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>We returned to college on a Sunday afternoon, the peasants dancing in the fields, every face we encountered radiant with contentment, and my own spirits soared with unbridled joy—yet how little I suspected what darkness awaited to shatter this fragile peace.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="A Father&#x27;s Letter of Death illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -919,7 +1061,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus Victor stood at the threshold of an impossible choice, torn between the secret knowledge that burned within him and the cruel machinery of human justice that threatened to destroy an innocent soul—while the true murderer roamed free among the eternal snows.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="Mockery of Justice and Living Torture illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -937,7 +1079,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>From that hour, I bore a hell within me which nothing could extinguish, contemplating the voiceless grief of those I loved and knowing myself the architect of their suffering—my thrice-accursed hands having wrought the desolation of that late so smiling home, with the prophetic certainty that these were not to be the last tears my family would shed, nor William and Justine the final victims of my unhallowed arts.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Guilt&#x27;s Weight Upon the Living illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -954,7 +1096,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as I surrendered to that temporary peace, I remained haunted by the obscure certainty that my creation still walked free, and that some signal crime of enormity sufficient to eclipse all previous horrors surely awaited.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="Solace and Shadows Among the Glaciers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -972,7 +1114,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At last, my curiosity aroused and something resembling compassion stirring within me, I consented to hear his tale. For the first time, I felt what duties a creator owes his creature—that perhaps I ought to render him happy before complaining of his wickedness. We crossed the frozen expanse together and entered a mountain hut, where, seating myself by the fire my odious companion had lighted, I prepared to listen as he began the strange history of his wretched existence.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="Awakening to a World of Sensation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -989,7 +1131,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Here, then, watching these gentle beings through his hidden aperture, the creature resolved to remain, studying their ways, their sorrows, their kindnesses to one another—little knowing what lessons, both tender and terrible, this silent observation would impart.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="Lessons in Language and Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1006,7 +1148,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Still, as the earth renewed itself in vernal splendour, my spirits rose with it. The past seemed blotted from memory, the present grew tranquil in my observations and secret labours, and the future gleamed with bright anticipations—for I had formed in my imagination a thousand pictures of presenting myself to these superior beings, confident that gentle words and patient devotion might yet win their favour, and through them, my place among humankind.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Safie&#x27;s Arrival Brings Light and Language illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1022,7 +1164,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Oh, that he had remained forever in his native wood, knowing nothing beyond hunger, thirst, and heat! Yet even as these reflections inflicted their exquisite agony upon him, the creature&#x27;s love and reverence for his protectors only deepened, and the story of their past—which he would soon relate—stirred within him feelings of indignation, wonder, and devotion that would drive him toward a fateful resolution.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="The De Laceys&#x27; Fall From Grace illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1040,7 +1182,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And it was this reunion—this triumph of devotion over treachery—that the creature had witnessed from his hiding place, stirring within him emotions he scarcely understood yet could not suppress.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="Awakening Through Forbidden Books illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1058,7 +1200,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But even as the words escaped my lips, I heard the steps of my younger protectors at the door. In rushed Felix, Safie, and Agatha—and who can describe their horror upon beholding me? Agatha fainted; Safie fled; and Felix, with supernatural fury, tore me from his father&#x27;s knees and dashed me to the ground with violent blows. Though I possessed the strength to rend him as a lion rends the antelope, my heart sank within me with bitter sickness, and I refrained. Overcome by anguish, I fled to my hovel, escaping unperceived in the general tumult—yet carrying with me the crushing weight of rejection that would transform hope&#x27;s lingering embers into something far darker.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="A Hell Within and War Declared illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1076,7 +1218,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now, having confessed all, the creature fixed his burning gaze upon Victor and declared his singular demand: he would not rest until his creator fashioned for him a companion, a being as hideous as himself, who alone might offer him the sympathy that all humanity had denied.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="A Creature&#x27;s Desperate Bargain illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1093,7 +1235,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With an oath sworn by sun and sky and the fire of love burning in his heart, he accepted my terms and vanished down the mountain with preternatural speed, disappearing among the undulations of the sea of ice. I was left alone as darkness gathered, my heart heavy beyond measure, weeping beneath the indifferent stars and crying out to the winds either to crush me into oblivion or depart and leave me to my misery. By morning I had returned to Geneva, my haggard appearance alarming all who beheld me, yet I could offer no explanation—I felt myself placed under a ban, unworthy of human companionship, though I loved my family to adoration. To save them, I resolved to dedicate myself to the most abhorred task imaginable, and this dreadful prospect consumed my every thought, rendering all else a mere phantom beside the terrible reality of what I must now undertake.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="A Promise Deferred, a Journey Planned illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1110,7 +1252,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Beyond Cologne we crossed the plains of Holland, and by sea reached England, where the white cliffs of Britain rose before us in the clear December morning, and at length the numerous steeples of London, with St. Paul&#x27;s towering above all—that great city which would bear witness to labours far darker than any its ancient stones had known.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="A Blasted Tree&#x27;s Bitter Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1126,7 +1268,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>I traversed the northern highlands and fixed upon one of the remotest Orkneys as the scene of my labours—a desolate rock whose barren soil scarcely afforded pasture for a few miserable cows, inhabited by five gaunt souls whose very senses seemed benumbed by want. There I hired a wretched hut and devoted my mornings to the filthy process of creation, my evenings to walking the stony beach, listening to waves that roared like a giant ocean beside which Switzerland&#x27;s troubled lakes seemed but the play of a lively infant. As my labour advanced, it grew daily more horrible; where once enthusiastic frenzy had blinded me to the horror of my employment, now I went to it in cold blood, my heart sickening at the work of my hands, my spirits unequal, my nerves stretched to breaking—whilst obscure forebodings of evil mingled with my tremulous hope of completion.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="The Promise Broken at Moonrise illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1142,7 +1284,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After hours of torment and terror, land appeared on the horizon, and I steered my failing vessel toward a small Irish town, my heart swelling with gratitude for this unexpected deliverance. Yet the reception that awaited me proved far from hospitable; the townsfolk gathered with expressions of suspicion and anger, and I was conducted forthwith to the magistrate to give an account of myself regarding a gentleman found murdered the previous night. Though innocent, I could not have foreseen the calamity about to descend upon me—one that would extinguish all lesser fears in an overwhelming flood of horror and despair, the details of which require all my fortitude to recall.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Death of Henry Clerval illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1160,7 +1302,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One duty alone recalled me from the abyss: the necessity of returning to protect those I loved and, should fate permit, to destroy the monstrous creation that had blighted all my days. We took passage upon a vessel bound for France, and as Ireland receded into darkness, I lay upon the deck beneath the stars, my memories unspooling like a dreadful tapestry from Geneva to Ingolstadt to this present ruin, until I wept bitterly and sought oblivion in a doubled dose of laudanum. Even sleep brought no respite—nightmares of the fiend&#x27;s grasp upon my throat pursued me until my father&#x27;s watchful presence drew me back to waking, where a fragile calm settled upon my spirit, that peculiar truce the mind constructs between present misery and the inexorable catastrophe yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="The Burden of Unspoken Guilt illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1177,7 +1319,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The wedding was performed, and Victor and Elizabeth embarked upon the lake toward Evian, where they would spend their first night as husband and wife. The day was fair, the mountains sublime, and for those fleeting hours upon the water, Victor tasted something like happiness. Yet as the sun sank beneath the horizon and they touched the shore at Evian, those cares and fears revived within him—presentiments of the horror that would soon clasp him and cling to him forever.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="The Creature&#x27;s Deadly Wedding Night Vengeance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1195,7 +1337,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Enraged and rebuffed, Victor departed with a resolution hardening in his breast—if society would not pursue his destroyer, he would undertake the hunt himself, devoting whatever remained of his shattered existence to the Creature&#x27;s annihilation, a pursuit that would now carry him beyond the boundaries of civilized lands and into the frozen wastes of the unknown world.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_25.webp"><img class="chapter-image" src="images_cinematic/chapter_25.webp" alt="A Vow of Vengeance Begins illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1376,6 +1518,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

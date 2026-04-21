@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="anime" data-sibling-href="index.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Scarred Stranger Seeks Refuge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -803,7 +927,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But peace, as we would soon discover, was not destined to last at the Admiral Benbow—for the one-legged man of my nightmares was not the only ghost from the captain&#x27;s past still walking the earth, and darker visitors were already making their way toward our door.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="A Stranger&#x27;s Sinister Ambush illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -827,7 +951,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But even as the captain lay senseless above, I could not shake the feeling that Black Dog&#x27;s visit was merely the beginning of darker troubles yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="A Dying Man&#x27;s Desperate Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -846,7 +988,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Though I had never liked the man, I burst into tears—my second death in days, with the sorrow of the first still raw upon my heart, and darker troubles yet gathering on the horizon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="A Mother&#x27;s Courage and the Dead Man&#x27;s Key illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -864,7 +1006,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>We had barely reached the little bridge when my mother&#x27;s strength failed utterly. Somehow I dragged her beneath the stone arch, though it scarce allowed me to crawl, and there we lay—hidden, yet horribly exposed—as running footsteps and a bobbing lantern bore down upon the Admiral Benbow, bringing with them whatever fate awaited those who had dared open the dead captain&#x27;s chest.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="The Blind Beggar&#x27;s Desperate Rage illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -886,7 +1028,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>I returned with him to survey the Admiral Benbow, and never had I seen such destruction. Yet when Mr. Dance inquired what the villains had truly sought, I touched the packet resting against my heart and confessed I believed I carried it still. We agreed that Dr. Livesey, being both gentleman and magistrate, was the proper man to receive it. And so I was mounted behind Dogger, and our party struck out at a bouncing trot toward the doctor&#x27;s house, carrying with us the mysterious object for which men had already died—and for which, I suspected, many more would risk their lives before our tale was done.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="The Oilskin Packet Reveals Its Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -906,7 +1048,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The squire solemnly swore to be as silent as the grave, and with that oath hanging in the air, our adventure took its first steps toward the open sea and whatever dangers awaited us there.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="A Crew of Old Salts Assembled illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -930,7 +1072,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And with that single word, the dreams of weeks became the reality of hours, and whatever dangers awaited aboard the *Hispaniola* drew one day closer.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Black Dog Appears and Disappears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -949,7 +1091,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And with that settled, the doctor asked whether Jim might come aboard with them to see the ship—a question the squire answered with ready enthusiasm, bidding the boy fetch his hat so they might inspect the schooner together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="A Captain&#x27;s Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -968,7 +1110,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet as the *Hispaniola* made ready to sail, I could not shake the captain&#x27;s warning from my thoughts: life or death, and a close run.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="Setting Sail with Silver&#x27;s Song illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -985,7 +1127,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>On the eve of sighting Treasure Island, Hawkins craved an apple and climbed into the nearly empty cask. Lulled by rocking waves, he had almost drifted to sleep when a heavy man sat down hard against the barrel—and began to speak. It was Silver&#x27;s voice, and within a dozen words the boy understood a dreadful truth: the lives of every honest soul aboard now rested entirely upon what he had just overheard.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="Silver&#x27;s Dark Confession in the Hold illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1005,7 +1147,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then moonlight spilled through the barrel&#x27;s seams, silvering the world above, and a voice rang out from the masthead with words that would set everything in motion: *Land ho!*</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="Land Ho, Secrets Below illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1023,7 +1165,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What followed was a council of grim arithmetic. We could not turn back lest the mutineers rise at once, yet neither could we strike until we knew which men remained faithful. Seven souls we might count upon against nineteen villains, and of those seven, one was merely a boy. We must watch and wait, the captain declared, keeping a bright lookout until the moment came to seize the advantage. And so the fate of our small company was settled—though none could say what desperate measures that shore ahead might demand of us.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="A Grim Arrival at Treasure Island illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1043,7 +1185,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What I discovered in that strange wilderness would shake everything I thought I knew about the men we hunted and the dangers that awaited us all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="A Death Cry in the Marsh illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1061,7 +1203,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Terror seized him completely, and he fled through the trees as fast as his legs could carry him, running blindly toward the foot of the two-peaked hill, where the air grew fresher and the oaks stood tall as forest trees—until a fresh alarm stopped him cold, his heart pounding against his ribs.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="Ben Gunn&#x27;s Lonely Island Refuge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1080,7 +1222,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Our conference ended abruptly when cannon-fire shattered the island&#x27;s silence. Forgetting my terrors entirely, I ran toward the anchorage with Ben Gunn trotting easily at my side, his goatskins flapping as he chattered ceaselessly about goats and graveyards and prayers. A volley of small arms followed, and then—not a quarter mile before us—I beheld the Union Jack fluttering bravely above the trees, beckoning me onward toward whatever desperate stand my companions had made within the stockade.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="The Stockade and the Death Cry illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1101,7 +1243,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They shoved off with their unexpected addition, clear of the ship at last—though the safety of the stockade remained a dangerous stretch of water away.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="Desperate Crossing Under Enemy Fire illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1122,7 +1264,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now began the desperate race to reach the stockade before the pirates closed their trap around us.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="The Flag Rises, Redruth Falls illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1143,7 +1285,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then a hail sounded from the landward side, and I ran to the door just in time to see Jim Hawkins himself come climbing safe and sound over the stockade, bringing with him whatever strange tale had kept him from our company.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="Ben Gunn&#x27;s Warning and the Bombardment illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1160,7 +1302,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After burying Redruth at sunset and sharing a meal of pork and brandy grog, the three leaders confer. Their stores are desperately low, and their only hope lies in whittling down the buccaneers until they surrender or flee aboard the Hispaniola. Rum and marsh fever, they reckon, will do half the work for them. Exhausted, Jim finally sleeps like a log—only to be roused the next morning by a cry that brings him scrambling to the loophole: a flag of truce approaches, and at its head stands none other than Long John Silver himself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="Silver&#x27;s Parley at the Stockade illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1182,7 +1324,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>He stumbled away through the sand, was helped over the stockade, and vanished among the trees, leaving us to prepare for the storm that was surely coming.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="The Stockade Under Siege illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1209,7 +1351,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But as we caught our breath in that blood-stained shelter, none of us could know what desperate adventure awaited beyond those log walls.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_22.webp"><img class="chapter-image" src="images_anime/chapter_22.webp" alt="A Reckless Escape Into the Woods illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1229,7 +1371,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>I ate my biscuits and waited for absolute blackness. When at last I shouldered the coracle and waded through the swampy sand to the retreating tide, only two points of light remained visible—the pirates&#x27; fire on shore and the dim glow from the ship&#x27;s cabin reflecting on the fog—as I set my fragile craft upon the dark water and pushed off toward whatever fate awaited me.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_23.webp"><img class="chapter-image" src="images_anime/chapter_23.webp" alt="A Coracle&#x27;s Wild Drift to the Ship illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1249,7 +1391,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When dawn came, I would discover just how far the current had carried me, and what strange fate awaited aboard that drifting ship.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_24.webp"><img class="chapter-image" src="images_anime/chapter_24.webp" alt="Adrift Among Waves and Sea Lions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1268,7 +1410,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>He clung there panting, without retreat, alone upon the decks of the *Dolorosa*—and whatever fate awaited him aboard.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_25.webp"><img class="chapter-image" src="images_anime/chapter_25.webp" alt="Blood and Brandy on the Hispaniola illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1291,7 +1433,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Whatever bargain we had struck, I knew I could not trust Israel Hands—and as the northern point of the island drew near, I felt certain that before this voyage ended, one of us would have to reckon with the other.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_26.webp"><img class="chapter-image" src="images_anime/chapter_26.webp" alt="A Deadly Game of Wits illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1312,7 +1454,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now, with blood running from his wound and his enemy vanquished, Jim faced a new struggle: freeing himself from the mast and finding a way back to his companions with the ship secured at last.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_27.webp"><img class="chapter-image" src="images_anime/chapter_27.webp" alt="Jim&#x27;s Victory at Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1335,7 +1477,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A brand flared to life, and I found myself a prisoner among the very pirates I had fought so hard to escape.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_28.webp"><img class="chapter-image" src="images_anime/chapter_28.webp" alt="Pirates&#x27; Bargain and Silver&#x27;s Offer illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1357,7 +1499,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As Silver took another pull of brandy, shaking his great head like a man peering into his own grave, the pirates&#x27; muffled voices drifted through the blockhouse walls—and whatever verdict they reached would determine whether Jim Hawkins lived to see another dawn.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_29.webp"><img class="chapter-image" src="images_anime/chapter_29.webp" alt="The Pirates&#x27; Mutiny Fails illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1383,7 +1525,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The morning would bring the hunt for Flint&#x27;s treasure, and with it, answers to questions Jim dared not yet ask.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_30.webp"><img class="chapter-image" src="images_anime/chapter_30.webp" alt="The Doctor&#x27;s Dangerous Visit illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1403,7 +1545,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With a firm handshake through the stockade timbers, the doctor bade me farewell and strode briskly into the forest, leaving me to wonder what help he intended to seek—and whether it would arrive before the pirates&#x27; patience ran out.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_31.webp"><img class="chapter-image" src="images_anime/chapter_31.webp" alt="The Uneasy Alliance Seeks Flint&#x27;s Gold illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1420,7 +1562,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A pall settled over the pirates. They spoke now in hushed tones of Flint&#x27;s terrible death, of his raging and singing *Fifteen Men* even as the death-haul gripped him. Silver silenced them at last and urged them forward, yet none ran ahead as before. They kept close together, voices bated, the terror of the dead buccaneer heavy upon their spirits—while somewhere ahead, the treasure and whatever squalls the doctor had foreseen still awaited.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_32.webp"><img class="chapter-image" src="images_anime/chapter_32.webp" alt="Flint&#x27;s Ghost Haunts the Hunt illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1444,7 +1586,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the pirates stood gaping at that empty pit, the next desperate moments would test whether any of them—or Jim—would leave this plateau alive.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_33.webp"><img class="chapter-image" src="images_anime/chapter_33.webp" alt="Ben Gunn&#x27;s Secret Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1466,7 +1608,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They destroyed one gig and sailed the other round to North Inlet, recovering the drifting *Hispaniola* along the way. At Ben Gunn&#x27;s cave, amid heaps of coin and bars of gold, they supped like kings while Captain Smollett rested by the fire. And there sat Silver at the edge of the firelight, eating heartily, laughing quietly—the same bland, obsequious seaman as ever, waiting to see which way the wind would blow next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_34.webp"><img class="chapter-image" src="images_anime/chapter_34.webp" alt="Gold, Farewell, and Marooned Mutineers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1646,6 +1788,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

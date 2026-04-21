@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_1.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_1.webp" alt="A Stranger Arrives in West Egg illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -794,7 +918,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later that night, Nick came home and saw someone standing outside Gatsby&#x27;s mansion. The man was looking across the dark water at a tiny green light glowing far away. Nick almost said hello, but the man seemed lost in his own thoughts. Then, just like that, the mysterious neighbor disappeared into the night.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_2.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_2.webp" alt="The Valley of Ashes and Its Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -806,7 +930,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Between West Egg and New York, there is a strange gray place called the valley of ashes. Everything there looks dusty and tired, like it needs a good rest. A big old sign shows a pair of giant blue eyes behind glasses, watching over everything like a sleepy owl. One day, Tom made Nick get off the train to visit a little garage in this gray valley. A quiet man named George Wilson lived there with his wife Myrtle. Myrtle was friendly and bold, and she decided to ride into the city with Tom and Nick. In New York, Myrtle bought a magazine and some nice things that smelled pretty. She even got a little puppy from an old man on the street! They all went to a small apartment where Myrtle invited her sister and some neighbors to visit. The afternoon got long and lazy, with grown-ups talking and the summer sun shining through the windows.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_3.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_3.webp" alt="Whispers and Pretensions in the City illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -819,7 +961,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Myrtle put on a fancy cream-colored dress and started acting very different from before. She laughed loudly and waved her hands around. Everyone talked about silly things like doctors and dresses and pictures. Catherine whispered that Tom and Myrtle wanted to be together, but Nick knew some of what she said was not true. As the night went on, Myrtle said something that made Tom very angry. He hurt her, and the party ended badly. Nick left feeling confused and a little sad. He kept thinking about his mysterious neighbor Gatsby and the glowing lights across the water.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_4.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_4.webp" alt="Gatsby&#x27;s Mysterious Past Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -832,7 +974,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Most people just showed up without being asked, but Nick received a special invitation signed by Jay Gatsby himself. At the party, Nick felt a little lost among all the strangers until he found his friend Jordan. They wondered together about the mysterious Gatsby. Nobody seemed to know much about him. Then Nick met a friendly young man and they talked and smiled together. Suddenly the man said, &quot;I&#x27;m Gatsby.&quot; His smile was so warm and kind that Nick felt like they were already good friends. Gatsby stood watching his party quietly, making sure everyone was having a wonderful time.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_5.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_5.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -846,7 +988,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Nick&#x27;s friend Jordan told him a lovely secret. A long time ago, Gatsby and Daisy had been very special friends. They cared about each other so much. But then Gatsby had to go away, and Daisy married someone else. Now Gatsby lived right across the water from Daisy&#x27;s house. He threw all those sparkly parties just hoping she might come visit someday. All Gatsby really wanted was to see Daisy again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_6.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_6.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -860,7 +1002,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But soon the rain stopped and sunshine came through the clouds. Nick came back inside and saw Gatsby and Daisy smiling at each other like old friends again. Then Gatsby showed Daisy his beautiful house with all its fancy rooms. He even tossed colorful shirts in the air, and Daisy laughed with happy tears. They looked at the green light across the water together, and Gatsby felt so glad she was finally there with him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_7.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_7.webp" alt="The Invention of Jay Gatsby illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -873,7 +1015,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now Gatsby lived in a grand house and threw wonderful parties. People told all kinds of stories about him, some true and some made up. One night, Daisy came to visit his party with her husband Tom. Gatsby watched her the whole time, hoping she would love his world. Later, Gatsby told Nick he believed he could bring back the happy old days. But some things from long ago are like fireflies—beautiful to remember but hard to catch again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_8.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_8.webp" alt="The Hottest Day&#x27;s Simmering Tensions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -886,7 +1028,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They all decided to drive into the city together. At a hotel room, Tom and Gatsby had a big argument. They said unkind things to each other. Daisy felt very confused and sad. She did not know what to do. Everyone&#x27;s feelings were hurt that day. On the way home, something very sad happened. A woman got hurt by a car on the road. Later that night, Nick found Gatsby standing alone outside in the moonlight. Gatsby looked at Daisy&#x27;s house, hoping everything would still be okay.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_9.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_9.webp" alt="The Long Secret Finally Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -900,7 +1042,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Nick had to leave, but he turned back to say something kind. He told Gatsby he was a good person, better than all the others. Gatsby smiled his wonderful smile, and for a moment they understood each other perfectly. Later that day, something very sad happened, and Gatsby was gone forever.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_10.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_10.webp" alt="The Loneliness of the Aftermath illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1074,6 +1216,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

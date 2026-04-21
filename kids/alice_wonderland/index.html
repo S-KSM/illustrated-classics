@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_1.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_1.webp" alt="Curiosity Plunges Into the Unknown illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -793,7 +917,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Alice fell down, down, down for a very long time. The hole had shelves with books and jars and pictures on the walls. She had time to think about her cat Dinah and wonder silly things. Then she landed softly on a pile of leaves. She found a hall full of locked doors and a beautiful little key. Through a tiny door, she saw the prettiest garden with flowers and fountains. But she was too big to fit through! She found a bottle that said &quot;DRINK ME&quot; and it made her shrink down small. Then she found a cake that said &quot;EAT ME&quot; and wondered what would happen next.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_2.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_2.webp" alt="Growing and Shrinking Through Salty Tears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -806,7 +930,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then the White Rabbit hurried by, looking very worried and carrying a fan and gloves. When Alice tried to talk to him, he got scared and ran away, leaving his things behind. Alice picked up the fan and started fanning herself. Something magical happened—she began shrinking! She got smaller and smaller until she slipped right into her own puddle of tears. She swam and swam until she met a Mouse paddling nearby. Alice tried to be friendly, but she kept talking about cats, which made the Mouse upset. Soon more animals joined them in the water—a Duck, a Dodo, and many others. They all swam together toward the shore to see what would happen next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="chapter" id="chapter-3" data-num="3" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_3.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_3.webp" alt="Everybody Wins and All Get Prizes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -820,7 +944,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Alice talked about her cat Dinah back home. But this made the birds nervous, and they all flew away. Poor Alice felt lonely and began to cry softly. Then she heard little footsteps coming closer, and she looked up hopefully.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_4.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_4.webp" alt="Too Large for the Rabbit&#x27;s House illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -834,7 +958,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Rabbit and his friends tried to get Alice out. Finally, Alice found some little cakes and ate one. She shrank down small again and ran away into the woods. There she rested by a buttercup and spotted something curious nearby. A big blue caterpillar sat very still on top of a tall mushroom.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_5.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_5.webp" alt="Questions of Size and Self illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -848,7 +972,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Before crawling away, the Caterpillar told Alice something useful. One side of the mushroom would make her grow. The other side would make her shrink. Alice nibbled carefully at both pieces. After some tries, she got back to her right size. She felt so glad! Now she could keep looking for that beautiful garden.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_6.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_6.webp" alt="Chaos, Cheshire Grins, and Flying Crockery illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -862,7 +986,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then Alice met the wonderful Cheshire Cat, sitting in a tree with the biggest smile. The Cat told her everyone here was mad, even himself! He could disappear bit by bit, leaving only his grin floating in the air. Alice thought that was the most curious thing she had ever seen!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_7.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_7.webp" alt="Riddles, Rudeness, and Endless Tea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -876,7 +1000,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Finally Alice had enough of their silliness. She walked away into the woods. Then she found a little door in a tree. She stepped through and found herself back in the hall with the tiny golden key. This time she nibbled some mushroom and became just the right size. At last she could go into the beautiful garden!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_8.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_8.webp" alt="Painted Roses and Royal Fury illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -890,7 +1014,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then Alice played the silliest croquet game ever. The balls were curly hedgehogs that walked away. The mallets were wiggly flamingoes that kept looking around. Nobody followed any rules and everyone played at the same time. The Cheshire Cat appeared with just his floating head and smiled at all the silliness. What a topsy-turvy day in Wonderland!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_9.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_9.webp" alt="Morals, Mustard, and the Mock Turtle illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -903,7 +1027,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Queen asked if Alice had met the Mock Turtle yet. Alice had never heard of him! The Queen took Alice to meet a Gryphon sleeping in the sunshine. The Gryphon brought Alice to the Mock Turtle, who sat sighing sadly on a rock. He told Alice all about his school under the sea, where he learned funny subjects like Reeling and Writhing and Mystery instead of reading and writing and history. His lessons got shorter every day until there was a holiday!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_10.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_10.webp" alt="Dancing with Lobsters by the Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -916,7 +1040,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The two friends tried to explain this silly sea dance. There were seals and turtles and salmon all in lines. Everyone had a lobster partner! They would toss the lobsters into the waves and swim after them. It sounded very mixed up and wonderful. Then they danced around Alice and sang a song. The song asked a snail to come and dance. It went &quot;will you, won&#x27;t you, will you, won&#x27;t you&quot; over and over again. Next they made jokes about fish and shoes that made Alice giggle. The Mock Turtle started singing about beautiful soup, but suddenly someone shouted that a trial was starting! The Gryphon grabbed Alice&#x27;s hand and off they ran together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_11.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_11.webp" alt="A Courtroom of Nonsense and Tarts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -929,7 +1053,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Alice had never been to a real court before, but she knew what everything was from her books. There was a jury box filled with twelve funny creatures all writing on slates. They were writing down their own names so they would not forget them! Alice thought this was very silly. The White Rabbit read out that the Knave had stolen the Queen&#x27;s tarts. Then the Mad Hatter came to tell what he knew, but he just talked about tea and got very confused. Alice started to feel strange because she was growing bigger again! Finally the White Rabbit called out the next name, and Alice got a big surprise. The name he called was hers!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="true">
     <figure class="chapter-figure" data-full="../../alice_wonderland/images_anime/chapter_12.webp"><img class="chapter-image" src="../../alice_wonderland/images_anime/chapter_12.webp" alt="Alice Defies the Court&#x27;s Absurd Justice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1102,6 +1226,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

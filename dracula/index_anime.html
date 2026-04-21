@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="anime" data-sibling-href="index.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="Eastward Into the Land of Superstition illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -801,7 +925,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus delivered to his destination, Harker stands at the threshold of horrors his orderly solicitor&#x27;s mind has not yet begun to fathom, though the weight of the crucifix against his chest suggests that some deeper instinct already knows what awaits within those silent walls.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="Threshold of the Castle&#x27;s Master illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -819,7 +943,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>I have explored what I can. The castle perches on the edge of a precipice a thousand feet above forested gorges, and every door I try is locked fast. I am all in a sea of wonders; I doubt, I fear, I think strange things I dare not confess even to my own soul. The castle is a veritable prison, and I am a prisoner—though what darker purpose my host intends for me, I cannot yet fathom, and perhaps dare not imagine.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="Prisoner in the Castle of Shadows illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -836,7 +978,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>He wakes in his own bed, the nightmare clinging to him with the persistence of memory rather than dream, knowing now that the perils of this castle extend far beyond his host—and that his usefulness alone preserves his life.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="The Span of My Life illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -855,7 +997,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, with nothing but desperate resolve and the faint hope of God&#x27;s mercy, I prepare to cast myself upon whatever fate awaits beyond these accursed walls.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Letters of Love and Longing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -873,7 +1015,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet beneath these celebrations of love declared and friendships preserved, shadows are quietly gathering, and Jonathan Harker&#x27;s promised return from Transylvania remains conspicuously unrealized.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="Whitby&#x27;s Ruins, Legends, and Old Sailors illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -889,7 +1031,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the chapter closes, Mina&#x27;s anxieties multiply. Jonathan&#x27;s silence has stretched to weeks, broken only by a single strange line from Castle Dracula announcing his departure—words that somehow fail to sound like him at all. Lucy has resumed her old habit of sleepwalking, trying doors in the night, searching endlessly for keys. And upon the horizon, steering erratically as though no living hand guides her helm, a Russian ship approaches through the gathering storm.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="The Storm-Tossed Ship at Whitby illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -907,7 +1049,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Mina watched Lucy&#x27;s reaction to these accumulated horrors with growing unease, knowing her friend&#x27;s sensitive nature would transform them into troubled dreams; and yet she could not know that the darkness which had arrived with the *Demeter* had only begun to work its influence upon them all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Moonlit Search for the Sleepwalker illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -924,7 +1066,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And indeed, something was coming—something that had already begun its work upon Lucy, whose mysterious decline would soon demand explanations that no safety-pin could provide.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="Vows at the Bedside illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -940,7 +1082,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With Van Helsing summoned urgently back to London and Lucy&#x27;s condition worsening by the hour, the scattered threads of journal and letter begin to draw together, hinting that the horrors Jonathan could not name may have followed him home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="The Husbandman&#x27;s Patience illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -957,7 +1099,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As they depart Hillingham that night, the Professor speaks of peaceful sleep at last, confident in his preparations. But Seward, remembering how his own confidence of two nights before had ended in disaster, feels only dread settling upon him like unshed tears—a foreboding that whatever darkness stalks Lucy Westenra has not yet finished its work.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="Garlic Removed, Darkness Returns illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -975,7 +1117,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As Seward hastens belatedly toward London, the reader understands with mounting horror what awaits him at Hillingham.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="A House of Death and Desperate Hope illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -993,7 +1135,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, as Lucy&#x27;s body lay still in death yet somehow altered, the threads of a darker design continued weaving themselves together, drawing ever closer to a revelation that would shatter all rational understanding of the horrors yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="Death&#x27;s Beauty and Dark Preparations illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1010,7 +1152,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The chapter closes with Seward declaring his diary finished, Lucy now laid to rest in her family&#x27;s marble tomb in Hampstead. Yet the newspapers tell of children going missing on the Heath, lured away by a &quot;bloofer lady,&quot; each returning with small wounds upon the throat—and as these strange reports multiply, it becomes clear that whatever darkness surrounded Lucy Westenra has not been buried with her at all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="Threads of Truth Begin to Weave illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1026,7 +1168,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>It falls to Dr. Seward&#x27;s diary to record what Van Helsing makes of this intelligence. Returning to London in a state of barely contained agitation, the professor confronts his former pupil with a philosophical challenge: to believe in things that lie beyond the comfortable boundaries of science and reason. The children&#x27;s wounds, he insists, were not made by the same creature that attacked Lucy. They were made *by* Lucy herself—a revelation that leaves Seward reeling and the reader bracing for the darker truths yet to be unveiled.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="The Bloofer Lady Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1045,7 +1187,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so the four men prepare to descend once more into Lucy&#x27;s tomb, where the evidence of their own senses must at last confront the horror that rational minds have laboured so desperately to deny.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="The Empty Coffin&#x27;s Vigil illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1063,7 +1205,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Van Helsing, however, reminded them that a greater task remained: to find the author of all this sorrow and stamp him out. Each man took his hand and pledged himself to the bitter end. Two nights hence, they would meet for dinner and council, and the Professor would introduce two others not yet known to them—for their true hunt was only now beginning.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="Diaries, Phonographs, and Shared Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1079,7 +1221,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>By evening, all materials stood ready, awaiting only Van Helsing&#x27;s return to commence their council of war against the Count.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Renfield&#x27;s Unexpected Lucidity illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1097,7 +1239,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What dark knowledge Renfield concealed, and what horrors awaited the men within the crumbling walls of Carfax, would soon enough reveal themselves in the chapters to follow.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="The Hunt Begins at Carfax illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1117,7 +1259,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But I cannot help wondering, as I set down these words, whether something far more sinister transpired while we were occupied at Carfax—and whether our determination to shield Mina from further involvement has, in truth, left her terribly exposed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="The Hunt for Dracula&#x27;s London Lairs illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1134,7 +1276,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Van Helsing declared our day&#x27;s work significant progress, though the question of how to enter the Piccadilly house without attracting notice remains unresolved. We sat smoking in the study, discussing our options, when a wild yell echoed from Renfield&#x27;s room—the attendant found him face-down on the floor, covered in blood.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="Renfield&#x27;s Final Testimony illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1153,7 +1295,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But as the first red streak of morning light crept across the sky, I watched Jonathan Harker&#x27;s face grow grey and his hair whiten before my very eyes, and I knew with terrible certainty that the sun rises today upon no more miserable house in all its daily course—and that whatever desperate action we must take, it cannot come soon enough.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_22.webp"><img class="chapter-image" src="images_anime/chapter_22.webp" alt="The Living Must Not Die illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1171,7 +1313,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With solemn oaths sworn and farewells spoken, the company proceeds first to Carfax, where they place portions of the Host in each of the earth-boxes, rendering them useless to their enemy. Then onward to Piccadilly, where Lord Godalming and Morris engage a locksmith whilst the others wait in Green Park. The entry accomplished without incident, they discover eight boxes of earth—one fewer than expected—along with papers revealing the Count&#x27;s other properties and a basin of water reddened with blood. Godalming and Morris depart with the keys to destroy the remaining lairs at Mile End and Bermondsey, whilst the others keep vigil in that vile-smelling house, waiting either for their companions&#x27; return or for the arrival of the Count himself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_23.webp"><img class="chapter-image" src="images_anime/chapter_23.webp" alt="The Monster&#x27;s Growing Mind illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1190,7 +1332,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Van Helsing&#x27;s words after she woke fell upon us like a sentence: we must pursue him to the very jaws of Hell if necessary, for though he might live centuries, Mina was but mortal woman—and the mark upon her throat meant time itself had become our enemy.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_24.webp"><img class="chapter-image" src="images_anime/chapter_24.webp" alt="The Hunt Turns Toward Transylvania illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1209,7 +1351,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As sunset approaches once more, bringing with it fresh anxieties and the terrible rhythm of Mina&#x27;s communion with their enemy, the company prepares to depart for Varna—racing overland to intercept a ship bearing ancient evil home to its mountain fastness.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_25.webp"><img class="chapter-image" src="images_anime/chapter_25.webp" alt="Mina&#x27;s Solemn Oath of Sacrifice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1227,7 +1369,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so the company prepared to pursue him into the dark heart of his own land, armed with knowledge, faith, and terrible resolve, racing against time itself as the monster hastened toward his Transylvanian lair.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_26.webp"><img class="chapter-image" src="images_anime/chapter_26.webp" alt="The Race to Galatz illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1244,7 +1386,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The company scatters into the gathering cold, armed and provisioned, each party racing against time and the shortening days, whilst somewhere ahead, borne by Slovak boatmen along the Bistritza&#x27;s dark current, Dracula lies coffined and powerless in his earth-box—waiting only for nightfall or the sanctuary of his ancient fortress to rise once more.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_27.webp"><img class="chapter-image" src="images_anime/chapter_27.webp" alt="The Race to the Borgo Pass illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1420,6 +1562,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

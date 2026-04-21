@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_1.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_1.webp" alt="Eastward Into the Land of Superstition illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -793,7 +917,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Jonathan stops at a little hotel, the kind people there seem worried about him. An old woman gives him a special necklace to keep him safe. She asks him to please stay, but Jonathan has made a promise to visit the Count. He must keep going. On the bumpy coach ride through the mountains, the other passengers look nervous. They give Jonathan little gifts and wave goodbye. Then a strange tall man in a dark carriage comes to take Jonathan the rest of the way. The horses gallop through the night under the bright moon. At last, they arrive at a huge old castle high on a hill. Jonathan feels a little scared but also very curious about what he will find inside.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_2.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_2.webp" alt="Threshold of the Castle&#x27;s Master illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -806,7 +930,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then he heard footsteps behind the heavy door. Chains rattled and locks clicked open. A tall old man dressed all in black stood there holding a glowing lamp. This was Count Dracula. He smiled and welcomed Jonathan inside with a very strong handshake. The Count carried Jonathan&#x27;s bags up winding stairs to a cozy room with a warm fire and yummy food waiting. The Count was very polite, but something about him made Jonathan feel a little uneasy. Outside, wolves howled in the mountains. The Count smiled and called them the children of the night. Over the next few days, they talked about a house the Count wanted to buy in England. Jonathan noticed some odd things about the castle and wondered what adventures awaited him there.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_3.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_3.webp" alt="Prisoner in the Castle of Shadows illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -820,7 +962,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One night, Jonathan saw something he could not believe. The Count climbed out a window and crawled down the castle wall like a lizard. His cape spread out like wings. No person could do that. Jonathan felt a shiver. What kind of creature was the Count? He did not know, but he knew he must be very, very careful.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_4.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_4.webp" alt="The Span of My Life illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -833,7 +975,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jonathan tried to send letters home to his friends and to Mina, the person he loved most. He asked some travelers to help mail them. But the Count found the letters and took them away. This made Jonathan feel very sad and lonely. He missed Mina so much and wanted to go home. The castle felt like a trap, and Jonathan knew he had to find a way out. He decided to be very brave and try to climb down the tall castle wall. He hoped with all his heart that he would see Mina and his friends again soon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_5.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_5.webp" alt="Letters of Love and Longing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -846,7 +988,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Lucy writes back with exciting news. She is in love with a man named Arthur. But something funny happened to her. Three different men asked to marry her all in one day! The first was a kind doctor named John. The second was a friendly American named Quincey who told amazing adventure stories. Lucy liked them both very much, but her heart belonged to Arthur. She said no to John and Quincey in the gentlest way she could. Then Arthur came to visit, and they decided to get married. Lucy felt so happy she could burst. John and Quincey were sad, but they stayed good friends with Arthur. The three men even planned to celebrate together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_6.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_6.webp" alt="Whitby&#x27;s Ruins, Legends, and Old Sailors illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -858,7 +1000,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Mina travels to a pretty seaside town called Whitby to visit her best friend Lucy. The town has red roofs and an old stone abbey on a hill. Mina loves to write in her journal about everything she sees. In the churchyard, she meets a very old sailor named Swales who tells funny stories about the sea. He likes to joke about the old gravestones and the sailors who went on long adventures. But one foggy day, Swales feels different. He is quiet and gentle, and he looks out at the grey sea like he is waiting for something. Mina starts to worry because she has not heard from her friend Jonathan in a long time. Lucy has been walking in her sleep again, wandering through the house at night. And far out on the stormy water, a strange ship is sailing toward the town, rocking back and forth in the waves.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_7.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_7.webp" alt="The Storm-Tossed Ship at Whitby illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -871,7 +1013,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A big dog jumped off the ship and ran away into the night. No one ever saw it again. The ship was called the Demeter, and it had come from far away. It carried many large wooden boxes filled with dirt. Mina wrote about the exciting night in her journal. She was a little worried about her dear friend Lucy, who had been feeling restless and could not sleep well. Strange things were happening in their quiet seaside town, and Mina wondered what would come next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_8.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_8.webp" alt="Moonlit Search for the Sleepwalker illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -884,7 +1026,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One night, Mina woke up and found Lucy&#x27;s bed empty. She hurried outside in the moonlight to look for her friend. She ran across the bridge and up the long stone steps to the old churchyard where they liked to sit together. There was Lucy, lying on their favorite bench in the silvery light. Mina wrapped her up in a warm shawl and gently walked her home. Lucy had been sleepwalking again. In the morning, Lucy seemed fine, though Mina noticed two tiny marks on her neck. As the days went by, Lucy kept sleepwalking toward the window at night, and she started looking pale and tired. Mina worried about her dear friend. Then wonderful news came in a letter—Mina&#x27;s sweetheart Jonathan had been very sick far away, but he was getting better. Mina would travel to see him soon, her heart full of hope.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_9.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_9.webp" alt="Vows at the Bedside illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -897,7 +1039,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Back home, their friend Lucy seemed happy at first. She went on walks and felt well. But soon Lucy started feeling tired and had bad dreams she could not remember. She felt weaker and weaker. Her friends called a doctor to help her. The doctor was puzzled, so he asked a wise teacher named Van Helsing to come look at Lucy. Van Helsing said this was very serious. Everyone hoped Lucy would get better soon, but they were all very worried about her.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_10.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_10.webp" alt="The Husbandman&#x27;s Patience illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -911,7 +1053,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Lucy starts to feel better, but then she gets sick again. Van Helsing brings sweet-smelling flowers called garlic and puts them all around her room and near her bed. He says the flowers will keep her safe while she sleeps. Seward thinks this is very odd, but he trusts his old teacher. As night falls, Seward hopes the garlic flowers will protect Lucy, but he still feels worried about what might happen next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_11.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_11.webp" alt="Garlic Removed, Darkness Returns illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -926,7 +1068,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>That night, Lucy has a very scary time. Her window breaks, and her mother gets so frightened that she becomes very ill. Lucy feels alone and afraid, but she is brave and writes a letter to the people she loves.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_12.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_12.webp" alt="A House of Death and Desperate Hope illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -939,7 +1081,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Lucy was still alive, but she needed help right away. A brave friend named Quincey came just in time and gave some of his blood to help her feel stronger. Arthur, who loved Lucy very much, came to sit beside her and hold her hand. Lucy smiled at her friends and thanked them for being so kind to her. She asked them to take care of each other. Then Lucy closed her eyes and fell into a peaceful, forever sleep. Her friends were very sad, but they stayed together and promised to be brave.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_13.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_13.webp" alt="Death&#x27;s Beauty and Dark Preparations illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -953,7 +1095,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Far away in London, Mina and Jonathan were also feeling sorrowful. Jonathan saw someone on the street who frightened him very much. Mina held his hand and decided she would help him feel brave again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_14.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_14.webp" alt="Threads of Truth Begin to Weave illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -966,7 +1108,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then a letter arrives from a kind professor named Van Helsing. He knew their dear friend Lucy, who got sick and passed away. He asks to visit Mina because he has important questions. When he reads Jonathan&#x27;s journal, something wonderful happens. Van Helsing tells Mina that Jonathan was telling the truth all along. Jonathan feels so much braver after hearing this. The professor leaves with their papers, ready to learn more about the mystery they are all trying to solve together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_15.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_15.webp" alt="The Bloofer Lady Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -979,7 +1121,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>That night, the two friends went to the quiet churchyard where Lucy was supposed to be resting. But when they looked inside her special resting place, it was empty! Seward was very confused. Later, they found a little lost child wandering in the dark and made sure a kind policeman would find them. The next day, they came back and found Lucy there after all. She looked different now, like she was under a strange spell. Van Helsing said they needed to help free her, but first their friend Arthur had to come and see for himself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_16.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_16.webp" alt="The Empty Coffin&#x27;s Vigil illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -992,7 +1134,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The friends waited outside among the tall dark trees. Then they saw a white figure coming toward them in the moonlight. It was Lucy, but she looked different and unwell. Van Helsing knew just what to do. He held up a special golden cross, and Lucy went back inside to rest. The next day, Van Helsing and his friends came back. They said goodbye to Lucy with love in their hearts. Now her spirit could be at peace. Afterward, the sun was shining and birds were singing. The friends felt a little bit of hope again. But Van Helsing told them they still had more important work to do together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_17.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_17.webp" alt="Diaries, Phonographs, and Shared Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1005,7 +1147,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Seward met Mina at the train station. She was kind and friendly, and they both felt sad because they missed their dear friend Lucy. Mina brought a typewriter with her, which would help them a lot. She offered to type up Seward&#x27;s voice recordings if he would share the papers with her. They decided to trust each other and share their stories. Jonathan came back with news about some mysterious boxes that had arrived at an old building nearby. Mina typed copies of everything and put them in order. Two friends named Arthur and Quincey came to help too. Everyone felt better working together, and they waited for Van Helsing to return so they could make a plan.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_18.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_18.webp" alt="Renfield&#x27;s Unexpected Lucidity illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1019,7 +1161,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later that evening, Professor Van Helsing arrived. The friends all held hands and made a promise to help each other. They were a team now. Before they left on their adventure, Renfield begged them to let him go free. He seemed frightened about something he could not explain. The friends wondered what secret he was keeping.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_19.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_19.webp" alt="The Hunt Begins at Carfax illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1033,7 +1175,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The friends came home when the sun was coming up. Jonathan found Mina sleeping, but she looked very pale. When she woke up, she seemed scared, like she had a bad dream about fog and strange red lights. Jonathan worried about her and hoped she would feel better soon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_20.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_20.webp" alt="The Hunt for Dracula&#x27;s London Lairs illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1046,7 +1188,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Back at home, Mina was feeling tired and not sleeping well. Her friends worried about her and wanted to help. The wise old doctor named Van Helsing said everyone was doing good work finding the hiding places. There was still more to figure out, but the friends felt hopeful as they talked together that evening.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_21.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_21.webp" alt="Renfield&#x27;s Final Testimony illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1060,7 +1202,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Poor Mina was so scared and sad. The Count had done something strange to her that worried everyone very much. Jonathan woke up looking tired and pale. Their friends promised to keep them safe and stop the Count for good.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_22.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_22.webp" alt="The Living Must Not Die illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1074,7 +1216,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The group makes a plan to find all of the Count&#x27;s hiding places in the city. They will go during the daytime when it is safer. Lord Godalming helps them get into a big house where they find boxes of dirt and important papers. Some friends go to look for more hiding spots while the others wait and watch. They are all working together to keep each other safe.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_23.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_23.webp" alt="The Monster&#x27;s Growing Mind illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1088,7 +1230,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Mina had a special idea. She could close her eyes and feel where the Count was going. She heard water splashing and chains rattling. The Count was on a boat, sailing far away. Now the friends knew they had to follow him and finish their important work together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_24.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_24.webp" alt="The Hunt Turns Toward Transylvania illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1102,7 +1244,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The whole group gets ready for a big journey. They will take a train across many lands to catch up with the ship. Jonathan, Mina, Van Helsing, and all their good friends set off together, hoping to reach the Count before he gets home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_25.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_25.webp" alt="Mina&#x27;s Solemn Oath of Sacrifice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1115,7 +1257,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Soon the whole group took a long train ride to a faraway place called Varna. They were chasing the Count, who was traveling on a ship. Every morning and evening, Mina could somehow feel where the Count was. She told them about hearing water and waves. But then they got surprising news. The ship had gone to a different city called Galatz instead! The Count had tricked them. But clever Mina stayed hopeful and helped figure out what to do next. Now the friends were ready to chase the Count all the way back to his castle.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_26.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_26.webp" alt="The Race to Galatz illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1128,7 +1270,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When they arrived, everyone split up to search for clues. Jonathan and the others talked to a ship captain who told them about a strange journey with odd fogs and winds. Mina stayed behind and did something very clever. She looked at all the maps and papers and figured out which river the tricky man was using to get home. She is so smart and brave! Now the friends made a plan. Some would follow by boat, some would ride horses along the riverbank, and Van Helsing would travel with Mina through the mountains. Everyone was racing to catch up before it was too late.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="../../dracula/images_anime/chapter_27.webp"><img class="chapter-image" src="../../dracula/images_anime/chapter_27.webp" alt="The Race to the Borgo Pass illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1301,6 +1443,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

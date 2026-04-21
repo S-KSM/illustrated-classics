@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_1.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_1.webp" alt="Art&#x27;s Beautiful and Useless Truth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -792,7 +916,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>A clever writer once shared some special thoughts about art and beauty. He believed that people who make beautiful things, like painters and writers, have a very important job. They create lovely pictures and stories for everyone to enjoy. He thought that beautiful things do not need to teach us lessons or be useful like a hammer or a spoon. A painting can just be pretty, and that is enough. A story can just be exciting or dreamy, and that is wonderful too. He wanted people to look at art and feel happy or curious or amazed. The writer believed that making something beautiful takes great care and love. Artists work very hard to get everything just right. With these ideas about beauty and art, a new story is about to begin, full of interesting people and surprising things to discover.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_2.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_2.webp" alt="The Seduction of a Beautiful Soul illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -805,7 +929,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Lord Henry said it was wonderful work. But Basil did not want anyone else to see it. He felt he had put too much of his heart into the painting. The young man in the picture was named Dorian Gray. Basil told his friend how he met Dorian at a fancy party. From that very first moment, Basil knew Dorian was important. Dorian helped Basil paint better than ever before. He was like a wonderful friend who made everything feel exciting and new. Just then, someone knocked. The butler came in with surprising news. Dorian Gray had arrived and was waiting to see them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_3.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_3.webp" alt="Lord Henry&#x27;s Dangerous Philosophy Unveiled illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -818,7 +960,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Dorian listened carefully to every word Lord Henry said. When Basil finished the painting, Dorian looked at it and gasped. He had never seen how lovely he looked! But then he felt sad because he knew the painting would stay beautiful forever while he would grow older. Dorian wished very much that he could stay young like the picture. Basil worried that his friend was filling Dorian&#x27;s head with too many new ideas. Lord Henry invited Dorian to go to the theatre that evening, and the two of them left together while Basil stayed behind, feeling a little bit lonely.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_4.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_4.webp" alt="A Lineage of Beauty and Tragedy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -831,7 +973,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later that day, Lord Henry went to a fancy lunch party. Dorian was there too! Everyone talked and laughed around the big table. Lord Henry told funny stories and said clever things that made people smile. Dorian listened to every word with wide, wondering eyes. He thought Lord Henry was the most interesting person he had ever met. When lunch was over, Dorian asked Lord Henry to spend more time with him. Lord Henry smiled warmly and said yes.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_5.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_5.webp" alt="Sibyl Vane and the Theatre of Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -844,7 +986,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Dorian had exciting news to share with Harry. He had fallen in love with a girl named Sibyl Vane. She was an actress who performed in plays at a small theatre. Dorian thought she was wonderful and magical on stage. She played princesses and brave girls in beautiful stories. Every night, Dorian went back to watch her act. He wanted everyone to know how special she was. Harry said he would come see her perform too. Later that night, Harry got a surprise note. Dorian wanted to marry Sibyl! Everything was happening so fast.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_6.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_6.webp" alt="A Sister&#x27;s Dangerous Prince Charming illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -857,7 +999,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>James feels worried about his sister&#x27;s new sweetheart. He does not know this man&#x27;s real name, and he wants to make sure Sibyl will be safe and happy. He loves his sister very much and promises to always look out for her, even from far away. Sibyl just laughs and tells him not to worry. She believes everything will be wonderful. Then James says goodbye to his mother and climbs into a cab, ready to begin his big adventure across the sea.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_7.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_7.webp" alt="Love&#x27;s Sudden and Foolish Blossoming illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -870,7 +1012,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>His friend Basil felt worried because everything was happening so fast. But Dorian&#x27;s heart was so full of happiness that nothing could make him feel afraid. He talked and talked about Sibyl with sparkly eyes and a big smile. His other friend Harry listened and said clever things, but Dorian just kept feeling joyful. After dinner, they all rode in carriages through the bright city streets to see Sibyl perform at the theatre. Basil felt a little sad and quiet, but Dorian could only think about seeing the girl he loved.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_8.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_8.webp" alt="The Night Sibyl Vane&#x27;s Art Died illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -883,7 +1025,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After the show, Sibyl ran to meet him with a happy smile. She told him that love had changed everything for her. Acting felt pretend now, and his love felt real. But Dorian said something very unkind to her. He told her that without her wonderful acting, he did not love her anymore. Poor Sibyl cried and begged him to stay, but he walked away into the dark night. When Dorian came home at sunrise, he looked at his special portrait. Something about the face looked different now, a little bit cruel. It made him feel sorry for what he had done.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_9.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_9.webp" alt="The Portrait&#x27;s First Terrible Truth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -897,7 +1039,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But then his friend Henry came with sad news. Sibyl had gotten very sick and passed away. Dorian felt strange inside. He was sad, but not as sad as he thought he should be. Henry said things that made Dorian feel less worried about it all. Later, Dorian looked at the painting again. He decided to keep it hidden behind a screen. Then he got dressed and went out with Henry.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_10.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_10.webp" alt="The Art of Unfeeling illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -910,7 +1052,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Even so, Dorian asks Basil not to leave him. He says Basil is a good person. Basil wants to see the painting he made, but Dorian gets very upset and scared. He does not want anyone to look at it. Basil tells Dorian a secret instead. He says he cared so much about painting Dorian that he put his whole heart into the picture. Dorian feels better after hearing this. But he still hides the painting away where no one can find it.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_11.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_11.webp" alt="The Schoolroom&#x27;s Secret Burden illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -923,7 +1065,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Some helpers came to carry the heavy painting up the stairs. Dorian covered it with a beautiful purple cloth that shimmered with golden threads. He locked the door tight and went back downstairs. There he found a cup of tea waiting for him, and a strange yellow book from his friend Henry. Dorian started reading the book and could not stop. It was full of dreamy, unusual stories that made him feel like he was in another world. He read until the sky turned soft and dim outside his window.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_12.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_12.webp" alt="The Mirror and the Monster Within illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -937,7 +1079,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>In a locked room, Dorian kept a hidden painting of himself. Sometimes he would look at it behind a curtain. The painting changed over time, but Dorian stayed the same on the outside. He filled his house with beautiful things like sparkly jewels, fancy clothes, and instruments that made unusual music. He loved sweet-smelling perfumes too. All these lovely treasures helped him feel happy and forget his troubles for a while. But the hidden painting was always waiting quietly in its secret room.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_13.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_13.webp" alt="A Foggy Night&#x27;s Fatal Reckoning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -951,7 +1093,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Dorian felt strange feelings bubbling up inside him. He decided to show Basil something very special and secret upstairs. It was the painting Basil had made long ago. Dorian grabbed a lamp and led his friend up the stairs into the quiet darkness.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_14.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_14.webp" alt="The Soul Revealed in Canvas illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -963,7 +1105,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Dorian took Basil up a dark staircase to a dusty old room at the very top of the house. The room had been forgotten for a long time. Cobwebs hung everywhere, and a little mouse ran behind the wall. In the middle of the room stood a painting covered by a curtain. Dorian pulled back the curtain to show Basil the picture. It was the beautiful portrait Basil had painted long ago, but now it looked very different. The face in the painting had become ugly and mean-looking. Basil was so shocked and sad when he saw what had happened to his lovely painting. He begged Dorian to be kind and good again. But Dorian&#x27;s heart had grown cold. He did not want to listen to his old friend anymore. Something very bad happened between them that night, and afterward Dorian went downstairs alone. He sat in his library looking through a book for the name of someone who might help him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_15.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_15.webp" alt="Sunlight on Blood-Stained Memory illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -977,7 +1119,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>While waiting, Dorian tried to draw pictures and read a pretty book about a city with green waterways. But he kept thinking about his friend. When Alan finally came, he looked very serious. Dorian asked Alan for help with something important. At first Alan said no, but then he changed his mind. Alan helped Dorian take care of a big problem. Afterward, Alan left quietly, and Dorian felt grateful but also a little sad inside.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_16.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_16.webp" alt="A Mask of Grace and Guilt illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -991,7 +1133,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After dinner, Lord Henry asked Dorian too many questions. Dorian got nervous and said he needed to go home. Back at his house, he burned some old things in the fireplace. Then he looked at a beautiful little box but put it away. When the clock struck midnight, he slipped out into the dark night.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_17.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_17.webp" alt="The Desperate Search for Oblivion illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1004,7 +1146,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Outside in the dark, a man named James grabbed Dorian and held him tight. James was looking for someone who had hurt his sister Sibyl long ago. But when James pulled Dorian into the light, he saw a young face that looked too young to be the right person. James let him go. Dorian hurried away into the foggy night and disappeared before James could catch him again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_18.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_18.webp" alt="Paradox and Wit at Tea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1017,7 +1159,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, Dorian went to pick some pretty flowers in the plant room. But then something scared him very badly, and he fell down in a faint. His friends hurried to help him and made sure he was comfortable on a soft sofa. When he woke up, he looked pale and shaky. He had seen someone through the window who made him feel afraid. Dorian did not want to be alone that night, so his friends stayed close to keep him company.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_19.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_19.webp" alt="Shadows of Conscience and Fatal Chance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1031,7 +1173,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then someone brought surprising news. The man who got hurt was actually the sailor who had scared Dorian before. Dorian rode to see for himself, and it was true. He cried as he rode home, but these were tears of relief. He finally felt safe again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_20.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_20.webp" alt="The Final Mask Shatters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1044,7 +1186,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Harry asked about the special painting Basil had made long ago. Dorian looked uncomfortable and said he did not like to think about it anymore. Harry noticed how young and handsome Dorian still looked after all these years. Dorian seemed sad and said he wished he could change and be different inside. They said goodnight, and Dorian walked out under the soft golden moon, feeling very thoughtful and a little bit lost.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="../../dorian_gray/images_anime/chapter_21.webp"><img class="chapter-image" src="../../dorian_gray/images_anime/chapter_21.webp" alt="The Soul&#x27;s Final Reckoning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1216,6 +1358,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

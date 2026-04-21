@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_1.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_1.webp" alt="Four Sisters by the Fire illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -794,7 +918,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then their mother came home with a letter from Father! The girls gathered close to hear his words. He told them to be brave and kind. The sisters felt warm inside and wanted to try their best. That night they sang songs together around the old piano. It was cozy and lovely, just like always.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_2.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_2.webp" alt="Gifts, Goodness, and Humble Offerings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -808,7 +932,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>That night they put on a silly play and laughed so hard. Then a wonderful surprise appeared on the supper table. There were treats and flowers from kind old Mister Laurence next door. It was a very merry Christmas indeed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_3.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_3.webp" alt="A New Year&#x27;s Eve Invitation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -821,7 +963,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At the party, Meg talked with friends while Jo felt shy and hid behind a curtain. There she met a friendly boy named Laurie who lived next door. He was shy too, and they became fast friends right away. Laurie told Jo about living in faraway places, and Jo made him laugh with her funny, honest way of talking. When Meg hurt her ankle, kind Laurie helped by letting the sisters ride home in his grandfather&#x27;s fancy carriage. Back in their cozy room, Jo and Meg told their little sisters all about their wonderful night and their new friend.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_4.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_4.webp" alt="Shouldering the Daily Burdens illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -834,7 +976,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo cheered everyone up with silly jokes about the future. She and Meg walked out into the chilly morning. They looked back at their house and saw Marmee waving from the window. That little wave made them feel brave and loved. Meg worked taking care of children at a big fancy house. Jo helped their grumpy Aunt March, but she got to read wonderful books when her work was done. Beth stayed home and played pretend with her dolls. Little Amy went to school and tried her best. That night, the sisters sat together sewing and sharing stories about their day. Marmee reminded them to be thankful for all the good things they had.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_5.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_5.webp" alt="Crossing the Hedge to Friendship illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -848,7 +990,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo learned that Laurie had been sick and stuck inside for a whole week with nothing fun to do. So she asked her mother if she could visit him. Then she went over with three fluffy kittens and a yummy dessert from her sisters. The kittens made Laurie laugh and laugh. Soon the two were talking like old friends. They found out they both loved books. Laurie showed Jo the wonderful library full of stories. His grandfather watched them and smiled. He could see that Jo was making his grandson happy again. Before Jo went home, they promised to visit each other often. The whole March family was excited to have new friends next door.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_6.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_6.webp" alt="Beth&#x27;s Courage and the Grand Piano illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -862,7 +1004,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Beth felt so brave. She thanked him with a tiny whisper. After that, she played the piano every day. She made him soft slippers to say thank you. He gave her a special little piano of her very own! Beth was so happy that she ran over and gave him a big hug. They became the best of friends.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_7.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_7.webp" alt="Pickled Limes and Schoolroom Justice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -875,7 +1017,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But then something goes wrong. A girl named Jenny tells the teacher that Amy has limes hidden in her desk. The strict teacher gets very upset and makes Amy throw all her limes out the window. Poor Amy also has to stand in front of everyone, feeling very embarrassed and sad. When she gets home, her whole family gathers around to comfort her. Marmee gives her a gentle hug and reminds her that showing off is not as nice as being kind and humble. Amy watches her quiet sister Beth, who never brags about playing piano so beautifully. Amy starts to understand that real goodness shines best when you do not try to show it off.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_8.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_8.webp" alt="Jo&#x27;s Fury and Amy&#x27;s Revenge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -889,7 +1031,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The next day, Jo went ice skating with Laurie. Amy followed, hoping to make up. But then Amy fell through the thin ice into the cold water! Laurie and Jo worked together and pulled her out safely. That night, Jo felt sorry for staying angry. She talked to Marmee about her big feelings. Marmee shared that she sometimes feels angry too, and that love helps us be kind. Amy woke up, the sisters hugged, and everything was forgiven.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_9.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_9.webp" alt="Meg&#x27;s Taste of Fashionable Life illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -902,7 +1044,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At the Moffats&#x27; house, everything seems so grand and sparkly! Meg wears her best dress every day and rides in elegant carriages. But sometimes she feels a little sad because her clothes are not as new as the other girls&#x27; dresses. When Laurie sends her beautiful roses with a sweet note from Marmee, Meg feels much better. She shares the flowers with her friends, and being kind makes her heart happy. At a party, Meg tries on a fancy blue silk dress, but it does not really feel like her. When she finally comes home, Meg tells Marmee everything about her adventure. They have a cozy talk by the fire about what really matters most in life.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_10.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_10.webp" alt="Sisters, Secrets, and the Pickwick Club illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -915,7 +1057,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The sisters also had a secret club called the Pickwick Club. Every Saturday night, they met in the big attic room. They wore special badges and used funny made-up names. They read stories and poems they had written themselves. One night, Jo had a big surprise. She wanted their neighbor Laurie to join the club! Some sisters worried he might laugh at them. But kind Beth said yes, and everyone voted to let him in. Jo opened a closet door, and there was Laurie hiding inside! He was so happy to join. Laurie gave them a wonderful gift too. He made a little post office in an old birdhouse by the hedge. Now the sisters and Laurie could send letters and surprises back and forth whenever they wanted.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_11.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_11.webp" alt="Summer Idleness Teaches Its Lesson illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -929,7 +1071,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then on Saturday, their mother took a rest day too. No breakfast was ready! The girls tried to cook dinner for their friend Laurie. Oh my, what a silly mess! The food came out all wrong, and everyone laughed together. That night, the sisters told their mother they had learned something important. Having fun is nice, but helping at home makes everyone happier. They promised to do their share, and this time they really meant it.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_12.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_12.webp" alt="Summer Picnics and Secret Encouragements illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -942,7 +1084,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then Laurie invited everyone to a picnic at a place called Camp Laurence. The sisters got ready in their own funny ways. Amy even put a clothespin on her nose hoping to make it prettier! At the picnic, they played croquet under big oak trees. When another boy cheated, Jo felt her temper rise like a wave. But she walked away, took deep breaths, and calmed herself down. She came back and won the game fairly. Shy Beth made a new friend named Frank by talking about buffaloes and prairies. As the sun set, everyone floated home on the river, singing together with hearts full of summer happiness.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_13.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_13.webp" alt="Dreams and Schemes in the Pines illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -956,7 +1098,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The friends sat together and talked about their dreams. Laurie wanted to travel and play music. Meg dreamed of a cozy home. Jo wanted to write wonderful stories. Amy hoped to paint beautiful pictures. Sweet Beth only wished to stay home safe with her family. As the sun set, the children looked at the glowing hills and felt hopeful about the future.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_14.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_14.webp" alt="Secrets, Manuscripts, and Friendly Warnings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -969,7 +1111,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Laurie shares a secret too. He tells Jo that Meg&#x27;s lost glove is in Brooke&#x27;s pocket because Brooke likes Meg very much. Jo does not like this news at all. She does not want anyone to take her sister away. To cheer up, Jo and Laurie race down a big hill together. Days later, Jo reads a story aloud to her whole family. Then she shows them something wonderful. The story in the newspaper is hers! Everyone cheers and hugs her. Jo feels so proud and happy that she cries joyful tears.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_15.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_15.webp" alt="November&#x27;s Dark Turn illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -982,7 +1124,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But then a message arrived with sad news. Father was sick far away, and Marmee needed to go to him right away. Everyone felt scared and worried, but they hugged each other tight and got busy helping. Laurie ran errands, and kind neighbors offered to help Marmee travel safely. Then Jo came home with money she had earned in a surprising way. She had cut off her long beautiful hair and sold it to help pay for the trip! Her family hugged her so tight. That night, Jo cried a little missing her hair, but she was brave and loved her father very much. Marmee kissed each daughter goodnight before her big journey.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_16.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_16.webp" alt="A Brave Farewell and Faithful Resolve illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -995,7 +1137,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When the carriage drove away, the sisters felt like part of their home had gone with her. They cried together for a little while, and that was okay. Then kind Hannah gave them warm drinks and reminded them to be strong. Each sister got back to work, doing her best every day. They wrote cheerful letters to Marmee and waited for happy news. Soon they heard that Father was getting better, and their hearts felt lighter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_17.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_17.webp" alt="Beth&#x27;s Quiet Devotion and Heavy Burden illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1008,7 +1150,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Beth felt sad or worried, she would find a quiet spot and have a little cry. Then she would feel better and go back to being kind and sweet. Everyone loved going to Beth for hugs and comfort. Beth also remembered to help a poor family called the Hummels, just like Mother had asked. Her sisters were too busy, so Beth went alone with a basket of food and supplies. When she came home, she looked very tired and worried. She told Jo that a baby in the family had been sick and passed away, and now Beth might be getting sick too. Jo felt so sorry she had let Beth go alone. The doctor came and said Beth needed to rest in bed. Amy had to go stay with Aunt March to keep her safe. Jo stayed home to take care of Beth, and the sisters waited and hoped their dear Beth would feel better soon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_18.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_18.webp" alt="Beth&#x27;s Fever and a Family&#x27;s Vigil illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1021,7 +1163,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The days felt long and sad. Everyone missed hearing Beth&#x27;s sweet voice and gentle laugh. Laurie came by every day to help however he could. Even the neighbors asked about Beth because she had made so many friends just by being kind. One snowy night, Jo felt very worried and scared. But Laurie held her hand and told her a wonderful secret. He had already sent for their mother, and she was coming home that very night! Jo felt hope bloom in her heart again. The sisters stayed awake all night, and by morning, something wonderful happened. Beth&#x27;s fever went away, and she began to get better. Then they heard bells outside and a happy shout. Mother had finally come home!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_19.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_19.webp" alt="Exile, Duty, and Hidden Treasures illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1034,7 +1176,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But Amy found some happy moments too. Her friend Laurie came to visit and took her on fun walks. A kind helper named Esther showed Amy secret drawers full of pretty treasures like pearls and sparkly rings. Esther even made Amy a cozy little room where she could sit quietly and think about her sister. Amy thought about what really mattered most to her. She realized how much she loved Beth. No shiny ring could ever be as precious as her sweet sister.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_20.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_20.webp" alt="Mother&#x27;s Return and Quiet Healing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1047,7 +1189,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Laurie hurried to tell Amy the good news at Aunt March&#x27;s house. Amy was so glad that Beth was getting better. Aunt March gave Amy a special ring, and Amy promised to wear it to help her remember to be kind and loving, just like Beth. That evening, Jo told Mother a secret—she had found out that someone cared very much for Meg. Mother listened gently and said not to worry, because some things just need time.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_21.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_21.webp" alt="Laurie&#x27;s Prank and Its Consequences illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1060,7 +1202,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Laurie decided to play a trick. He wrote a pretend love letter and made it look like Brooke had sent it to Meg. Poor Meg believed it was real and wrote back! When everyone found out the letter was fake, Meg felt very embarrassed and Jo felt very cross with Laurie. Laurie said he was truly sorry. He even got in trouble with his grandfather, but Jo helped them make up. She was good at helping people feel better. Later, Jo found a little note where Meg had written a dreamy name. Jo sighed a big sigh. Her sister was growing up, and things were slowly starting to change.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_22.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_22.webp" alt="Recovery, Reunion, and Christmas Joy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1073,7 +1215,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Christmas morning came bright and beautiful. Jo and Laurie had a wonderful surprise in the garden. They had built a snow lady just for Beth, decorated with holly and a colorful blanket. Beth laughed so hard she cried happy tears. Everyone got special presents that made their hearts sing. Then came the best gift of all. Laurie brought someone through the door. It was Father, home at last. The sisters ran to hug him, and Beth felt so full of joy that her legs carried her straight into his arms. That night the family sat together by the fire, warm and whole again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_23.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_23.webp" alt="Meg&#x27;s Romantic Resolve Tested illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1085,7 +1227,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>The March family was so happy to have Father home at last. Everyone helped take care of him while he got better. But something else was happening too. Meg kept blushing whenever someone said John Brooke&#x27;s name, and Jo did not like it one bit. When John came to visit, Meg tried to tell him she did not want to see him anymore. But when he held her hand and spoke so kindly, she forgot all her planned words. Then grumpy Aunt March burst in and said Meg must not marry John because he had no money. But this only made Meg feel braver. She said she would marry whoever she loved, and money did not matter. John heard her kind words and came out to thank her. This time, Meg whispered &quot;Yes, John&quot; and looked very happy. Jo felt a little sad because she would miss having Meg all to herself. But that evening, the whole family sat together, warm and cozy, dreaming about all the wonderful things still to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_24.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_24.webp" alt="Peacetime and Preparations for New Beginnings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1097,7 +1239,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Three years have gone by, and many things have changed for the March family. The war is over now, and Father March is home safe with his books. He helps people at a little church, and everyone loves him because he is so kind and wise. Mother March is busy getting ready for something wonderful. Meg is going to marry John Brooke! John worked hard and saved his money so they could have a cozy home together. Meg has learned to cook and sew, and she feels so happy when she sits with John and they talk about their future. Amy now stays with Aunt March and takes art lessons from a fancy teacher. Jo writes stories and takes care of Beth, who has been feeling a little tired since she was sick. Laurie goes to college and makes everyone laugh with silly gifts and funny stories about school. The family fixed up a sweet little house called Dovecote for Meg and John. It has tiny rooms filled with pretty things. Everyone is excited because tomorrow is the wedding day!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_25.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_25.webp" alt="Roses, Love, and New Beginnings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1110,7 +1252,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The ceremony was gentle and full of love. Everyone gathered close together under a pretty green arch. Father&#x27;s voice was a little shaky, and John&#x27;s hand trembled too. But Meg looked into John&#x27;s eyes and made her promises with a brave, happy heart. Aunt March pretended not to cry, but she sniffled anyway. Afterward, everyone danced and laughed in the garden like butterflies in summer. Then Meg put on her traveling clothes and walked to her cozy new home with John, carrying flowers and a big, bright smile.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_26.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_26.webp" alt="Ambition, Talent, and Youthful Experiments illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1123,7 +1265,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Amy also planned a fancy lunch party for her art class friends. She wanted everything to be perfect with yummy treats and pretty things. But so many things went wrong! The weather was bad, the food got mixed up, and the kittens ate the chicken. On the big day, only one friend came. Amy felt sad, but she was very brave about it. Her family ate all the leftover food to help her feel better. Later, Laurie gave her a tiny lobster charm to remember her big adventure, and everyone could finally laugh together about the funny day.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_27.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_27.webp" alt="Jo&#x27;s Sensational Literary Ambitions Ignite illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1136,7 +1278,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One day, Jo went to a boring talk about pyramids. A boy next to her shared his newspaper full of exciting adventure stories. Jo got a big idea! She would write her own exciting story and enter a contest. She worked in secret for weeks, and guess what? She won one hundred dollars! Her family was so happy and proud. Jo used the money to send Beth and Marmee on a nice trip to the seaside. She kept writing more stories to help her family. Jo also worked on a whole book, which was very hard. She had to cut parts out and listen to lots of different advice. But brave Jo learned so much and felt ready to keep trying.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_28.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_28.webp" alt="Meg&#x27;s First Lessons in Housekeeping illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1148,7 +1290,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Meg got married to John, and they moved into a cozy little house called the Dovecote. Meg wanted everything to be perfect for John. She worked so hard to cook fancy meals and keep their home nice and tidy. Sometimes her cooking turned out wonderful, and sometimes it did not work at all. One hot summer day, Meg tried to make jelly, but it would not get thick no matter what she did. She felt so frustrated that she cried. John came home and found the messy kitchen, and they both felt grumpy with each other. But then Meg remembered to say sorry first, and she gave John a sweet kiss. That made everything better right away. They learned that saying sorry is the best way to make up after a disagreement. Later that year, something wonderful happened. Meg and John became parents to twins, a little boy and a little girl named Demi and Daisy. Their small house was now filled with even more love.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_29.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_29.webp" alt="Jo&#x27;s Reluctant Social Debut illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1162,7 +1304,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, they visited their aunts. Amy was sweet and cheerful, but Jo sat apart looking grumpy. The aunts noticed everything. After the girls left, the aunts made a secret plan together. Jo had no idea that something exciting was about to happen for Amy.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_30.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_30.webp" alt="Amy&#x27;s Fall and Rise at the Fair illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1175,7 +1317,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Amy feels really hurt inside, but she does not yell or stomp. She stays calm and kind, even though it is so hard. Her family hugs her and tells her she did the right thing. At the fair, Amy even shares her pretty paintings with May, just to be nice. May feels bad about being mean and becomes Amy&#x27;s friend again. Laurie and his friends help make Amy&#x27;s table fun and busy. Then the best news comes! Amy gets invited to travel far away to see beautiful places. She waves goodbye from a big ship, feeling excited and a little scared, ready for her adventure.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_31.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_31.webp" alt="Across the Sea to England illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1188,7 +1330,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When Amy reaches land, she sees green hills and pretty old buildings covered in ivy. She rides a train through the countryside and gets so excited about everything outside the window. There are cozy little farmhouses with straw roofs, fluffy sheep in the fields, and golden wheat swaying in the breeze. Her uncle makes everyone laugh when he tries to dress like an Englishman but still looks American. In London, Amy buys a fancy white hat with a blue feather. She meets some nice friends who take her to shows and fun outings. Then she travels to Paris, where she visits a famous art museum full of beautiful paintings. Amy is having such a grand adventure, seeing new places and making new friends, though she misses her family back home very much.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_32.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_32.webp" alt="Beth&#x27;s Secret Heart Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1201,7 +1343,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo decided she should go away for a while. She told Marmee she wanted to travel to New York to work and write stories. But really, Jo felt like things at home were getting too confusing. The night before she left, Jo heard Beth crying softly. She held her sister close until Beth fell asleep. Jo did not ask any questions. Some feelings need time to come out on their own. The next morning, Jo climbed into the coach and headed off toward the big city, ready for a new adventure.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_33.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_33.webp" alt="A New Nest in New York illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1215,7 +1357,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jo meets a kind man called Professor Bhaer. He is from Germany and speaks with a funny accent. He has a bushy beard and the warmest eyes. Jo watches him be gentle with children and help people carry heavy things. He starts teaching Jo German, and she helps mend his socks. They read stories together and become good friends. By Christmas they trade little gifts. Jo feels happy in her new home and writes long cheerful letters to her family all about her new friend.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_34.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_34.webp" alt="Jo&#x27;s Dangerous Descent Into Sensation Writing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1228,7 +1370,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But something did not feel right inside her heart. She kept her writing a secret from her family. Then one day, her dear friend Professor Bhaer talked about how some stories can be unkind. Jo listened carefully, and she decided to stop writing those kinds of tales. She would wait until she had better stories to tell. The Professor was a good and gentle man who helped Jo feel braver about doing what was right. When summer came and Jo had to go home, she felt glad. She had not made lots of money, but she had made a wonderful friend.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><a class="next" href="#chapter-35"><span>Next</span>Chapter 35</a></nav>
 </section>
-<section class="chapter" id="chapter-35" data-num="35">
+<section class="chapter" id="chapter-35" data-num="35" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_35.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_35.webp" alt="Laurie&#x27;s Declaration and Jo&#x27;s Refusal illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">35</div>
@@ -1240,7 +1382,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Laurie finished school and made his grandfather so proud. The whole March family came to celebrate with him. But Laurie had something important he wanted to tell Jo. She could feel it coming, and it made her heart feel heavy. When they walked together the next day, Laurie told Jo that he loved her very much. He hoped she might love him back the same way. But Jo knew in her heart that she did not feel that way about him. She cared for him as a dear friend, but not the way he wanted. It was so hard to tell him the truth, and they both felt very sad. Laurie went away on a boat to be alone, and Jo cried to his grandfather about how sorry she was. The kind old man understood, even though he was disappointed too. He decided to take Laurie on a long trip far away to help his sad heart feel better. When Laurie said goodbye, Jo wished so much that things could be different. She knew their friendship would never be quite the same again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-34"><span>Previous</span>Chapter 34</a><a class="next" href="#chapter-36"><span>Next</span>Chapter 36</a></nav>
 </section>
-<section class="chapter" id="chapter-36" data-num="36">
+<section class="chapter" id="chapter-36" data-num="36" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_36.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_36.webp" alt="Drifting Away by the Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">36</div>
@@ -1254,7 +1396,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One peaceful day by the sea, Beth told Jo a secret. She knew she was not getting better, and she had been keeping this feeling inside for a long time. Jo held her sister close, and they talked about everything in their hearts. Beth said she just wanted to enjoy being together. When they went home, their parents understood without any words, and the whole family held each other a little tighter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-35"><span>Previous</span>Chapter 35</a><a class="next" href="#chapter-37"><span>Next</span>Chapter 37</a></nav>
 </section>
-<section class="chapter" id="chapter-37" data-num="37">
+<section class="chapter" id="chapter-37" data-num="37" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_37.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_37.webp" alt="Amy and Laurie Reunite Abroad illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">37</div>
@@ -1267,7 +1409,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Amy was so excited to see her old friend that she stopped right away to say hello. They drove together and talked about everything that had happened while they were apart. Amy noticed that Laurie seemed quieter than before, and she wondered why. She had heard that her sister Beth was not feeling well back home, which made her heart feel heavy. Laurie was very kind and comforting when she told him about it. Later that night, there was a fancy Christmas ball with dancing and music. Amy wore a beautiful white dress with pink flowers, and Laurie thought she looked lovely. They danced together many times and had such a wonderful evening.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-36"><span>Previous</span>Chapter 36</a><a class="next" href="#chapter-38"><span>Next</span>Chapter 38</a></nav>
 </section>
-<section class="chapter" id="chapter-38" data-num="38">
+<section class="chapter" id="chapter-38" data-num="38" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_38.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_38.webp" alt="Domestic Trials of Young Motherhood illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">38</div>
@@ -1281,7 +1423,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Meg tried something new. She let John help put Demi to bed. John was patient and kind with the little boy. Soon the whole family felt happy again. Meg and John read books together and went to concerts. Their cozy home was full of love once more.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-37"><span>Previous</span>Chapter 37</a><a class="next" href="#chapter-39"><span>Next</span>Chapter 39</a></nav>
 </section>
-<section class="chapter" id="chapter-39" data-num="39">
+<section class="chapter" id="chapter-39" data-num="39" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_39.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_39.webp" alt="Roses, Thorns, and Drifting Hearts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">39</div>
@@ -1294,7 +1436,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One sunny afternoon, they drove to a beautiful garden full of roses. The flowers were everywhere, red and white and cream-colored. Amy had something important to tell Laurie. She said he was wasting his time and his talents. She knew he could do wonderful things if he really tried. Laurie felt embarrassed, but he knew Amy was right. She had also figured out his secret—he had loved Jo, but Jo did not love him back the same way. The next morning, Laurie sent Amy a note. He had finally gone to see his grandfather. Amy was proud of him for trying again, but she missed her friend very much.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-38"><span>Previous</span>Chapter 38</a><a class="next" href="#chapter-40"><span>Next</span>Chapter 40</a></nav>
 </section>
-<section class="chapter" id="chapter-40" data-num="40">
+<section class="chapter" id="chapter-40" data-num="40" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_40.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_40.webp" alt="Beth&#x27;s Sacred Farewell illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">40</div>
@@ -1307,7 +1449,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Even though Beth was tired, she still made gifts for others. She stitched mittens for children who walked by her window. She made little books and surprises for schoolchildren. They thought she was like a fairy godmother. Jo stayed by Beth&#x27;s side day and night. She loved taking care of her sister. The two of them talked and read together. Beth found a sweet poem Jo had written just for her. It made Beth feel very loved. As spring came, the birds sang and flowers bloomed outside her window. Beth felt peaceful and ready to rest. Her family held her hands and stayed close. When morning light filled the room, Beth had quietly fallen into a gentle, forever sleep. Her family was sad, but they knew Beth was at peace now.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-39"><span>Previous</span>Chapter 39</a><a class="next" href="#chapter-41"><span>Next</span>Chapter 41</a></nav>
 </section>
-<section class="chapter" id="chapter-41" data-num="41">
+<section class="chapter" id="chapter-41" data-num="41" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_41.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_41.webp" alt="Laurie&#x27;s Heart and Ambitions Transform illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">41</div>
@@ -1320,7 +1462,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Something surprising happened too. Laurie started feeling better about Jo saying no to him. The hurt in his heart began to heal. He wrote many letters to Amy, and she wrote back with funny stories and pretty drawings. They became very good friends through their letters. Then something very sad happened. Beth got sick and passed away. When Laurie heard the news, he hurried to be with Amy. She was so glad to see him. They spent gentle days walking and talking together. One sunny day on a beautiful lake, Laurie asked Amy to stay by his side forever. And Amy softly said yes.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-40"><span>Previous</span>Chapter 40</a><a class="next" href="#chapter-42"><span>Next</span>Chapter 42</a></nav>
 </section>
-<section class="chapter" id="chapter-42" data-num="42">
+<section class="chapter" id="chapter-42" data-num="42" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_42.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_42.webp" alt="Grief&#x27;s Slow Path to Healing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">42</div>
@@ -1334,7 +1476,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then Jo tried writing a story again. She put all her true feelings into it, and people loved it very much. Father said she had found her special way of writing. When Jo heard that Amy and Laurie were getting married, she felt happy for them. She still felt a little lonely sometimes, but spring was coming soon, and new beginnings were on the way.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-41"><span>Previous</span>Chapter 41</a><a class="next" href="#chapter-43"><span>Next</span>Chapter 43</a></nav>
 </section>
-<section class="chapter" id="chapter-43" data-num="43">
+<section class="chapter" id="chapter-43" data-num="43" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_43.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_43.webp" alt="Laurie&#x27;s Return and Joyful Revelation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">43</div>
@@ -1346,7 +1488,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Jo sat by the fire feeling a little sad and lonely. Tomorrow was her birthday, and she wondered what her life would become. She dreamed of writing stories, but she wished for something more. Then someone wonderful walked through the door. It was her dear friend Laurie, home at last! Jo jumped up and gave him the biggest hug. Laurie had exciting news to share. He and Amy had gotten married in Paris! Jo was so surprised and happy for them both. Soon Amy came in looking so pretty and grown-up. The whole family gathered together, laughing and talking. The little twins snuck extra tarts when no one was looking. But the best surprise was still to come. There was a knock at the door, and there stood Professor Bhaer with a warm smile. He had come all the way to visit them. Jo felt her heart fill up with happiness she could not explain. Everyone welcomed him like family. As they sang songs together that evening, Jo wondered why he had really come. She fell asleep that night feeling hopeful about what tomorrow might bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-42"><span>Previous</span>Chapter 42</a><a class="next" href="#chapter-44"><span>Next</span>Chapter 44</a></nav>
 </section>
-<section class="chapter" id="chapter-44" data-num="44">
+<section class="chapter" id="chapter-44" data-num="44" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_44.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_44.webp" alt="Newlyweds Plan Their Future Together illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">44</div>
@@ -1360,7 +1502,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>That night, Amy and Laurie talk about Jo and the Professor. They hope Jo will marry him someday. Laurie says he would be so happy for Jo. Then they dream together about all the kind things they could do to help people. They want to share what they have with others who need it. Their hearts feel warm and close as they make these wonderful plans together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-43"><span>Previous</span>Chapter 43</a><a class="next" href="#chapter-45"><span>Next</span>Chapter 45</a></nav>
 </section>
-<section class="chapter" id="chapter-45" data-num="45">
+<section class="chapter" id="chapter-45" data-num="45" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_45.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_45.webp" alt="Twins Learning Life and Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">45</div>
@@ -1373,7 +1515,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Their grandmother loved watching over little Daisy. She saw something special in the gentle girl. Demi asked lots of big questions. He made his grandfather laugh with his funny answers. One day, a kind man named Bhaer started visiting. He brought chocolate drops and let Demi look at his watch. Soon Daisy loved sitting on his shoulder. Aunt Jo seemed happy when he came to visit. The twins noticed she smiled a lot more now.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-44"><span>Previous</span>Chapter 44</a><a class="next" href="#chapter-46"><span>Next</span>Chapter 46</a></nav>
 </section>
-<section class="chapter" id="chapter-46" data-num="46">
+<section class="chapter" id="chapter-46" data-num="46" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_46.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_46.webp" alt="Under the Umbrella at Last illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">46</div>
@@ -1386,7 +1528,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then the Professor stayed away for three whole days. Jo felt worried and sad, wondering if he had left for good. She went out walking in a new bonnet but forgot her umbrella. When the rain started falling, suddenly a big blue umbrella appeared over her head. She looked up and there was the Professor, smiling down at her. They walked together through the rain, and finally he asked if she could love him. Jo said yes with all her heart. They promised to wait for each other while he went away to teach. Then Jo brought him home to her warm, happy family.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-45"><span>Previous</span>Chapter 45</a><a class="next" href="#chapter-47"><span>Next</span>Chapter 47</a></nav>
 </section>
-<section class="chapter" id="chapter-47" data-num="47">
+<section class="chapter" id="chapter-47" data-num="47" data-free="false">
     <figure class="chapter-figure" data-full="../../little_women/images_anime/chapter_47.webp"><img class="chapter-image" src="../../little_women/images_anime/chapter_47.webp" alt="A School for Little Lads illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">47</div>
@@ -1560,6 +1702,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

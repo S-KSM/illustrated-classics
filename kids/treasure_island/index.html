@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_1.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_1.webp" alt="A Scarred Stranger Seeks Refuge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -794,7 +918,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A kind doctor named Livesey visits the inn sometimes. He is not afraid of the grumpy Captain. Jim does not know it yet, but this is just the beginning of a very big adventure.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_2.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_2.webp" alt="A Stranger&#x27;s Sinister Ambush illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -806,7 +930,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>One cold, frosty morning, a stranger came into the Admiral Benbow inn. He was a pale man from the sea, and he was missing two fingers on one hand. He asked about &quot;his mate Bill,&quot; which was really the captain. The stranger waited and waited, watching the road. When the captain finally came home, he turned white as snow. &quot;Black Dog!&quot; he cried out, looking very scared. The two men sat down to talk, but soon they began to argue loudly. Then there was a big crash and Black Dog ran away over the hill. The captain stumbled back inside and fell down on the floor. He was very sick. Doctor Livesey came and helped him get to bed. The doctor said the captain needed lots of rest to get better. But young Jim had a worried feeling that more trouble was on its way to the little inn by the sea.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_3.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_3.webp" alt="A Dying Man&#x27;s Desperate Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -819,7 +961,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then something very sad happened. My dear father passed away, and my mother and I felt so heartbroken. We had to say goodbye to him, and our house felt so quiet and lonely. A few days later, a strange blind man came tapping through the foggy cold. He was not kind at all, and he gave the captain a little black paper as a warning. The captain got very upset when he saw it. Then the captain fell down and his heart gave out. I cried and cried because I had lost two people in just a few days, and I felt very scared about what might happen next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_4.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_4.webp" alt="A Mother&#x27;s Courage and the Dead Man&#x27;s Key illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -831,7 +973,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>The captain had been staying at the inn for a long time. Now he was gone, and Jim and his mother needed help. They knew some rough sailors might come looking for the captain&#x27;s things. Jim and his mother were scared, but they were also brave. They ran through the foggy night to ask their neighbors for help. But the neighbors were too frightened to come back with them. Jim&#x27;s mother stood up tall and said she would not leave behind the money the captain owed them. So Jim and his mother went back to the inn all by themselves. They found a special key and used it to open the captain&#x27;s old sea chest. Inside were clothes, shells from faraway beaches, silver coins, and a bundle of papers wrapped up tight. Jim&#x27;s mother carefully counted out only the coins she was owed. Then they heard a tapping sound outside. Someone was coming! They grabbed what they needed and ran out into the moonlight to hide.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_5.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_5.webp" alt="The Blind Beggar&#x27;s Desperate Rage illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -844,7 +986,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Pew was very angry. He yelled at his men to keep looking. But then a whistle blew from the hill. It was a warning! The men got scared and wanted to leave. Pew tried to stop them, but they ran away without him. Soon horses came galloping down the road. They were helpers coming to save us! The bad men scattered into the night. My mother felt better after some rest. Then a kind man named Dance took me to see the doctor. I still had the mystery packet safe with me.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_6.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_6.webp" alt="The Oilskin Packet Reveals Its Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -857,7 +999,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The squire gave me yummy pie because I was so hungry after all our adventures. Then everyone gathered close to open the special packet we had brought. Inside was a little book and a folded paper. The book showed numbers and dates from long ago. But the folded paper was the real treasure. It was a map of an island shaped like a dragon! Red marks showed where something special was hidden. The squire got so excited he wanted to sail there right away. I would go too, as a helper on the ship! Dr. Livesey reminded everyone to keep the map a secret so we could stay safe on our journey.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_7.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_7.webp" alt="A Crew of Old Salts Assembled illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -874,7 +1016,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then we found the squire, dressed in blue like a sailor and grinning big. He told us the doctor had arrived and the whole crew was ready. I asked when we would sail. He said just one word that made my heart jump with joy. &quot;Tomorrow!&quot;</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_8.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_8.webp" alt="Black Dog Appears and Disappears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -887,7 +1029,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Just then, Jim noticed someone run out the door very fast. It was a sneaky man Jim had seen before! Long John seemed upset that this rude fellow had run away without paying. He walked Jim to meet the squire and the doctor, telling him wonderful stories about ships along the way. Everyone agreed that Long John seemed like a fine shipmate. Then the squire asked Jim to come see their beautiful ship, and off they went together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_9.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_9.webp" alt="A Captain&#x27;s Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -900,7 +1042,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Captain Smollett had a very worried face. He came to talk to the grown-ups right away. He said too many people on the ship knew about the treasure. He thought it should be a secret, but somehow the sailors had found out. This made him uneasy. He wanted to move important supplies closer to where Jim and his friends would sleep. He wanted everyone to be careful and stay safe. The squire got upset because the captain seemed grumpy. But the doctor thought the captain was just being wise. Jim did not like being told what to do, but deep down he knew the captain wanted to keep everyone safe on this big adventure.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_10.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_10.webp" alt="Setting Sail with Silver&#x27;s Song illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -914,7 +1056,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>During the voyage, Silver was very kind to Jim. He told wonderful stories about his parrot, named Cap&#x27;n Flint. The colorful bird could say &quot;Pieces of eight!&quot; over and over. Silver moved around the ship so cleverly with his crutch, and he kept his kitchen sparkling clean. Jim thought Silver was the nicest man on the whole ship. But one quiet evening, Jim climbed into an apple barrel to get a snack. He got sleepy and almost dozed off. Then someone sat down nearby and started talking. It was Silver&#x27;s voice—and Jim heard something very surprising that changed everything.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_11.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_11.webp" alt="Silver&#x27;s Dark Confession in the Hold illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -927,7 +1069,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Silver was making secret plans with some of the other sailors. They wanted to wait until the treasure was found. Then they would take it all for themselves. Jim felt scared and sad. He had trusted Silver so much. The friendly cook had fooled everyone with his big smile and kind words. Jim wanted to warn his friends right away. But he had to stay hidden and very still. Then something wonderful happened. Someone up high on the ship shouted out exciting news. They could see land! The island with the treasure was finally close.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_12.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_12.webp" alt="Land Ho, Secrets Below illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -940,7 +1082,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A sailor named Silver said he knew this place from long ago. He spoke in a friendly way and even smiled at Jim. But Jim knew Silver was not as nice as he seemed. When the doctor called Jim over, Jim whispered that he had something important to share. Soon the captain and their friends met in the cabin below. Jim told them everything he had heard. They listened very carefully. Then they thanked Jim for being so brave. Now they had to make a plan together and watch out for trouble ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_13.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_13.webp" alt="A Grim Arrival at Treasure Island illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -953,7 +1095,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The sailors had to row the ship to a safe spot near the island. It was hard, hot work, and the men were grumpy. Long John Silver helped steer the ship because he knew these waters well. When they stopped, the air smelled like old wet leaves. The captain let some sailors go to the island for fun. Just then, Jim had a wild idea. He hopped into a boat and ran off into the trees all by himself. Silver called after him, but Jim kept running until he was alone in the forest.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_14.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_14.webp" alt="A Death Cry in the Marsh illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -966,7 +1108,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then something made all the ducks fly up from the reeds at once. Jim heard voices coming closer, so he hid under a tree and stayed very still. He saw Silver talking to a sailor named Tom. Silver wanted Tom to join the pirates, but brave Tom said no. He would never turn against his friends. Then a terrible cry echoed across the marsh, and Jim knew something very bad had happened to another good sailor. Tom tried to run away, but Silver hurt him badly. Jim was so scared that he ran and ran through the trees until something new made him stop.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_15.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_15.webp" alt="Ben Gunn&#x27;s Lonely Island Refuge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -980,7 +1122,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Ben Gunn told me he knew secrets about the island and wanted to help my friends. Suddenly we heard a loud boom from far away. We ran together through the trees, and soon I spotted a bright flag waving above the treetops where my companions were waiting.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_16.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_16.webp" alt="The Stockade and the Death Cry illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -994,7 +1136,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The doctor hurried back to the ship with a plan. Everyone worked together to load boats with food, water, and supplies. They made trip after trip to the safe little house. One sailor named Gray decided to join the good guys instead of the pirates. He got a little hurt but made it to their boat. Now they just had to reach the stockade safely.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_17.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_17.webp" alt="Desperate Crossing Under Enemy Fire illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1007,7 +1149,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then someone spotted trouble back on the big ship. Some bad pirates were getting a cannon ready to shoot at them! The captain asked Trelawney to try to stop them, but he missed. The pirates fired the cannon with a big boom. The cannonball flew right over the little boat, but the splash made the boat tip and sink in shallow water. Luckily the water was not deep at all. Everyone stood up, soaking wet but safe. They had to leave their supplies behind in the sunken boat. Now they needed to hurry and wade to shore. They had to reach their safe place before the pirates could catch up to them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_18.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_18.webp" alt="The Flag Rises, Redruth Falls illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1021,7 +1163,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The captain put up a big flag on a tall tree to show they would not give up. The pirates tried shooting at the fort, but the cannonballs landed in the sand and nobody got hurt. Just when things seemed hard, who should come climbing over the fence? Jim Hawkins, safe and sound at last!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_19.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_19.webp" alt="Ben Gunn&#x27;s Warning and the Bombardment illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1035,7 +1177,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Inside the little log cabin, Jim finds the captain and the doctor and the others. The cabin is smoky and sandy, but everyone is glad to see Jim. The captain keeps everyone busy and cheerful. They share a simple supper and get some rest. The next morning, someone shouts a warning. A white flag is coming, and Long John Silver is walking right toward them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_20.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_20.webp" alt="Silver&#x27;s Parley at the Stockade illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1048,7 +1190,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Captain Smollett stayed safe inside and called out to ask what Silver wanted. Silver climbed over the fence, which was very hard with his crutch. He wore a fancy blue coat with shiny buttons and a nice hat. The captain would not let him sit by the warm fire. Silver asked if the captain would give him the treasure map. He said the pirates would let everyone go home safely if they did. But Captain Smollett said no. He told Silver that the pirates could not find the treasure without help. Silver got very angry. His face turned red and he said mean things. Then he climbed back over the fence and disappeared into the trees. Everyone in the fort knew the pirates would be back soon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_21.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_21.webp" alt="The Stockade Under Siege illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1061,7 +1203,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then they waited and waited in the hot sun. It felt like forever. Suddenly, the pirates came running out of the woods toward the little house. There was lots of noise and shouting. The fight was scary and fast. Jim grabbed a sword and ran outside to help his friends. When it was all over, the pirates ran away. The captain and his friends had won, but some of them got hurt. Hunter was knocked down and could not wake up. The captain was hurt too, but his friends took care of him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_22.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_22.webp" alt="A Reckless Escape Into the Woods illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1074,7 +1216,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then something surprising happened. The doctor put the treasure map in his pocket and walked off into the woods! Jim thought he must be going to find Ben Gunn, the friendly man who lived on the island. Jim felt so hot and sticky sitting there in the sun. He wished he could go exploring too. So he filled his pockets with biscuits and made a brave decision. He would sneak away to find the little boat Ben Gunn had told him about. When no one was looking, Jim slipped over the fence and ran into the cool, shady trees. He walked until he reached the sea, sparkling blue and beautiful. As night came and fog rolled in, Jim found a tiny handmade boat hidden under a white rock. He had a new exciting plan. He would paddle out in the darkness and set the big ship loose so the pirates could not use it anymore.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_23.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_23.webp" alt="A Coracle&#x27;s Wild Drift to the Ship illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1088,7 +1230,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Inside the ship, two grumpy pirates were being very loud and silly. On the beach, other pirates sang songs by their campfire. When Jim finally cut the last bit of rope, the ship started drifting away! The waves carried Jim and his little boat out toward the sea. He got very tired from all the rocking and splashing. At last, he fell asleep, dreaming of his cozy home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_24.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_24.webp" alt="Adrift Among Waves and Sea Lions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1102,7 +1244,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Soon Jim spotted a big ship floating nearby. Nobody seemed to be steering it. Jim had a brave idea. Maybe he could climb aboard and help. He paddled closer and closer. When the ship swung near him, Jim jumped up and grabbed onto a long wooden beam. He pulled himself up onto the deck, his heart beating fast with excitement.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_25.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_25.webp" alt="Blood and Brandy on the Hispaniola illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1115,7 +1257,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jim found two pirates on the deck. One was not moving at all. The other was Israel Hands, and he was hurt very badly. He asked Jim for something to drink. Jim went below and found the cabin all messy too. He got some water and food for himself first. Then he brought a drink to help Hands feel better. Jim told Hands that he was the captain now. He took down the pirate flag and threw it into the sea. Hands was too weak to argue. They made a deal. Hands would teach Jim how to sail the ship. Jim would help take care of him. But Jim watched Hands carefully. Something about the old pirate&#x27;s sneaky smile made Jim feel he could not quite trust him.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_26.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_26.webp" alt="A Deadly Game of Wits illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1128,7 +1270,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They worked together to sail the ship into a calm little bay. Hands was very good at steering even though he was hurt. Just as the ship reached the beach, Hands tried to catch Jim! But Jim was quick and scrambled up the tall ropes like a squirrel climbing a tree. He climbed so high that Hands couldn&#x27;t reach him. From up in the ropes, Jim called down and Hands finally gave up. The ship was safe on the beach now, and Jim felt very brave and proud.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_27.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_27.webp" alt="Jim&#x27;s Victory at Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1142,7 +1284,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Jim felt so proud as he walked through the dark woods toward his friends. He wanted to tell them all about his brave adventure. He crept into the little house where everyone was sleeping. But then a parrot screeched loudly, &quot;Pieces of eight!&quot; The sleepers woke up fast. Oh no! These were not Jim&#x27;s friends at all. They were the pirates, and now Jim was their prisoner.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_28.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_28.webp" alt="Pirates&#x27; Bargain and Silver&#x27;s Offer illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1155,7 +1297,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But then Silver told Jim something wonderful. His friends were safe! They had walked away to somewhere else. Jim felt so much better knowing they were okay. Silver tried to get Jim to join the pirates, using sweet words and smiles. But Jim was brave. He stood up tall and told the pirates everything he had done to stop their plans. He had hidden their ship where they could never find it! The pirates were so surprised. Silver had to shout to keep them calm. Later, Silver whispered to Jim that they should help each other. He even showed Jim a treasure map the doctor had given him, which was very strange indeed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_29.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_29.webp" alt="The Pirates&#x27; Mutiny Fails illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1169,7 +1311,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Silver stayed very calm. The pirates said he made bad choices. But Silver talked back in a strong voice. Then he showed them something amazing. He had the treasure map! The pirates got so excited when they saw it. They cheered and laughed. They decided Silver should stay as their captain after all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_30.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_30.webp" alt="The Doctor&#x27;s Dangerous Visit illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1182,7 +1324,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then the doctor asked to speak with Jim alone. Some pirates got angry, but Silver let Jim talk to the doctor through the wooden fence. Jim promised not to run away. The doctor was disappointed that Jim had left his friends, but Jim explained everything. He told the doctor about hiding the ship in a secret spot. The doctor was amazed and said Jim had helped save everyone many times. He promised to help Jim and even to help Silver if he could. Then the doctor walked away into the trees, leaving Jim to wait and hope.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_31.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_31.webp" alt="The Uneasy Alliance Seeks Flint&#x27;s Gold illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1195,7 +1337,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Soon everyone ate breakfast by a big campfire. The pirates cooked way too much food and threw what was left into the flames. Jim noticed these pirates were not very good at planning ahead. After eating, the whole group set off to find the buried treasure. They rowed boats across the water and then climbed up a hill covered with sweet-smelling flowers and trees. Jim had to walk with the group, staying close to Silver. On Silver&#x27;s shoulder sat his funny parrot, who chattered away happily. Near the top of the hill, the men found old bones laid out in a strange way, pointing toward an island. This was a clue left long ago to show the way to the treasure. The pirates grew very quiet and a little scared. But they kept walking together, wondering what they would find next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_32.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_32.webp" alt="Flint&#x27;s Ghost Haunts the Hunt illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1209,7 +1351,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But Silver was brave. He said ghosts cannot make echoes like real voices can. Then someone figured it out. It was just Ben Gunn, the lonely man left on the island long ago! Everyone felt better and laughed a little. They hurried toward a giant tree where the treasure was supposed to be buried. But when they got there, they found a big empty hole. Someone had already taken all the treasure!</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_33.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_33.webp" alt="Ben Gunn&#x27;s Secret Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1224,7 +1366,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Ben Gunn had a wonderful secret. He had found the treasure long ago and moved it to a cozy cave! That night, everyone gathered in the cave with piles of shiny gold coins all around them. They had a feast by the warm fire while Captain Smollett rested. Silver sat quietly nearby, eating and waiting to see what would happen next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="../../treasure_island/images_anime/chapter_34.webp"><img class="chapter-image" src="../../treasure_island/images_anime/chapter_34.webp" alt="Gold, Farewell, and Marooned Mutineers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1397,6 +1539,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

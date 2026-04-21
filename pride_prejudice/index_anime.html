@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="anime" data-sibling-href="index.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_1.webp"><img class="chapter-image" src="images_anime/chapter_1.webp" alt="A Rich Bachelor Arrives at Netherfield illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -800,7 +924,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus the stage is set, the players introduced, and the arrival of the wealthy Mr. Bingley promises to disturb the peace of the countryside in ways both amusing and consequential.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_anime/chapter_2.webp"><img class="chapter-image" src="images_anime/chapter_2.webp" alt="Mr. Bennet&#x27;s Secret Visit Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -817,7 +941,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The remainder of the evening passed in eager speculation about when Mr. Bingley might return the visit and when the family might contrive to have him to dinner.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="First Impressions at the Assembly Ball illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -834,7 +976,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet first impressions, however firmly declared, have a peculiar way of shifting when circumstances—and further acquaintance—demand reconsideration.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="Sisters Reflect on Character and Fortune illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -851,7 +993,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Bingley sisters, though they shared Darcy&#x27;s reservations, pronounced Jane a sweet girl whom they should not object to know better—and with such commendation, their brother felt himself quite authorized to think of her as he chose.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Neighbors Dissect the Ball&#x27;s Events illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -868,7 +1010,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the Lucas family departed, the neighborhood&#x27;s judgment of Mr. Darcy had been thoroughly established, though whether that judgment might prove as fixed as it now appeared remained yet to be seen.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="Guarded Hearts and Shifting Glances illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -885,7 +1027,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Miss Bingley&#x27;s astonishment gave way to teasing prophecies of matrimony and warnings of Mrs. Bennet as a mother-in-law, but Darcy received her barbs with perfect composure, betraying nothing. And so the evening closed, with admiration stirring where none had been expected, and schemes of the heart beginning to take shape beneath the surface of civil society.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="Officers, Entails, and a Fateful Invitation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -903,7 +1045,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Her appearance scandalised Miss Bingley and Mrs. Hurst, though Mr. Bingley received her with genuine kindness, and Mr. Darcy found himself caught between admiration for her brightened complexion and doubt regarding the propriety of such an expedition. Jane proved feverish and unwell, and when the apothecary confirmed a violent cold, Elizabeth remained devotedly at her sister&#x27;s side. By three o&#x27;clock, when Elizabeth reluctantly prepared to depart, Jane&#x27;s distress at parting prompted Miss Bingley to convert her offer of a carriage into an invitation to stay—and so Elizabeth found herself settled at Netherfield, a servant dispatched home for her clothes, while her sister lay ill upstairs and the household dynamics shifted into unfamiliar territory.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="Mud, Manners, and Fine Eyes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -921,7 +1063,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As night settles over Netherfield, the battle lines between genuine feeling and fashionable pretense grow ever more distinct, and Elizabeth&#x27;s continued presence promises further occasion for both conflict and unexpected alliance.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="Mrs. Bennet&#x27;s Triumphant Visit to Netherfield illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -937,7 +1079,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Before departing, young Lydia, bold and assured at fifteen, reminded Mr. Bingley of his promise to give a ball at Netherfield. He graciously confirmed he would keep his engagement once Jane recovered, inviting them to name the very day. Satisfied, Mrs. Bennet collected her daughters and departed, leaving Elizabeth to return instantly to Jane&#x27;s side—and leaving her own conduct and that of her relations to the critical remarks of Miss Bingley and Mr. Darcy, the latter of whom, notably, refused to join in any censure of Elizabeth herself, despite all of Miss Bingley&#x27;s pointed witticisms regarding certain fine eyes.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="Wit and Words in the Drawing Room illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -956,7 +1098,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With Jane&#x27;s health improving and her own observations of Netherfield&#x27;s inhabitants proving increasingly illuminating, Elizabeth looked forward to quitting the estate and all its curious entanglements.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="An Evening of Artful Pursuits illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -973,7 +1115,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the pianoforte was opened and Mr. Hurst roused from his slumber, the evening&#x27;s strange alchemy of attraction and resistance settled into safer entertainments, though the undercurrents between Elizabeth and Darcy had only grown stronger.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_12.webp"><img class="chapter-image" src="images_anime/chapter_12.webp" alt="Departures and Guarded Hearts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -991,7 +1133,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Bennet sisters had returned to the familiar rhythms of home, though certain attachments formed at Netherfield would prove rather more difficult to leave behind.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_13.webp"><img class="chapter-image" src="images_anime/chapter_13.webp" alt="The Arrival of Mr. Collins illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1008,7 +1150,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>His admiration extended beyond the young ladies to encompass the hall, the dining-room, and every article of furniture—praise that might have pleased Mrs. Bennet had she not suspected he was merely surveying his future property. At dinner, his commendation of the meal led him to inquire which cousin had prepared it, an error Mrs. Bennet corrected with some sharpness. Though she soon declared herself unoffended, Mr. Collins continued his apologies for a quarter of an hour, revealing himself to be precisely the mixture of absurdity and self-importance that promised considerable entertainment for the days ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_14.webp"><img class="chapter-image" src="images_anime/chapter_14.webp" alt="Mr. Collins Praises His Noble Patroness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1026,7 +1168,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the two men settled at the backgammon table, Mr. Collins nursing his wounded dignity and Mr. Bennet quietly relishing the evening&#x27;s absurdities, it became clear that the clergyman&#x27;s visit would continue to supply amusement—though perhaps of a rather trying variety for some members of the household.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_15.webp"><img class="chapter-image" src="images_anime/chapter_15.webp" alt="Mr Collins Shifts His Sights to Elizabeth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1044,7 +1186,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Whatever history lay between those two gentlemen, it seemed certain to reveal itself before long.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_16.webp"><img class="chapter-image" src="images_anime/chapter_16.webp" alt="Wickham&#x27;s Charming Revelations Begin illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1061,7 +1203,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Elizabeth retired that night with her thoughts consumed by Wickham&#x27;s revelations, quite unaware of how thoroughly she had accepted his version of events without question.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_17.webp"><img class="chapter-image" src="images_anime/chapter_17.webp" alt="Jane&#x27;s Generous Doubt and Dancing Plans illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1078,7 +1220,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A succession of rainy days confined the younger sisters to Longbourn, preventing any expedition to Meryton and leaving even Elizabeth to feel the trial of weather that suspended all progress in her acquaintance with Wickham—though the promise of Tuesday&#x27;s ball made the tedious wait just bearable.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_18.webp"><img class="chapter-image" src="images_anime/chapter_18.webp" alt="Sparring Steps at the Netherfield Ball illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1095,7 +1237,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>What she could not know was that forces were already gathering to threaten these fond expectations entirely.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_19.webp"><img class="chapter-image" src="images_anime/chapter_19.webp" alt="Mr. Collins Proposes with Methodical Certainty illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1115,7 +1257,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But whether Mr. Bennet&#x27;s intervention would prove sufficient to penetrate such determined delusion remained to be seen, and the household was far from finished with the consequences of this most unfortunate morning.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_20.webp"><img class="chapter-image" src="images_anime/chapter_20.webp" alt="A Father&#x27;s Wry Ultimatum illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1132,7 +1274,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The household remained in considerable disarray, though one quiet observer had watched these proceedings with rather more attention than she pretended, lingering by the window as schemes of her own began to take shape.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_21.webp"><img class="chapter-image" src="images_anime/chapter_21.webp" alt="A Letter Shatters Jane&#x27;s Hopes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1151,7 +1293,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet as the sisters retired that evening, the shadow of uncertainty remained, and neither could know what schemes were being laid in London, nor what consequences awaited them when the paths of Netherfield and Longbourn crossed again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_22.webp"><img class="chapter-image" src="images_anime/chapter_22.webp" alt="Charlotte&#x27;s Calculated Pursuit of Security illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1170,7 +1312,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet Charlotte&#x27;s pragmatic choice would soon force Elizabeth to examine her own assumptions about marriage, love, and the limited options available to women of small fortune—questions that would press upon her with increasing urgency as new entanglements drew ever nearer.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_23.webp"><img class="chapter-image" src="images_anime/chapter_23.webp" alt="Mrs. Bennet&#x27;s Unending Resentment illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1189,7 +1331,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As winter deepened and Bingley&#x27;s absence stretched on, the anxieties of both heart and hearth weighed heavily upon the household, and darker clouds seemed to gather on the horizon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_24.webp"><img class="chapter-image" src="images_anime/chapter_24.webp" alt="Hope Extinguished, Sisters Consoling illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1207,7 +1349,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As winter settled over Hertfordshire, the Bennet household adjusted to disappointment in their various ways, yet the wounds inflicted by absent friends remained tender, and new acquaintances carried their own hidden dangers.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_25.webp"><img class="chapter-image" src="images_anime/chapter_25.webp" alt="The Gardiners Bring Comfort and Counsel illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1226,7 +1368,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the holiday visit drew to its close, Jane prepared to accompany her aunt and uncle to London, carrying with her a heart that hoped—despite all evidence—that the story of Mr. Bingley was not yet entirely finished.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_26.webp"><img class="chapter-image" src="images_anime/chapter_26.webp" alt="Farewells and Fading Intimacies illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1244,7 +1386,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With Charlotte settled at Hunsford, Jane disillusioned in London, and Wickham pursuing a more profitable attachment, Elizabeth found herself surrounded by lessons in the commerce of marriage—lessons that would soon prove more personal than she yet imagined.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_27.webp"><img class="chapter-image" src="images_anime/chapter_27.webp" alt="Departures and Lingering Attachments illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1265,7 +1407,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With summer&#x27;s promised adventure glowing before her, Elizabeth prepared to continue her journey toward Hunsford, where altogether different discoveries awaited her at Rosings Park.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_28.webp"><img class="chapter-image" src="images_anime/chapter_28.webp" alt="Arrival at Hunsford Parsonage illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1287,7 +1429,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The visit concluded with an invitation that set Mr. Collins aglow with satisfaction—the whole party was to dine at Rosings on the morrow, bringing Elizabeth face to face at last with the formidable Lady Catherine herself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_29.webp"><img class="chapter-image" src="images_anime/chapter_29.webp" alt="An Audience with Lady Catherine illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1305,7 +1447,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as Elizabeth reflected upon the absurdities of Rosings and its imperious mistress, she could not have anticipated that these visits would soon bring encounters far more consequential to her future happiness.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_30.webp"><img class="chapter-image" src="images_anime/chapter_30.webp" alt="Charlotte&#x27;s Quiet Strategy at Hunsford illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1323,7 +1465,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The gentlemen departed shortly thereafter, leaving Elizabeth to contemplate what further encounters this Easter season at Rosings might bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_31.webp"><img class="chapter-image" src="images_anime/chapter_31.webp" alt="Sparring at the Pianoforte illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1341,7 +1483,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the evening drew to a close, Elizabeth could not help but reflect upon the peculiar nature of her exchanges with Mr. Darcy, conversations that seemed to carry currents beneath their playful surface.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_32.webp"><img class="chapter-image" src="images_anime/chapter_32.webp" alt="Awkward Silences and Hidden Intentions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1358,7 +1500,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so the days continued, with visits growing more frequent and glances more difficult to read, as the quiet currents beneath the surface at Hunsford began to stir toward something neither Elizabeth nor Darcy could yet name.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_33.webp"><img class="chapter-image" src="images_anime/chapter_33.webp" alt="Unexpected Encounters and Revealing Conversations illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1374,7 +1516,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Little did Elizabeth know that the evening ahead would bring a confrontation far more momentous than any she could have anticipated.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_34.webp"><img class="chapter-image" src="images_anime/chapter_34.webp" alt="A Most Unwelcome Proposal illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1392,7 +1534,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When the sound of Lady Catherine&#x27;s carriage reached her ears, Elizabeth fled to her room, unwilling to face Charlotte&#x27;s observant eyes while her spirits remained in such violent disorder—and wholly unprepared for whatever consequences this extraordinary evening might yet bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><a class="next" href="#chapter-35"><span>Next</span>Chapter 35</a></nav>
 </section>
-<section class="chapter" id="chapter-35" data-num="35">
+<section class="chapter" id="chapter-35" data-num="35" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_35.webp"><img class="chapter-image" src="images_anime/chapter_35.webp" alt="A Letter Demands Her Justice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">35</div>
@@ -1411,7 +1553,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The letter concluded, but its contents would not so easily be set aside—Elizabeth had scarcely begun to comprehend all that she had read.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-34"><span>Previous</span>Chapter 34</a><a class="next" href="#chapter-36"><span>Next</span>Chapter 36</a></nav>
 </section>
-<section class="chapter" id="chapter-36" data-num="36">
+<section class="chapter" id="chapter-36" data-num="36" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_36.webp"><img class="chapter-image" src="images_anime/chapter_36.webp" alt="Prejudice Shattered by Painful Truth illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">36</div>
@@ -1432,7 +1574,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After two hours wandering the lane, reconciling herself as best she could to so sudden and important a change, Elizabeth returned home resolved to appear cheerful. She learned that both gentlemen from Rosings had called—Darcy briefly to take his leave, Colonel Fitzwilliam for nearly an hour hoping for her return. Yet Elizabeth could only affect concern at missing them; in truth, she rejoiced, for Colonel Fitzwilliam was no longer an object of interest. She could think only of her letter, and all it had revealed about others—and about herself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-35"><span>Previous</span>Chapter 35</a><a class="next" href="#chapter-37"><span>Next</span>Chapter 37</a></nav>
 </section>
-<section class="chapter" id="chapter-37" data-num="37">
+<section class="chapter" id="chapter-37" data-num="37" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_37.webp"><img class="chapter-image" src="images_anime/chapter_37.webp" alt="Unpleasant Recollections and Solitary Walks illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">37</div>
@@ -1450,7 +1592,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The final evening at Rosings passed in the usual manner, with Lady Catherine dispensing travel advice so minutely that Maria felt compelled to repack her trunk entirely. At their parting, her Ladyship condescended to wish them well and invited them to return the following year, while Miss de Bourgh exerted herself sufficiently to curtsy and extend her hand—and with these modest civilities, Elizabeth&#x27;s time in Kent drew to its close, her heart heavy with reflections that would accompany her homeward.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-36"><span>Previous</span>Chapter 36</a><a class="next" href="#chapter-38"><span>Next</span>Chapter 38</a></nav>
 </section>
-<section class="chapter" id="chapter-38" data-num="38">
+<section class="chapter" id="chapter-38" data-num="38" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_38.webp"><img class="chapter-image" src="images_anime/chapter_38.webp" alt="Farewells and Secrets to Keep illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">38</div>
@@ -1468,7 +1610,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With Jane soon to accompany her back to Longbourn, Elizabeth resolved to wait, knowing that home would provide the leisure and privacy such confidences required.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-37"><span>Previous</span>Chapter 37</a><a class="next" href="#chapter-39"><span>Next</span>Chapter 39</a></nav>
 </section>
-<section class="chapter" id="chapter-39" data-num="39">
+<section class="chapter" id="chapter-39" data-num="39" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_39.webp"><img class="chapter-image" src="images_anime/chapter_39.webp" alt="Lydia&#x27;s Frivolous Homecoming illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">39</div>
@@ -1487,7 +1629,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet she had scarcely settled back into the rhythms of Longbourn before discovering that the Brighton scheme was already a matter of frequent debate between her parents—her father clearly unmoved, her mother undeterred in her campaign, and the household poised once more on the edge of domestic upheaval.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-38"><span>Previous</span>Chapter 38</a><a class="next" href="#chapter-40"><span>Next</span>Chapter 40</a></nav>
 </section>
-<section class="chapter" id="chapter-40" data-num="40">
+<section class="chapter" id="chapter-40" data-num="40" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_40.webp"><img class="chapter-image" src="images_anime/chapter_40.webp" alt="Sisters Share Shocking Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">40</div>
@@ -1507,7 +1649,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the days at Longbourn resumed their familiar rhythm, Elizabeth found herself caught between relief and restlessness, the secrets she still harboured casting long shadows over whatever peace she might have claimed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-39"><span>Previous</span>Chapter 39</a><a class="next" href="#chapter-41"><span>Next</span>Chapter 41</a></nav>
 </section>
-<section class="chapter" id="chapter-41" data-num="41">
+<section class="chapter" id="chapter-41" data-num="41" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_41.webp"><img class="chapter-image" src="images_anime/chapter_41.webp" alt="Lydia&#x27;s Brighton Invitation Sparks Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">41</div>
@@ -1525,7 +1667,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They parted with mutual civility and, perhaps, mutual relief. Lydia&#x27;s farewell proved characteristically noisy, her sisters&#x27; gentler adieus lost beneath the clamour—and so the household settled into a new quiet, awaiting whatever fresh disturbance the summer might bring.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-40"><span>Previous</span>Chapter 40</a><a class="next" href="#chapter-42"><span>Next</span>Chapter 42</a></nav>
 </section>
-<section class="chapter" id="chapter-42" data-num="42">
+<section class="chapter" id="chapter-42" data-num="42" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_42.webp"><img class="chapter-image" src="images_anime/chapter_42.webp" alt="A Marriage&#x27;s Lessons in Disappointment illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">42</div>
@@ -1542,7 +1684,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so it was settled—to Pemberley they would go, and Elizabeth would at last behold the home of the man whose proposal she had so decidedly refused.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-41"><span>Previous</span>Chapter 41</a><a class="next" href="#chapter-43"><span>Next</span>Chapter 43</a></nav>
 </section>
-<section class="chapter" id="chapter-43" data-num="43">
+<section class="chapter" id="chapter-43" data-num="43" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_43.webp"><img class="chapter-image" src="images_anime/chapter_43.webp" alt="Pemberley Reveals Its Master&#x27;s True Nature illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">43</div>
@@ -1560,7 +1702,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the carriage carried her away, Elizabeth could think of nothing but Mr. Darcy&#x27;s altered manner and his astonishing wish for her to know Georgiana—a wish that could only have originated with him, and which meant, surely, that his resentment had not made him think ill of her after all.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-42"><span>Previous</span>Chapter 42</a><a class="next" href="#chapter-44"><span>Next</span>Chapter 44</a></nav>
 </section>
-<section class="chapter" id="chapter-44" data-num="44">
+<section class="chapter" id="chapter-44" data-num="44" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_44.webp"><img class="chapter-image" src="images_anime/chapter_44.webp" alt="An Unexpected Visit at Lambton illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">44</div>
@@ -1578,7 +1720,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The following morning, the ladies resolved to return Miss Darcy&#x27;s civility with a call at Pemberley, while Mr. Gardiner departed to meet the gentlemen by the river.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-43"><span>Previous</span>Chapter 43</a><a class="next" href="#chapter-45"><span>Next</span>Chapter 45</a></nav>
 </section>
-<section class="chapter" id="chapter-45" data-num="45">
+<section class="chapter" id="chapter-45" data-num="45" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_45.webp"><img class="chapter-image" src="images_anime/chapter_45.webp" alt="An Awkward Visit to Pemberley illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">45</div>
@@ -1596,7 +1738,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>On the journey home, Elizabeth and Mrs. Gardiner discussed everything and everyone from the visit—except the one person who occupied both their minds entirely—each longing for the other to speak his name first.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-44"><span>Previous</span>Chapter 44</a><a class="next" href="#chapter-46"><span>Next</span>Chapter 46</a></nav>
 </section>
-<section class="chapter" id="chapter-46" data-num="46">
+<section class="chapter" id="chapter-46" data-num="46" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_46.webp"><img class="chapter-image" src="images_anime/chapter_46.webp" alt="Lydia&#x27;s Disgrace Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">46</div>
@@ -1613,7 +1755,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Darcy departed with expressions of concern and promises of secrecy, yet his grave parting look spoke volumes of finality. Elizabeth watched him go with a regret sharpened by the certainty that their cordial acquaintance in Derbyshire had reached its unhappy conclusion. Within the hour, the Gardiners had settled their accounts, false excuses had been dispatched to their Lambton acquaintances, and Elizabeth found herself seated in the carriage, speeding toward Longbourn and whatever fresh miseries awaited her there.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-45"><span>Previous</span>Chapter 45</a><a class="next" href="#chapter-47"><span>Next</span>Chapter 47</a></nav>
 </section>
-<section class="chapter" id="chapter-47" data-num="47">
+<section class="chapter" id="chapter-47" data-num="47" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_47.webp"><img class="chapter-image" src="images_anime/chapter_47.webp" alt="Doubt, Fear, and Wickham&#x27;s True Character illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">47</div>
@@ -1631,7 +1773,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the household settled into its anxious vigil, the weight of what might yet unfold pressed heavily upon them all—and Elizabeth knew that whatever news the coming days might bring, the shadow of this disgrace would not easily be lifted.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-46"><span>Previous</span>Chapter 46</a><a class="next" href="#chapter-48"><span>Next</span>Chapter 48</a></nav>
 </section>
-<section class="chapter" id="chapter-48" data-num="48">
+<section class="chapter" id="chapter-48" data-num="48" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_48.webp"><img class="chapter-image" src="images_anime/chapter_48.webp" alt="Whispers of Wickham&#x27;s Wickedness Spread illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">48</div>
@@ -1649,7 +1791,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Meanwhile, Mrs. Gardiner departed for London carrying unanswered questions about Elizabeth and her Derbyshire acquaintance, for no letter had come from Pemberley, and Elizabeth herself knew that her spirits, already crushed by Lydia&#x27;s disgrace, were made heavier still by the certainty that any connection with Mr. Darcy was now forever impossible.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-47"><span>Previous</span>Chapter 47</a><a class="next" href="#chapter-49"><span>Next</span>Chapter 49</a></nav>
 </section>
-<section class="chapter" id="chapter-49" data-num="49">
+<section class="chapter" id="chapter-49" data-num="49" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_49.webp"><img class="chapter-image" src="images_anime/chapter_49.webp" alt="A Marriage Bargained and Bought illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">49</div>
@@ -1668,7 +1810,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Still, the mystery of Mr. Gardiner&#x27;s intervention—and the true cost of securing Wickham&#x27;s consent—remained unsolved, a question that would demand answers in the days to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-48"><span>Previous</span>Chapter 48</a><a class="next" href="#chapter-50"><span>Next</span>Chapter 50</a></nav>
 </section>
-<section class="chapter" id="chapter-50" data-num="50">
+<section class="chapter" id="chapter-50" data-num="50" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_50.webp"><img class="chapter-image" src="images_anime/chapter_50.webp" alt="A Father&#x27;s Regret and Resolve illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">50</div>
@@ -1686,7 +1828,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the day of their arrival approached, Elizabeth steeled herself for an encounter that would test every measure of composure she possessed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-49"><span>Previous</span>Chapter 49</a><a class="next" href="#chapter-51"><span>Next</span>Chapter 51</a></nav>
 </section>
-<section class="chapter" id="chapter-51" data-num="51">
+<section class="chapter" id="chapter-51" data-num="51" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_51.webp"><img class="chapter-image" src="images_anime/chapter_51.webp" alt="Lydia Returns Unashamed and Triumphant illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">51</div>
@@ -1704,7 +1846,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Unable to bear such suspense, Elizabeth seized paper and pen, writing immediately to her aunt Gardiner to demand an explanation of this extraordinary intelligence—and privately resolving that if her aunt would not tell her honourably, she would resort to tricks and stratagems to uncover the truth.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-50"><span>Previous</span>Chapter 50</a><a class="next" href="#chapter-52"><span>Next</span>Chapter 52</a></nav>
 </section>
-<section class="chapter" id="chapter-52" data-num="52">
+<section class="chapter" id="chapter-52" data-num="52" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_52.webp"><img class="chapter-image" src="images_anime/chapter_52.webp" alt="Darcy&#x27;s Secret Role Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">52</div>
@@ -1722,7 +1864,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The household had scarcely settled when a disturbance at the entrance announced new arrivals—and with them, the prospect of confrontations Elizabeth could neither predict nor prepare for.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-51"><span>Previous</span>Chapter 51</a><a class="next" href="#chapter-53"><span>Next</span>Chapter 53</a></nav>
 </section>
-<section class="chapter" id="chapter-53" data-num="53">
+<section class="chapter" id="chapter-53" data-num="53" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_53.webp"><img class="chapter-image" src="images_anime/chapter_53.webp" alt="Bingley&#x27;s Return Stirs Old Hopes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">53</div>
@@ -1741,7 +1883,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The gentlemen departed with an invitation to dine at Longbourn, and Elizabeth was left to wonder whether this return might herald the renewal of old hopes—or merely fresh occasions for mortification.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-52"><span>Previous</span>Chapter 52</a><a class="next" href="#chapter-54"><span>Next</span>Chapter 54</a></nav>
 </section>
-<section class="chapter" id="chapter-54" data-num="54">
+<section class="chapter" id="chapter-54" data-num="54" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_54.webp"><img class="chapter-image" src="images_anime/chapter_54.webp" alt="Teasing Silence and Uncertain Hearts illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">54</div>
@@ -1759,7 +1901,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the sisters parted for the night, Elizabeth&#x27;s own heart remained as unsettled as ever, the question of Darcy&#x27;s intentions no clearer than before, even as events around them seemed to be quickening toward some resolution.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-53"><span>Previous</span>Chapter 53</a><a class="next" href="#chapter-55"><span>Next</span>Chapter 55</a></nav>
 </section>
-<section class="chapter" id="chapter-55" data-num="55">
+<section class="chapter" id="chapter-55" data-num="55" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_55.webp"><img class="chapter-image" src="images_anime/chapter_55.webp" alt="Mrs. Bennet&#x27;s Schemes Bear Fruit illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">55</div>
@@ -1783,7 +1925,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even as one sister&#x27;s happiness seemed secured beyond doubt, Elizabeth could not help but wonder what Mr. Darcy&#x27;s return might bring, and whether fortune might smile upon Longbourn twice.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-54"><span>Previous</span>Chapter 54</a><a class="next" href="#chapter-56"><span>Next</span>Chapter 56</a></nav>
 </section>
-<section class="chapter" id="chapter-56" data-num="56">
+<section class="chapter" id="chapter-56" data-num="56" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_56.webp"><img class="chapter-image" src="images_anime/chapter_56.webp" alt="Lady Catherine&#x27;s Unwelcome Demand illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">56</div>
@@ -1800,7 +1942,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Her Ladyship departed without compliments or civilities, leaving Elizabeth to deflect her mother&#x27;s curious inquiries with as little falsehood as possible. Yet beneath her composed exterior, Elizabeth could not help but wonder what consequences this extraordinary confrontation might bring—and whether word of it would reach Darcy himself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-55"><span>Previous</span>Chapter 55</a><a class="next" href="#chapter-57"><span>Next</span>Chapter 57</a></nav>
 </section>
-<section class="chapter" id="chapter-57" data-num="57">
+<section class="chapter" id="chapter-57" data-num="57" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_57.webp"><img class="chapter-image" src="images_anime/chapter_57.webp" alt="Lady Catherine&#x27;s Shadow Over Netherfield illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">57</div>
@@ -1818,7 +1960,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Thus Elizabeth was left suspended between hope and dread, uncertain whether Lady Catherine&#x27;s interference would prove her undoing or whether some other intelligence might yet arrive to alter everything.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-56"><span>Previous</span>Chapter 56</a><a class="next" href="#chapter-58"><span>Next</span>Chapter 58</a></nav>
 </section>
-<section class="chapter" id="chapter-58" data-num="58">
+<section class="chapter" id="chapter-58" data-num="58" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_58.webp"><img class="chapter-image" src="images_anime/chapter_58.webp" alt="A Walk Toward Understanding illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">58</div>
@@ -1837,7 +1979,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>After miles of walking, they discovered it was time to return home, and in the hall at Longbourn they parted—though the happiness between them had only just begun to unfold, and the task of sharing their news with family now lay before them.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-57"><span>Previous</span>Chapter 57</a><a class="next" href="#chapter-59"><span>Next</span>Chapter 59</a></nav>
 </section>
-<section class="chapter" id="chapter-59" data-num="59">
+<section class="chapter" id="chapter-59" data-num="59" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_59.webp"><img class="chapter-image" src="images_anime/chapter_59.webp" alt="Confessions Between Sisters at Midnight illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">59</div>
@@ -1857,7 +1999,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With consent secured and raptures survived, Elizabeth could breathe easier at last—though the business of wedding preparations and the certain peculiarities of introducing Mr. Darcy more thoroughly into the Bennet household promised adventures yet to come.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-58"><span>Previous</span>Chapter 58</a><a class="next" href="#chapter-60"><span>Next</span>Chapter 60</a></nav>
 </section>
-<section class="chapter" id="chapter-60" data-num="60">
+<section class="chapter" id="chapter-60" data-num="60" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_60.webp"><img class="chapter-image" src="images_anime/chapter_60.webp" alt="Love&#x27;s Beginnings and Lady Catherine&#x27;s Usefulness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">60</div>
@@ -1875,7 +2017,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Yet even these uncomfortable feelings could not diminish the hope of the future that stretched before them, bright and full of promise.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-59"><span>Previous</span>Chapter 59</a><a class="next" href="#chapter-61"><span>Next</span>Chapter 61</a></nav>
 </section>
-<section class="chapter" id="chapter-61" data-num="61">
+<section class="chapter" id="chapter-61" data-num="61" data-free="false">
     <figure class="chapter-figure" data-full="images_anime/chapter_61.webp"><img class="chapter-image" src="images_anime/chapter_61.webp" alt="Settled Fates and Family Fortunes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">61</div>
@@ -2053,6 +2195,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

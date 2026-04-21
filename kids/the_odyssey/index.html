@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_1.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_1.webp" alt="The Gods Convene, A Hero Waits illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -792,7 +916,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>A very long time ago, someone wrote a famous story called The Odyssey. It is about a brave hero who goes on a big adventure. This story was written near the sea in a sunny place. Some people think a clever young woman helped write it! She may have put herself in the story as a kind princess. The hero in this tale must travel far from home. He misses his family very much. But before we hear about his journey, we learn that even the gods in the sky are talking about him. They want to help him find his way back. Meanwhile, the hero waits and hopes. He dreams of seeing the people he loves again. This is just the beginning of a wonderful adventure full of islands, ships, and magic.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_2.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_2.webp" alt="Assembly at Ithaca Begins illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -805,7 +929,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>If you have the actual narrative chapter from the Odyssey about the assembly at Ithaca, I&#x27;d be happy to rewrite that for a young reader. Just share the story content and I&#x27;ll turn it into something warm and wonderful for read-aloud time.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_3.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_3.webp" alt="Telemachus Awakens to His Father&#x27;s Legacy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -818,7 +960,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The gods in the sky decided to help him get home at last. A wise goddess named Minerva flew down to visit his son Telemachus. She told him that his father was still alive and would come home someday. Telemachus felt hope fill his heart like warm sunshine. That night, he stood up tall and told everyone he was ready to take care of his family&#x27;s home. Then he went to bed thinking about the exciting journey he would take to find news of his father.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_4.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_4.webp" alt="Telemachus Demands Justice From Ithaca illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -830,7 +972,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Telemachus woke up early feeling brave and ready. He got dressed and walked to a big meeting. Everyone thought he looked so handsome and strong. This was the first meeting since his father Ulysses left long ago. Telemachus told everyone about his problem. Many rude guests were living in his house without asking. They ate all his food and drank all his drinks. They wanted his mother Penelope to marry one of them. But Telemachus could not make them leave by himself. He asked his neighbors to please help him. The rude guests would not listen and said mean things. Telemachus felt sad, but then two eagles flew overhead. A wise man said this was a sign that Ulysses might come home soon. Later, Telemachus prayed by the sea. A kind goddess named Minerva came to help him. She promised him a ship and helpers for a journey. That night, Telemachus quietly packed his things. His sweet old nurse helped him get ready. When the stars came out, he climbed aboard a ship with twenty friends. The wind filled their white sail, and they sailed across the dark sea toward a place called Pylos to learn news about his father.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_5.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_5.webp" alt="Telemachus Seeks His Father&#x27;s Fate illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -843,7 +985,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The people of Pylos were very welcoming. They gave Telemachus soft places to sit and yummy food to eat. Old Nestor had lived a very long time and was very wise. Telemachus told Nestor he was looking for his father, Ulysses, who had been gone for many years. Nestor remembered Ulysses well and said he was very clever and kind. But Nestor did not know where Ulysses was now. He told Telemachus to visit another king named Menelaus, who might know more. That night, Telemachus slept at Nestor&#x27;s house. The next morning, he rode off in a chariot with Nestor&#x27;s son to continue his search.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_6.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_6.webp" alt="Splendor and Sorrow in Sparta illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -856,7 +998,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Menelaus told stories about his long travels to faraway lands. He also talked about missing his dear friend Ulysses very much. When Telemachus heard this, tears came to his eyes. Then lovely Helen came downstairs and saw right away that this boy looked just like Ulysses! Menelaus told Telemachus that his father was still alive, far away on an island, wishing he could come home. Back in Ithaca, some mean men planned to cause trouble for Telemachus. But that night, a kind goddess sent Penelope a gentle dream, telling her not to worry because her son would be safe.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_7.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_7.webp" alt="Calypso&#x27;s Island and the Gods&#x27; Decree illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -870,7 +1012,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>So Ulysses built a little raft with his own hands. He sailed across the wide ocean for many days, following the stars at night. A big storm came and tossed him about in the waves. It was very hard and scary. But kind helpers watched over him. Finally, tired but safe, Ulysses reached a new shore and fell fast asleep under some olive trees.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_8.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_8.webp" alt="Nausicaa at the River&#x27;s Edge illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -884,7 +1026,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The girls washed everything clean and spread it out to dry in the warm sun. Then they ate a nice lunch and played a game with a ball. Their laughing and singing woke up Ulysses, who was resting nearby. He came out looking tired and messy from his long journey at sea. The other girls ran away, but brave Nausicaa stayed. Ulysses spoke kindly to her and asked for help. Nausicaa gave him food and fresh clothes. She told him how to find the palace and said her people would help him get home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_9.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_9.webp" alt="Veiled Stranger in the Gleaming Palace illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -898,7 +1040,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Ulysses went inside and asked the queen and king for help getting home. He had been away from his family for such a long time. King Alcinous was very kind. He gave Ulysses food and a cozy place to sleep. He promised to help him sail home the very next day.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_10.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_10.webp" alt="Feasts, Games, and Hidden Tears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -912,7 +1054,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Next came fun and games outside. Young people ran races and jumped and threw heavy discs. At first the traveler did not want to play, but when someone said something unkind, he tried too and threw the disc farther than anyone. After that, there was dancing and more music and everyone had a wonderful time. The king gave the guest beautiful gifts. But when the singer told more old stories, the guest cried again. The king saw this and asked gently who he really was.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_11.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_11.webp" alt="Ulysses Reveals His Name and Trials illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -925,7 +1067,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then Ulysses began to tell the story of his long journey. After leaving Troy, he and his sailors had many adventures. They met people who ate a special flower that made them forget about home. Ulysses had to help his friends remember where they belonged. Later, they found a giant named Polyphemus who lived in a big cave. The giant was not kind to visitors. Ulysses had to be very clever to help his men escape safely. He used a trick and told the giant his name was &quot;Noman.&quot; In the end, they got away on their ships, but the sea god Neptune was angry with them. More adventures were waiting ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_12.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_12.webp" alt="Winds Unbound and Giants Awakened illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -937,7 +1079,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Odysseus tells his friends about his long journey home. First, he visited Aeolus, the keeper of the winds. Aeolus was very kind and gave Odysseus a special bag. Inside the bag were all the stormy winds, tied up tight. Only the gentle wind stayed free to blow the ships toward home. For nine days they sailed, and Odysseus could almost see his island! But then he fell asleep. His men thought the bag held treasure, so they opened it. All the wild winds rushed out and blew the ships far, far away. Aeolus would not help them again. Next, they met some very unfriendly giants, and most of the ships were lost. Only Odysseus and his crew escaped. They sailed on until they found a pretty island where a magical woman named Circe lived. With help from a kind god, Odysseus made friends with Circe. She let them rest for a whole year. Now they must take one more journey before going home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_13.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_13.webp" alt="Odysseus Summons the Restless Dead illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -949,7 +1091,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Odysseus and his friends sailed far away to a strange, misty land. The sun never shone there, and everything was dark and foggy. On the shore, Odysseus called out to the spirits of people who had passed away long ago. Many ghosts came floating toward him, making soft, whispery sounds. A wise old spirit named Teiresias told Odysseus important news about his trip home. He said the journey would be hard, but Odysseus could make it if he was careful. Then Odysseus saw his own mother&#x27;s spirit, and his heart felt so full of feelings. She told him that his family missed him very much and still waited for him at home. Odysseus tried to hug her three times, but she slipped away like mist each time. This made him feel very sad. He also saw spirits of old friends from the great war. Finally, Odysseus hurried back to his ship with his crew. They rowed away through the foggy waters, ready to continue their long adventure home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_14.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_14.webp" alt="Deadly Trials Beyond Circe&#x27;s Warning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -962,7 +1104,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They sailed on bravely. When they passed the Sirens, Odysseus heard their beautiful voices but stayed safe because he was tied tight. Later, they faced more scary places on the sea, and sadly, some of the crew got hurt. When they reached a sunny island, the hungry crew made a big mistake and ate animals that belonged to the Sun. A terrible storm came, and only Odysseus survived. He floated on the water for nine days until he reached Calypso&#x27;s island, where his story began.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_15.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_15.webp" alt="Homeward Bound in Deathlike Slumber illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -975,7 +1117,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When it was time, Ulysses said goodbye to the king and queen. He thanked them for being so kind and helpful. The sailors made a cozy spot on the ship with soft blankets. As soon as they started rowing, Ulysses fell into a deep, peaceful sleep. The ship sailed fast through the night like a bird flying. When morning came, they reached Ithaca at last. The sailors gently carried sleeping Ulysses onto the sandy beach. They left his treasures under an old olive tree. When he woke up, a goddess named Minerva helped him hide his gifts. She changed how he looked so no one would know him yet.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_16.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_16.webp" alt="The Swineherd&#x27;s Loyal Welcome illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -988,7 +1130,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Eumaeus invited the stranger inside his little hut. He made a cozy bed of soft rushes and gave him warm coverings. Then he cooked a nice meal and shared it happily. Eumaeus said that helping travelers was the right thing to do. He talked about how much he missed his master and worried about young Telemachus. Ulysses listened quietly, keeping his secret safe. That stormy night, the king slept peacefully in his own servant&#x27;s home, and nobody knew who he really was.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_17.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_17.webp" alt="The Son&#x27;s Urgent Return to Ithaca illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1002,7 +1144,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Telemachus sailed back toward Ithaca with his friend. Along the way, he met a man named Theoclymenus who needed help. Telemachus was kind and let him ride on the ship. Back on Ithaca, his father Ulysses was hiding at a swineherd&#x27;s little hut. The swineherd Eumaeus was a good and loyal friend. When Telemachus finally reached the island, he walked toward that very same hut. A wonderful surprise was waiting for him there.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_18.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_18.webp" alt="The Father Revealed to His Son illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1015,7 +1157,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The three of them ate together, but Telemachus did not know the old beggar was really his father. After Eumaeus left to tell Penelope her son was safe, something wonderful happened. The goddess Athena used her magic to change Ulysses back to his true self. His ragged clothes became fine robes. He stood tall and strong again. Telemachus was amazed and a little scared. Then Ulysses said softly, &quot;I am your father.&quot; At first Telemachus could not believe it. But when Ulysses explained everything, Telemachus knew it was true. Father and son hugged each other tight and cried happy tears together at last.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_19.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_19.webp" alt="Homecoming, Insults, and Hidden Recognition illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1029,7 +1171,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Meanwhile, Ulysses walked to town dressed as a poor old beggar. A mean goatherd was unkind to him, but Ulysses stayed calm and quiet. Then something special happened. His old dog Argos was lying in the yard, very old and tired. When Argos heard his master&#x27;s voice, he wagged his tail one last time. He had waited twenty years just to see Ulysses again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_20.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_20.webp" alt="The Beggar&#x27;s Brawl at the Door illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1042,7 +1184,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One kind suitor named Amphinomus gave Ulysses some wine and wished him well. Ulysses tried to warn him that something big was coming soon. Then the goddess Minerva helped Penelope look extra beautiful. She came downstairs, and all the suitors thought she was wonderful. They gave her lovely gifts like a pretty dress and a golden necklace. Later that night, the suitors finally went home, but Ulysses stayed behind, thinking quietly about what would happen next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_21.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_21.webp" alt="The Arms Removed, A Scar Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1055,7 +1197,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Later, the queen Penelope came downstairs looking lovely but sad. She asked the stranger about himself, and Ulysses told a made-up story. He said he once met a man named Ulysses long ago. He described her husband&#x27;s purple cloak and golden pin so perfectly that Penelope cried. But Ulysses kept his face very still and calm. An old nurse named Euryclea washed his feet and found a special scar on his leg. She almost shouted his name, but he asked her to keep his secret. Penelope told him about a contest with a bow that would happen soon.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_22.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_22.webp" alt="Restless Night Before the Reckoning illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1069,7 +1211,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>In the morning, Ulysses woke to the sounds of the busy house. His son Telemachus got ready for the day. Two faithful friends came to help with the animals. They both said they wished their old master would come home. Ulysses, still dressed as a poor stranger, smiled to himself. He knew that very soon, everything would change.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_23.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_23.webp" alt="Penelope&#x27;s Challenge and the Bow illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1082,7 +1224,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Telemachus set up the axes in a neat row. The suitors tried one by one to string the bow, but none of them were strong enough. Meanwhile, Ulysses had slipped outside with two helpers who loved him. He showed them a special mark on his leg, and they knew it was really him! They hugged him with happy tears. Then the beggar asked for a turn with the bow. He strung it easily, like music, and shot the arrow straight through all twelve axes! Telemachus stood proudly beside his father, knowing something wonderful was about to happen.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_24.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_24.webp" alt="Ulysses Reclaims His Hall in Blood illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1094,7 +1236,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     <div class="chapter-summary"><p>Ulysses took off his old beggar clothes and stood tall. He held his great bow in his hands. He told the rude guests it was time for them to leave. They had been very unkind while he was away. They had eaten all his food and made a mess. They had not been nice to his family or helpers. The guests were surprised and a little scared. They tried to say sorry and promised to fix things. But Ulysses said they had to go right now. His son Telemachus stood beside him, feeling brave. Their good friends the swineherd and stockman helped too. The goddess Athena watched over them and kept them safe. One by one, the rude guests had to leave the house. When it was all over, Ulysses asked for the hall to be cleaned up. The kind servants who had missed him gave him big hugs. They were so happy their master was finally home. Upstairs, Penelope was still sleeping peacefully, not knowing yet that something wonderful had happened.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_25.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_25.webp" alt="Penelope Tests the Stranger by the Fire illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1107,7 +1249,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The nurse told her about a special scar on the stranger&#x27;s leg. Penelope remembered that scar! So she went downstairs to see for herself. She sat by the fire and looked at the man very carefully. Her son wanted her to hug him right away. But Penelope was careful. She wanted to be really sure. So she gave him a little test about their special bed. Only the real Ulysses would know the secret of how he built it around an olive tree. When he told her everything about the bed, Penelope knew it was truly him! She ran to him and they hugged and cried happy tears together.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false">
     <figure class="chapter-figure" data-full="../../the_odyssey/images_anime/chapter_26.webp"><img class="chapter-image" src="../../the_odyssey/images_anime/chapter_26.webp" alt="Whispers Among the Asphodel Dead illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1281,6 +1423,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-style-page="cinematic" data-sibling-href="index_anime.html">
@@ -783,7 +907,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_1.webp"><img class="chapter-image" src="images_cinematic/chapter_1.webp" alt="A Gray Life Before the Storm illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -802,7 +926,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Please let me know how you&#x27;d like to proceed!</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_2.webp"><img class="chapter-image" src="images_cinematic/chapter_2.webp" alt="Gray Prairie, Rising Storm illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -822,7 +946,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Despite the groaning house and wailing wind, Dorothy&#x27;s eyes grew heavy, and she drifted into sleep—unaware of just how far from Kansas the cyclone was carrying her, or what strange and colorful world awaited when she finally woke.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="A Strange Land and Its Little People illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -842,7 +984,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Now Dorothy stood alone with Toto at her feet, the silver shoes waiting inside and a strange road stretching before her toward whatever wonders—or dangers—the City of Emeralds might hold.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="A Friendly Witch Begins Her Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -865,7 +1007,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so the unlikely companions continued onward, their path stretching toward whatever wonders and perils awaited beyond the pleasant Munchkin farmland.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="A Scarecrow&#x27;s First Days Alive illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -882,7 +1024,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>At last the Scarecrow spotted a small cottage built of logs and branches standing among the trees, and there Dorothy found a bed of dried leaves where she could rest her weary body. She fell asleep almost at once with Toto curled beside her, while the Scarecrow—who never tired and never slept—stood watch in the corner, waiting patiently for morning to bring whatever new adventures the road might hold.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="A Rusted Friend Joins the Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -902,7 +1044,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But as the yellow bricks stretched onward beneath their feet, a more pressing worry gnawed at her—the bread was nearly gone, and unlike her companions of tin and straw, Dorothy could not simply go on without being fed.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="A Cowardly King Joins the Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -920,7 +1062,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the unlikely fellowship moved deeper into the forest, Toto gradually overcame his fear of those great jaws that had nearly crushed him, and before long, the little dog and the Cowardly Lion had become the most unexpected of friends—though greater dangers surely awaited them on the road ahead.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="Leaping Chasms in the Dark Forest illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -939,7 +1081,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>But rivers, as the companions would soon learn, have currents of their own and care nothing for the plans of travelers.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="The Scarecrow Stranded in the River illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -958,7 +1100,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>On and on they walked through the seemingly endless field of deadly flowers until they came upon the Lion himself, lying motionless among the poppies. He had fallen just short of the sweet green grass beyond, too heavy for them to move. With sorrowful hearts, they left their cowardly friend behind, carrying Dorothy to a pretty spot by the river where fresh breezes might revive her, and there they waited—hoping that somehow fortune would smile upon them once more.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="Tiny Heroes Save the Cowardly Lion illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -980,7 +1122,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>As the travelers settled beside the still-sleeping Lion to await his awakening, the Scarecrow fetched Dorothy fruit from a nearby tree, and she ate her simple dinner in the peaceful meadow—though none could say how long it might be before their great friend stirred again.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_11.webp"><img class="chapter-image" src="images_cinematic/chapter_11.webp" alt="The Green Land and Its Mysteries illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -999,7 +1141,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>A little green man greeted them inside—the Guardian of the Gates—and when he learned they wished to see Oz, he sat down in astonishment. Before he would take them to the Palace, however, he insisted they must each wear spectacles with green lenses, locked fast around their heads, lest the brightness of the city blind them forever. With everyone properly fitted—even little Toto—the Guardian took up a great golden key and led them through the portal into the dazzling streets beyond.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_12.webp"><img class="chapter-image" src="images_cinematic/chapter_12.webp" alt="A City Bathed in Emerald Light illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1019,7 +1161,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They retired early that night, sleeping soundly until awakened by the crowing of a green cock and the cackling of a hen who had laid a green egg—for tomorrow, their most perilous journey would begin.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_13.webp"><img class="chapter-image" src="images_cinematic/chapter_13.webp" alt="The Witch&#x27;s Wrath Unleashed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1038,7 +1180,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When nothing remained but a shapeless brown mass, Dorothy swept it out the door, retrieved her silver shoe, and ran to tell the Lion the glorious news—the Wicked Witch of the West was no more, and they were prisoners no longer.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_14.webp"><img class="chapter-image" src="images_cinematic/chapter_14.webp" alt="Reunited at the Yellow Castle illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1059,7 +1201,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With three cheers from their Winkie friends ringing in their ears, the travelers turned their faces eastward toward the Emerald City, where promises waited to be claimed and destinies waited to be fulfilled.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_15.webp"><img class="chapter-image" src="images_cinematic/chapter_15.webp" alt="Lost in Fields of Yellow Flowers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1079,7 +1221,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>&quot;That was a good ride,&quot; Dorothy declared, and the Lion agreed it had been a quick way out of their troubles—though none of them yet knew what reception awaited them behind those emerald walls.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_16.webp"><img class="chapter-image" src="images_cinematic/chapter_16.webp" alt="The Man Behind the Screen illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1099,7 +1241,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They agreed to keep his secret and departed in surprisingly high spirits, for even a humbug&#x27;s promises seemed better than none at all, and tomorrow held the hope of wishes fulfilled.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_17.webp"><img class="chapter-image" src="images_cinematic/chapter_17.webp" alt="Bran, Silk, and Bottled Courage illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1118,7 +1260,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Left alone, Oz allowed himself a small, knowing smile. How easy it had been to satisfy them all, for they had imagined he could do anything. But Dorothy&#x27;s wish—to return to Kansas—that would require something far beyond imagination, and the little humbug hadn&#x27;t the faintest idea how it might be accomplished.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_18.webp"><img class="chapter-image" src="images_cinematic/chapter_18.webp" alt="Oz and Dorothy Build Their Escape illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1140,7 +1282,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Still, Dorothy&#x27;s heart sank as she watched her last hope drift away on the wind, leaving her stranded once more in a land far from home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_19.webp"><img class="chapter-image" src="images_cinematic/chapter_19.webp" alt="A New Hope in the South illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1159,7 +1301,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>And so, with hearts full of gratitude and resolve, the four friends agreed to set out together the very next morning, ready to face whatever perils awaited them on the long road to the Land of the South.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_20.webp"><img class="chapter-image" src="images_cinematic/chapter_20.webp" alt="Journey South Through Enchanted Forests illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1178,7 +1320,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Dorothy asked what they should do now, and the resourceful Tin Woodman declared he would build a ladder, for there was no question—they must certainly climb over and discover what strange land awaited them on the other side.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_21.webp"><img class="chapter-image" src="images_cinematic/chapter_21.webp" alt="A Fragile Land of Living Porcelain illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1196,7 +1338,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With the delicate china country behind them, the companions pressed onward, the southern horizon beckoning them ever closer to their journey&#x27;s end.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_22.webp"><img class="chapter-image" src="images_cinematic/chapter_22.webp" alt="The Lion Claims His Forest Throne illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1215,7 +1357,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>With this new title secured and his courage proven beyond doubt, the Lion rejoined his companions, ready to continue the journey that would carry them ever closer to the Emerald City and the fulfillment of all their hopes.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_23.webp"><img class="chapter-image" src="images_cinematic/chapter_23.webp" alt="Over the Hill to Glinda&#x27;s Castle illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1238,7 +1380,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They walked on through that charming countryside until a beautiful castle rose before them, its gates guarded by three young women in handsome red uniforms trimmed with gold. When Dorothy declared her purpose—to see the Good Witch who ruled there—the soldier asked her name and disappeared inside. She returned moments later with welcome news: Glinda would receive them at once.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_24.webp"><img class="chapter-image" src="images_cinematic/chapter_24.webp" alt="Glinda&#x27;s Gift and Farewell Blessings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1418,6 +1560,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>

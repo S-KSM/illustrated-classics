@@ -739,6 +739,130 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
     border-color: var(--anom-coral);
 }
 
+/* ---- Paywall card (inline, not modal) ---- */
+.paywall {
+    display: none;
+    max-width: 640px;
+    margin: 80px auto 40px;
+    padding: 48px 40px 40px;
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
+    display: block;
+    border-color: var(--anom-coral);
+    box-shadow: 0 30px 60px -20px rgba(26, 26, 26, 0.18);
+}
+.paywall-shape {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 140px;
+    height: 140px;
+    opacity: 0.45;
+    pointer-events: none;
+    animation: paywallFloat 14s ease-in-out infinite;
+}
+@keyframes paywallFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-6px, 8px) rotate(-4deg); }
+}
+.paywall-scribble {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--anom-coral);
+    margin-bottom: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+}
+.paywall-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--anom-text);
+    margin: 8px 0 16px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-sub {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--anom-ink-soft, #5a564e);
+    max-width: 460px;
+    margin: 0 auto 28px;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta {
+    display: inline-block;
+    padding: 14px 32px;
+    border-radius: 999px;
+    background: var(--anom-coral);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.25s ease, transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+}
+.paywall-cta:hover {
+    background: var(--anom-text);
+    transform: translateY(-1px);
+}
+.paywall-links {
+    margin-top: 18px;
+    font-size: 0.92rem;
+    color: var(--anom-ink-soft, #5a564e);
+    position: relative;
+    z-index: 1;
+}
+.paywall-links a {
+    color: var(--anom-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--anom-border);
+    transition: text-decoration-color 0.2s;
+}
+.paywall-links a:hover {
+    text-decoration-color: var(--anom-coral);
+}
+.paywall-dot {
+    margin: 0 10px;
+    color: var(--anom-muted);
+}
+.paywall-trust {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--anom-border);
+    font-size: 0.82rem;
+    color: var(--anom-muted);
+    letter-spacing: 0.02em;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blur chapters that would be locked, when paywall is showing */
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
+html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media (max-width: 640px) {
+    .paywall { padding: 36px 24px 30px; margin: 60px auto 30px; }
+    .paywall-shape { width: 100px; height: 100px; }
+}
+
 </style>
 </head>
 <body data-kids="1">
@@ -780,7 +904,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 </section>
 
 <main class="reader">
-<section class="chapter" id="chapter-1" data-num="1">
+<section class="chapter" id="chapter-1" data-num="1" data-free="true">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_1.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_1.webp" alt="A Firelit Lecture on the Fourth Dimension illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">01</div>
@@ -793,7 +917,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>His friends were not so sure about this idea. Filby shook his head and argued back. The others tried hard to understand. But the Time Traveller kept explaining in his gentle, excited way. He said that when we remember things, we sort of travel back in time. What if someone could build a machine to really travel through time? His friends laughed and wondered what they might see in the past or future. Then the Time Traveller smiled and said he had built such a machine. He walked off to his workshop to bring back something wonderful to show them.</p></div>
     <nav class="chapter-jump"><span></span><a class="next" href="#chapter-2"><span>Next</span>Chapter 2</a></nav>
 </section>
-<section class="chapter" id="chapter-2" data-num="2">
+<section class="chapter" id="chapter-2" data-num="2" data-free="true">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_2.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_2.webp" alt="A Glittering Model Vanishes Into Time illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">02</div>
@@ -807,7 +931,25 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Everyone was so surprised they could not speak. Where did it go? The friends talked and wondered about it. Then the Time Traveller smiled and said he had a bigger machine in his workshop. He led his friends down a long hallway to see it. There it stood, shiny and beautiful, almost ready for a real journey through time.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-1"><span>Previous</span>Chapter 1</a><a class="next" href="#chapter-3"><span>Next</span>Chapter 3</a></nav>
 </section>
-<section class="chapter" id="chapter-3" data-num="3">
+<section class="paywall" aria-label="Subscribe to keep reading">
+    <svg class="paywall-shape" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/>
+    </svg>
+    <div class="paywall-inner">
+        <div class="paywall-scribble">or a year for $44.99 (save ~25%)</div>
+        <h2 class="paywall-title">The rest is waiting.</h2>
+        <p class="paywall-sub">58 illustrated classics. Cinematic, anime, and kids editions. $4.99 a month — about the price of a coffee.</p>
+        <a href="#" class="paywall-cta" data-action="subscribe">Start reading — $4.99/mo</a>
+        <div class="paywall-links">
+            <a href="#" data-action="gift">Gift it instead</a>
+            <span class="paywall-dot">·</span>
+            <a href="../index.html" data-action="anchors">Try 3 free books</a>
+        </div>
+        <div class="paywall-trust">Cancel anytime · Works on any device · No ads, ever.</div>
+    </div>
+</section>
+
+<section class="chapter" id="chapter-3" data-num="3" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_3.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_3.webp" alt="A Haggard Return From Beyond illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -820,7 +962,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Then the door opened slowly. The Time Traveller walked in, and he looked very tired and messy. His coat was dirty with green stains. His hair was wild and tangled. He had a small cut on his chin, and his feet were bare and sore. He looked like he had been on a very long, hard trip. His friends were so surprised to see him this way. He asked for something to drink and some food right away because he was very hungry. He promised to tell them everything after he cleaned up. When he came back downstairs, he said something amazing. He really had been travelling through time! He had been gone for eight whole days, even though it only seemed like a few hours to everyone else. Then he sat in his cozy chair and got ready to share his incredible story.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_4.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_4.webp" alt="Night and Day Like a Black Wing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -834,7 +976,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Finally he stopped the machine and tumbled onto soft grass near purple flowers. A huge white statue shaped like a winged creature stood nearby, very old and worn. Then he saw small, gentle people in soft robes coming to meet him. They looked kind and delicate. He felt brave again and got ready to say hello to these new friends from the faraway future.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_5.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_5.webp" alt="Fragile Inheritors of a Faded World illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -847,7 +989,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>He took a special part off his machine and put it in his pocket. He wanted to keep the machine safe. The little people gave him flowers until he was covered in pretty petals. They laughed and led him to a big old building made of grey stone. Inside, the floors were worn smooth and dusty curtains hung on the walls. It looked like it had been grand long ago. About two hundred of these gentle people sat on cushions eating fruit. The Time Traveller tried to learn their words by pointing at things. They giggled at his funny sounds but got tired of teaching him quickly. He could tell this peaceful world held many secrets waiting to be discovered.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_6.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_6.webp" alt="The Sunset of Mankind illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -861,7 +1003,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The tiny people following him all looked almost the same. They seemed so gentle and happy, without any worries at all. The Time Traveller sat on an old metal bench and watched the beautiful sunset over the river. He thought he understood everything about this peaceful place. But he had a feeling there was still much more to discover.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_7.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_7.webp" alt="The Time Machine Vanishes illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -875,7 +1017,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When morning came, he felt a little better. He found marks in the grass leading to the sphinx. He knocked on its side and heard it was hollow inside. His machine must be hidden there! But the little people would not help him open it. So he decided to be patient, learn about this strange world, and watch for clues to get his machine back.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_8.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_8.webp" alt="Mysterious Wells and Unanswered Questions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -888,7 +1030,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The gentle little people called Eloi spent their days playing and eating fruit. But no one seemed to work or build anything. One day he saved a small person named Weena from a stream when she needed help. After that, Weena became his dear friend. She would bring him flowers and stay close to him. But Weena was very afraid of the dark. All the Eloi were scared when night came. They would huddle together inside the big buildings until morning light. The Time Traveller wondered why they were so frightened. He had so many questions about this strange new world.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_9.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_9.webp" alt="Descent Into the Underworld&#x27;s Darkness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -901,7 +1043,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>One morning, he walked to a deep well with his friend Weena. She did not want him to go down into the dark. She held his hand and looked very sad. He gave her a gentle goodbye and started climbing down the long shaft. It was hard work, and his arms got very tired. At the bottom, he found a big cave full of humming machines. The pale creatures did not like light, so he used matches to see. When his matches started running out, he climbed back up as fast as he could. At last he reached the sunny world above. Weena was so happy to see him. She held his hands while he rested in the warm grass. His time machine was still down below, waiting to be found.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_10.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_10.webp" alt="Fear Returns With the Waning Moon illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -914,7 +1056,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>The Time Traveller decided he needed to be brave and make a plan. He wanted to find a safe place to stay and make tools to protect himself. He remembered a beautiful building called the Palace of Green Porcelain far away. So he and Weena set off walking toward it. Weena was happy and picked flowers along the way. She put them in his pockets, which made him smile. When night came, they rested on a hill under the stars. The sky looked different so far in the future, but it was still beautiful. In the morning they kept walking through a sunny green wood toward the palace.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_11.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_11.webp" alt="Ruins of a Forgotten Museum illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -927,7 +1069,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>They walked through many rooms filled with old treasures. Some rooms had machines with interesting parts. Other rooms had shelves where books had turned to crumbs after so much time. Then the traveller found something very helpful in a glass case. He found matches that still worked perfectly. He was so happy that he did a silly dance, and Weena laughed and clapped her hands. He also found special waxy stuff called camphor that could make bright light. Now he felt ready and brave for whatever adventure waited for him next.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_12.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_12.webp" alt="Fire and Flight Through the Forest illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -940,7 +1082,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>When it got dark, they reached the edge of the woods. Weena was scared of the darkness, but they kept going. The Traveller made a fire to help them see the way. Weena had never seen fire before and thought the pretty flames looked wonderful. They walked deeper into the trees, but soon they got lost. The night was very long and scary, with strange sounds all around them. When morning finally came, the Traveller was safe, but sweet little Weena was gone. He felt so sad and lonely without her. He put his hand in his pocket and found a few matches, then slowly walked on toward home all by himself.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_13.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_13.webp" alt="The Trap Sprung, The Escape Made illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -953,7 +1095,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>He walked toward a big white statue called the Sphinx. To his surprise, the doors were open! Inside sat his Time Machine, all cleaned up and waiting. He knew it was a trick, but he stepped in anyway. The doors slammed shut behind him, and everything went dark. He could hear the Morlocks coming closer in the blackness. His heart beat fast as he fumbled to fix the levers on his machine. Finally, he got them in place and pulled hard. The darkness faded away, and he was traveling through time again, leaving that strange world behind.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_14.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_14.webp" alt="Earth&#x27;s Final Twilight illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -966,7 +1108,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>He stopped on a quiet beach by a very still sea. The rocks were reddish, and strange green plants grew on them. The air felt thin and hard to breathe. He saw some very odd creatures there, like big crabs with long feelers. They made him feel uneasy, so he quickly traveled even further ahead. Now everything was cold and snowy. The sea looked dark and icy. Almost nothing was alive anymore. The Traveller felt scared and lonely in this quiet, frozen world, and he knew he needed to find his way back home.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_15.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_15.webp" alt="Rewinding Through Time to Home illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -979,7 +1121,7 @@ html[data-mode="astro-nomad"] .chapter-jump a:hover {
 <p>Finally, the walls of his own workshop appeared around him. He was home! He climbed off his machine with wobbly, tired legs. His body ached and he was covered in dust from his long adventure. For a while he just sat and shivered, thinking about all the strange and wonderful things he had seen. Then he heard his friends talking in the dining room. He smelled something yummy cooking. He was so very hungry! So he washed up, joined his friends for dinner, and began to tell them his amazing story.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false">
     <figure class="chapter-figure" data-full="../../time_machine/images_anime/chapter_16.webp"><img class="chapter-image" src="../../time_machine/images_anime/chapter_16.webp" alt="Doubt, Evidence, and Departure illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1153,6 +1295,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLb();
     });
 });
+</script>
+<script>
+(function(){
+    try {
+        var q = new URLSearchParams(location.search);
+        if (q.get('paywall') === '1') document.body.setAttribute('data-paywall', 'show');
+    } catch (e) {}
+})();
 </script>
 </body>
 </html>
