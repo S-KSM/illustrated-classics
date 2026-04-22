@@ -1724,7 +1724,7 @@ const SB_ANON = 'sb_publishable_LwE5Ct1OZX-Stvw-K8Y7LA_gFVdnroG';
 const API = 'https://api.ai-may-i.com';
 
 const supabase = createClient(SB_URL, SB_ANON, {
-    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
 });
 
 async function apiMe(token) {
@@ -1829,6 +1829,7 @@ if (form) {
         btn.disabled = true;
         btn.textContent = 'Sending…';
         const base = location.pathname.startsWith('/classics/') ? '/classics/' : '/';
+        try { localStorage.setItem('post_auth_return', location.pathname + location.search); } catch (e) {}
         const { error } = await supabase.auth.signInWithOtp({
             email,
             options: { emailRedirectTo: location.origin + base + 'auth/callback.html' }
@@ -1867,8 +1868,13 @@ async function startCheckout(token, plan) {
     }
 }
 
-supabase.auth.onAuthStateChange(() => syncState());
-syncState();
+let _syncing = false;
+async function safeSyncState() {
+    if (_syncing) return;
+    _syncing = true;
+    try { await syncState(); } finally { _syncing = false; }
+}
+supabase.auth.onAuthStateChange(() => { safeSyncState(); });
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSignIn();

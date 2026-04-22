@@ -23,7 +23,15 @@ const sb = createClient('https://pwaprvmsmcvwzxqhjhpm.supabase.co', 'sb_publisha
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
 const base = location.pathname.startsWith('/classics/') ? '/classics/' : '/';
-function go() { location.href = base; }
+function go() {
+    let target = base;
+    try {
+        const saved = localStorage.getItem('post_auth_return');
+        if (saved && saved.startsWith(base)) target = saved;
+        localStorage.removeItem('post_auth_return');
+    } catch (e) {}
+    location.href = target;
+}
 
 (async () => {
     // If this is a PKCE code flow, exchange explicitly.
