@@ -22,11 +22,25 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const sb = createClient('https://pwaprvmsmcvwzxqhjhpm.supabase.co', 'sb_publishable_LwE5Ct1OZX-Stvw-K8Y7LA_gFVdnroG', {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
-// detectSessionInUrl handles the exchange automatically; wait briefly then redirect
+const base = location.pathname.startsWith('/classics/') ? '/classics/' : '/';
+function go() { location.href = base; }
+
 (async () => {
-    await sb.auth.getSession();
-    const base = location.pathname.startsWith('/classics/') ? '/classics/' : '/';
-    setTimeout(() => { location.href = base; }, 400);
+    // If this is a PKCE code flow, exchange explicitly.
+    const params = new URLSearchParams(location.search);
+    const code = params.get('code');
+    if (code) {
+        try { await sb.auth.exchangeCodeForSession(code); } catch (e) {}
+    }
+    // Wait for either a session or a SIGNED_IN event (handles implicit hash flow too).
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) return go();
+    const t = setTimeout(go, 5000);
+    sb.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
+            clearTimeout(t); go();
+        }
+    });
 })();
 </script>
 </body>
