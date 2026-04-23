@@ -1676,6 +1676,7 @@ async function unlockChapters(token) {
             if (!cr.ok) throw new Error('fetch ' + cr.status);
             const data = await cr.json();
             el.innerHTML = data.body_html || '';
+            el.classList.remove('chapter-locked');
             el.removeAttribute('data-locked');
             el.removeAttribute('data-loading');
         } catch (e) {
