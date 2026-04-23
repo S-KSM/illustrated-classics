@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1137,7 +1151,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
     </div>
 </section>
 
-<section class="chapter" id="chapter-3" data-num="3" data-free="false">
+<section class="chapter" id="chapter-3" data-num="3" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_3.webp"><img class="chapter-image" src="images_anime/chapter_3.webp" alt="Moonlit Murder in the Fogbound Lane illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -1146,16 +1160,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Moonlit Murder in the Fogbound Lane</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nearly a year elapsed before the shadow of Edward Hyde fell once more across the cobbled streets of London—and when it did, it fell with a violence that shook the metropolis to its respectable foundations. In the fog-shrouded month of October, a crime of singular brutality seized the city&#x27;s attention, rendered all the more sensational by the eminence of the victim and the seemingly causeless fury of the attack.</p>
-<p>The tale unfolded through the trembling testimony of a maidservant who had settled at her window that fateful evening, lulled into peaceful reverie by the brilliance of a full moon illuminating the lane below. Into this tranquil scene walked an aged and beautiful gentleman, his white hair gleaming silver in the moonlight, his countenance breathing such innocent, old-world kindness that the girl watched him with something approaching reverence. Advancing to meet this venerable figure came another man—small, slight, and instantly recognizable to the maid as a certain Mr. Hyde, a visitor to her master&#x27;s house for whom she had conceived an instinctive and inexplicable aversion.</p>
-<p>What followed defied comprehension. The elderly gentleman approached with exquisite politeness, apparently seeking nothing more consequential than directions, when Hyde—who had stood trifling with a heavy cane, simmering with ill-contained impatience—erupted into volcanic rage. With ape-like fury he set upon the older man, clubbing him to the earth and continuing his assault with such insensate cruelty that the bones audibly shattered beneath the blows. The maidservant fainted at her window; when she awakened two hours later and summoned the police, the murderer had long since vanished into the night, leaving behind an incredibly mangled corpse and the splintered remnants of his weapon.</p>
-<p>Upon the body the authorities discovered neither cards nor papers—only a sealed envelope bearing the name and address of Mr. Utterson. Thus was the lawyer drawn into this dreadful affair, and his worst suspicions crystallized when he identified the victim as Sir Danvers Carew, a member of Parliament, and recognized the broken cane as one he had himself presented to Henry Jekyll years before.</p>
-<p>Utterson accompanied Inspector Newcomen through a London transformed by the season&#x27;s first fog into something nightmarish—a chocolate-coloured pall hanging over the city, shifting between lurid brown twilight and haggard shafts of daylight. The dismal quarter of Soho, with its muddy ways and slatternly passengers, seemed a district conjured from troubled dreams. Here stood Hyde&#x27;s lodgings: rooms furnished with unexpected luxury and taste, appointed with silver plate and elegant carpets, yet bearing every mark of hasty flight. Clothes lay strewn about with pockets turned inside out; on the hearth smoldered the ashes of burned papers; and behind the door waited the other half of that fatal stick.</p>
-<p>The inspector departed confident of swift apprehension—the fugitive had left behind money, evidence, and the clear trail of a man who had lost his head. Yet the handbills proved impossible to compose, for Hyde remained an enigma even to those who had encountered him. No photograph existed; descriptions varied wildly; his family could nowhere be traced. Only upon one point did all observers agree: the haunting, inexpressible sense of deformity that clung to his person like a curse.</p>
-<p>And so Hyde vanished into the labyrinthine darkness of the city, leaving behind a murdered knight, a shattered friendship, and questions that would soon demand answers from the one man who might possess them—Dr. Henry Jekyll himself.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="3" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4" data-free="false">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_4.webp"><img class="chapter-image" src="images_anime/chapter_4.webp" alt="Jekyll&#x27;s Fevered Promise of Escape illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -1164,15 +1172,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Jekyll&#x27;s Fevered Promise of Escape</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Late in the afternoon&#x27;s gathering dusk, Mr. Utterson made his way to Dr. Jekyll&#x27;s residence, where the faithful Poole conducted him not to the familiar parlours but through kitchen passages and across a yard—once a garden, now fallen to neglect—toward that curious structure known indifferently as the laboratory or dissecting rooms. It was a building freighted with history, purchased from a celebrated surgeon&#x27;s heirs and repurposed by Jekyll for chemical rather than anatomical pursuits. The lawyer, entering this quarter of his friend&#x27;s domain for the first time, surveyed the dingy, windowless edifice with mingled curiosity and distaste: the old theatre, once thronged with eager students, now lay gaunt and silent beneath a foggy cupola, its tables cluttered with apparatus, its floor strewn with crates and packing straw—a space transformed, yet haunted still by its former purpose.</p>
-<p>Within the cabinet itself, Utterson discovered Jekyll seated close to the fire, looking deathly sick, his hand cold, his voice altered. The doctor had heard the newsboys crying murder in the square—Sir Danvers Carew, that distinguished parliamentarian and Utterson&#x27;s own client, struck down by the infamous Hyde. Jekyll swore upon his honour, with feverish vehemence, that he would never set eyes upon Hyde again; the connection was severed utterly, and the villain, he insisted, possessed means of escape that rendered him quite safe from detection. Yet it was not Hyde&#x27;s fate that troubled the doctor so much as his own reputation, now dangerously exposed by the hateful business.</p>
-<p>A letter had arrived, Jekyll confessed—penned in Hyde&#x27;s peculiar upright hand—expressing gratitude for a thousand generosities and assuring the doctor that he need harbour no alarm. Utterson, examining this document, found it cast a more favourable light upon the mysterious intimacy than he had dared hope; yet when he inquired after the envelope, Jekyll admitted he had burned it thoughtlessly, and that the note bore no postmark—it had been handed in directly. This detail would prove significant. Before departing, the lawyer pressed one final question: had Hyde dictated those strange terms in Jekyll&#x27;s will regarding disappearance? The doctor, seized with visible anguish, could only nod. Utterson pronounced the grim verdict—Hyde had meant murder—and Jekyll, covering his face, whispered that he had learned a lesson beyond all reckoning.</p>
-<p>But upon questioning Poole at the door, Utterson learned that no letter had been delivered save the day&#x27;s circulars. The note, then, must have entered by the laboratory door—or perhaps been written in the cabinet itself. This revelation renewed the lawyer&#x27;s fears considerably.</p>
-<p>That evening, seeking counsel without directly asking for it, Utterson sat beside his own hearth with Mr. Guest, his trusted head clerk and accomplished student of handwriting. Between them stood a bottle of old wine, long cellared, its acids mellowed to an imperial richness ready to disperse London&#x27;s clinging fogs. The lawyer produced Hyde&#x27;s letter; Guest examined it with professional passion and pronounced the writer not mad, merely odd. Then chance intervened—a note arrived from Jekyll himself, and Guest, comparing the two documents side by side, observed what Utterson had dreaded: the handwritings bore a singular resemblance, identical in many points though differently sloped.</p>
-<p>Alone at last, Utterson locked both documents in his safe, his blood running cold with the terrible implication: Henry Jekyll had forged a letter for a murderer—unless the truth ran darker still, threading toward secrets the lawyer could scarcely begin to fathom.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="4" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5" data-free="false">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_5.webp"><img class="chapter-image" src="images_anime/chapter_5.webp" alt="Jekyll&#x27;s Brief Peace Shatters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -1181,16 +1184,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Jekyll&#x27;s Brief Peace Shatters</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Time, that inexorable current, carried the scandal of Sir Danvers Carew&#x27;s murder into the quieter waters of memory, though thousands of pounds in reward money had stirred the public&#x27;s thirst for justice. Mr. Hyde, that instrument of violence and degradation, had vanished as thoroughly as if the London fog had swallowed him whole—his past disinterred in all its sordid detail, yet his present whereabouts an utter blank. For Mr. Utterson, the lawyer whose methodical mind had been so troubled by this sinister figure, Hyde&#x27;s disappearance proved a curious balm; the death of Sir Danvers seemed almost recompensed by the removal of such concentrated evil from the world.</p>
-<p>And what transformation now overtook Dr. Jekyll! The man emerged from his long seclusion as one risen from a spiritual convalescence, renewing old friendships, opening his doors to guests, and distinguishing himself not merely in charitable works but in matters of religion. His countenance itself appeared to brighten, as though illuminated by some inner consciousness of service rendered and darkness overcome. For more than two months, peace settled upon the doctor&#x27;s household like a benediction.</p>
-<p>Yet this serenity proved as fragile as morning frost. On the eighth of January, Utterson dined at Jekyll&#x27;s with a small and congenial party, Lanyon among them; the three old friends exchanged glances that spoke of recovered intimacy. By the twelfth, however, Jekyll&#x27;s door stood shut against his lawyer, and again on the fourteenth and fifteenth—Poole offering only the cryptic explanation that the doctor was confined and receiving no visitors. Utterson, grown accustomed to near-daily communion with his friend, found this sudden exile oppressive to his spirits.</p>
-<p>Seeking solace, he betook himself to Dr. Lanyon&#x27;s house, where admittance was granted but comfort withheld. The change in Lanyon struck Utterson with the force of revelation: here was a man with his death-warrant inscribed legibly upon his features. The once-rosy physician had grown pale, gaunt, visibly aged—yet it was not these tokens of physical decay that arrested the lawyer&#x27;s notice so much as a terrible quality in the eye, a deep-seated terror that seemed to emanate from the very marrow of his being. When pressed, Lanyon declared himself doomed, the victim of a shock from which no recovery was possible. More startling still was his violent refusal to speak of Jekyll—that name, once belonging to a cherished friend, now uttered only with trembling revulsion and the finality of one pronouncing a man already dead.</p>
-<p>Utterson&#x27;s subsequent letter to Jekyll yielded only pathetic obscurities and darkly mysterious hints. The breach with Lanyon, Jekyll wrote, was incurable; he himself must henceforth lead a life of extreme seclusion, bearing a punishment and danger he could not name. Within a fortnight, Lanyon was dead, leaving behind a sealed envelope addressed to Utterson&#x27;s hands alone, containing yet another enclosure marked not to be opened until the death or disappearance of Henry Jekyll. That word—*disappearance*—struck Utterson like a returning ghost, echoing the strange provisions of Jekyll&#x27;s will that had once been attributed to Hyde&#x27;s sinister influence. Now it appeared in Lanyon&#x27;s own hand, deepening the mystery rather than resolving it.</p>
-<p>Professional honour demanded the packet remain unopened, sleeping in the inmost corner of Utterson&#x27;s private safe, yet the lawyer found his desire for his surviving friend&#x27;s society strangely diminished. He called at Jekyll&#x27;s door, but perhaps with secret relief accepted each refusal, preferring the open air of the doorstep to that house of voluntary bondage where the doctor now confined himself entirely to the cabinet above the laboratory—silent, spiritless, and burdened with some nameless weight upon his mind.</p>
-<p>As Utterson&#x27;s visits grew less frequent, the shadows gathering around Dr. Jekyll only deepened, and the sealed packet waited in its darkness for whatever revelation—or catastrophe—must surely come.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="5" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6" data-free="false">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_6.webp"><img class="chapter-image" src="images_anime/chapter_6.webp" alt="The Window&#x27;s Glimpse of Horror illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -1199,17 +1196,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Window&#x27;s Glimpse of Horror</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>It was upon a Sunday—that day of enforced stillness and quiet reflection—that Mr. Utterson and his kinsman Mr. Enfield found their customary perambulation carrying them once more through that narrow by-street which had first occasioned their discourse on the sinister Mr. Hyde. When they arrived before the familiar door, both gentlemen halted as though drawn by some magnetic compulsion, their eyes resting upon that blistered and neglected entrance which had become, in their minds, a portal to mysteries better left unexamined.</p>
-<p>Enfield, with the air of a man closing a distasteful book, pronounced the affair concluded; they should, he ventured, never again encounter the detestable Hyde. Utterson expressed a fervent hope that this prediction might prove accurate, confessing that he too had once beheld that singular personage and had experienced the same inexplicable revulsion that had so disturbed his companion. This admission prompted Enfield to acknowledge his own foolishness in having failed to recognise the door as a rear entrance to Dr. Jekyll&#x27;s residence—a discovery he had made, he noted with dry self-deprecation, partly through Utterson&#x27;s own inadvertent assistance.</p>
-<p>The lawyer, seizing upon this revelation, proposed they venture into the court to observe Jekyll&#x27;s windows, for he harboured a persistent unease regarding his old friend&#x27;s welfare. Perhaps, he reasoned, even the mere presence of friendly faces might prove some comfort to the reclusive doctor. The courtyard into which they stepped was suffused with a premature and melancholy dusk, cool and faintly damp, though the sky far above still retained the luminous traces of sunset—a contrast that seemed to speak of the divided nature of existence itself.</p>
-<p>There, framed in the middle window which stood half-open to the evening air, sat Dr. Jekyll, his countenance marked by an infinite and profound sadness that put Utterson in mind of some disconsolate prisoner resigned to perpetual confinement. The doctor&#x27;s spirits, he confessed in response to Utterson&#x27;s anxious enquiry, were exceedingly low—though this condition, he added with cryptic resignation, would not endure much longer, for which mercy he thanked Providence.</p>
-<p>Utterson, ever practical, prescribed fresh air and exercise as remedies for such melancholic affliction, and extended a warm invitation for Jekyll to join their walk. The doctor&#x27;s response was at once yearning and fearful; he expressed genuine pleasure at the sight of his friends, yet declared with strange emphasis that it was quite impossible for him to venture forth—he dared not. Nor could he receive them within, for his quarters were unfit for visitors.</p>
-<p>The lawyer, accommodating himself to these peculiar restrictions, suggested they simply converse from where they stood. Jekyll assented with a smile—but in that instant, the smile was extinguished as though by some violent internal convulsion, replaced by an expression of such profound terror and despair that both gentlemen below felt their very blood congeal. The transformation lasted but a moment before the window was thrust violently downward, yet that fleeting glimpse proved sufficient to strike both men dumb with horror.</p>
-<p>They departed the court in absolute silence, traversing the by-street without exchanging so much as a syllable, and it was only upon reaching a neighbouring thoroughfare where ordinary life still stirred that Utterson turned to observe his companion. Both faces had gone pale as parchment, and in each pair of eyes there dwelt a mirrored terror beyond articulation.</p>
-<p>&quot;God forgive us,&quot; Utterson breathed, the words seeming inadequate to the enormity of what they had witnessed. Enfield merely nodded with grave solemnity, and they walked on together in the communion of shared dread—for whatever transformation they had glimpsed in that window spoke of abominations that no rational mind could readily accommodate, and of revelations yet to come that would shake the very foundations of their understanding.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="6" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7" data-free="false">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_7.webp"><img class="chapter-image" src="images_anime/chapter_7.webp" alt="The Dreadful Night at Jekyll&#x27;s Door illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -1218,15 +1208,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Dreadful Night at Jekyll&#x27;s Door</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>On a chill evening, with the fire burning low in his chambers, Mr. Utterson found his solitary contemplations shattered by the unexpected arrival of Poole, Dr. Jekyll&#x27;s faithful butler—a man whose very presence at that hour spoke of some profound disturbance. The servant&#x27;s countenance told a tale before his lips could frame the words: pallid, stricken, his eyes refusing to meet the lawyer&#x27;s steady gaze. Something, Poole insisted with dogged terror, was grievously wrong at the doctor&#x27;s house. For a week the master had shut himself within his cabinet, yet the voice that issued from behind that door, the desperate scrawled notes demanding medicines that no chemist could satisfy, the fleeting glimpse of a masked, crouching figure—these were not the marks of Henry Jekyll. The butler&#x27;s conviction fell upon Utterson&#x27;s ears like the tolling of a funeral bell: foul play had been done, and the master was no more.</p>
-<p>Together they ventured forth into a wild March night, the pale moon lying tilted on her back as though the wind had overthrown her, the streets swept bare of human fellowship. At the doctor&#x27;s house they found the servants huddled like frightened sheep about the hearth, the very air thick with dread. Poole led the lawyer through the surgical theatre to the cabinet stairs, where they listened to a voice unmistakably altered—a voice that refused all visitors with querulous despair. The butler produced a crumpled note, penned in Jekyll&#x27;s hand yet ending in a splutter of naked anguish: *For God&#x27;s sake, find me some of the old.* And he confessed what he had witnessed—a thing in a mask, small as a dwarf, that shrieked and fled from sight. This was not Dr. Jekyll; this, Poole believed with the certainty of twenty years&#x27; service, was Edward Hyde.</p>
-<p>Utterson, his reason warring with rising horror, resolved that they must break down the door. Armed with poker and axe, the two men crept through the darkened yard while London hummed solemnly beyond the walls, and overhead the scudding clouds swallowed the moon. From within the cabinet came the ceaseless tread of restless footsteps—light, oddly swinging steps utterly unlike Jekyll&#x27;s heavy gait—and once, Poole whispered, he had heard weeping like a woman or a lost soul.</p>
-<p>At last the assault commenced. Five savage blows of the axe shattered the red baize door, and in the stillness that followed the besiegers beheld a scene of terrible domesticity: the fire glowing, the kettle singing, tea things set forth as for a quiet evening. And there, contorted upon the carpet in clothes grotesquely too large for his stunted frame, lay the body of Edward Hyde, a crushed phial in his hand, the bitter scent of poison hanging on the air.</p>
-<p>Yet of Henry Jekyll there was no trace—not in the closets sealed by years of dust, nor in the cellar choked with cobwebs, nor behind the rusted, broken key that lay discarded by the by-street door. Upon the business table, however, the lawyer discovered documents that deepened the mystery even as they promised revelation: a new will naming Utterson himself as beneficiary, and a brief, anguished letter dated that very day, directing him to read first Lanyon&#x27;s narrative and then the doctor&#x27;s own confession.</p>
-<p>With trembling hands, Utterson prepared to learn at last what nameless circumstances had bound these two men—Jekyll and Hyde—in a doom from which neither could escape.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="7" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8" data-free="false">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_8.webp"><img class="chapter-image" src="images_anime/chapter_8.webp" alt="The Documents That Explain Everything illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -1235,15 +1220,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Documents That Explain Everything</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The discovery of the third enclosure marked the pivot upon which the entire mystery now turned. Poole, that faithful sentinel of a household plunged into chaos, placed into Utterson&#x27;s hands a packet of considerable weight—sealed not once but in several places, as though its author had sought by multiplied wax and ribbon to contain secrets too volatile for a single binding. The lawyer received it with the gravity befitting a man who understood that documents, like confessions whispered in dying breath, carry burdens heavier than their paper and ink might suggest.</p>
-<p>Utterson&#x27;s response revealed the measured prudence that had long defined his character; he would speak nothing of this paper to any soul, for even now, standing amid the wreckage of his friend&#x27;s reputation, he thought first of credit and honour. Should Jekyll have fled—or worse, should death have claimed him in some fashion too terrible yet to contemplate—the lawyer determined that discretion might yet salvage what remained of a once-illustrious name. Here was the solicitor&#x27;s instinct married to the friend&#x27;s loyalty: to shield, to preserve, to manage scandal as one manages a fire threatening to consume the whole estate.</p>
-<p>The hour pressed toward ten o&#x27;clock, and Utterson announced his intention to retreat to the solitude of his own chambers, there to examine the documents that promised at last to illuminate the labyrinthine darkness through which he had stumbled these many weeks. Yet he would not leave the matter suspended indefinitely in that purgatory between discovery and action; before midnight struck, he pledged to return, and then—only then—would they summon the police to whatever grim scene awaited explanation.</p>
-<p>The two men departed the theatre together, that strange cabinet where horror had so recently held court, and the sound of the key turning in the lock seemed to seal away more than mere rooms and furnishings. Behind that door lay the grotesque remnant of Hyde, the shattered remnants of Jekyll&#x27;s experiments, and questions that multiplied like shadows at dusk. In the hall below, the servants remained clustered about the fire, their faces surely pale with the kind of dread that no hearth-warmth could dispel, awaiting news they half-dreaded to receive.</p>
-<p>Utterson trudged back through the night to his office—that verb itself suggesting the weariness of a man who had walked too long through moral fog and now faced the final ascent toward terrible clarity. Two narratives awaited him there: twin accounts that would, at last, anatomise the mystery that had wound itself through respectable London like some creeping vine of corruption. The hour of revelation approached, and with it the promise that all which had seemed inexplicable—the door, the will, the cheque, the murder, the transformation—would finally yield its secrets to the lamplight of the lawyer&#x27;s study.</p>
-<p>*What those documents contained, and what truths they would unveil about the double nature of Henry Jekyll, remained yet to be discovered in the reading that lay ahead.*</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="8" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9" data-free="false">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_9.webp"><img class="chapter-image" src="images_anime/chapter_9.webp" alt="Lanyon&#x27;s Midnight Mission for Jekyll illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -1252,13 +1232,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Lanyon&#x27;s Midnight Mission for Jekyll</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>On the ninth of January, Dr. Lanyon received by evening post a registered letter bearing the familiar hand of his old school companion, Henry Jekyll—a communication whose formality struck him as peculiar in the extreme, for though the two men had dined together only the previous night, their friendship had never been one to stand upon such ceremony. The contents of this missive, however, proved far stranger than its delivery. Jekyll&#x27;s words trembled with desperate urgency, invoking the sacred bonds of their long acquaintance and declaring that his very life, honour, and reason hung upon Lanyon&#x27;s compliance with a series of instructions that seemed, at first blush, to border upon the fantastical.</p>
-<p>The task Jekyll demanded was elaborate and exacting: Lanyon was to abandon all other engagements that very evening, proceed at once to Jekyll&#x27;s house in company with the butler Poole and a locksmith, force entry to the doctor&#x27;s private cabinet, locate a particular drawer within a glazed press—the fourth from the top, identifiable by its contents of powders, a phial, and a paper book—and convey these materials to his own consulting room in Cavendish Square. There, at the stroke of midnight when the household servants should be safely abed, Lanyon was to admit with his own hand a stranger who would present himself in Jekyll&#x27;s name, and surrender the drawer into this mysterious visitor&#x27;s keeping. Jekyll promised that compliance would earn his eternal gratitude, and hinted darkly that any neglect of these arrangements, however fantastic they might appear, could burden Lanyon&#x27;s conscience with nothing less than his friend&#x27;s death or the complete shipwreck of his sanity.</p>
-<p>The letter&#x27;s tone oscillated between fevered supplication and a species of controlled terror that Lanyon found deeply unsettling. Jekyll confessed himself in some strange place, labouring beneath a blackness of distress beyond the reach of ordinary imagination, yet assured his friend that punctual service would cause all troubles to dissolve like a tale that is told. Though every instinct of scientific scepticism rebelled against such mysterious imperatives, the weight of old affection and the unmistakable authenticity of Jekyll&#x27;s anguish compelled Lanyon to act precisely as instructed, setting in motion events whose true nature he could scarcely begin to fathom.</p>
-<p>Thus does the narrative shift its perspective to reveal the approaching catastrophe through Lanyon&#x27;s bewildered eyes, as the good doctor prepares to encounter whatever strange messenger awaits him at the midnight hour.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="9" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10" data-free="false">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_10.webp"><img class="chapter-image" src="images_anime/chapter_10.webp" alt="Lanyon&#x27;s Midnight Encounter With Horror illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1267,15 +1244,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Lanyon&#x27;s Midnight Encounter With Horror</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Upon receiving Jekyll&#x27;s desperate postscript—that ominous addendum warning of catastrophe should the midnight hour pass without event—Lanyon found himself convinced his colleague had tumbled headlong into madness. Yet what physician, what gentleman of conscience, could dismiss so frantic an appeal without shouldering a grave responsibility? The letter, for all its wild incoherence, demanded action; and so Lanyon rose from his supper, summoned a hansom, and drove forthwith to Jekyll&#x27;s residence, where the machinery of compliance had already been set in motion. The butler, likewise instructed by registered post, had engaged both locksmith and carpenter, and this unlikely company proceeded together to the old surgical theatre—that relic of Dr. Denman&#x27;s tenure—from which Jekyll&#x27;s private cabinet might be most readily breached. The lock proved formidable, the door obstinate, yet after two hours&#x27; labour the thing stood open, and Lanyon retrieved the drawer marked E, swaddled it in straw and sheeting, and bore his curious burden home to Cavendish Square.</p>
-<p>There, by lamplight, he examined the contents with a chemist&#x27;s eye and found them maddeningly inscrutable: powders of crystalline salt, crudely compounded; a phial half-filled with blood-red liquor, pungent with phosphorus and volatile ether; and a version book chronicling years of experiments—entries that ceased abruptly, punctuated only by cryptic notations like &quot;double&quot; and, once, the despairing exclamation &quot;total failure!!!&quot; What had these articles to do with honour, sanity, or life? Lanyon could not fathom it. He dismissed his servants, loaded an old revolver, and awaited midnight with the grim composure of a man preparing for either farce or catastrophe.</p>
-<p>The clock had scarce finished its twelfth stroke when a gentle knock summoned him to the door. There, crouching against the portico pillars, cowered a small figure who confirmed by constrained gesture that he came from Jekyll. The visitor&#x27;s manner—his furtive backward glances, his evident alarm at the approaching policeman&#x27;s lantern—struck Lanyon disagreeably, and he kept his hand upon his weapon as he led the stranger into the bright consulting room. What he beheld there defied easy description: a creature of shocking expression, possessed of violent muscular energy yet constitutionally debilitated, dressed absurdly in garments far too large—trousers rolled, coat hanging below the haunches, collar sprawling wide. This ludicrous costume provoked no laughter; rather, it reinforced the profound wrongness emanating from the man&#x27;s very essence, a wrongness that manifested in Lanyon&#x27;s own flesh as a sinking pulse and incipient rigour.</p>
-<p>The stranger&#x27;s impatience bordered on hysteria. Upon seeing the drawer, he sobbed with immense relief, then—composing himself with desperate resolve—requested a graduated glass. Into it he measured the red tincture, added the crystalline powder, and watched as the mixture transformed through reddish hue to effervescent brightness, then sudden purple, and finally a watery green. He offered Lanyon a choice: depart in ignorance, or witness a prodigy to stagger Satan&#x27;s unbelief. Lanyon, having ventured too far into inexplicable service, chose knowledge.</p>
-<p>What followed shattered the foundations of Lanyon&#x27;s understanding. The stranger drank, reeled, clutched the table—his face blackening, his features melting and reforming—until there stood before the horrified physician, pale and groping like one restored from death, none other than Henry Jekyll himself. The confession that poured forth in the subsequent hour Lanyon could not bring himself to record; his soul sickened, his sleep fled, and mortal terror became his constant companion. He would die, he knew, incredulous—yet die he must. The creature who had crept into his house that midnight, Jekyll confessed, was the very fiend all London sought: the murderer Hyde.</p>
-<p>Now, at last, the full measure of Jekyll&#x27;s dreadful secret stood revealed, awaiting only the doctor&#x27;s own final testament to complete the unholy chronicle.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="10" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11" data-free="false">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_anime/chapter_11.webp"><img class="chapter-image" src="images_anime/chapter_11.webp" alt="The Soul&#x27;s Divided Nature Confessed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1284,13 +1256,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Soul&#x27;s Divided Nature Confessed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>In the voice of confession, with the measured gravity of a man who has gazed upon his own damnation and found it wearing his face, Henry Jekyll sets down the whole terrible history of his undoing—a narrative that begins, as such narratives must, with promise and respectability, and ends in the shadow of the gallows and the dissolution of the soul.</p>
-<p>Born to fortune and endowed with excellent faculties, Jekyll possessed every advantage that might guarantee an honourable future; yet beneath that grave and distinguished countenance there stirred a certain impatient gaiety, a taste for pleasures he deemed incompatible with his lofty aspirations. Thus commenced his profound duplicity—not the hypocrisy of a dissembler, but the genuine warfare of two natures housed within a single frame, both claiming equal authenticity. His scientific researches, tending ever toward the mystic and transcendental, illuminated this perennial conflict until he arrived at that truth which would prove his shipwreck: that man is not truly one, but truly two, and perhaps ultimately a mere polity of incongruous denizens.</p>
-<p>From this revelation sprang the beloved daydream—might not these warring elements be dissociated, housed in separate identities, liberating each from the contamination of the other? In his laboratory, Jekyll discovered agents capable of shaking the fleshly vestment loose, and compounded that fateful draught which, on one accursed night, he drank with a strong glow of courage. The transformation that followed brought racking agonies—grinding bones, deadly nausea, spiritual horror—then a sensation indescribably sweet: he felt younger, lighter, freed from obligation&#x27;s bonds, conscious of being tenfold more wicked and delighting in that very knowledge. Looking upon himself in the glass, he beheld Edward Hyde for the first time—smaller, slighter, bearing upon his countenance the stamp of pure evil, yet welcomed as natural, as authentically himself.</p>
-<p>The drug proved reversible, and Jekyll, seduced by his discovery, established the apparatus of his double life with studious care: the house in Soho, the unscrupulous housekeeper, the will bequeathing everything to Hyde, the bank account and forged signature. He became the first man to hire not bravos for his crimes but a separate identity for his pleasures, escaping into his laboratory to shed Hyde like the stain of breath upon a mirror. Yet those pleasures, merely undignified at first, turned monstrous in Hyde&#x27;s hands; and though Jekyll stood aghast at his alter ego&#x27;s depravities, the arrangement insidiously relaxed conscience&#x27;s grasp—for it was Hyde, after all, and Hyde alone, who was guilty.</p>
-<p>The warnings accumulated: an act of cruelty to a child, requiring payment in Jekyll&#x27;s name; then the terrible morning when Jekyll awoke to find Hyde&#x27;s corded, hairy hand upon the bedclothes, the transformation occurring unbidden. He recognized the shifting balance—Hyde growing stronger, Jekyll&#x27;s hold weakening—and chose, like so many tempted sinners before him, the better part, only to find himself wanting in strength to keep it. After two months of severity, a single hour of moral weakness sent him reaching again for the draught, and Hyde emerged roaring from his cage to batter Sir Danvers Carew to death with bestial delight.</p>
-<p>From that murder flowed Jekyll&#x27;s final torments: the flight to Lanyon&#x27;s, the involuntary transformations multiplying until only constant doses could maintain his original form, the exhausting vigil against sleep itself. When his supply of the crucial salt proved inefficacious—its original impurity, he now understood, having been essential—the last door closed. Writing beneath the influence of the final powders, Jekyll knows that within half an hour Hyde will possess him forever, and whether that creature meets the scaffold or finds courage for self-destruction, Jekyll himself counts it immaterial; this confession marks his true hour of death.</p>
-<p>With the pen laid down and the seal prepared, the tragic experiment concludes—yet the mystery of what became of that wretched figure behind the laboratory door awaits its discovery by those who shall find these pages.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="jekyll_hyde" data-n="11" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><span></span></nav>
 </section>
 <img class="back-cover" src="images_anime/back_cover.webp" alt="Back cover">
@@ -1516,6 +1482,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {

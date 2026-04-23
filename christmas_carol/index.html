@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1400,6 +1414,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {

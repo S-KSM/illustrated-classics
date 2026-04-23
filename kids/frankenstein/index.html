@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1125,7 +1139,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
     </div>
 </section>
 
-<section class="chapter" id="chapter-3" data-num="3" data-free="false">
+<section class="chapter" id="chapter-3" data-num="3" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_3.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_3.webp" alt="Seeds of Obsession and Harmony illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -1134,11 +1148,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Seeds of Obsession and Harmony</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor grew up in a beautiful home near the mountains and a lake. He lived with his dear cousin Elizabeth and had a best friend named Henry Clerval. Elizabeth was calm and gentle, and she loved the pretty views outside. Victor was different—he always wanted to know how things worked. Henry loved adventure stories and dreamed of helping people someday. The three children played together and made each other happy.</p>
-<p>Victor&#x27;s family moved to a lovely house near Geneva. One rainy day, young Victor found an old science book at an inn. He became very excited about it and wanted to learn everything inside. His father said the book was not very good, but Victor kept reading anyway. He dreamed of making wonderful discoveries that could help people. Later, Victor saw a powerful storm with bright lightning. It made him curious about new ideas. He started thinking about different kinds of science instead. For now, Victor felt peaceful and happy with his family and friends.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="3" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4" data-free="false">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_4.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_4.webp" alt="A Mother&#x27;s Sacrifice and Farewell illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -1147,11 +1160,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Mother&#x27;s Sacrifice and Farewell</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Before Victor left home for a new school far away, something very sad happened. His dear cousin Elizabeth became very sick with a high fever. His mother loved Elizabeth so much that she stayed by her bed day and night to help her get better. Elizabeth did get well again, but then Victor&#x27;s mother became sick too. She was so brave and kind, even when she felt poorly. She held Victor&#x27;s and Elizabeth&#x27;s hands and told them how much she loved them both. Then she closed her eyes and went to sleep forever. Victor and his whole family were very, very sad for a long time.</p>
-<p>When Victor finally went to his new school called Ingolstadt, he met some teachers there. One teacher was grumpy and not very nice. But another teacher named Waldman was wonderful and kind. He talked about science in such an exciting way that Victor felt his heart fill with big dreams. He wanted to learn everything about how the world works and discover amazing new things.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="4" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5" data-free="false">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_5.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_5.webp" alt="The Secret of Life and Death illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -1160,11 +1172,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Secret of Life and Death</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>From that day on, Victor loved science more than anything else. He spent all his time learning about how things work. He made two good friends who were teachers. One was named Krempe, and one was named Waldman. Waldman was very kind and helped Victor understand hard things. Victor worked so hard that sometimes he stayed up all night studying until the sun came up.</p>
-<p>Two whole years went by, and Victor got very good at science. Everyone at the school was amazed by how much he learned. But then Victor started wondering about something very big. He wanted to know what makes living things alive. He read many books and studied for a long, long time. Then one day, he had an amazing idea. He thought maybe he could make something come to life all by himself. Victor got so excited that he started working on a secret project. He worked alone in a little room at the top of his house. He forgot to write letters to his family and forgot to go outside and enjoy the pretty flowers and trees. He just kept working and working on his big secret.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="5" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6" data-free="false">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_6.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_6.webp" alt="The Creature Wakes to Horror illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -1173,12 +1184,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Creature Wakes to Horror</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>On a dark rainy night, Victor finally finished his big science project. He had worked so hard to bring his creation to life. But when the creature opened its eyes, Victor felt very scared instead of happy. The creature looked strange and not at all what Victor had hoped for. Victor ran away to his room and had bad dreams all night long.</p>
-<p>The next morning, Victor walked through the town feeling worried and sad. Then something wonderful happened! His best friend Henry arrived for a surprise visit. Henry made Victor smile and think of home and all the people he loved. When they went back to Victor&#x27;s apartment, the creature was gone. Victor felt so relieved that he got a little silly, jumping around and laughing.</p>
-<p>But then Victor got very sick from all his worry and fear. Kind Henry took care of him for many months. Slowly, as spring came and flowers began to bloom, Victor started feeling better again.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="6" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7" data-free="false">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_7.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_7.webp" alt="A Letter from Home and Justine&#x27;s Story illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -1187,11 +1196,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Letter from Home and Justine&#x27;s Story</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor received a letter from Elizabeth, and it made him so happy. She wrote about everyone at home in Geneva. His father was healthy and missed him very much. His brother Ernest was sixteen now and full of energy. Elizabeth also told him about Justine, a kind young woman who lived with their family. Justine had a hard life before, but now she was safe and loved. And little William was growing up with bright blue eyes and the sweetest smile.</p>
-<p>Reading about his family helped Victor feel better after being sick for so long. Soon he was strong enough to leave his room. His friend Henry was there to help him. They studied interesting things together and took long walks in the countryside. The spring flowers were blooming, and the air smelled so fresh and sweet. Victor felt like himself again, happy and free. He walked with Henry under the warm May sun, and everything felt peaceful and good.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="7" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8" data-free="false">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_8.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_8.webp" alt="A Father&#x27;s Letter of Death illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -1200,11 +1208,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Father&#x27;s Letter of Death</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>A sad letter came from Victor&#x27;s father with terrible news. Victor&#x27;s little brother William had been hurt very badly. Sweet William would not be coming home again. Everyone in the family missed him so very much. Elizabeth felt sad because William had been wearing a special picture of their mother, and now it was gone. Victor&#x27;s father asked him to please come home so the family could be together.</p>
-<p>Victor felt his heart break when he read the letter. His kind friend Clerval helped him get ready for the long trip home. As Victor traveled through the mountains and past the lake, he felt both happy to see his home and very, very sad. One stormy night, lightning lit up the sky, and Victor saw a huge, strange figure in the darkness. It was the creature he had made long ago. Victor watched it disappear into the mountains. When he finally got home, he learned that a gentle young woman named Justine was being blamed for what happened. Victor knew she was innocent, but he did not know how to help her.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="8" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9" data-free="false">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_9.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_9.webp" alt="Mockery of Justice and Living Torture illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -1213,12 +1220,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Mockery of Justice and Living Torture</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor felt very sad and worried. He knew something no one else knew. A kind young woman named Justine was in big trouble for something she did not do. Victor&#x27;s little brother William had been hurt, and now everyone blamed Justine. But Victor knew she was innocent.</p>
-<p>Justine stood before the judges looking calm and brave. She told the truth about where she had been that night. She had been searching for William and got very tired. She fell asleep in a barn. But people found a special picture in her pocket, and they thought this meant she was guilty. Justine did not know how it got there.</p>
-<p>Elizabeth spoke up for Justine. She told everyone how kind and good Justine had always been. But it did not help. Victor wanted to tell the truth, but he was afraid no one would believe him. In the end, Justine had to go away forever, and Victor&#x27;s heart felt heavier than ever before.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="9" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10" data-free="false">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_10.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_10.webp" alt="Guilt&#x27;s Weight Upon the Living illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1227,12 +1232,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Guilt&#x27;s Weight Upon the Living</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor felt very sad after something terrible happened. He blamed himself, even though he tried hard to keep it secret. He could not sleep, and he walked around feeling like a ghost. His father noticed how unhappy he looked and tried to help him feel better. But Victor could not tell anyone why he felt so bad inside.</p>
-<p>The family moved to a lovely house by a lake called Belrive. Victor would take a little boat out on the water late at night when everyone else was sleeping. The quiet lake helped him think. He stayed strong because he loved Elizabeth and his father and little brother very much. Elizabeth felt sad too, and that made Victor&#x27;s heart ache even more. He wished he could make her smile again like before.</p>
-<p>Finally, Victor decided to visit the tall, snowy mountains near a place called Chamounix. The beautiful valleys and waterfalls made him feel a tiny bit better. That night, watching lightning dance over the mountaintops, he finally fell asleep.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="10" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11" data-free="false">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_11.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_11.webp" alt="Solace and Shadows Among the Glaciers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1241,11 +1244,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Solace and Shadows Among the Glaciers</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>After a very hard day, the young man walked through a beautiful valley filled with ice and tall mountains. He watched a giant glacier creep slowly down from the snowy peaks. Broken pine trees lay scattered on the ground. The quiet, icy world felt peaceful and helped his sad heart feel a little better. That night, he dreamed of mountains and soaring eagles watching over him like gentle friends.</p>
-<p>But morning brought rain and fog and sad feelings again. He decided to climb higher up the mountain, hoping the amazing sights would cheer him. The path was hard, with snow and fallen trees everywhere. When he reached the top, he saw the great mountain called Mont Blanc rising above a sea of ice. His heart felt lighter for a moment. Then he saw someone coming toward him very fast across the ice. It was the creature he had made long ago. At first he felt angry and scared. But the creature spoke gently and asked to tell his story. Slowly, the young man began to listen, and they walked together to a little hut to talk by the fire.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="11" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12" data-free="false">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_12.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_12.webp" alt="Awakening to a World of Sensation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1254,12 +1256,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Awakening to a World of Sensation</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The creature tells his own story now, and it is very touching. When he first woke up, everything felt strange and confusing. Lights, sounds, and feelings all came at once. He did not understand any of it. Slowly, bit by bit, he began to learn.</p>
-<p>He found a forest and stayed near a little brook. He was so hungry and thirsty! He ate berries and drank water like a wild animal might. He felt cold and lonely, and he cried. But then the moon rose in the sky, soft and glowing. He looked up at it with wonder. It was the first beautiful thing he had ever seen.</p>
-<p>As days passed, his mind grew sharper. He learned to hear birds singing. He discovered fire and found it could keep him warm, but it could also hurt. When he met people, they were scared of him and chased him away. This made him very sad. Finally he found a tiny hiding spot near a cozy cottage. Through a crack in the wall, he watched a kind family inside. An old man played sweet music that made the creature feel something new and wonderful. He decided to stay and watch them, hoping to learn more.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="12" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13" data-free="false">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_13.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_13.webp" alt="Lessons in Language and Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1268,12 +1268,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Lessons in Language and Love</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>From a hidden spot, a lonely creature watched a small family in their cottage. The family was Felix, his sister Agatha, and their kind old father who could not see. They were gentle and loving with each other. The creature wanted so much to be their friend, but felt too shy and different to say hello.</p>
-<p>The creature noticed the family did not have much food or money. They were poor but still shared everything with each other. This made the creature feel sorry for taking their food before. So the creature stopped and ate only berries from the forest instead. Even better, the creature started helping in secret! Every night, the creature chopped wood and left it for them. When Agatha found the wood pile full, she was so surprised and happy. This made the creature feel warm inside.</p>
-<p>The creature also listened carefully and started learning words. Fire. Bread. Sister. Brother. Each new word felt like magic. Spring came with flowers and sunshine. The creature felt hopeful that someday, with kind words and patience, the family might become friends.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="13" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14" data-free="false">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_14.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_14.webp" alt="Safie&#x27;s Arrival Brings Light and Language illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1282,12 +1280,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Safie&#x27;s Arrival Brings Light and Language</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Spring came with sunshine and flowers, bringing something wonderful to the little cottage. A young woman named Safie arrived from far away. She had a sweet face and a voice as pretty as a bird&#x27;s song. When Felix saw her, his sad face became happy again. Agatha kissed her hands to say welcome. The kind old father gave her a warm hug.</p>
-<p>Safie did not speak the same language as the cottage family. So Felix began to teach her new words every day. The creature watched and listened from his hiding spot. He learned the words too! He found out about faraway lands and people from long ago. Learning felt exciting and wonderful.</p>
-<p>But learning also made the creature feel lonely. He saw how much the family loved each other. He wished someone would love him too. He had no family of his own. Still, he cared deeply for his cottage friends and kept watching over them.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="14" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15" data-free="false">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_15.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_15.webp" alt="The De Laceys&#x27; Fall From Grace illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1296,11 +1292,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The De Laceys&#x27; Fall From Grace</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The creature had been watching a kind family through a crack in the wall. He learned their story, and it made him feel many new feelings inside his heart.</p>
-<p>The family was called De Lacey. The old blind father, his son Felix, and his daughter Agatha once lived a happy life in a big city in France. They had a nice home and many friends. But something sad happened. A man they tried to help got them into trouble. Felix had been very brave and helped this man escape when he was treated unfairly. But the man was not kind in return. He broke his promise and left the family all alone. The De Laceys lost their home and had to move far away to a tiny cottage. They were poor now and very sad. But then something wonderful happened. A young woman named Safie traveled a long, hard way to find them. She cared about Felix very much. When she arrived at their door, everyone felt hope again.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="15" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16" data-free="false">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_16.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_16.webp" alt="Awakening Through Forbidden Books illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1309,11 +1304,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Awakening Through Forbidden Books</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>One day, the creature found a bag in the forest with three special books inside. He read them all and they made him feel many things. Some parts made him feel brave and hopeful. Other parts made him feel very sad and lonely. He wished he had a family like other people did. Then he found old papers that told him how he was made. Reading them made him feel unwanted, and that hurt his heart.</p>
-<p>But he still had hope. He wanted the kind cottage family to be his friends. He made a plan to talk to the blind grandfather first. The old man could not see him, so he would just hear his gentle voice. When they talked, the grandfather was so kind and warm. He said he wanted to help. The creature felt happy for the first time ever. But then the others came home and got very scared when they saw him. The creature ran away to his little shelter, feeling more alone than before.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="16" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17" data-free="false">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_17.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_17.webp" alt="A Hell Within and War Declared illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1322,12 +1316,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Hell Within and War Declared</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>After leaving the kind family, the creature felt so sad and alone. He wandered through the dark woods feeling lost and hurt inside. When morning came, he felt a little better and went back to the cottage. But the family had moved away forever. They were too frightened to stay.</p>
-<p>Now the creature had no friends at all. He decided to find Victor, the person who made him. He traveled far through rain and snow, always hiding so people would not see him. One day he saved a girl who fell into a river. But instead of saying thank you, someone hurt him. This made him feel that no one would ever be kind to him.</p>
-<p>When he finally found Victor, he asked for just one thing. He wanted Victor to make him a friend, someone who would not run away, someone who might understand him and keep him company.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="17" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18" data-free="false">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_18.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_18.webp" alt="A Creature&#x27;s Desperate Bargain illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1336,11 +1328,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Creature&#x27;s Desperate Bargain</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>High up on a cold, icy mountain, the creature finished telling his story. He looked at me and asked for something very important. He wanted me to make a friend for him—someone just like him. He said he was so lonely, and that was why he had been so angry and mean. If he had a friend, he promised he would be kind and gentle instead.</p>
-<p>At first I said no. I was worried about making another creature. But he spoke so softly and sadly that I started to feel sorry for him. He promised that he and his friend would go far, far away to live peacefully in the wild. They would eat berries and never bother anyone again. After thinking for a long, long time, I finally said yes. I would make him a companion. The creature thanked me and hurried away across the ice. I walked home feeling tired and worried, wondering what I had agreed to do.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="18" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19" data-free="false">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_19.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_19.webp" alt="A Promise Deferred, a Journey Planned illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1349,11 +1340,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Promise Deferred, a Journey Planned</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor went back home to Geneva, but he felt very worried. He had made a promise he did not want to keep. It made him feel heavy and sad inside. His father noticed Victor seemed a little better and had a happy idea. He talked to Victor about marrying Elizabeth someday. Victor loved Elizabeth very much, but he was not ready yet. He had something important to do first.</p>
-<p>Victor asked if he could travel to England to learn new things. His father said yes and made sure Victor&#x27;s dear friend Clerval could go with him. In late September, Victor said goodbye to Elizabeth and started his long journey. When Clerval met him, everything felt brighter. Clerval loved looking at beautiful sunsets and rivers and old castles. They floated down a big river called the Rhine in a boat. Victor watched the blue sky and felt a little more peaceful. Together, the two friends traveled all the way to England, where they saw the tall white cliffs and the many church towers of London.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="19" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20" data-free="false">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_20.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_20.webp" alt="A Blasted Tree&#x27;s Bitter Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1362,11 +1352,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Blasted Tree&#x27;s Bitter Journey</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor and his friend Clerval traveled to London to rest after a hard time. Clerval was happy and excited to meet new people and learn new things. He dreamed of one day visiting faraway places like India. But Victor felt very sad inside and could not enjoy anything. He missed feeling happy like he used to feel long ago.</p>
-<p>The two friends decided to travel through the beautiful English countryside. They saw old forests, pretty colleges, and sparkling lakes surrounded by mountains. The nature was so lovely it reminded Victor of his home in Switzerland. Even though the world was beautiful, Victor still felt heavy and tired in his heart. After a while, Victor told Clerval he needed to go on alone for a little while. Clerval was worried but understood. Victor traveled far north to a tiny rocky island where only a few people lived. There he worked on a secret project by himself, feeling lonelier than ever.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="20" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21" data-free="false">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_21.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_21.webp" alt="The Promise Broken at Moonrise illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1375,12 +1364,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Promise Broken at Moonrise</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor sat alone in his workshop one night, thinking very hard. He had been making a second creature to be a friend for the first one. But now he felt worried. What if this new creature was not kind? What if the two creatures had babies who might cause trouble in the world? Victor did not know what to do.</p>
-<p>Then he looked up and saw the creature watching him through the window. The creature looked so eager and hopeful. But Victor had made up his mind. He could not finish making the new friend. He stopped his work right there. The creature was very, very sad and ran away into the dark night.</p>
-<p>Later, Victor had to clean up his workshop. He took a boat out on the water to do this. He fell asleep in the little boat. When he woke up, the wind had pushed him far, far away! He floated for a long time until he finally saw land. He was so happy and tired when he reached a little town by the sea.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="21" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22" data-free="false">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_22.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_22.webp" alt="The Death of Henry Clerval illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1389,11 +1376,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Death of Henry Clerval</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor was taken to see a kind old judge named Kirwin. Some people from the village said they had seen a boat and a person near the water that night. They thought Victor might have done something wrong. Then the judge asked Victor to look at someone who had been hurt very badly. When Victor saw who it was, his heart broke into pieces. It was his dear friend Henry Clerval. Henry was gone forever, and Victor knew the creature he had made was to blame.</p>
-<p>Victor became very, very sick with sadness and had to rest for a long time. He stayed in a small room and had terrible dreams. But then something wonderful happened. His father came all the way from home to be with him. Having his father near helped Victor start to feel a tiny bit better. Soon the judge learned that Victor could not have hurt Henry because he was far away when it happened. Victor was allowed to leave, and he and his father began the long journey back home.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="22" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23" data-free="false">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_23.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_23.webp" alt="The Burden of Unspoken Guilt illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1402,11 +1388,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Burden of Unspoken Guilt</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The long boat trip was over, and Victor came to Paris at last. He was so tired and weak that he had to rest before going home. His kind father stayed close and tried to help him feel better. But Victor had a heavy secret that made his heart ache. He felt bad about something he could not tell anyone. He wanted to explain, but the words came out all jumbled. His father thought Victor was just saying silly things because he had been sick.</p>
-<p>Then a sweet letter came from Elizabeth. She wanted to know if Victor still cared about her. Victor did care, very much! He wrote back and said they would get married soon. When Victor got home to Geneva, he saw Elizabeth again. She looked tired, but her kind smile made him feel warm inside. The wedding day came, and everyone was happy. Victor and Elizabeth took a boat ride across a beautiful lake. The mountains looked lovely, and for a little while, Victor felt peaceful and glad.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="23" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24" data-free="false">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_24.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_24.webp" alt="The Creature&#x27;s Deadly Wedding Night Vengeance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1415,11 +1400,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Creature&#x27;s Deadly Wedding Night Vengeance</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor and Elizabeth arrived at a little inn by the lake on a stormy night. The wind blew hard and dark clouds covered the moon. Victor felt worried because he was expecting trouble. He wanted to keep Elizabeth safe, so he asked her to rest in her room while he looked around the inn.</p>
-<p>But something sad happened while Victor was away. The Creature had come to the inn that night. When Victor found out, his heart broke into pieces. Elizabeth was gone forever, and he would never see her again. The Creature ran away into the dark lake before Victor could catch him. Victor became very, very sick with sadness. He hurried home to his family, but more sad news waited for him there. His dear father was so heartbroken that he passed away too. Victor felt so alone now. He decided he would search for the Creature himself, even if it meant traveling to faraway, icy places at the end of the world.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="24" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25" data-free="false">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../frankenstein/images_anime/chapter_25.webp"><img class="chapter-image" src="../../frankenstein/images_anime/chapter_25.webp" alt="A Vow of Vengeance Begins illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1428,8 +1412,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Vow of Vengeance Begins</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Victor felt so sad that he had to leave his home forever. He missed his family very much. He went to the quiet place where his loved ones were resting and made a promise to find the creature who had hurt them. Just then, he heard a strange laugh in the darkness. The creature was nearby, watching him.</p>
-<p>Victor followed the creature far, far away, through snowy lands and icy places. He traveled for a very long time. Sometimes he had happy dreams about his family, and those dreams helped him feel a little better. Finally, Victor reached the frozen ocean, but the ice broke apart beneath him. He floated on a tiny piece of ice until Walton&#x27;s ship found him and brought him aboard. Victor was very tired and weak from his long journey. He told Walton his whole story, and Walton believed him. The ship turned around to sail back home, carrying this amazing tale with them.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="frankenstein" data-n="25" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><span></span></nav>
 </section>
 <img class="back-cover" src="../../frankenstein/images_anime/back_cover.webp" alt="Back cover">
@@ -1655,6 +1638,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {

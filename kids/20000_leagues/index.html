@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1127,7 +1141,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
     </div>
 </section>
 
-<section class="chapter" id="chapter-3" data-num="3" data-free="false">
+<section class="chapter" id="chapter-3" data-num="3" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_3.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_3.webp" alt="A Fateful Letter Changes Everything illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -1136,11 +1150,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Fateful Letter Changes Everything</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Pierre Aronnax got a very important letter one day. It was from the Secretary of Marine, asking him to help find a mysterious sea creature. Before the letter came, he was tired and wanted to rest at home with his special collections. But after reading just a few words, everything changed! Suddenly he felt excited and knew he had to go on this adventure.</p>
-<p>His loyal helper Conseil was ready to go too. Conseil never complained about long trips, no matter how far away they went. He was calm and kind and always took good care of the Professor. Together they packed their bags and headed to the ship called the Abraham Lincoln. The big ship was very fast and had a friendly captain named Farragut. When they left the harbor, crowds of people cheered and waved goodbye. Soon the ship sailed out onto the wide, wonderful ocean, heading toward an adventure that would be full of amazing surprises.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="3" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4" data-free="false">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_4.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_4.webp" alt="The Skeptical Harpooner&#x27;s Introduction illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -1149,11 +1162,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Skeptical Harpooner&#x27;s Introduction</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Captain Farragut was the leader of a big ship called the Abraham Lincoln. He believed with all his heart that a strange sea creature was real. He wanted to find it more than anything in the world. Everyone on the ship felt excited too. The sailors watched the ocean day and night, even when the sun made the deck very hot. There was a big prize for whoever spotted the creature first, so all eyes looked out at the sparkling waves.</p>
-<p>The ship had a special helper named Ned Land. He was a tall, strong man from Canada who was very good at catching whales. Ned became friends with the storyteller, and he loved to share wonderful tales about icy adventures far away. But here is the funny thing: Ned did not believe the sea creature was real! He thought it was just a silly story. The storyteller tried to explain why the creature might be true. Ned listened carefully, but he still was not sure what to think.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="4" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5" data-free="false">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_5.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_5.webp" alt="Ned Land&#x27;s Skill and Fruitless Searching illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -1162,11 +1174,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Ned Land&#x27;s Skill and Fruitless Searching</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The big ship called the *Abraham Lincoln* sailed for a long time looking for the mystery sea creature. One day, they met some whale-hunting ships. A captain asked if Ned Land could help catch a whale nearby. Ned was famous for being the best harpooner ever! The commander said yes, and Ned did something amazing. He caught two whales with his special throwing spear. Everyone was very impressed by how good he was.</p>
-<p>The ship sailed around the bottom of South America and into the Pacific Ocean. Everyone watched the water day and night hoping to spot the creature. They barely slept or ate because they wanted to find it so badly. But weeks and weeks went by with no luck. People started feeling grumpy and wanted to give up. The commander asked everyone to keep looking for just three more days. On the very last night, when hope was almost gone, Ned Land suddenly shouted out loud. He had finally spotted something in the water!</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="5" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6" data-free="false">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_6.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_6.webp" alt="The Glowing Beast Circles the Frigate illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -1175,12 +1186,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Glowing Beast Circles the Frigate</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The ship sailed through a very dark night. Ned Land had amazing eyes. He spotted something strange far out in the water. The sea looked like it was glowing! It was not just regular sparkles. This light was bright and beautiful, shaped like a giant oval.</p>
-<p>The glowing creature swam all around the ship. It moved so fast! It made circles of shimmery light in the water. The captain decided to wait until morning to get closer. All night long, the crew stayed awake watching the mysterious light. Sometimes it disappeared, but it always came back.</p>
-<p>When the sun came up, they could finally see it better. It was long and dark with a big splashing tail. The ship chased it all day long, but the creature was too fast. It seemed to be playing a game! At night the glow returned, and Ned Land threw his sharp harpoon. It hit something hard, the light went out, and big waves splashed over the deck.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="6" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7" data-free="false">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_7.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_7.webp" alt="Adrift in Darkness With Conseil illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -1189,11 +1198,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Adrift in Darkness With Conseil</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>I fell off the big ship into the dark water. It was very scary! I swam back up as fast as I could. But when I looked around, the ship was already sailing away. Its lights got smaller and smaller until they were gone. I was all alone in the cold, dark sea.</p>
-<p>Then I felt a hand grab me. It was my good friend Conseil! He had jumped in to help me. We took turns swimming and floating on our backs to rest. We had to wait many hours until morning came. The water sparkled around us like tiny stars. After a long time, we heard another voice calling out. It was Ned Land, the brave sailor! He was standing on something hard in the water. We swam over and climbed up too. It felt like metal, not a whale at all! This was not a sea creature. People had built it! It was a big underwater boat made of iron. In the morning, a door opened and some people came out. They took us inside the strange boat to see what was there.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="7" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8" data-free="false">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_8.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_8.webp" alt="Captives in the Electric Darkness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -1202,11 +1210,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Captives in the Electric Darkness</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Aronnax, his helper Conseil, and the strong harpooner Ned Land were taken aboard a strange underwater ship. Everything happened so fast! One moment they saw bright light, and the next they were in total darkness. They climbed down a metal ladder and heard a heavy door close behind them. Now they were stuck in a small room and could not see a thing.</p>
-<p>Ned was very upset and waved his arms around. Conseil stayed calm and told everyone to wait. The Professor felt around the dark room with his hands. He found metal walls, a wooden table, and some stools. After a while, a bright light clicked on from the ceiling! It was so bright they had to cover their eyes. Two mysterious men came in. One was strong with dark hair. The other was tall and quiet, with a calm, serious face. They spoke in a language nobody understood. Later, someone brought food and clean clothes. The three friends ate the yummy fish dinner, then fell asleep on the soft floor. The Professor wondered where this amazing ship was taking them, deep down into the sea.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="8" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9" data-free="false">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_9.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_9.webp" alt="Captives Await Air and Answers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -1215,11 +1222,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Captives Await Air and Answers</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Aronnax woke up feeling much better after a long sleep. His friends Conseil and Ned Land were still sleeping nearby. They were all in the same metal room as before, still trapped inside the strange underwater ship. But something was wrong. The air in the room felt heavy and hard to breathe. Aronnax worried they might run out of fresh air soon. Then something wonderful happened! Cool, fresh sea air came rushing into their little room. The ship had gone up to the surface to get more air, just like a whale does when it needs to breathe.</p>
-<p>When his friends woke up, everyone felt very hungry. They waited and waited for food, but nobody came. Ned Land got more and more upset. He shouted and banged on the walls, but nothing happened. Finally, they heard footsteps outside. The door opened, and just when things got a bit wild, a voice spoke to them in French! Someone on this mysterious ship wanted to talk to them at last.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="9" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10" data-free="false">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_10.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_10.webp" alt="The Captain Reveals Himself illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1228,11 +1234,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Captain Reveals Himself</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>In this chapter, we finally meet the captain of the amazing underwater ship. His name is Captain Nemo, which means &quot;Nobody&quot; in an old language. He is a mysterious man who has decided to live under the sea, far away from the world above. Captain Nemo already knew who his three guests were. He knew Aronnax was a professor who studied nature. He knew Conseil was his loyal helper. And he knew Ned Land was a harpooner from a big ship.</p>
-<p>Captain Nemo told them they must stay on his submarine called the Nautilus. They could not leave, but they could explore the ship freely. And what a ship it was! There was a beautiful dining room with food that all came from the ocean. There was a library filled with thousands of books. There was a room like a museum, with famous paintings and treasures from the sea. Aronnax felt amazed by everything he saw. Captain Nemo smiled and said there was still much more to show him about how his wonderful ship worked.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="10" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11" data-free="false">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_11.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_11.webp" alt="Powering the Deep with Ocean&#x27;s Energy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1241,11 +1246,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Powering the Deep with Ocean&#x27;s Energy</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Captain Nemo showed Professor Aronnax his special room full of amazing tools. There were instruments to measure temperature and predict storms. There was a compass to help find the way in the dark ocean. But the most wonderful secret was how the Nautilus worked. Everything ran on electricity! The lights, the heat, and the big spinning propeller all used this amazing power. And where did the electricity come from? From the ocean itself! Captain Nemo found a clever way to make energy from sea water.</p>
-<p>They walked through the submarine together and saw so many interesting rooms. There was a cozy kitchen where electricity did all the cooking. There was a bathroom with hot and cold water. They passed a hidden little boat tucked inside the big submarine, ready for special trips. The engine room was bright and full of wonderful machines. The huge propeller could push them very fast through the water. Aronnax felt so curious about everything and wanted to learn more secrets.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="11" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12" data-free="false">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_12.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_12.webp" alt="Anatomy of the Nautilus Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1254,11 +1258,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Anatomy of the Nautilus Revealed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Captain Nemo sat down with Professor Aronnax to talk about his amazing submarine. He showed drawings and explained how the Nautilus was built. The submarine is shaped like a long, smooth cigar. This shape helps it glide through the water so easily. It has two strong metal hulls that keep everyone safe inside.</p>
-<p>Aronnax wondered how the submarine could dive so deep without getting crushed. Nemo smiled and said electricity gives it special power. The Nautilus has a steering wheel for turning left and right. It also has special fins on the sides that help it go up and down. The captain sits in a little glass room at the front. A bright light shines ahead so he can see in the dark water. That glow is what made people think the Nautilus was a glowing sea creature! Nemo built his submarine in secret on a faraway island. He is very, very rich and loves his wonderful ship.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="12" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13" data-free="false">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_13.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_13.webp" alt="Charting the Pacific&#x27;s Warm Current illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1267,12 +1270,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Charting the Pacific&#x27;s Warm Current</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The ocean is a very big place full of water. It covers so much of our world! The submarine called the Nautilus was traveling through the Pacific Ocean. This ocean is calm and peaceful, with gentle waves.</p>
-<p>Captain Nemo wanted to see where they were. The submarine rose up until the top poked out of the water. Professor Aronnax looked at maps and found something special. They were floating in a warm river inside the ocean! It came all the way from warm places far away. People called it the Black River because of its deep blue color.</p>
-<p>Then something wonderful happened. The walls of the room slid open like magic. Behind them were big glass windows! The travelers could see right into the glowing ocean. Beautiful fish swam past in every color you can imagine. There were blue fish and silver fish and even long wiggly ones. It was like watching a parade of sea creatures. Everyone felt amazed by this underwater world full of wonders.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="13" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14" data-free="false">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_14.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_14.webp" alt="Mysterious Silence and a Hunting Invitation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1281,11 +1282,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Mysterious Silence and a Hunting Invitation</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Aronnax woke up after a very long sleep. His friend Conseil came to say good morning, and Ned Land was still snoring away. But the Professor was thinking about Captain Nemo, who had not been seen for a whole day. Where could he be? The big room on the submarine was empty and quiet. So Aronnax looked at all the beautiful shells and colorful sea plants in their glass cases. Many days went by like this, with no sign of the Captain or his crew. The three friends wondered if something was wrong, but they had good food and were free to walk around.</p>
-<p>Then one morning, Aronnax found a note on his table. Captain Nemo was inviting them to go hunting in an underwater forest near a faraway island! Ned was excited because he thought they might see land again. When the Captain finally appeared, he showed them special suits for walking on the ocean floor and amazing tools for their adventure. What wonderful things would they discover next?</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="14" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15" data-free="false">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_15.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_15.webp" alt="Exploring the Ocean&#x27;s Sunlit Floor illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1294,11 +1294,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Exploring the Ocean&#x27;s Sunlit Floor</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* had special suits for walking underwater! They were made of stretchy rubber and could keep people safe and dry. Ned Land did not want to go because the forest they would visit was under the sea, not on land. He wanted to hunt real animals, not look at ocean plants. But Conseil said he would follow Professor Aronnax anywhere.</p>
-<p>The Professor and Conseil put on heavy boots and big copper helmets with thick glass windows. Captain Nemo and a very strong helper came too. Water filled a small room around them, and then a door opened to the ocean floor! They stepped outside and began to walk on the sandy bottom. Sunlight sparkled through the water and made everything glow. They saw colorful rocks covered in rainbow sea creatures and floated past soft gardens of coral and waving sea plants. After walking for a long time, Captain Nemo stopped and pointed ahead. There in the dim blue light was a mysterious underwater forest, waiting to be explored.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="15" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16" data-free="false">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_16.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_16.webp" alt="Wonders of the Underwater Wilderness illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1307,12 +1306,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Wonders of the Underwater Wilderness</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The explorers went for a walk in an underwater forest. It was one of the most amazing places Professor Aronnax had ever seen. Everything grew straight up toward the light above. The seaweed and water plants stood tall like quiet guards. When you pushed them aside, they bounced right back up again.</p>
-<p>So many beautiful things grew there! Red plants spread out like fans. Tall fern-shaped seaweed reached up fifteen feet high. Some things looked like plants but were really animals. Some animals looked just like plants. It was all wonderfully mixed up together.</p>
-<p>After walking for a while, Captain Nemo told everyone to rest. They lay down on the sandy ocean floor and fell fast asleep. When Aronnax woke up, he saw a very big crab looking at him with tiny eyes. Captain Nemo shooed it away. Then they walked even deeper until they reached a tall rocky wall. This was as far as they could go. The tired explorers headed back to their submarine, feeling amazed by everything they had seen.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="16" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17" data-free="false">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_17.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_17.webp" alt="The Living Ocean&#x27;s Depths Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1321,10 +1318,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Living Ocean&#x27;s Depths Revealed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Aronnax woke up feeling rested and went up to the top of the *Nautilus*. He found Captain Nemo looking out at the wide, beautiful ocean. The crew was busy pulling up big fishing nets. The nets were full of amazing fish and sea creatures! Some would be saved and some would be cooked for dinner. Captain Nemo talked to the Professor about how wonderful the ocean is. He said it was like a living thing with its own heartbeat. He even dreamed about people building towns under the sea someday. But then the Captain grew quiet, as if remembering something sad. After that day, Captain Nemo did not visit very often. The *Nautilus* kept traveling through the Pacific Ocean for many weeks. They crossed warm waters near the equator and passed by faraway islands. The Professor spent his days reading books and watching colorful fish swim past the big windows. The submarine glided through the deep blue water like a gentle giant exploring a hidden world.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="17" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18" data-free="false">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_18.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_18.webp" alt="Coral Tombs and Lost Expeditions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1333,11 +1330,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Coral Tombs and Lost Expeditions</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The Nautilus sailed on through December, passing over old ships resting on the sandy sea floor. Professor Aronnax saw anchors and broken boats covered in shells and sea plants. They reached the Pomotou Islands, where tiny coral animals build big reefs very slowly. These little creatures work together for many, many years. Captain Nemo said something interesting about the world needing new people, not new lands.</p>
-<p>They passed pretty Tahiti and spent Christmas at sea. Ned Land missed celebrating the holiday. Then Captain Nemo pointed to an island called Vanikoro on a map. Long ago, a famous explorer named La Pérouse had sailed there and was never seen again. Through the Nautilus windows, they saw old ship parts covered in beautiful coral and sea flowers. Captain Nemo showed Aronnax some very old papers from the lost ships. He seemed sad looking at the peaceful underwater resting place. The Professor could tell the Captain felt a special connection to sailors who loved the sea.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="18" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19" data-free="false">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_19.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_19.webp" alt="Stranded in Treacherous Coral Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1346,11 +1342,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Stranded in Treacherous Coral Waters</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* sailed very fast across the ocean. In just three days, it traveled a great distance. On New Year&#x27;s Day, Conseil wished his friend Aronnax a happy year. They talked about what makes a person happy, even when life feels strange. Conseil said seeing so many wonderful things made him feel lucky.</p>
-<p>Soon the submarine entered dangerous waters full of sharp coral reefs. Aronnax could not see them because the ship dove down deep. But the nets brought up amazing fish! Some had bright blue stripes. Others could glow in the dark like little lanterns. There were pretty shells and floating plants too. Then one afternoon, something happened. The *Nautilus* bumped into a hidden rock and got stuck! Captain Nemo stayed calm. He said the high tide would lift them free in a few days. While they waited, the captain let Aronnax and his friends take a small boat to the nearby island. Ned Land was so excited to explore the forest and find good food to eat.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="19" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20" data-free="false">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_20.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_20.webp" alt="Tropical Bounty and Forest Treasures illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1359,12 +1354,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Tropical Bounty and Forest Treasures</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The Professor and his friends had been living on the Nautilus for two months. They were not really guests but more like prisoners on the submarine. So when Captain Nemo let them visit a beautiful island, they felt so happy to walk on real ground again. Ned the Canadian was especially excited to stand on solid earth.</p>
-<p>The island was full of amazing tall trees and lovely plants. Ned found a coconut palm right away and got some coconuts down. The fresh coconut milk and sweet coconut meat tasted wonderful after eating the same submarine food every day. They also found breadfruit trees and made yummy roasted treats. They gathered vegetables and beans too.</p>
-<p>The next day they went exploring again and saw colorful parrots and beautiful birds of paradise with bright feathers like sunshine. Conseil caught a special green bird, and Ned found some animals for dinner. That evening they cooked a delicious meal on the beach and felt so free and happy. They even wondered if they should stay on the island forever. But then a stone suddenly fell near them, and they knew someone else was on the island too.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="20" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21" data-free="false">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_21.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_21.webp" alt="Savages at the Shore illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1373,11 +1366,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Savages at the Shore</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Aronnax, Conseil, and Ned Land were having a nice picnic on the island. Suddenly, some stones flew through the air and knocked food right out of Conseil&#x27;s hands! A group of people from the island had found them. The three friends hurried back to their little boat. Ned Land carried all the food he had gathered because he did not want to leave it behind.</p>
-<p>When they got back to the Nautilus, Captain Nemo was playing music on his organ. He was not worried about the island people at all. He said his submarine was very safe. That night, the Professor looked up at the beautiful stars and thought about his home far away. The next morning, many more island people came to the shore in canoes. They were very curious about the strange metal ship. But Captain Nemo had a clever trick. He made the ship&#x27;s railing give a little zap, like static electricity. The curious visitors got a surprise and decided to leave. Then the Nautilus floated free and sailed away into the wide, wonderful sea.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="21" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22" data-free="false">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_22.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_22.webp" alt="Drifting Through Phosphorescent Seas illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1386,12 +1378,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Drifting Through Phosphorescent Seas</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* sailed very fast through the sea. It could go thirty-five miles in just one hour! The amazing ship used electricity for everything. It made the lights glow and the engine run. Captain Nemo was very clever to build such a wonderful invention.</p>
-<p>They traveled through warm waters near islands and reefs. Then something magical happened one night. The ocean began to glow with soft, shimmering light! Tiny glowing creatures filled the water all around them. Porpoises and fish swam through the sparkles like dancers in a fairy show. It was so beautiful that everyone forgot about the world above.</p>
-<p>But then Captain Nemo spotted something far away on the ocean. He looked very upset and would not explain why. He asked the travelers to go to their room and stay there. They ate their dinner and felt very sleepy. Soon they all fell into a deep, deep sleep. What had Captain Nemo seen? That mystery would have to wait until later.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="22" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23" data-free="false">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_23.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_23.webp" alt="Death and Tears Beneath the Waves illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1400,12 +1390,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Death and Tears Beneath the Waves</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The next morning, Professor Aronnax woke up feeling fine. But he could not remember how he got back to bed! His friends Ned and Conseil felt the same puzzled way. The submarine floated calmly on the water as always.</p>
-<p>Captain Nemo looked very tired and sad that day. He asked the Professor for help with a hurt sailor. The poor man had been in a bad accident. He was too hurt to get better, and this made everyone feel very sorry. Aronnax saw tears in the Captain&#x27;s eyes.</p>
-<p>The next day, they put on diving suits and walked underwater. They visited a beautiful coral kingdom on the ocean floor! Tiny sea creatures made flowers that looked white and pink. Some coral even looked like little trees in a magical forest. The crew had come to say goodbye to their friend who had passed away. They found a quiet, peaceful spot among the pretty coral. Captain Nemo and his sailors knelt down together. They were gentle and kind as they remembered him.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="23" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24" data-free="false">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_24.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_24.webp" alt="Mysteries of the Deep Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1414,12 +1402,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Mysteries of the Deep Waters</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The underwater ship called the Nautilus sailed into the Indian Ocean. This is a huge part of the sea with very clear blue water. The narrator watched all kinds of amazing fish swim past the big windows. Some fish looked like little armored boxes. Others could squirt water to catch bugs! There were beautiful birds called albatrosses flying above the waves too.</p>
-<p>Captain Nemo was still a mystery to everyone on board. He seemed like a very smart man who loved the sea. But he also seemed sad and wanted to stay far away from other people. The narrator wondered why the Captain felt this way. His friend Conseil thought the Captain just liked being alone to study ocean life.</p>
-<p>The ship crossed the equator and stopped near a pretty island made of coral. They collected lovely shells there. One magical night, the whole ocean seemed to glow milky white! Tiny glowing creatures made the water shimmer like starlight for miles and miles.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="24" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25" data-free="false">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_25.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_25.webp" alt="The Pearl Fisheries of Ceylon illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1428,12 +1414,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Pearl Fisheries of Ceylon</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Aronnax had been under the sea for a long time. So when the Nautilus came up one sunny day, he felt so happy. He could see land in the distance! It was a beautiful island called Ceylon. The island looked like a shiny pearl hanging near India.</p>
-<p>Captain Nemo came up on deck with a kind offer. Would the Professor like to visit a place where people find real pearls? Aronnax said yes right away. That sounded wonderful! But then Captain Nemo asked a strange question about sharks. The Professor felt a little worried after that.</p>
-<p>His friends Conseil and Ned Land came to talk with him. They were excited about the trip. Aronnax told them all about pearls and how oysters make them. Pearls start as tiny bits of sand inside the oyster shell. Then they grow into something beautiful and round. The three friends would go on this adventure together. Conseil promised to stay close to his dear Professor no matter what.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="25" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26" data-free="false">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_26.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_26.webp" alt="Dangers of the Pearl Beds illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1442,12 +1426,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Dangers of the Pearl Beds</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Before the sun came up, Professor Aronnax woke very early. Captain Nemo wanted to take him on a special trip! Conseil and Ned Land came too. They all rowed a small boat to the waters near Ceylon. Under these warm seas were beds full of oysters that made beautiful pearls.</p>
-<p>The friends put on special diving suits and helmets. They walked on the ocean floor and saw amazing things! There were pretty fish with golden stripes and colorful sea plants everywhere. They found millions and millions of oysters. Then Captain Nemo led them to a hidden cave. Inside was a giant shell, bigger than a bathtub! It held a pearl as big as a coconut, the most wonderful pearl in the whole world.</p>
-<p>On their way back, they saw a poor diver in trouble. A big scary shark was coming toward him! Captain Nemo was so brave. He fought the shark with just a knife. Then Ned Land helped by throwing his harpoon. Together they saved the diver! Captain Nemo gave the man a bag of pearls as a gift. Back on the submarine, Captain Nemo thanked Ned Land. It was a very exciting day under the sea.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="26" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27" data-free="false">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_27.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_27.webp" alt="Passage Through Ancient Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1456,11 +1438,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Passage Through Ancient Waters</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* sailed on through warm blue seas, passing pretty coral islands and sandy coasts. Ned Land was feeling grumpy and worried. He wondered where they were going, since the Red Sea seemed like a dead end with no way out. But the narrator still loved every moment of their amazing underwater adventure.</p>
-<p>The submarine glided past white towns with round-topped buildings and black rocky shores. They saw beautiful coral gardens and tiny volcanic islands poking up from the water. One day, Captain Nemo came up to talk and share wonderful stories about the sea. He told how tiny plants could make the water look red, giving the Red Sea its name. Then he shared an exciting secret. He had found a hidden underwater tunnel that went right under the land! Fish he had tagged on one side turned up on the other side, proving the tunnel was real. Soon the *Nautilus* would swim through this secret passage and pop out in a whole new sea.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="27" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28" data-free="false">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_28.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_28.webp" alt="The Dugong Hunt in the Red Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1469,12 +1450,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Dugong Hunt in the Red Sea</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The submarine rose up near the coast of Arabia one evening. Professor Aronnax saw a pretty town with white buildings glowing in the sunset. Wooden houses and cozy huts dotted the land beyond. When night came, the ship went back underwater where the sea sparkled with tiny lights.</p>
-<p>The next day brought a big adventure. Ned Land spotted a huge sea creature called a dugong swimming far away. It was a gentle animal that looked a bit like a giant seal. Captain Nemo let Ned take a small boat to go see it. Ned and some helpers rowed out across the waves. The dugong led them on a long chase, swimming and diving through the water. Finally they got close enough to watch it swim away into the deep.</p>
-<p>Later, the submarine did something amazing. Captain Nemo steered through a secret underwater tunnel that went right under the land. In just twenty minutes, they traveled from one sea to another. Professor Aronnax felt such wonder at this magical journey through hidden waters.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="28" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29" data-free="false">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_29.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_29.webp" alt="Escape Plans in European Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1483,12 +1462,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Escape Plans in European Waters</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>One bright morning, Professor Aronnax climbed up to look around. He was amazed to see they had reached a new sea! The submarine had traveled very far during the night. Now they could see the coast of Egypt in the distance.</p>
-<p>Ned Land wanted to talk about escaping. He missed his home very much. The three friends whispered together where no one could hear. Ned hoped they could swim to shore on a dark night. But Aronnax was not so sure. He thought Captain Nemo was very clever. The Captain would be watching them carefully in these busy waters.</p>
-<p>The days that followed were tricky for the friends. The submarine stayed deep underwater most of the time. They sailed past beautiful islands and even saw water that bubbled and steamed from an underwater volcano! Captain Nemo told them all about it. The three friends kept hoping for a chance to leave, but none came yet.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="29" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30" data-free="false">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_30.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_30.webp" alt="A Swift Passage Through Haunted Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1497,11 +1474,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Swift Passage Through Haunted Waters</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The Nautilus sailed into a beautiful blue sea called the Mediterranean. This sea is like a big pool between Europe and Africa. The water sparkled in the sunshine, and the shores had sweet-smelling flowers and orange trees. But the submarine moved very, very fast through these waters. The whole trip took only two days!</p>
-<p>Captain Nemo stayed hidden in his room the entire time. It seemed like being near land made him feel uncomfortable or sad. Maybe the shores reminded him of things he wanted to forget. Ned Land had hoped to escape here, but the submarine was going much too fast. No one could safely leave a boat moving that quickly. At night, the Nautilus came up to get fresh air. During the day, the narrator could only peek at the pretty sea like watching scenery zoom past a train window. Soon they passed through a narrow spot near some very old ruins and sailed back out into the wide Atlantic Ocean.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="30" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31" data-free="false">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_31.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_31.webp" alt="The Escape Plan Takes Shape illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1510,12 +1486,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Escape Plan Takes Shape</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* had been traveling through the huge Atlantic Ocean for many months. One day, the submarine came up to the surface near Spain. But the weather was very stormy, with big winds and crashing waves. Aronnax and his friends Ned Land and Conseil could only stay outside for a little while before going back inside.</p>
-<p>Then Ned Land told Aronnax something exciting. He had a plan for them to escape that very night! A small boat was ready with oars and food. The coast was close, and it was cloudy and dark outside. Aronnax felt mixed up inside. He wanted to be free, but he also loved seeing all the amazing things on the submarine.</p>
-<p>But then something surprising happened. Captain Nemo took them to look through the big glass windows. Down on the sandy ocean floor, they could see old sunken ships filled with sparkling gold and silver treasure! Nemo&#x27;s helpers were bringing up the shiny coins and jewels. Captain Nemo said he used this treasure to help people who were sad and in need. The escape would have to wait for another day.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="31" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32" data-free="false">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_32.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_32.webp" alt="The Atlantic&#x27;s Sunken Secrets illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1524,11 +1498,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Atlantic&#x27;s Sunken Secrets</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Ned came to see his friend looking upset. Their plan to leave the submarine had not worked. The Captain had stopped the ship at just the wrong time! Ned was sad, but he said they would try again soon. When they looked at the map, they were very far from any land. Ned felt stuck, but his friend felt a little peaceful. He could go back to learning about the sea.</p>
-<p>That night, Captain Nemo came with a surprise. He asked if his guest wanted to take a walk on the ocean floor in the dark! They put on their special diving suits and stepped out into the deep, dark water. Far away, a bright red glow shone like a campfire. They walked through an underwater forest of old stone trees toward the light. It came from a volcano glowing beneath the waves! And there, in the firelight, they saw something amazing. Old buildings lay tumbled on the seafloor. It was a lost city from long, long ago called Atlantis! They stood quietly, looking at this wondrous secret place, before walking back home to their ship as the sun came up.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="32" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33" data-free="false">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_33.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_33.webp" alt="Into the Heart of a Volcano illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1537,12 +1510,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Into the Heart of a Volcano</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Professor Aronnax woke up late one morning on the submarine called the *Nautilus*. The ship was moving through the deep ocean. He saw many amazing sea creatures swimming by. There were huge rays that could leap above the water. There were bright, colorful fish that sparkled like jewels.</p>
-<p>Later that day, something wonderful happened. The *Nautilus* floated up inside a secret cave. It was hidden inside an old, sleeping volcano filled with water. Captain Nemo showed them this magical place. The cave was like a giant underground lake with rocky walls reaching up high. A tiny circle of light glowed far above them. The Captain said this was his secret hiding spot, safe from all storms.</p>
-<p>The next day, Professor Aronnax explored the cave with his friends Conseil and Ned Land. They walked on sandy shores and climbed sparkly rocks. Ned found honey in a tree and shared it with everyone. They saw birds flying and tiny crabs crawling about. It was a grand adventure inside the heart of a mountain.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="33" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34" data-free="false">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_34.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_34.webp" alt="A Meadow in the Atlantic illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1551,11 +1522,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Meadow in the Atlantic</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>One special day, the submarine called the *Nautilus* visited a very strange place. It was like a giant meadow floating right in the middle of the ocean! Thick tangles of seaweed covered the water like a soft green blanket. Captain Nemo kept his ship swimming below this seaweed carpet so nothing would get stuck. Floating above were old tree trunks that had drifted from faraway rivers. Pretty pink birds rested on the water, and colorful jellyfish danced in the waves—some green, some red, some blue.</p>
-<p>The ship sailed on for many days after that. Ned Land felt worried because he missed his home and the sea seemed to go on forever. The Captain stayed busy with his work and his books. At night, he played sad music on his big organ while the ship floated quietly. Then one day, the *Nautilus* dove down, down, down—deeper than anyone had ever gone before! The whole ship shook and groaned. When they finally came back up, the submarine burst through the waves like a giant bubble.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="34" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><a class="next" href="#chapter-35"><span>Next</span>Chapter 35</a></nav>
 </section>
-<section class="chapter" id="chapter-35" data-num="35" data-free="false">
+<section class="chapter" id="chapter-35" data-num="35" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_35.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_35.webp" alt="Ned Land&#x27;s Restless Longing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">35</div>
@@ -1564,11 +1534,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Ned Land&#x27;s Restless Longing</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* sailed farther south into cold, icy waters. Ned Land felt very sad and restless. He missed his old life as a harpooner. He did not say much, but everyone could tell he wanted to go home. One day, Ned and Conseil visited the narrator to talk about the ship and its crew. They wondered how many people lived aboard. After counting carefully, they found there were not too many sailors on the *Nautilus*.</p>
-<p>Then something wonderful happened! The submarine came up to the surface. There was a big group of beautiful whales swimming and playing nearby. Ned got very excited because he used to hunt whales long ago. He asked Captain Nemo if he could chase them. But the Captain said no. He explained that these gentle whales should be left alone. He wanted to protect them, not hurt them. Ned felt disappointed, but he watched the whales swim peacefully through the sparkling sea.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="35" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-34"><span>Previous</span>Chapter 34</a><a class="next" href="#chapter-36"><span>Next</span>Chapter 36</a></nav>
 </section>
-<section class="chapter" id="chapter-36" data-num="36" data-free="false">
+<section class="chapter" id="chapter-36" data-num="36" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_36.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_36.webp" alt="Frozen Cathedrals of the Antarctic illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">36</div>
@@ -1577,11 +1546,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Frozen Cathedrals of the Antarctic</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* sailed far south toward the bottom of the world. Soon the crew saw their first chunks of floating ice. Ned Land had seen ice before, but his friends stared in wonder. The icebergs were so beautiful! Some glowed green like jewels. Others sparkled with a thousand tiny lights. Some looked like magical marble cities floating on the water.</p>
-<p>Captain Nemo steered the submarine past mountains of ice and through snowy storms. The *Nautilus* was very strong and kept pushing forward. But then a giant wall of ice blocked their way completely. Everything was frozen and silent, except for seabirds flying overhead. When the crew worried they were stuck, Captain Nemo had a clever idea. They would go *under* the ice instead of over it! The submarine dove deep into the dark, cold water. For many hours they traveled beneath the frozen ceiling. Then, one happy morning, the captain shared wonderful news. The sea ahead was finally open again!</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="36" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-35"><span>Previous</span>Chapter 35</a><a class="next" href="#chapter-37"><span>Next</span>Chapter 37</a></nav>
 </section>
-<section class="chapter" id="chapter-37" data-num="37" data-free="false">
+<section class="chapter" id="chapter-37" data-num="37" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_37.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_37.webp" alt="First Footsteps on the Antarctic Shore illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">37</div>
@@ -1590,13 +1558,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">First Footsteps on the Antarctic Shore</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* finally sailed free from the ice into open water. Birds filled the sky, and colorful fish swam all around. Spring had come to this cold place, and the air felt warmer.</p>
-<p>Captain Nemo wanted to find out exactly where they were. But cloudy skies made it hard to see the sun for days. They landed on a small rocky island covered with tiny plants and seaweed. Captain Nemo was the first to step onto the shore. He stood on a high rock and looked out at everything with wonder.</p>
-<p>The island was full of amazing animals. Thousands of penguins waddled on the rocks, making loud funny sounds. Giant birds called albatrosses flew overhead with huge wings. Seals and big sea elephants rested on the beach. Conseil asked the names of every creature he saw.</p>
-<p>Finally the sky cleared, and they climbed a tall volcano. At the very top, Captain Nemo checked his instruments carefully. At exactly noon, he smiled and said they had reached the South Pole! He raised a special flag to celebrate this amazing moment.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="37" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-36"><span>Previous</span>Chapter 36</a><a class="next" href="#chapter-38"><span>Next</span>Chapter 38</a></nav>
 </section>
-<section class="chapter" id="chapter-38" data-num="38" data-free="false">
+<section class="chapter" id="chapter-38" data-num="38" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_38.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_38.webp" alt="Trapped Beneath the Turning Ice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">38</div>
@@ -1605,11 +1570,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Trapped Beneath the Turning Ice</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>It was a very cold morning when the *Nautilus* began its journey under the ice. The sky was full of bright stars, and the sea was starting to freeze everywhere. The whales had swum away to find warmer water, but seals still lived on the ice above.</p>
-<p>The submarine dove deep and traveled north, sliding quietly beneath a giant iceberg. But in the middle of the night, something scary happened! A huge mountain of ice had tipped over and bumped into the ship. Everything shook, and furniture fell down inside. Captain Nemo looked worried, which was very unusual for him. The ice had pushed the *Nautilus* into a tunnel made of frozen walls. The tunnel was beautiful though—the lights from the ship made the ice sparkle like colorful jewels, blue and green and shining bright. But then the tunnel closed up behind them too. The *Nautilus* was stuck, trapped inside the ice with no way out. Everyone felt very scared about what might happen next.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="38" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-37"><span>Previous</span>Chapter 37</a><a class="next" href="#chapter-39"><span>Next</span>Chapter 39</a></nav>
 </section>
-<section class="chapter" id="chapter-39" data-num="39" data-free="false">
+<section class="chapter" id="chapter-39" data-num="39" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_39.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_39.webp" alt="Trapped Beneath the Ice illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">39</div>
@@ -1618,12 +1582,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Trapped Beneath the Ice</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* was stuck in the ice! Thick frozen walls surrounded the submarine on every side. Captain Nemo stayed calm but told everyone the truth. They needed to get free soon, or the air inside would run out. Everyone had to work together.</p>
-<p>The crew started digging through the ice with tools. Ned Land helped with his strong arms. Professor Aronnax and Conseil took turns digging too. It was hard work, but working outside felt good because the air was fresher there. Captain Nemo had a clever idea to pump hot water around the ship. This helped stop more ice from forming.</p>
-<p>After many long days, only a thin layer of ice was left. The *Nautilus* rose up and broke through the ice like a whale leaping from the water! Fresh air rushed into the submarine. Everyone took big, wonderful breaths. Ned and Conseil had shared their last bit of air with Aronnax to help him. They were finally free and safe, floating in the open sea once more.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="39" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-38"><span>Previous</span>Chapter 38</a><a class="next" href="#chapter-40"><span>Next</span>Chapter 40</a></nav>
 </section>
-<section class="chapter" id="chapter-40" data-num="40" data-free="false">
+<section class="chapter" id="chapter-40" data-num="40" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_40.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_40.webp" alt="Gasping Northward Through Atlantic Waters illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">40</div>
@@ -1632,11 +1594,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Gasping Northward Through Atlantic Waters</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>One day, Professor Aronnax finally got to go up on the deck of the *Nautilus*. He took a big breath of fresh ocean air. It felt so good after being inside for so long! His friends Ned Land and Conseil were with him. They were all very happy to be outside again.</p>
-<p>The submarine sailed north very fast. They passed Cape Horn and saw a tall mountain on the land. Under the water, they saw beautiful gardens of seaweed. Seals and otters swam around, looking for food. The *Nautilus* moved so quickly that they could not stop to see many things. Ned wanted to leave the ship, but the waves were too big and wild. So they stayed on board. Conseil found a strange flat fish, but it gave him a little zap! Ned and the professor helped him feel better right away. Soon they saw gentle manatees swimming and eating underwater plants. The submarine kept going north, and Professor Aronnax wondered where Captain Nemo would take them next.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="40" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-39"><span>Previous</span>Chapter 39</a><a class="next" href="#chapter-41"><span>Next</span>Chapter 41</a></nav>
 </section>
-<section class="chapter" id="chapter-41" data-num="41" data-free="false">
+<section class="chapter" id="chapter-41" data-num="41" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_41.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_41.webp" alt="Monsters of Legend and Sea illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">41</div>
@@ -1645,11 +1606,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Monsters of Legend and Sea</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The Nautilus sailed near some faraway islands for a few days. Ned Land could see the tall mountains in the distance. He wished he could find a way to leave the submarine and go home. But there was no safe way to escape in the deep ocean. The three friends had been on this underwater journey for six whole months now.</p>
-<p>Captain Nemo seemed very sad lately and stayed by himself a lot. No one knew why he felt so blue. One day, something strange appeared outside the window. It was a giant squid with big green eyes and long wiggly arms. Then more giant squids came swimming close to the submarine. The squids bumped against the ship and made it hard to move. Captain Nemo and his crew had to go outside and shoo the squids away. It was very hard work and everyone got tired. When the squids finally swam off, Captain Nemo looked out at the sea with tears in his eyes.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="41" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-40"><span>Previous</span>Chapter 40</a><a class="next" href="#chapter-42"><span>Next</span>Chapter 42</a></nav>
 </section>
-<section class="chapter" id="chapter-42" data-num="42" data-free="false">
+<section class="chapter" id="chapter-42" data-num="42" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_42.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_42.webp" alt="Grief, Currents, and Captive Longings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">42</div>
@@ -1658,11 +1618,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Grief, Currents, and Captive Longings</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>A very sad thing had happened on the submarine. One of the crew members got hurt badly by a sea creature, and Captain Nemo cried by the ocean waves. He had lost a friend, and everyone felt very sorry. For ten whole days, the Nautilus just floated quietly on the water, like it was sad too.</p>
-<p>Then the submarine started moving again and entered a special ocean river called the Gulf Stream. The water there glowed with pretty lights! But stormy weather came, and Ned Land felt more and more unhappy. He missed his home in Canada so much. He talked about his river and his town, and you could tell his heart ached to be free. When the narrator asked Captain Nemo if they could leave, the Captain said no in a very serious voice. Then a big, wild storm came with howling winds and bright lightning. Captain Nemo stood outside watching it bravely. Finally, the submarine dove deep underwater where everything became quiet and peaceful again.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="42" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-41"><span>Previous</span>Chapter 41</a><a class="next" href="#chapter-43"><span>Next</span>Chapter 43</a></nav>
 </section>
-<section class="chapter" id="chapter-43" data-num="43" data-free="false">
+<section class="chapter" id="chapter-43" data-num="43" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_43.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_43.webp" alt="The Atlantic Cable&#x27;s Silent Depths illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">43</div>
@@ -1671,11 +1630,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Atlantic Cable&#x27;s Silent Depths</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>After the big storm, the *Nautilus* was pushed far off course. Ned Land felt very sad because they could not reach land. He stayed quiet and alone for many days. The underwater boat floated through thick, misty fog where it was hard to see anything at all. Deep below, old ships rested on the sandy ocean floor, slowly becoming part of the sea.</p>
-<p>Then something wonderful appeared! A long, long cable stretched across the bottom of the ocean like a sleeping snake. This special cable carried messages all the way from America to Europe, like whispered words traveling underwater. Later, Captain Nemo took the *Nautilus* to a very special place. He found an old French ship called the *Avenger* resting peacefully in the deep water. The ship had been very brave long ago. Captain Nemo stood quietly, looking at it with great respect. His eyes showed deep feelings he rarely shared with anyone.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="43" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-42"><span>Previous</span>Chapter 42</a><a class="next" href="#chapter-44"><span>Next</span>Chapter 44</a></nav>
 </section>
-<section class="chapter" id="chapter-44" data-num="44" data-free="false">
+<section class="chapter" id="chapter-44" data-num="44" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_44.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_44.webp" alt="Vengeance Surfaces From the Deep illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">44</div>
@@ -1684,11 +1642,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Vengeance Surfaces From the Deep</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Captain Nemo stood very still, looking out at the dark water. He seemed so sad and full of big feelings. Professor Aronnax watched him and wondered about all the things Captain Nemo had been through. Something very hard had happened to him long ago, and it still hurt his heart.</p>
-<p>Then a ship appeared on the water above them. Ned Land got excited because he thought maybe they could go home. But Captain Nemo did not want to talk to the ship. He was upset with the people on it because of something painful from his past. He had lost his family, and that made him feel so much hurt inside. The Nautilus dove deep under the waves and stayed hidden. Later, Aronnax saw Captain Nemo in his room, looking at a picture of a kind woman and two little children. Nemo missed them so much that he cried. Aronnax and his friends wanted very badly to find a way home soon.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="44" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-43"><span>Previous</span>Chapter 43</a><a class="next" href="#chapter-45"><span>Next</span>Chapter 45</a></nav>
 </section>
-<section class="chapter" id="chapter-45" data-num="45" data-free="false">
+<section class="chapter" id="chapter-45" data-num="45" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_45.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_45.webp" alt="Flight Into the Unknown North illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">45</div>
@@ -1697,12 +1654,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Flight Into the Unknown North</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The *Nautilus* was racing through dark, cold waters far up north. Professor Aronnax felt very upset about Captain Nemo. Something bad had happened, and the Captain had done things that made Aronnax feel sad and scared. Now the Professor wanted to leave the submarine more than ever.</p>
-<p>For many days, everything felt strange and foggy. Captain Nemo stayed hidden, and no one saw him or his crew. Ned Land and Conseil stayed quiet too. Then one morning, Ned woke Aronnax with exciting news. He had spotted land not far away! They would try to escape that very night in a small boat.</p>
-<p>All day, Aronnax waited nervously. That evening, he heard Captain Nemo playing sad music on his organ. Nemo whispered something quietly, almost like a prayer. Then Aronnax hurried to meet his friends. But suddenly, the water started spinning very fast around them! The little boat broke free and went tumbling through the wild waves. Aronnax bumped his head and everything went dark.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="45" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-44"><span>Previous</span>Chapter 44</a><a class="next" href="#chapter-46"><span>Next</span>Chapter 46</a></nav>
 </section>
-<section class="chapter" id="chapter-46" data-num="46" data-free="false">
+<section class="chapter" id="chapter-46" data-num="46" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../20000_leagues/images_anime/chapter_46.webp"><img class="chapter-image" src="../../20000_leagues/images_anime/chapter_46.webp" alt="Survivors Reflect on an Incredible Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">46</div>
@@ -1711,8 +1666,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Survivors Reflect on an Incredible Journey</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The adventure is over, but no one is quite sure how it ended. There was a big, spinning whirlpool in the water, and the small boat got caught in it. Everything went dark, and the storyteller cannot remember what happened next. When he woke up, he was safe and warm inside a fisherman&#x27;s little house on some islands far away in Norway. His two dear friends, Conseil and Ned Land, were right beside him, holding his hands. They hugged each other tight, so happy to be together and safe after everything they had been through under the sea.</p>
-<p>They had to wait a while for a boat to take them home to France. While waiting, the storyteller wrote down everything about their amazing underwater journey. He wonders what happened to Captain Nemo and the wonderful submarine. He hopes they are still out there, exploring the beautiful ocean in peace.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="20000_leagues" data-n="46" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-45"><span>Previous</span>Chapter 45</a><span></span></nav>
 </section>
 <img class="back-cover" src="../../20000_leagues/images_anime/back_cover.webp" alt="Back cover">
@@ -1938,6 +1892,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {

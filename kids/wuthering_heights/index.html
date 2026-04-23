@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1125,7 +1139,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
     </div>
 </section>
 
-<section class="chapter" id="chapter-3" data-num="3" data-free="false">
+<section class="chapter" id="chapter-3" data-num="3" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_3.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_3.webp" alt="The Secret Room and Catherine&#x27;s Ghost illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -1134,10 +1148,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Secret Room and Catherine&#x27;s Ghost</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Lockwood was taken to a secret room in the old house. The servant said the master did not like anyone sleeping there. Inside was a cozy wooden bed built like a little cabinet. Lockwood crawled in and closed the panels tight. On the window ledge he found old books covered in writing. One name was scratched everywhere: Catherine Earnshaw. Sometimes it said Catherine Heathcliff or Catherine Linton. He read her diary from long ago. Catherine wrote about missing her father and feeling sad. She wrote about playing on the wild moors with her friend Heathcliff. That night Lockwood had strange dreams. In one dream he heard a sad voice at the window. It called out to be let inside. When Heathcliff rushed in and heard about the voice, he became very upset. He ran to the window calling for Cathy with tears on his face. In the morning Lockwood walked home through the snow, but he could not stop wondering about the old house and who Catherine really was.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="3" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4" data-free="false">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_4.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_4.webp" alt="Nelly Dean Begins Her Tale illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -1146,11 +1160,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Nelly Dean Begins Her Tale</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Lockwood was staying at a big house called Thrushcross Grange. He thought he wanted to be alone, but he felt lonely. So he asked the kind housekeeper, Nelly Dean, to come talk with him. At first she only gave short answers, but soon she started to share stories about the people at Wuthering Heights. She explained that the families there were all connected in surprising ways. Lockwood wanted to hear more, so Nelly began to tell her tale.</p>
-<p>Long ago, when Nelly was young, she worked at Wuthering Heights. One day, old Earnshaw walked all the way to a faraway city. He came home with a little boy he had found who had no family and nowhere to go. The Earnshaw children, Hindley and Cathy, were not happy at first because their father had lost their presents on the long trip home. They named the boy Heathcliff. Little Cathy soon became his friend, but Hindley did not like him at all. Heathcliff was quiet and brave, and Earnshaw grew to love him very much.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="4" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5" data-free="false">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_5.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_5.webp" alt="A Father&#x27;s Decline and Quiet Passing illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -1159,12 +1172,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Father&#x27;s Decline and Quiet Passing</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>At Wuthering Heights, Earnshaw grew old and tired. He used to walk on the wild moors, but now he sat by the fire. He felt cross and grumpy much of the time. He loved Heathcliff very much and wanted everyone to be kind to him. Hindley went away to school, so the house felt calmer.</p>
-<p>Catherine was a lively girl with bright eyes and a sweet smile. She loved to sing, laugh, and play all day long. She and Heathcliff were the very best of friends. They did everything together and hated to be apart.</p>
-<p>One quiet October evening, Earnshaw sat by the fire. A big wind blew outside. Catherine leaned against her father and sang softly to him. He fell asleep listening to her gentle song. When they tried to wake him, they found he had peacefully slipped away. Catherine and Heathcliff held each other close that night. They whispered together about beautiful, happy places far away.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="5" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6" data-free="false">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_6.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_6.webp" alt="Wild Freedom and Cruel New Order illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -1173,12 +1184,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Wild Freedom and Cruel New Order</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Hindley came home for his father&#x27;s sad goodbye. He brought a big surprise with him. He had a new wife! No one knew anything about her. She was sweet and liked the old farmhouse very much. She loved the big fireplace and the shiny dishes. But she seemed a little bit scared of sad things.</p>
-<p>Hindley became the boss of the house now. He was not very kind. He made Heathcliff work hard on the farm. He would not let Heathcliff learn his lessons anymore. But Cathy stayed friends with Heathcliff no matter what. They played on the wild moors together whenever they could. They did not care if they got in trouble.</p>
-<p>One rainy night, they ran off to peek at a fancy house. They saw rich children inside fighting over a little dog. A big dog hurt Cathy&#x27;s ankle, so the people inside helped her. But they were not nice to Heathcliff. They sent him away into the rain all alone.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="6" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7" data-free="false">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_7.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_7.webp" alt="Cathy&#x27;s Transformation and Heathcliff&#x27;s Humiliation illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -1187,12 +1196,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Cathy&#x27;s Transformation and Heathcliff&#x27;s Humiliation</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Cathy came back to Wuthering Heights after five weeks away. Her ankle was all better now. She looked so different in her fancy new dress and pretty hat with a feather. Her hair was curled in soft brown ringlets. Hindley said she looked like a real lady now.</p>
-<p>Heathcliff had been very lonely while Cathy was gone. His clothes were dirty and his hair was tangled because nobody helped him take care of himself. When Cathy saw him, she gave him lots of hugs and kisses. But then she laughed at how messy he looked. This hurt his feelings very much. He felt embarrassed and ran away.</p>
-<p>That night, kind Nelly found Heathcliff in the stable. The next morning, he let her help him get cleaned up and look nice. She told him wonderful stories about how special he might be. But Hindley was mean to Heathcliff and sent him to his room all day. Sweet Cathy missed him so much that she climbed across the roof just to visit him and keep him company.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="7" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8" data-free="false">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_8.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_8.webp" alt="A Birth, a Death, and Descent illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -1201,11 +1208,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Birth, a Death, and Descent</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>A baby boy named Hareton was born at Wuthering Heights on a sunny June morning. Everyone was so happy to meet him! But sadly, his mother Frances was very sick. She loved her baby so much and dreamed of watching him grow up. When Frances passed away, her husband Hindley became very, very sad. He stopped taking care of things around the house, so kind Nelly looked after baby Hareton instead.</p>
-<p>Catherine grew into a lively girl of fifteen. A gentle boy named Edgar Linton started coming to visit her. Catherine liked Edgar, but she also cared deeply about Heathcliff. One day, Heathcliff felt hurt because Catherine was spending more time with Edgar. He showed her marks he had made counting the days. Catherine got upset and said unkind words. Later, she and Edgar talked about their feelings and realized they liked each other very much. When Hindley came home that evening, everyone hurried off to bed.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="8" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9" data-free="false">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_9.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_9.webp" alt="A Father&#x27;s Drunken Rage and Ruin illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -1214,11 +1220,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Father&#x27;s Drunken Rage and Ruin</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>That evening, things were very hard at the house. Hindley was acting wild and scary because he had been drinking, so Nelly hid little Hareton in the kitchen to keep him safe. Hindley found them and got very angry, but Nelly stayed brave. Then something frightening happened on the stairs, and little Hareton almost got hurt. But Heathcliff was there just in time and caught him, keeping him safe.</p>
-<p>Later, Catherine came to talk with Nelly by the warm fire. She shared a big secret. Edgar Linton had asked her to marry him, and she said yes. But Catherine&#x27;s heart felt confused. She cared about Edgar, but she felt something much deeper for Heathcliff. She said her heart and Heathcliff&#x27;s were the same, like they belonged together. Sadly, Heathcliff only heard part of what she said and felt very hurt. He left without a word and disappeared into a big storm. Catherine searched and waited in the rain all night, but he was gone. She got very sick afterward. When she got better, she moved to a new house called Thrushcross Grange. Three years later, she married Edgar, and Nelly went to live there too.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="9" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10" data-free="false">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_10.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_10.webp" alt="Heathcliff&#x27;s Return to Thrushcross Grange illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1227,11 +1232,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Heathcliff&#x27;s Return to Thrushcross Grange</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nelly keeps telling her story to the visitor who is sick in bed. She tells about what happened after Catherine married Edgar and went to live at Thrushcross Grange. At first, Catherine and Edgar were quite happy together. Edgar was very kind and gentle with Catherine. They had peaceful days for about half a year.</p>
-<p>Then one quiet evening, something surprising happened. Heathcliff came back! He had been gone for three whole years. He looked very different now, tall and strong and well-dressed. Catherine was so excited to see her old friend again. She could hardly believe he was really there. Edgar was not so happy about the visit. Heathcliff moved into Wuthering Heights nearby. He came to visit Catherine often. Edgar&#x27;s young sister Isabella started to like Heathcliff very much. Catherine tried to warn her that Heathcliff was not a kind person. But Isabella would not listen. Nelly watched carefully, feeling worried about what might happen next.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="10" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11" data-free="false">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_11.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_11.webp" alt="Ghosts of Childhood and Corruption illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1240,11 +1244,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Ghosts of Childhood and Corruption</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nelly works at a big house called the Grange, but she often thinks about another house on the windy moors called Wuthering Heights. One cold sunny day, she walks past an old stone post by the road. It makes her remember being little, when she and her friend Hindley played there. They used to hide snail shells and pebbles in a hole near the stone. The memory feels so real that she hurries to Wuthering Heights to visit.</p>
-<p>At the gate, she finds a little boy named Hareton. He used to be her sweet baby to care for, but now he acts rough and says unkind words. A man named Heathcliff has been teaching him bad manners. Nelly feels worried and goes back to the Grange. She wants to keep everyone there safe and happy. But troubles are growing between the people who live there. Catherine and her husband Edgar have a big argument about Heathcliff visiting. Everyone feels upset and hurt. The house grows very quiet and sad, with people keeping to their own rooms.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="11" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12" data-free="false">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_12.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_12.webp" alt="Fever Dreams and Feathers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1253,11 +1256,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Fever Dreams and Feathers</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>In the big, quiet house called Thrushcross Grange, everyone was feeling very sad. Catherine stayed in her room and would not eat. Edgar spent his time alone with his books. Nelly the housekeeper tried to help, but Catherine was very unwell. Her mind played tricks on her, and she saw strange things that were not really there. She kept thinking about when she was a little girl, running free on the windy hills with her friend Heathcliff. She missed those happy days so much.</p>
-<p>Edgar came to see Catherine and felt very worried about her. She was so confused and tired. Nelly went to get the doctor to help. While she was outside, she learned something surprising. Edgar&#x27;s sister Isabella had run away during the night with Heathcliff. Edgar felt so sad about his sister leaving. Now the house felt even quieter, with Catherine sick in bed and Isabella gone far away.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="12" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13" data-free="false">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_13.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_13.webp" alt="A Bride&#x27;s Desperate Confession illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1266,12 +1268,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Bride&#x27;s Desperate Confession</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>For two whole months, no one knew where Heathcliff and Isabella had gone. During that time, Catherine became very, very sick. Edgar loved her so much that he stayed by her side day and night. He helped take care of her and never left her alone. The doctor said Catherine might not get better, but Edgar would not give up hope. Slowly, she started to feel a little bit stronger.</p>
-<p>One bright March morning, Edgar put pretty yellow flowers on Catherine&#x27;s pillow. When she woke up and saw them, her eyes sparkled with happiness. She held the flowers close and thought about the wild moors she loved so much. Edgar moved her to a sunny room so she could feel better and rest.</p>
-<p>Far away at Wuthering Heights, Isabella sent a letter about her new life. She wrote that she felt lonely and sad in that cold, dusty old house. She missed her home and wished things were different.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="13" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14" data-free="false">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_14.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_14.webp" alt="The Grange&#x27;s Cold Farewell to Isabella illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1280,11 +1280,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Grange&#x27;s Cold Farewell to Isabella</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nelly went to see Edgar with a message from his sister Isabella. Isabella missed her brother very much and hoped he would forgive her. But Edgar would not write her a letter or visit her at all. He said he wanted nothing more to do with her new home. Poor Nelly had to bring this sad news back to Isabella.</p>
-<p>When Nelly arrived at the old house, everything looked gloomy and tired. Isabella looked unhappy and unwell. She had hoped so much for a kind letter from her brother. Instead, Nelly had to tell her that Edgar would not write. Isabella felt very alone and wished she could go back to her old life. Heathcliff wanted Nelly to take a letter to Catherine, who was sick at home. Nelly worried about what might happen, but she agreed to help. She carried the letter with her, wondering what would come next.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="14" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15" data-free="false">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_15.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_15.webp" alt="A Final Embrace Before Death illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1293,10 +1292,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Final Embrace Before Death</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nelly waited for the right moment to give Catherine a letter from Heathcliff. She opened all the doors on a warm morning and sent the helper away. Catherine sat by the window in a white dress. Her long hair was combed softly around her face. She looked pale and dreamy, like someone far away in thought. Nelly read the letter out loud, and when Catherine heard Heathcliff&#x27;s name, her eyes brightened. Then Heathcliff himself walked right into the room. He rushed to Catherine and held her tight for a long time. They were so happy to see each other, but also very sad. Catherine felt hurt and scared they might be apart forever. She told him she never wanted to let go. They held each other and cried together. When Edgar came home, Heathcliff gently gave Catherine to him because she had fallen asleep from all the big feelings. Heathcliff promised to come back the next day to check on her.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="15" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16" data-free="false">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_16.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_16.webp" alt="A Birth, a Death, and Grief illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1305,11 +1304,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Birth, a Death, and Grief</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>That night, something very sad happened at the Grange. Catherine, who had been very sick, fell into a deep sleep. She never woke up again. But before she passed away, a tiny baby girl was born. The baby was small and needed lots of care. Her name would be Catherine too, just like her mother.</p>
-<p>Edgar was heartbroken and stayed by Catherine&#x27;s side all night. In the morning, soft light came through the window. Catherine looked so peaceful, like she was having the sweetest dream. Everyone in the house felt very quiet and sad. Heathcliff had been waiting outside under an old tree all night long. When he heard the news, he felt so sad he could barely speak. He missed Catherine with all his heart. A few days later, Catherine was buried in a pretty spot near the moors she loved. Wildflowers and heather grew all around, and the wind blew softly from the hills.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="16" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17" data-free="false">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_17.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_17.webp" alt="Isabella&#x27;s Flight Through the Storm illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1318,11 +1316,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Isabella&#x27;s Flight Through the Storm</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The weather turned cold and snowy very fast. Summer was gone, and winter came early. At the Grange, Nelly took care of baby Cathy while Edgar stayed quiet and sad in his room.</p>
-<p>Then Isabella burst through the door! She had run all the way from Wuthering Heights in the storm. Her dress was soaking wet and her shoes were ruined. She looked tired and had gotten hurt along the way. Isabella wanted to leave right away and never come back. She was upset with Heathcliff and threw her wedding ring into the fire. There had been a terrible fight at the old house, and she had to get away. After getting warm and dry, Isabella left that very day. Later, she had a baby boy named Linton. Edgar took care of little Cathy, and she became the joy of his life. He loved her so much. Sadly, Hindley passed away, and Heathcliff took over Wuthering Heights. Little Hareton had to stay there with him.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="17" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18" data-free="false">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_18.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_18.webp" alt="A Sheltered Child&#x27;s Forbidden Longings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1331,11 +1328,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Sheltered Child&#x27;s Forbidden Longings</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nelly spent many happy years taking care of young Cathy. The little girl grew strong and healthy, like a beautiful tree. She had lovely dark eyes and soft yellow curls. Cathy was full of sunshine and laughter, with a gentle heart. She loved to learn, and her father taught her many wonderful things. But Cathy had never been outside the park gates by herself. From her window, she could see golden rocks far away on the hills. She dreamed of visiting a magical place called Fairy Cave.</p>
-<p>One summer day, when her father was away, Cathy went exploring. She pretended to be a merchant on an adventure with her pony and dogs. She rode and rode until she found an old farmhouse called Wuthering Heights. There she met a boy named Hareton, who turned out to be her cousin. Cathy was surprised because he seemed so different from her. They did not become friends that day, but Cathy&#x27;s world had grown much bigger.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="18" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19" data-free="false">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_19.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_19.webp" alt="A Fragile Cousin Arrives at Thrushcross illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1344,11 +1340,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Fragile Cousin Arrives at Thrushcross</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>A letter came with sad news. Catherine&#x27;s aunt had passed away, and her father was coming home. Best of all, he was bringing her cousin Linton with him. Catherine was so excited she could barely sit still. She had never met Linton before, but she kept a little piece of his golden hair in a special box. She dreamed about playing with him someday.</p>
-<p>When the carriage finally arrived, Catherine ran to meet it. She hugged her father tight. Then she peeked inside and saw Linton for the first time. He was a pale, quiet boy wrapped in warm blankets. He looked very tired from the long trip. When he woke up, he seemed shy and a little tearful. He missed his mother very much. Catherine wanted to make him feel better. She was gentle and kind, bringing him tea and stroking his soft curls. Her father hoped having a friend might help Linton feel happier. But that night, a servant came with a message. Linton would have to go live somewhere else very soon.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="19" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20" data-free="false">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_20.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_20.webp" alt="A Father Claimed, a Home Lost illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1357,11 +1352,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Father Claimed, a Home Lost</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Little Linton had lived at the Grange with his uncle Edgar and cousin Catherine. But one morning, everything changed. His father, Heathcliff, wanted him to come live at Wuthering Heights instead. Linton was confused and a little scared. He had never met his father before. His mother had never even told him about this man.</p>
-<p>Nelly took Linton on a ride through the sunny hills. The fresh air made him feel a bit better. He asked questions about his new home and wondered what his father would be like. When they arrived, Linton saw an old farmhouse with twisted trees outside. Heathcliff looked at his son but did not seem very warm or friendly. Poor Linton felt shy and cried a little. He did not want Nelly to leave him there. But she had to go back to the Grange. Linton would have to be brave in his new home now.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="20" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21" data-free="false">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_21.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_21.webp" alt="Linton&#x27;s Decline and Cathy&#x27;s Restless Wandering illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1370,11 +1364,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Linton&#x27;s Decline and Cathy&#x27;s Restless Wandering</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Little Cathy woke up excited to see her cousin Linton, but she learned he had to go away. She cried and cried, and her father Edgar tried to comfort her. He promised Linton would visit again soon, though that did not happen. As time passed, Cathy thought less and less about her cousin.</p>
-<p>Linton lived at Wuthering Heights with Heathcliff, but he was often sick and weak. He spent his days sitting by the fire, wrapped in warm blankets. Meanwhile, Cathy grew up happy at the Grange. When she turned sixteen, she went walking on the moors with Nelly and wandered very far from home. There she met Heathcliff, who invited her inside to rest and see Linton again. The two cousins were so different now. Cathy was lively and full of energy, while Linton was quiet and tired. After the visit, Cathy went home and told her father everything. He worried about her going back there, but Cathy kept thinking about her cousin.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="21" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22" data-free="false">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_22.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_22.webp" alt="A Lonely Blossom and Autumn Tears illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1383,11 +1376,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Lonely Blossom and Autumn Tears</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>As summer turned to autumn, something sad happened at the Grange. Cathy&#x27;s father caught a bad cold and had to stay inside all winter to get better. Cathy missed walking with him very much, and she felt lonely without her friend Linton too. One grey afternoon, Nelly took Cathy for a walk through the park. Cathy moved slowly and wiped tears from her cheeks. When Nelly showed her a little bluebell flower growing all alone, Cathy said it looked sad, just like she felt inside.</p>
-<p>Cathy told Nelly she was worried about her papa. She was scared he might not get better. Nelly gave her a warm hug and said her father could live many more happy years. Then something surprising happened. Cathy&#x27;s hat blew over a wall, and when she climbed down to get it, she met Heathcliff on the road. He told her that Linton missed her terribly and felt very sick and sad. That night, Cathy could not stop thinking about her cousin. The next morning, she and Nelly rode off together to visit him.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="22" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23" data-free="false">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_23.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_23.webp" alt="A Sickroom Visit and Bitter Truths illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1396,11 +1388,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Sickroom Visit and Bitter Truths</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>On a rainy, gloomy morning, Catherine and Nelly went to visit Linton at Wuthering Heights. They found him sitting in a big chair, feeling sick and grumpy. Poor Linton coughed and shivered and complained about everything. Catherine was so kind to him and tried to make him feel better. She fixed his cushions and even sang him songs. Linton could be quite fussy, but when Catherine asked if he was happy to see her, he smiled a little. He said her voice was something nice and new in that quiet house.</p>
-<p>The cousins had a small argument about their families, and Linton got upset and started coughing again. Catherine felt terrible and stayed to comfort him. On the way home, she told Nelly that Linton just needed someone to take care of him. After that wet, chilly trip, Nelly got sick and had to stay in bed for three weeks. Sweet Catherine looked after her father and Nelly every single day.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="23" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24" data-free="false">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_24.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_24.webp" alt="Secret Rides to Wuthering Heights illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1409,12 +1400,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Secret Rides to Wuthering Heights</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Ellen had been sick for three weeks. When she felt better, she noticed Catherine was acting strange. Catherine kept making excuses to leave the room early each night. Ellen started to wonder what was happening.</p>
-<p>One snowy evening, Ellen waited by the window in the moonlight. She saw Catherine come home on her pony, sneaking back inside. Catherine was so surprised to see Ellen watching her! At first she looked scared, but then she told Ellen the truth. She had been riding to Wuthering Heights every day to visit her cousin Linton. She had kept it a secret from everyone.</p>
-<p>Catherine told Ellen about her visits. She and Linton sat by the fire and talked about what made them happy. They played games and made plans for summer. Sometimes they got upset with each other, but they always made up. Ellen felt she had to tell Catherine&#x27;s father about the secret rides. He said Catherine could not go to Wuthering Heights anymore, but Linton could visit her instead. Catherine cried, but that was how things had to be.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="24" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><a class="next" href="#chapter-25"><span>Next</span>Chapter 25</a></nav>
 </section>
-<section class="chapter" id="chapter-25" data-num="25" data-free="false">
+<section class="chapter" id="chapter-25" data-num="25" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_25.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_25.webp" alt="A Father&#x27;s Fading Hope and Fear illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">25</div>
@@ -1423,11 +1412,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Father&#x27;s Fading Hope and Fear</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Catherine loved her father Edgar very much and always did what he asked. Edgar was not feeling well, and he worried about what would happen to Catherine when he was gone. He wanted to keep her safe and happy, but he knew he might not be around much longer. Edgar asked Ellen, their kind helper, about a boy named Linton. Ellen said Linton was not very strong, but he seemed like a gentle boy.</p>
-<p>Edgar spent quiet days walking in the garden with Catherine. She hoped her father was getting better because his cheeks looked pink and rosy. On her seventeenth birthday, it rained, so they stayed inside together. Soon, Edgar agreed that Catherine could meet Linton for rides on the moors, with Ellen watching over them. Edgar hoped the two young people might become friends. As summer came closer, Catherine began her visits, not knowing that both her father and Linton were growing weaker with each passing day.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="25" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-24"><span>Previous</span>Chapter 24</a><a class="next" href="#chapter-26"><span>Next</span>Chapter 26</a></nav>
 </section>
-<section class="chapter" id="chapter-26" data-num="26" data-free="false">
+<section class="chapter" id="chapter-26" data-num="26" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_26.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_26.webp" alt="A Fading Cousin on the Heath illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">26</div>
@@ -1436,10 +1424,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Fading Cousin on the Heath</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Catherine and her caretaker Nelly finally got to visit her cousin Linton after waiting a very long time. Catherine&#x27;s father said they could go, but only if they stayed close to home. When they arrived at the meeting spot, a boy told them Linton was waiting somewhere else, a bit farther away. They found Linton lying in the grass on the moor. He looked very tired and pale, much weaker than before. Catherine was worried about him, but Linton said he was just hot and growing fast. Catherine tried to talk about happy things and fun trips they could take together. But Linton seemed far away and did not want to play or laugh. He seemed scared about something and kept looking toward his house. He asked Catherine to come back and visit again soon. On the ride home, Catherine felt sad and confused about her cousin. She wished she could help him feel better and wondered why he seemed so afraid.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="26" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-25"><span>Previous</span>Chapter 25</a><a class="next" href="#chapter-27"><span>Next</span>Chapter 27</a></nav>
 </section>
-<section class="chapter" id="chapter-27" data-num="27" data-free="false">
+<section class="chapter" id="chapter-27" data-num="27" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_27.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_27.webp" alt="A Trap Among the Heather illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">27</div>
@@ -1448,11 +1436,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Trap Among the Heather</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Catherine&#x27;s father was very sick, and she knew it. She spent every day sitting by his bed, holding his hand. She loved him so much and wanted to be close to him always. One sunny afternoon, her father asked her to go outside for fresh air. He thought it would be good for her to visit her cousin Linton at the farmhouse on the hills.</p>
-<p>When Catherine and her helper Nelly arrived, something felt wrong. Linton looked scared and kept saying sorry over and over. Then Heathcliff appeared. He was not a nice man. He tricked Catherine and Nelly into coming inside the house, and then he locked the door. Catherine was so upset because she wanted to go home to her sick father. She asked and asked to leave, but Heathcliff would not let her go. Poor Nelly was kept in a room upstairs for many days. She worried and worried about Catherine and wished she could help her get back home.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="27" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-26"><span>Previous</span>Chapter 26</a><a class="next" href="#chapter-28"><span>Next</span>Chapter 28</a></nav>
 </section>
-<section class="chapter" id="chapter-28" data-num="28" data-free="false">
+<section class="chapter" id="chapter-28" data-num="28" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_28.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_28.webp" alt="The Captive Bride&#x27;s Bitter Inheritance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">28</div>
@@ -1461,11 +1448,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Captive Bride&#x27;s Bitter Inheritance</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nelly had been kept at Wuthering Heights for five long days. Then Zillah the housekeeper came and set her free. Nelly hurried downstairs and found young Linton sitting by himself. He was not being kind at all. He said mean things about Catherine and would not help. But Nelly kept asking questions in her gentle way. She learned that Catherine had been treated very badly by Heathcliff. Poor Catherine had been hurt and was feeling so sad and alone.</p>
-<p>Nelly rushed home to Thrushcross Grange right away. Edgar was very sick in bed and missed his daughter terribly. That night, something wonderful happened. Catherine escaped all by herself! She climbed down a big tree in the moonlight. She ran all the way home to see her father. Edgar was so happy to hold his daughter again. They sat together in his quiet room, and he felt peaceful at last. He told Catherine how much he loved her. Then Edgar closed his eyes and slipped away very gently, like falling asleep.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="28" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-27"><span>Previous</span>Chapter 27</a><a class="next" href="#chapter-29"><span>Next</span>Chapter 29</a></nav>
 </section>
-<section class="chapter" id="chapter-29" data-num="29" data-free="false">
+<section class="chapter" id="chapter-29" data-num="29" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_29.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_29.webp" alt="Heathcliff Claims His Bitter Inheritance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">29</div>
@@ -1474,10 +1460,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Heathcliff Claims His Bitter Inheritance</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nelly and Catherine sat together in the library feeling very sad. Catherine&#x27;s father had just passed away, and they hoped Catherine could stay in her cozy home. But then Heathcliff arrived at the door. He had come to take Catherine away to live at Wuthering Heights with young Linton. Catherine was brave and stood up tall. She told Heathcliff that her love was stronger than his anger. She said he was lonely because nobody loved him. This made Heathcliff quiet for a moment. Then Catherine had to pack her things to leave. She gave Nelly a cold, sad kiss goodbye and asked her to visit someday. Nelly watched from the window as they walked down through the garden. The trees seemed to swallow them up as they disappeared down the path toward Wuthering Heights. Nelly felt worried about what would happen to dear Catherine next.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="29" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-28"><span>Previous</span>Chapter 28</a><a class="next" href="#chapter-30"><span>Next</span>Chapter 30</a></nav>
 </section>
-<section class="chapter" id="chapter-30" data-num="30" data-free="false">
+<section class="chapter" id="chapter-30" data-num="30" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_30.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_30.webp" alt="Alone Among Enemies illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">30</div>
@@ -1486,11 +1472,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Alone Among Enemies</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Catherine had to stay at a big old house on the windy moors. Her young husband Linton was very sick, and she took care of him all by herself. She stayed awake many nights trying to help him feel better. Catherine was so tired and sad, but she kept being brave. The housekeeper named Zillah saw Catherine crying sometimes, but nobody helped her much. Sadly, Linton was too sick, and he passed away. Catherine felt very alone and lost without him.</p>
-<p>After that, Catherine stayed in her room for a long time. When she finally came downstairs, she wore dark clothes and looked very serious. A young man named Hareton tried to be friendly and share his books with her. But Catherine was too hurt and angry to be kind back. She felt forgotten by everyone. Far away, Nelly heard about all this and wished she could bring Catherine home to somewhere warm and safe.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="30" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-29"><span>Previous</span>Chapter 29</a><a class="next" href="#chapter-31"><span>Next</span>Chapter 31</a></nav>
 </section>
-<section class="chapter" id="chapter-31" data-num="31" data-free="false">
+<section class="chapter" id="chapter-31" data-num="31" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_31.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_31.webp" alt="Captive Beauty and Forbidden Books illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">31</div>
@@ -1499,11 +1484,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Captive Beauty and Forbidden Books</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>On a cold, bright morning, Lockwood walks to Wuthering Heights with a letter for Catherine. Hareton lets him in but does not smile or say hello. Inside, Catherine looks sad and tired, not cheerful like before. When Lockwood tries to give her the letter, Hareton grabs it away. But then he feels sorry and drops it so she can read it. Catherine misses her old home very much and wishes she could ride her pony again. She feels trapped, like a bird in a cage.</p>
-<p>Catherine has no paper to write back because her books are all gone. She finds out that Hareton has been trying to learn to read in secret. He has hidden some books in his room. Catherine says unkind things about his reading, and this hurts his feelings badly. He gets so upset that he throws his precious books into the fire. Later, Lockwood tells everyone he is moving back to London. As he rides away, he feels sad thinking about the unhappy people in that lonely house on the hills.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="31" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-30"><span>Previous</span>Chapter 30</a><a class="next" href="#chapter-32"><span>Next</span>Chapter 32</a></nav>
 </section>
-<section class="chapter" id="chapter-32" data-num="32" data-free="false">
+<section class="chapter" id="chapter-32" data-num="32" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_32.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_32.webp" alt="The Moors Transformed by Love illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">32</div>
@@ -1512,12 +1496,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Moors Transformed by Love</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>It is almost autumn, and Lockwood decides to visit the place he left behind. He travels a long bumpy road until he reaches the valley. The church looks quiet, and a fluffy sheep nibbles grass nearby. The warm sunshine makes the hills and meadows look beautiful.</p>
-<p>At the Grange, Lockwood learns that Nelly Dean now lives at Wuthering Heights. So he walks there as the golden sun sets and a bright moon rises. When he arrives, sweet flowers fill the air with their lovely smell. Through an open window, he sees something wonderful. Young Hareton sits reading a book while Catherine leans close, helping him with the tricky words. They laugh and share little kisses. They look so happy together.</p>
-<p>Inside, Nelly tells Lockwood amazing news. She explains how Catherine and Hareton became dear friends. At first they argued, but Catherine was patient and kind. One special day, she gave Hareton a gift wrapped in white paper. After that, they read books side by side and grew to love each other very much.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="32" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-31"><span>Previous</span>Chapter 31</a><a class="next" href="#chapter-33"><span>Next</span>Chapter 33</a></nav>
 </section>
-<section class="chapter" id="chapter-33" data-num="33" data-free="false">
+<section class="chapter" id="chapter-33" data-num="33" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_33.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_33.webp" alt="Primroses and Defiance illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">33</div>
@@ -1526,12 +1508,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Primroses and Defiance</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The morning after some exciting events, young Catherine slipped outside. Her cousin Hareton was working in the garden. Catherine wanted to make a pretty flower bed. So the two of them dug up some currant bushes together. Old Joseph loved those bushes very much. He would be upset when he saw what happened.</p>
-<p>At breakfast, Catherine sat close to Hareton. She was feeling playful and silly. She tucked little yellow primroses into his porridge. Hareton tried so hard not to laugh. Heathcliff saw them and got very angry. Joseph came in upset about his garden too. Catherine stood up to Heathcliff bravely. She said Hareton was her friend now. Heathcliff warned them to stay apart, but something was changing inside him.</p>
-<p>In the days after, Catherine and Hareton became good friends. They sat by the fire together reading books. Their heads bent close as they learned new things. Heathcliff watched them and felt very tired and sad. He missed someone he loved long ago. He told the housekeeper that something different was coming soon.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="33" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-32"><span>Previous</span>Chapter 32</a><a class="next" href="#chapter-34"><span>Next</span>Chapter 34</a></nav>
 </section>
-<section class="chapter" id="chapter-34" data-num="34" data-free="false">
+<section class="chapter" id="chapter-34" data-num="34" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wuthering_heights/images_anime/chapter_34.webp"><img class="chapter-image" src="../../wuthering_heights/images_anime/chapter_34.webp" alt="The Threshold of Heaven illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">34</div>
@@ -1540,8 +1520,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Threshold of Heaven</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>In the days after a strange evening, Heathcliff stayed away from everyone. He walked on the moors at night under the spring stars. The apple trees bloomed pink and white against the wall. Then Cathy ran in from the gate looking surprised. She said Heathcliff had spoken to her, and he looked different. Not angry anymore, but bright and almost happy.</p>
-<p>Nelly found him standing at the open door. His eyes had a strange glad sparkle. He told her he felt like he was close to heaven now. After that, Heathcliff grew very tired and weak. He stopped eating and spent his time thinking about Catherine, the person he loved most. He seemed to be dreaming of being with her again. One rainy night, he fell into a deep, peaceful sleep and did not wake up. They buried him next to Catherine, just as he wished. When people walked by the quiet graves in the churchyard, soft wind moved through the grass. Moths danced among the flowers. Everything felt calm and still.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wuthering_heights" data-n="34" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-33"><span>Previous</span>Chapter 33</a><span></span></nav>
 </section>
 <img class="back-cover" src="../../wuthering_heights/images_anime/back_cover.webp" alt="Back cover">
@@ -1767,6 +1746,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {

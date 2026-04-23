@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1138,7 +1152,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
     </div>
 </section>
 
-<section class="chapter" id="chapter-3" data-num="3" data-free="false">
+<section class="chapter" id="chapter-3" data-num="3" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_3.webp"><img class="chapter-image" src="images_cinematic/chapter_3.webp" alt="Whispers and Pretensions in the City illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -1147,18 +1161,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Whispers and Pretensions in the City</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The afternoon unraveled into evening in that cramped apartment above the ash heaps, and I found myself drawn unwillingly deeper into a world I had no business inhabiting. What had begun as an impromptu excursion with Tom now swelled into a grotesque little party, the rooms filling with characters who seemed to have materialized from the very smoke that hung perpetually in the air.</p>
-<p>Catherine arrived first—Myrtle&#x27;s sister, a worldly creature of about thirty whose appearance bore the unmistakable marks of careful artifice. Her red hair sat in a solid, sticky bob, her complexion powdered to a milky pallor, and her eyebrows, having been plucked into oblivion, were redrawn at angles that nature had never intended. She moved through the space with proprietary ease, her pottery bracelets clicking an incessant percussion against her wrists. The McKees followed from the flat below: he a pale, feminine photographer still wearing a spot of lather on his cheek like some badge of domestic haste; she shrill and languid and horrible all at once, proud to inform me that Chester had photographed her one hundred and twenty-seven times since their marriage.</p>
-<p>But it was Myrtle herself who commanded attention as the whisky flowed and the smoke thickened. She had changed into an elaborate cream-colored chiffon that rustled with every movement, and with that change of costume came an alarming transformation of manner. The vital, earthy woman from the garage had been replaced by something approaching grotesque hauteur. Her laughter grew more affected, her gestures more violent, until she seemed to expand while the room contracted around her, revolving on some noisy, creaking pivot through the haze.</p>
-<p>The conversation meandered through trivialities—foot doctors who overcharged, dresses that were &quot;just crazy old things,&quot; Mr. McKee&#x27;s artistic ambitions on Long Island. Yet beneath this surface chatter ran darker currents. Catherine leaned close to whisper that neither Tom nor Myrtle could stand their respective spouses, that they would marry as soon as circumstances allowed. Tom&#x27;s wife, she confided, was Catholic and would not grant a divorce. I knew this to be an elaborate lie—Daisy was no Catholic—and the deliberateness of the deception unsettled me more than I cared to admit. Here was a mythology being constructed to justify what could not be justified.</p>
-<p>The hours blurred together. A second bottle of whisky entered constant circulation. Myrtle breathed into my ear the story of her first meeting with Tom on a train, how his dress suit and patent leather shoes had mesmerized her, how his white shirtfront had pressed against her arm. &quot;You can&#x27;t live forever,&quot; she had thought, and in that desperate refrain I heard the entire philosophy that governed these proceedings.</p>
-<p>I wanted to leave, to walk eastward through the soft twilight toward the park, but some invisible force held me captive. Looking out at our line of yellow windows high above the city, I imagined how we must appear to a casual watcher below—just another cluster of mysterious lives contributing our share of human secrecy to the darkening streets. I was within and without, simultaneously enchanted and repelled by life&#x27;s inexhaustible variety.</p>
-<p>Then, toward midnight, the evening&#x27;s brittle gaiety shattered completely. Myrtle, emboldened by drink, began chanting Daisy&#x27;s name—that forbidden syllable—in defiance of Tom&#x27;s darkening expression. &quot;Daisy! Daisy! Daisy!&quot; she shouted. What followed was swift and brutal: Tom&#x27;s open hand breaking her nose with a short, deft movement. The chaos that erupted—bloody towels on the bathroom floor, women&#x27;s voices scolding, that long broken wail of pain—seemed somehow inevitable, the only possible conclusion to an evening built on such unstable foundations.</p>
-<p>I retrieved my hat from the chandelier where it had somehow landed and followed Mr. McKee into the groaning elevator, into fragmented scenes I would only half-remember: his portfolio of photographs, the cold lower level of Pennsylvania Station at dawn.</p>
-<p>The violence I had witnessed would not leave me easily, and in the days that followed, I found my thoughts returning again and again to those mysterious lights across the water from my own small house—to my neighbor Gatsby, about whom Catherine had whispered such strange rumors, and whose parties seemed to promise something altogether different from the sordid spectacle I had just survived.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="3" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4" data-free="false">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_4.webp"><img class="chapter-image" src="images_cinematic/chapter_4.webp" alt="Gatsby&#x27;s Mysterious Past Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -1167,16 +1173,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Gatsby&#x27;s Mysterious Past Revealed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Through the shimmering veil of summer nights, I observed from my modest cottage the magnificent theater of excess that was Gatsby&#x27;s estate. His blue gardens transformed into something almost mythological—men and women drifting like moths through champagne mist and starlight, his motorboats slicing the Sound into cataracts of white foam, his Rolls-Royce shuttling parties with the regularity of public transport. The machinery of his hospitality was awesome in its precision: pyramids of pulpless oranges testifying to Friday&#x27;s crates, armies of caterers draping canvas and colored lights until the grounds resembled nothing so much as a Christmas tree for giants, bars stocked with cordials so ancient they predated his female guests&#x27; memories entirely.</p>
-<p>I had been actually invited—a distinction I came to understand was exceedingly rare. Most guests simply materialized, borne by automobiles and rumors toward that glowing shore, conducting themselves with the cheerful abandon of visitors to an amusement park. Some departed without having glimpsed their host at all. But a chauffeur in robin&#x27;s-egg blue had crossed my lawn bearing a surprisingly formal invitation signed in a majestic hand: Jay Gatsby.</p>
-<p>I arrived in white flannels and found myself adrift among swirls of strangers, young Englishmen selling something with hungry eyes, cocktail trays floating through twilight like promises. My search for Gatsby proved futile and faintly embarrassing until Jordan Baker appeared on the marble steps, and I attached myself to her with grateful relief. We descended into the party&#x27;s depths together, settling at tables where the conversation turned inevitably toward our mysterious host. The whispers were delicious and contradictory—he had killed a man, he had been a German spy, he had served in the American army. The romantic speculation he inspired seemed testimony enough to his peculiar power.</p>
-<p>In the Gothic library we encountered a drunken philosopher with owl-like spectacles, marveling that Gatsby&#x27;s books were real—&quot;pages and everything&quot;—comparing him to Belasco for the thoroughness of his stagecraft. The discovery seemed to confirm something essential about this world: the elaborate care taken to construct surfaces, the possibility that everything might yet be cardboard.</p>
-<p>I met Gatsby himself quite by accident, conversing with a pleasant man about the war, accepting his invitation to try a hydroplane, before the revelation came: &quot;I&#x27;m Gatsby.&quot; His smile possessed a quality of eternal reassurance, the kind you encounter perhaps five times in a life—it understood you precisely as far as you wished to be understood, believed in you as you longed to believe in yourself. Then it vanished, and I was looking at an elegant young roughneck whose formal speech just missed absurdity, a man choosing his words with evident care. When Jordan was summoned for a mysterious private conference and emerged an hour later with something &quot;simply amazing&quot; she refused to share, I felt the first stirrings of genuine curiosity about this figure who stood apart from his own festivities, sober and watchful, while French bobs touched other shoulders and no one swooned backward into his arms.</p>
-<p>The evening&#x27;s final image crystallized in chaos: a wheel-shorn coupé in the ditch, Owl Eyes disclaiming all knowledge of mechanics, a drunken driver unaware they had stopped, the wafer moon surviving above Gatsby&#x27;s glowing garden while emptiness flowed from the windows and the host stood in formal farewell, isolated against the night.</p>
-<p>In truth, that summer held more than parties—my days of honest labor downtown, brief romantic entanglements that dissolved like morning mist, and the gradual discovery that Jordan Baker, golf champion and careful avoider of shrewd men, was incurably dishonest, the kind of careless driver who depended on others to keep out of her way. And yet, as one who suspects himself of at least one cardinal virtue, I recognized that before anything could begin with Jordan, something else—someone else, back home—had to end, and it was this tangle of obligations that occupied my thoughts when Jordan&#x27;s party called again, summoning me toward whatever amazing revelation Gatsby had shared with her in that Gothic library.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="4" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5" data-free="false">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_5.webp"><img class="chapter-image" src="images_cinematic/chapter_5.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -1185,16 +1185,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>On Sunday mornings, while church bells tolled their solemn hymns across the villages, the glittering world descended upon Gatsby&#x27;s estate to twinkle irreverently on his lawn. The young ladies drifted between cocktails and roses, spinning fantastic rumors—that he was a bootlegger, a murderer, perhaps even kin to the devil himself—all while accepting his hospitality with the peculiar tribute of knowing nothing whatever about their host.</p>
-<p>I once recorded the names of his guests upon an old timetable, now yellowed and disintegrating at its folds, dated July 5th, 1922. From East Egg came the Hornbeams and Willie Voltaires, the whole Blackbuck clan who gathered like goats in corners, Edgar Beaver whose hair turned cotton-white one winter afternoon for reasons no one could explain. From West Egg arrived movie people and gamblers, men connected to films and fluctuating stocks, including one Klipspringer who appeared so frequently he became known simply as &quot;the boarder.&quot; They arrived from everywhere—theatrical folk, divorcees, a prince we called Duke whose real name I never knew—all accepting Gatsby&#x27;s starlight as their due.</p>
-<p>Then came that disconcerting ride into the city, Gatsby&#x27;s cream-colored car lurching up my drive with its three-noted horn. He had seemed, in our previous conversations, disappointingly hollow—merely the proprietor of an elaborate roadhouse. But that morning, balancing on his dashboard with that peculiarly American restlessness, he began unspooling a biography so ornate I could scarcely contain my incredulous laughter. A wealthy orphan from San Francisco (which he called the Middle West), educated at Oxford, a young rajah collecting rubies across European capitals, then a decorated war hero—even Montenegro had honored him. The phrases were worn threadbare, evoking only a turbaned character leaking sawdust. Yet when he produced the medal, the photograph from Trinity Quad, the thing had an authentic look, and suddenly I saw tiger skins flaming in his palace on the Grand Canal.</p>
-<p>At a cellar restaurant on Forty-second Street, Gatsby introduced me to Meyer Wolfshiem—small, flat-nosed, with human molars for cuff buttons and memories of men shot dead outside the old Metropole. When Gatsby revealed that Wolfshiem had fixed the 1919 World&#x27;s Series, I felt staggered by the casual enormity of it, the single-mindedness of playing with fifty million people&#x27;s faith.</p>
-<p>But it was Jordan Baker, that afternoon at the Plaza, who finally delivered Gatsby from his purposeless splendor. In 1917, she told me, Daisy Fay of Louisville—dressed in white, driving a white roadster, the most popular girl in town—had sat with a young lieutenant named Jay Gatsby, and he had looked at her in a way every young girl wants to be looked at. Then came the war, then Tom Buchanan with his private cars and three-hundred-and-fifty-thousand-dollar pearls, and the night before the wedding when Jordan found Daisy drunk and clutching a letter, trying to give back the pearls, crying until they poured ice water over her and hooked her back into her dress.</p>
-<p>Gatsby had bought his mansion, Jordan explained, simply because Daisy lived just across the bay. He had dispensed starlight to casual moths for five years, hoping she might wander in. Now he wanted only to come over some afternoon to my little house next door, where he might see her again—a request so modest in its phrasing, so immense in its longing, that it shook me to understand it.</p>
-<p>As darkness fell over Central Park and children&#x27;s voices rose like crickets through the twilight, I drew Jordan closer, suddenly aware that I too had become one of the pursuing, caught up in that ancient current that would soon pull us all toward its inevitable shore.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="5" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6" data-free="false">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_6.webp"><img class="chapter-image" src="images_cinematic/chapter_6.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -1203,15 +1197,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The night I returned to West Egg, Gatsby&#x27;s mansion blazed with such ferocious illumination that for one bewildering instant I mistook the whole peninsula for a conflagration. Yet no revelry stirred within those luminous walls—only the restless proprietor himself, wandering through empty rooms, waiting for word of what I might arrange. When I told him I would telephone Daisy, his studied nonchalance fooled no one; he deflected with elaborate casualness, inquiring about the state of my grass, offering dubious business propositions through Wolfshiem&#x27;s network, all while that suppressed eagerness trembled beneath every word. I cut him off before the offer could become a debt I&#x27;d carry between us, and he retreated unwillingly into his blazing house while I fell into a sleep too deep to wonder how many hours he spent glancing into rooms.</p>
-<p>The appointed afternoon arrived waterlogged and grey. By then Gatsby&#x27;s preparations had achieved a kind of comic grandeur—a man dispatched in the pouring rain to shave my ragged lawn, a greenhouse&#x27;s worth of flowers overwhelming my modest cottage, and finally Gatsby himself, pale and sleepless in white flannel and gold tie, his nerves wound so tight he could neither see the grass he&#x27;d obsessed over nor sit still long enough to pretend calm. He started at every sound, stared blindly at economic texts, and threatened to abandon the entire enterprise minutes before Daisy&#x27;s motor turned into my lane.</p>
-<p>What followed bore all the hallmarks of exquisite disaster. Gatsby vanished the moment Daisy stepped inside, only to reappear at the front door—standing rigid in a puddle, pale as death, hands plunged like weights in his pockets—and stalk past me with the mechanical precision of a man on a wire. The initial reunion proved almost unbearably awkward: Gatsby reclining against the mantelpiece in fraudulent ease, his head tilted so far back it dislodged a defunct clock; Daisy perched frightened yet graceful on a stiff chair; and between them, five years of silence broken only by stilted pleasantries. When I escaped to the kitchen, Gatsby followed, whispering that the whole affair was a terrible mistake. I told him he was acting like a child and sent him back.</p>
-<p>For half an hour I sheltered beneath a knotted tree while rain drummed against the leaves and Gatsby&#x27;s enormous house loomed before me—that monument to romantic ambition, built by a brewer whose dreams of founding a dynasty collapsed when his neighbors refused to play peasants to his lord. When the sun broke through at last, I returned to find the living room transformed. They sat at either end of the couch, all embarrassment dissolved, looking at each other as though some essential question had finally been answered. Daisy&#x27;s face glistened with tears, and Gatsby glowed with a radiance that filled the little room without word or gesture.</p>
-<p>We crossed to his mansion then, and Daisy wandered enchanted through music-rooms and Restoration salons, past period bedrooms swathed in rose silk and bathrooms with sunken baths, until we reached Gatsby&#x27;s private chambers. There he flung shirts before us—sheaves of linen and silk in coral and apple-green and lavender—and Daisy wept into their soft folds, overcome by beauty she could not quite name. Later, standing at his window while fresh rain dimpled the Sound, Gatsby pointed toward the green light burning at the end of her dock, and I understood that its colossal significance had already begun to fade; the enchanted object had become merely a light again now that the dream stood beside him in the flesh.</p>
-<p>Yet even as Klipspringer played sentimental songs in the music-room and excitement crackled through the rainy dusk, I caught bewilderment flickering across Gatsby&#x27;s face—the first faint suspicion that Daisy, however radiant, could never match the illusion he had constructed over five long years, an illusion fed by creative passion and decked with every bright feather that drifted his way. Still, when she murmured something low in his ear, he turned toward her with a rush of emotion, held by that fluctuating, feverish voice that could never be over-dreamed. I left them there together, possessed by intense life, and descended the marble steps alone into the rain—aware, perhaps before either of them, that what had been won in that luminous afternoon might already contain the seeds of its own unraveling.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="6" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7" data-free="false">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_7.webp"><img class="chapter-image" src="images_cinematic/chapter_7.webp" alt="The Invention of Jay Gatsby illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -1220,14 +1209,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Invention of Jay Gatsby</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>It was around this time that Gatsby&#x27;s mounting fame brought an ambitious young reporter to his door—a man operating on instinct and rumor, though his instinct proved shrewder than he knew. For Gatsby had become that curious thing: a figure perpetually on the verge of being news, his name circulating through offices and drawing rooms alike, accumulating legends as a ship&#x27;s hull accumulates barnacles. Tales of underground pipelines to Canada clung to him, and there persisted one particularly fanciful notion that he lived not in a house at all but aboard some nautical phantom that drifted secretly along the Long Island shore. Why such inventions should have satisfied James Gatz of North Dakota is difficult to say.</p>
-<p>James Gatz—that was the name, or at least the legal name. He had shed it at seventeen, at the precise moment when destiny materialized in the form of Dan Cody&#x27;s yacht dropping anchor over the treacherous flats of Lake Superior. The boy who borrowed a rowboat to warn the millionaire of dangerous winds was already somebody else entirely—Jay Gatsby, sprung from his own Platonic conception of himself, a son of God who must be about His Father&#x27;s business in service of a vast, vulgar, and meretricious beauty. His shiftless farm parents had never been real to him; his imagination had simply declined to accept them. And so he invented the sort of Jay Gatsby a seventeen-year-old boy would invent and remained faithful to that invention until the end.</p>
-<p>Before Cody, there had been the hardscrabble existence of a clam-digger and salmon-fisher along Superior&#x27;s south shore, the brown body hardening through half-fierce, half-lazy labor. There had been women who spoiled him into contempt, and nights when the most grotesque and fantastic conceits haunted his bed while moonlight soaked his tangled clothes on the floor. A universe of ineffable gaudiness spun itself out in his brain—reveries that hinted at the unreality of reality, promising that the rock of the world was founded securely on a fairy&#x27;s wing. A brief, disastrous attempt at St. Olaf&#x27;s College had ended in two weeks, the institution&#x27;s ferocious indifference to the drums of his destiny proving intolerable.</p>
-<p>Then came Cody—fifty years old, a product of Nevada silver and Yukon gold, physically robust but mentally softening, his fortune besieged by scheming women. For five years Gatsby served him in every capacity from steward to jailor, circling the continent three times, learning to let liquor alone while watching what drink did to other men. When Cody died inhospitably in Boston, the legacy of twenty-five thousand dollars vanished into Ella Kaye&#x27;s hands through some legal device Gatsby never understood. What remained was his singularly appropriate education; the vague contour of Jay Gatsby had filled out to the substantiality of a man.</p>
-<p>I have set down this history to explode the wild rumors about Gatsby&#x27;s antecedents—rumors that weren&#x27;t even faintly true. During a pause in my association with his affairs, Tom Buchanan appeared unexpectedly at Gatsby&#x27;s house with a riding party, and the awkward encounter that followed—Tom&#x27;s gruff dismissal, the lady&#x27;s insincere invitation, the group&#x27;s hasty departure before Gatsby could fetch his car—revealed the vast social gulf that no amount of money could bridge. The following Saturday, Tom brought Daisy to one of Gatsby&#x27;s parties, and I watched her see West Egg through eyes that found it appalling in its raw vigor and obtrusive fate. Later, alone with Gatsby among the crushed flowers and discarded favors, I heard him insist that the past could be repeated, that everything could be fixed just as it was before—and I glimpsed the impossible thing he sought: not merely Daisy herself, but some idea of himself that had gone into loving her, recoverable only if he could return to a certain starting place and begin again. But even as I listened, something elusive—a fragment of lost words, an uncommunicable rhythm—stirred in my memory and died unspoken, leaving only the sense that what Gatsby reached for was already receding before him, borne back ceaselessly into the irretrievable past.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="7" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8" data-free="false">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_8.webp"><img class="chapter-image" src="images_cinematic/chapter_8.webp" alt="The Hottest Day&#x27;s Simmering Tensions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -1236,17 +1221,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Hottest Day&#x27;s Simmering Tensions</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>It was precisely when curiosity about Gatsby had reached its fevered peak that the lights of his mansion failed to illuminate the Saturday darkness—and so, as mysteriously as it had begun, his reign as Trimalchio drew to its close. The servants were dismissed, replaced by rough associates of Wolfshiem&#x27;s, all because Daisy had taken to visiting in the afternoons, and the whole glittering caravansary collapsed like a house of cards beneath the weight of her disapproval.</p>
-<p>The invitation to lunch at the Buchanans&#x27; arrived through Gatsby himself, though Daisy telephoned shortly after with an urgency that suggested something momentous brewing beneath the surface. The day that followed proved to be the most broiling of the summer, the kind of heat that confuses the senses and loosens whatever restraints civilization imposes upon its inhabitants. In the darkened parlor, Daisy and Jordan lay like silver idols upon an enormous couch while Tom conducted suspicious business on the telephone—his mistress calling, Jordan whispered, though he denied it.</p>
-<p>When Daisy kissed Gatsby openly and murmured her love, when she told him he always looked so cool, Tom Buchanan witnessed what he had perhaps long suspected but never believed. Something fundamental shifted in that sweltering room. His mouth opened in astonishment as he recognized his wife as someone he had known a long time ago, now revealed as a stranger.</p>
-<p>The expedition to town that followed was born of Daisy&#x27;s restless desperation, though no one truly wanted it. At Wilson&#x27;s garage, they stopped for gasoline, and I observed two men brought low by parallel discoveries—Wilson, pale and sick with the knowledge that his wife possessed some secret life apart from him, and Tom, newly awakened to the precariousness of his own domestic arrangements. Above the garage, Myrtle Wilson peered down at the yellow car with eyes wide with jealous terror, mistaking Jordan for Tom&#x27;s wife.</p>
-<p>In the stifling parlor of the Plaza Hotel, with Mendelssohn&#x27;s Wedding March drifting up from some ceremony below, the confrontation finally erupted. Tom attacked Gatsby&#x27;s credentials, his Oxford claims, his very identity as &quot;Mr. Nobody from Nowhere.&quot; When Gatsby revealed the truth—that Daisy had never loved Tom, that she loved only him—the dream that had sustained him for five years hung trembling in the balance. But Daisy could not deliver what Gatsby demanded. She admitted she had loved Tom once, that she could not erase the past entirely, and with each reluctant confession, Gatsby watched his carefully constructed vision crumble. Tom exposed the drugstores, the bootlegging, the association with Wolfshiem, and Daisy withdrew further into herself until whatever courage she possessed had utterly vanished.</p>
-<p>They departed—Daisy and Gatsby in his yellow car, the rest of us following behind. It was my thirtieth birthday, I realized, the portentous beginning of a new decade stretching before me like a menacing road. We drove on toward death through the cooling twilight, though we did not yet know it.</p>
-<p>The death car emerged from the gathering darkness and struck Myrtle Wilson as she rushed into the road, extinguishing in an instant all that tremendous vitality she had stored so long. At the garage, Wilson swayed in his doorway, calling out his grief in high, horrible cries while Tom bent over the body of his mistress, wrapped in blankets against the hot night.</p>
-<p>Later, I found Gatsby standing in the shrubbery outside the Buchanans&#x27; house, keeping vigil. Daisy had been driving, he confessed, but he would take the blame. Through the pantry window, I glimpsed Tom and Daisy sitting together over untouched chicken and ale, their hands touching, conspiring in that unmistakable intimacy of long marriage. And there I left Gatsby in the moonlight—watching over nothing, still believing in a dream that had already died in the stifling heat of that Plaza afternoon.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="8" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9" data-free="false">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_9.webp"><img class="chapter-image" src="images_cinematic/chapter_9.webp" alt="The Long Secret Finally Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -1255,17 +1233,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Long Secret Finally Revealed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>That final night I could not sleep—a foghorn moaning across the Sound, my own mind swinging between waking horror and nightmare, until at last I heard a taxi climbing Gatsby&#x27;s drive and knew I had to go to him. I found him leaning against a hall table, hollowed out with waiting, with watching Daisy&#x27;s window until four in the morning when she had appeared briefly, extinguished her light, and left him with nothing.</p>
-<p>We wandered his vast house hunting cigarettes, pushing through curtains like pavilions, stumbling over ghostly piano keys in the dark. Dust lay everywhere, the rooms musty and unaired, and when at last we found two stale cigarettes in a humidor, we sat by the open French windows smoking into the darkness. I urged him to leave—Atlantic City, Montreal, anywhere—but he would not abandon his vigil until Daisy declared herself.</p>
-<p>It was then, in that gray hour before dawn, that he told me everything. The persona of Jay Gatsby had shattered against Tom&#x27;s brutal revelations, and with nothing left to protect, he spoke freely of his youth, of Dan Cody, and above all of Daisy. She had been the first &quot;nice&quot; girl he ever knew, her Louisville house a palace of ripe mystery, bedrooms cooler and lovelier than any he had imagined, corridors humming with romances still fresh rather than laid away in lavender. He had come to her door wearing only the invisible cloak of his uniform, a penniless young officer trading on borrowed time, and he had taken her—ravenously, unscrupulously—because he had no right to touch her hand. He meant to leave, yet found he had committed himself instead to the following of a grail. On a cold autumn afternoon before he shipped overseas, they sat together by the fire, her cheek flushed, communicating more profoundly in silence than they ever had in words.</p>
-<p>The war scattered them. Gatsby won his majority and distinction at the Argonne, but a misunderstanding stranded him at Oxford while Daisy, moving again through a twilight universe of saxophones and shining slippers, let her life be shaped by a force close at hand. Tom Buchanan arrived in the middle of spring, wholesome and bulky, and the letter announcing her engagement reached Gatsby across the ocean. He returned to Louisville on his last army pay, walking streets haunted by her footsteps, and when the day-coach bore him away he stretched out his hand as if to snatch a wisp of air, knowing he had lost the freshest and best part of it forever.</p>
-<p>By morning light we opened every window, and Gatsby, gazing at the grey-turning, gold-turning world, still insisted Daisy had never loved Tom—or if she had, it was &quot;just personal,&quot; a phrase I could not fathom except as proof of some intensity beyond ordinary measure. I missed train after train, reluctant to leave him, and when at last I turned at the hedge I shouted back the only compliment I ever gave him: &quot;They&#x27;re a rotten crowd. You&#x27;re worth the whole damn bunch put together.&quot; His radiant smile broke across his face as if we had shared that secret all along.</p>
-<p>In the city I dozed at my desk until Jordan&#x27;s call woke me—her voice harsh now, our conversation collapsing into silence—and when I tried to reach Gatsby the line was held open for Detroit. Meanwhile, across the ash-heaps, George Wilson had spent the night rocking and muttering, the dog-leash hidden in Myrtle&#x27;s drawer proof enough of betrayal, the enormous eyes of Doctor Eckleburg staring down like the eyes of God. By noon he had traced the yellow car to West Egg and learned Gatsby&#x27;s name.</p>
-<p>That afternoon Gatsby went down to his pool at last, carrying a pneumatic mattress, leaving instructions for any telephone call to be brought to him. No call ever came. The butler waited until there was no one left to receive it, and in the faint drift of the water, among leaves tracing a thin red circle on the surface, the holocaust was made complete—Gatsby floating on his laden mattress, Wilson&#x27;s body crumpled in the grass nearby, and the dream, at last, extinguished.</p>
-<p>Now there remained only the gathering of the wreckage, and no one, it seemed, willing to claim it.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="9" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10" data-free="false">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="images_cinematic/chapter_10.webp"><img class="chapter-image" src="images_cinematic/chapter_10.webp" alt="The Loneliness of the Aftermath illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1274,13 +1245,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Loneliness of the Aftermath</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>After two years the particulars have blurred, yet certain images remain fixed in memory with the permanence of grief: the endless procession of police and photographers streaming through Gatsby&#x27;s front door, the curious little boys clustering open-mouthed about the pool, a detective&#x27;s careless pronouncement of &quot;madman&quot; that would set the tone for every grotesque newspaper headline to follow. Catherine, Myrtle&#x27;s sister, surprised me with her determined silence at the inquest—she swore her sister had never seen Gatsby, had been perfectly happy with Wilson, and so the whole sordid business was reduced to its simplest form: a man deranged by grief, a senseless act. The case rested there, sealed in convenient lies.</p>
-<p>But all that official machinery seemed remote and unessential beside the terrible intimacy of what I had inherited. From the moment I telephoned news of the catastrophe, I found myself on Gatsby&#x27;s side, and utterly alone. Every practical question was referred to me—not because anyone cared, but because no one else did. I called Daisy within the hour; she and Tom had already fled, leaving no address, no word, nothing. I wanted desperately to find someone for him, to go into that room where he lay still and silent and promise him that he would not go through this alone.</p>
-<p>Meyer Wolfshiem&#x27;s name was not in the phone book. His written reply, when it finally came, was a masterwork of evasion—terrible shock, very important business, cannot get mixed up in this thing. The telephone brought only strangers: a panicked voice from Chicago inquiring about bonds, young Parke&#x27;s arrest, matters from that shadow world Gatsby had inhabited. When I explained that Mr. Gatsby was dead, there was only silence, then the sharp squawk of a severed connection.</p>
-<p>On the third day, a telegram arrived from Minnesota. Henry C. Gatz—Gatsby&#x27;s father—appeared in a long cheap ulster, solemn and dismayed, his eyes leaking continuous tears. He moved through his son&#x27;s mansion in a kind of bewildered awe, grief mingling with pride at the splendor surrounding him. He showed me a photograph of the house, cracked and dirty from much handling, and a ragged copy of *Hopalong Cassidy* with young Jimmy&#x27;s boyhood schedule penciled on the flyleaf: rise at six, dumbbell exercises, study electricity, practice elocution. &quot;It just shows you,&quot; the old man kept saying. &quot;Jimmy was bound to get ahead.&quot;</p>
-<p>The funeral was a pitiful affair. Klipspringer called only to ask about his tennis shoes. Those who had drunk Gatsby&#x27;s champagne by the crate would not come; one implied he had gotten what he deserved. When the Lutheran minister arrived, we waited in vain for cars that never appeared. In the end, our procession to the cemetery numbered three vehicles: the hearse, horribly black in the drizzle; Mr. Gatz and myself in the limousine; and a handful of servants in Gatsby&#x27;s station wagon. Only Owl-Eyes appeared, splashing through the soggy ground to stand beside the grave. &quot;The poor son-of-a-bitch,&quot; he said, and that was Gatsby&#x27;s eulogy.</p>
-<p>Afterward, the East grew haunted for me, distorted beyond correction. I saw Tom once more on Fifth Avenue and learned what I had already guessed—that he had told Wilson the truth about the car, justifying Gatsby&#x27;s death with lies about what happened that night. They were careless people, Tom and Daisy; they smashed up things and creatures and retreated into their money, leaving others to clean up the mess.</p>
-<p>On my last night I returned to Gatsby&#x27;s empty house, erased an obscene word some boy had scrawled on the white steps, and wandered down to the beach. There, as the moon rose and the inessential houses melted away, I thought of the Dutch sailors who had first glimpsed this fresh green breast of the new world, and of Gatsby&#x27;s own wonder when he first picked out that green light across the water. He had believed in it so completely—that orgiastic future, always receding, always just beyond reach. And so we beat on, boats against the current, borne back ceaselessly into the past.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="10" data-audience="adult"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><span></span></nav>
 </section>
 <img class="back-cover" src="images_cinematic/back_cover.webp" alt="Back cover">
@@ -1506,6 +1471,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {

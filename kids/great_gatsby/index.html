@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1126,7 +1140,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
     </div>
 </section>
 
-<section class="chapter" id="chapter-3" data-num="3" data-free="false">
+<section class="chapter" id="chapter-3" data-num="3" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_3.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_3.webp" alt="Whispers and Pretensions in the City illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -1135,11 +1149,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Whispers and Pretensions in the City</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>That afternoon, Nick went to a small apartment in the city with Tom. Soon more people arrived and it became a party. Myrtle&#x27;s sister Catherine came first. She had bright red hair and wore clinking bracelets on her wrists. Then the McKees came up from downstairs. Chester McKee liked to take photographs, and his wife talked about them proudly.</p>
-<p>Myrtle put on a fancy cream-colored dress and started acting very different from before. She laughed loudly and waved her hands around. Everyone talked about silly things like doctors and dresses and pictures. Catherine whispered that Tom and Myrtle wanted to be together, but Nick knew some of what she said was not true. As the night went on, Myrtle said something that made Tom very angry. He hurt her, and the party ended badly. Nick left feeling confused and a little sad. He kept thinking about his mysterious neighbor Gatsby and the glowing lights across the water.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="3" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4" data-free="false">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_4.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_4.webp" alt="Gatsby&#x27;s Mysterious Past Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -1148,11 +1161,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Gatsby&#x27;s Mysterious Past Revealed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>That summer, Nick watched something magical happen next door. Gatsby&#x27;s house glowed with parties every weekend like a giant birthday celebration. Colorful lights sparkled in the gardens. Music floated through the warm night air. Boats zipped across the water leaving trails of white foam. People came from everywhere to dance and laugh under the stars.</p>
-<p>Most people just showed up without being asked, but Nick received a special invitation signed by Jay Gatsby himself. At the party, Nick felt a little lost among all the strangers until he found his friend Jordan. They wondered together about the mysterious Gatsby. Nobody seemed to know much about him. Then Nick met a friendly young man and they talked and smiled together. Suddenly the man said, &quot;I&#x27;m Gatsby.&quot; His smile was so warm and kind that Nick felt like they were already good friends. Gatsby stood watching his party quietly, making sure everyone was having a wonderful time.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="4" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5" data-free="false">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_5.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_5.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -1161,12 +1173,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Every Sunday, lots of fancy people came to Gatsby&#x27;s big house for parties. They ate yummy food and danced on his lawn. Nobody really knew much about Gatsby, but they all liked coming to his parties anyway.</p>
-<p>One day, Gatsby took Nick for a car ride to the city. Gatsby told Nick all about his life, like going to a special school and traveling to faraway places. He even showed Nick a shiny medal he got for being brave. Nick was not sure if all the stories were true, but Gatsby seemed so hopeful and excited.</p>
-<p>Later, Nick&#x27;s friend Jordan told him a lovely secret. A long time ago, Gatsby and Daisy had been very special friends. They cared about each other so much. But then Gatsby had to go away, and Daisy married someone else. Now Gatsby lived right across the water from Daisy&#x27;s house. He threw all those sparkly parties just hoping she might come visit someday. All Gatsby really wanted was to see Daisy again.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="5" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6" data-free="false">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_6.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_6.webp" alt="The Reunion of Gatsby and Daisy illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -1175,12 +1185,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Reunion of Gatsby and Daisy</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Nick came home late one night and saw Gatsby&#x27;s whole house glowing with bright lights. But no party was happening inside. Gatsby was just waiting and hoping Nick would help him see Daisy again. When Nick said he would call her, Gatsby tried to act cool, but you could tell he was really excited and nervous inside.</p>
-<p>The day Daisy came to visit was rainy and gray. Gatsby sent someone to cut Nick&#x27;s grass and brought so many flowers they filled the little house. Gatsby wore a fancy white suit, but he looked pale and worried. When Daisy finally arrived, Gatsby was so shy he could barely talk. They both felt a little awkward at first, like when you meet someone you haven&#x27;t seen in a very long time.</p>
-<p>But soon the rain stopped and sunshine came through the clouds. Nick came back inside and saw Gatsby and Daisy smiling at each other like old friends again. Then Gatsby showed Daisy his beautiful house with all its fancy rooms. He even tossed colorful shirts in the air, and Daisy laughed with happy tears. They looked at the green light across the water together, and Gatsby felt so glad she was finally there with him.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="6" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7" data-free="false">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_7.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_7.webp" alt="The Invention of Jay Gatsby illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -1189,11 +1197,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Invention of Jay Gatsby</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Long ago, a young man named James Gatz grew up on a farm, but he dreamed of becoming someone special and exciting. When he was seventeen, he saw a beautiful big boat on a lake and rowed out to help the owner, a rich man named Dan Cody. That very day, James decided to become a brand new person called Jay Gatsby. He worked for Dan Cody on the boat for five years, sailing to many places and learning all sorts of things about the world.</p>
-<p>Now Gatsby lived in a grand house and threw wonderful parties. People told all kinds of stories about him, some true and some made up. One night, Daisy came to visit his party with her husband Tom. Gatsby watched her the whole time, hoping she would love his world. Later, Gatsby told Nick he believed he could bring back the happy old days. But some things from long ago are like fireflies—beautiful to remember but hard to catch again.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="7" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8" data-free="false">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_8.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_8.webp" alt="The Hottest Day&#x27;s Simmering Tensions illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -1202,11 +1209,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Hottest Day&#x27;s Simmering Tensions</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Gatsby stopped having his big parties. He wanted things to be quiet now because Daisy came to visit him. One very hot summer day, everyone went to lunch at Daisy&#x27;s house. The heat made everyone feel tired and grumpy. Daisy&#x27;s husband Tom started to notice that Daisy and Gatsby were very close friends. This made him feel worried and upset.</p>
-<p>They all decided to drive into the city together. At a hotel room, Tom and Gatsby had a big argument. They said unkind things to each other. Daisy felt very confused and sad. She did not know what to do. Everyone&#x27;s feelings were hurt that day. On the way home, something very sad happened. A woman got hurt by a car on the road. Later that night, Nick found Gatsby standing alone outside in the moonlight. Gatsby looked at Daisy&#x27;s house, hoping everything would still be okay.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="8" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9" data-free="false">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_9.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_9.webp" alt="The Long Secret Finally Revealed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -1215,12 +1221,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Long Secret Finally Revealed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>That night, Nick could not sleep at all. He went to see Gatsby and found him looking very tired and sad. They walked through the big empty house looking for something to do. Dust covered everything, and the rooms felt lonely.</p>
-<p>As the sun started to rise, Gatsby told Nick his story. Long ago, he had met Daisy when he was young and had no money. He loved her very much, but he had to go far away. While he was gone, Daisy married Tom instead. Gatsby came back hoping to find her, but she was already gone from his life. He never stopped wishing things could be different.</p>
-<p>Nick had to leave, but he turned back to say something kind. He told Gatsby he was a good person, better than all the others. Gatsby smiled his wonderful smile, and for a moment they understood each other perfectly. Later that day, something very sad happened, and Gatsby was gone forever.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="9" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10" data-free="false">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../great_gatsby/images_anime/chapter_10.webp"><img class="chapter-image" src="../../great_gatsby/images_anime/chapter_10.webp" alt="The Loneliness of the Aftermath illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1229,9 +1233,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Loneliness of the Aftermath</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Two years have passed, but Nick still remembers everything. After Gatsby was gone, Nick felt very alone. He tried to call Daisy and Tom, but they had moved away without saying goodbye. He tried to reach Gatsby&#x27;s old friends, but nobody wanted to help. Nick felt sad that no one seemed to care about Gatsby at all.</p>
-<p>Then a telegram came from far away. Gatsby&#x27;s father arrived, an old man with tears in his eyes. He walked through his son&#x27;s big house feeling proud and amazed. He showed Nick an old book from when Gatsby was just a boy, with a little schedule written inside about waking up early and working hard. His father always knew Gatsby would do something special.</p>
-<p>Very few people came to say goodbye to Gatsby. Nick stood in the rain with Gatsby&#x27;s father and just one other kind man. Afterward, Nick went back to Gatsby&#x27;s quiet house one last time. He walked down to the beach and watched the moon rise over the water. He thought about Gatsby and the little green light he had loved so much.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="great_gatsby" data-n="10" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><span></span></nav>
 </section>
 <img class="back-cover" src="../../great_gatsby/images_anime/back_cover.webp" alt="Back cover">
@@ -1457,6 +1459,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {

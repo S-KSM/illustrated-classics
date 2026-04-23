@@ -864,12 +864,26 @@ html[data-mode="astro-nomad"] body[data-paywall="show"] .paywall {
     z-index: 1;
 }
 
-/* Blur chapters that would be locked, when paywall is showing */
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-summary,
-html[data-mode="astro-nomad"] body[data-paywall="show"] .chapter[data-free="false"] .chapter-figure {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+/* Locked chapter placeholder — body text is absent from HTML until signed URL fetched */
+.chapter-locked {
+    min-height: 180px;
+    border: 1px dashed var(--anom-muted);
+    border-radius: 14px;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px 0;
+    opacity: 0.75;
+}
+.chapter-locked-hint {
+    font-size: 0.95rem;
+    color: var(--anom-muted);
+    margin: 0;
+    font-style: italic;
+}
+.chapter-locked[data-loading="1"] .chapter-locked-hint::after {
+    content: " · loading…";
 }
 
 @media (max-width: 640px) {
@@ -1127,7 +1141,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
     </div>
 </section>
 
-<section class="chapter" id="chapter-3" data-num="3" data-free="false">
+<section class="chapter" id="chapter-3" data-num="3" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_3.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_3.webp" alt="A Strange Land and Its Little People illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">03</div>
@@ -1136,11 +1150,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Strange Land and Its Little People</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy woke up when the house stopped moving. Toto licked her face and wagged his tail. She opened the door and gasped with wonder. The storm had carried her to the most beautiful land ever! Green grass grew everywhere. Trees were full of yummy fruit. Colorful flowers bloomed all around. Pretty birds sang happy songs. A little brook sparkled in the sunshine.</p>
-<p>Then Dorothy saw some very unusual people walking toward her. They were about her size but looked much older. They wore funny blue clothes with pointy hats that had tiny bells. A kind little old woman in a white dress came to greet her. The woman said Dorothy had landed in Munchkin Country. She gave Dorothy a pair of pretty silver shoes as a gift. Dorothy asked how to get back home to Kansas. Everyone shook their heads sadly. But the kind woman did some magic and found an answer. Dorothy should follow the yellow brick road to the Emerald City. A great Wizard lived there who might help her get home. The woman gave Dorothy a gentle kiss on her forehead for good luck. Then Dorothy was ready to start her big adventure.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="3" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-2"><span>Previous</span>Chapter 2</a><a class="next" href="#chapter-4"><span>Next</span>Chapter 4</a></nav>
 </section>
-<section class="chapter" id="chapter-4" data-num="4" data-free="false">
+<section class="chapter" id="chapter-4" data-num="4" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_4.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_4.webp" alt="A Friendly Witch Begins Her Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">04</div>
@@ -1149,11 +1162,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Friendly Witch Begins Her Journey</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy woke up in a cozy little house in Munchkin land. She ate bread and butter and found yummy fruit for breakfast. She shared everything with her little dog Toto. Then she put on her pretty blue and white dress and a pink sunbonnet. She packed bread in a basket for the trip ahead. Her old shoes were too worn out for such a long walk. But she found the silver shoes that fit her feet just right!</p>
-<p>Dorothy and Toto followed the yellow brick road toward the Emerald City. The sun was bright and birds sang happy songs. Friendly Munchkins waved and bowed as she passed their cute blue houses. That night, kind people gave her supper and a soft bed. In the morning, she kept walking until she saw a Scarecrow in a field. He winked at her! Dorothy helped him down from his pole. The Scarecrow was sad because he had no brains. He asked if the great Oz might help him too. Dorothy smiled and said he could come along. Now she had two friends for the journey ahead.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="4" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-3"><span>Previous</span>Chapter 3</a><a class="next" href="#chapter-5"><span>Next</span>Chapter 5</a></nav>
 </section>
-<section class="chapter" id="chapter-5" data-num="5" data-free="false">
+<section class="chapter" id="chapter-5" data-num="5" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_5.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_5.webp" alt="A Scarecrow&#x27;s First Days Alive illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">05</div>
@@ -1162,12 +1174,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Scarecrow&#x27;s First Days Alive</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy and the Scarecrow walked along the yellow brick road together. The road got bumpy with missing bricks and holes. Toto jumped over them easily, and Dorothy stepped around them carefully. But the Scarecrow kept falling right into every hole! He did not get hurt though, because he was made of straw. Each time Dorothy helped him up, they laughed and laughed together.</p>
-<p>They stopped to rest by a little brook. Dorothy ate her bread while the Scarecrow told her about his life. He was only two days old! A farmer had made him and put him in a cornfield. A wise old crow told him that brains were very important, and ever since then, the Scarecrow wished he could have some. He hoped the Great Oz could help him.</p>
-<p>As evening came, they walked into a dark forest. The Scarecrow found a cozy little cottage among the trees. Dorothy made a soft bed of leaves and fell asleep with Toto snuggled close. The Scarecrow stood nearby, happily watching over his new friends until morning.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="5" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-4"><span>Previous</span>Chapter 4</a><a class="next" href="#chapter-6"><span>Next</span>Chapter 6</a></nav>
 </section>
-<section class="chapter" id="chapter-6" data-num="6" data-free="false">
+<section class="chapter" id="chapter-6" data-num="6" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_6.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_6.webp" alt="A Rusted Friend Joins the Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">06</div>
@@ -1176,11 +1186,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Rusted Friend Joins the Journey</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy woke up in the forest with Toto running around chasing birds. The Scarecrow had stayed awake all night watching over them. Dorothy found a little spring of cool water where she washed her face and ate some bread for breakfast.</p>
-<p>Then they heard a strange groaning sound coming from the trees. They followed the noise and found something amazing. A man made all of tin was standing by a tree, holding an axe up high. He could not move at all because his joints had rusted! He had been stuck there for a whole year, waiting for someone to help him. Dorothy found an oil-can and carefully oiled all his stiff joints until he could move again. The Tin Woodman was so thankful to be free. When he heard they were going to see the Great Oz, he wanted to come too. He hoped Oz could give him a heart so he could feel love again. Dorothy put the oil-can in her basket, and now three friends walked together down the yellow brick road.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="6" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-5"><span>Previous</span>Chapter 5</a><a class="next" href="#chapter-7"><span>Next</span>Chapter 7</a></nav>
 </section>
-<section class="chapter" id="chapter-7" data-num="7" data-free="false">
+<section class="chapter" id="chapter-7" data-num="7" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_7.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_7.webp" alt="A Cowardly King Joins the Journey illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">07</div>
@@ -1189,11 +1198,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Cowardly King Joins the Journey</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy and her friends walked along the yellow brick road through a dark, gloomy forest. The path was covered with branches and leaves, and strange sounds came from the trees. Toto stayed very close to Dorothy because he felt a little scared. Then suddenly, a great big Lion jumped out onto the road and roared! He knocked down the Scarecrow and the Tin Woodman with his big paws. When the Lion tried to scare little Toto, brave Dorothy rushed right up and bopped him on the nose. She told him he should not be mean to a little dog.</p>
-<p>The Lion looked down at his paws and started to cry. He told them his secret—even though he was big and loud, he was really very scared inside. He wished he could be brave. When Dorothy told him they were going to see the Great Oz, the Lion wondered if the Wizard could give him courage. So the Cowardly Lion joined their journey, walking proudly beside Dorothy. Soon little Toto and the big Lion became good friends as they all traveled together toward the Emerald City.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="7" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-6"><span>Previous</span>Chapter 6</a><a class="next" href="#chapter-8"><span>Next</span>Chapter 8</a></nav>
 </section>
-<section class="chapter" id="chapter-8" data-num="8" data-free="false">
+<section class="chapter" id="chapter-8" data-num="8" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_8.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_8.webp" alt="Leaping Chasms in the Dark Forest illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">08</div>
@@ -1202,11 +1210,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Leaping Chasms in the Dark Forest</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Night came before the travelers could find a cozy spot to rest. They made camp under a big tree with leafy branches. The Tin Woodman chopped wood with his axe, and Dorothy built a warm fire. She shared her last bit of bread with Toto and wondered what they would eat for breakfast. The Scarecrow found a tree full of nuts and filled Dorothy&#x27;s basket. His stuffed hands were clumsy, but he did not mind. When Dorothy lay down to sleep, he covered her gently with soft dry leaves.</p>
-<p>In the morning, Dorothy washed her face in a little brook. Then they set off again toward the Emerald City. Soon they found a big ditch blocking the yellow brick road. It was too wide to walk across. The Cowardly Lion said he could jump over it and carry each friend on his back. One by one, he leaped across with everyone safe. Later, they had to cross an even bigger gap. The Tin Woodman chopped down a tree to make a bridge. They hurried across and kept walking until they reached a wide river. Beyond it lay pretty green meadows and flowers. The Tin Woodman began building a raft, but night came before he finished. Dorothy fell asleep by the water, dreaming of the Emerald City.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="8" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-7"><span>Previous</span>Chapter 7</a><a class="next" href="#chapter-9"><span>Next</span>Chapter 9</a></nav>
 </section>
-<section class="chapter" id="chapter-9" data-num="9" data-free="false">
+<section class="chapter" id="chapter-9" data-num="9" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_9.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_9.webp" alt="The Scarecrow Stranded in the River illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">09</div>
@@ -1215,11 +1222,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Scarecrow Stranded in the River</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy woke up feeling happy and hopeful. She ate yummy peaches and plums for breakfast by the river. The dark forest was behind them now. A sunny, pretty land lay ahead, and the Emerald City waited somewhere beyond.</p>
-<p>But first they had to cross the wide river. The Tin Woodman built a raft from logs. Dorothy sat in the middle with Toto in her arms. The Lion was so big the raft tipped when he climbed on! The Scarecrow and Tin Woodman used long poles to push them across. But the water moved fast and pulled them away from the yellow brick road. The Scarecrow pushed his pole so hard it got stuck in the mud. The raft floated away without him! Poor Scarecrow was left hanging on his pole in the middle of the river, looking very sad and alone. The brave Lion jumped in and swam, pulling the raft to shore. Later, a kind Stork flew out and carried the Scarecrow back to his friends. Everyone was so happy to be together again that the Scarecrow sang a silly song as they walked on through fields of pretty flowers.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="9" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-8"><span>Previous</span>Chapter 8</a><a class="next" href="#chapter-10"><span>Next</span>Chapter 10</a></nav>
 </section>
-<section class="chapter" id="chapter-10" data-num="10" data-free="false">
+<section class="chapter" id="chapter-10" data-num="10" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_10.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_10.webp" alt="Tiny Heroes Save the Cowardly Lion illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">10</div>
@@ -1228,11 +1234,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Tiny Heroes Save the Cowardly Lion</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The Scarecrow looked around and thought they must be close to the yellow brick road again. Then everyone heard a low growl coming from the grass. A big yellow Wildcat was chasing a tiny gray mouse across the field. The kind Tin Woodman knew he had to help the little mouse. He stopped the Wildcat, and it could not chase anyone anymore.</p>
-<p>The tiny mouse thanked him in a squeaky voice. She said she was the Queen of all the Field Mice. Soon many more mice came running to see their queen. They all wanted to help the Tin Woodman because he had been so brave. The Scarecrow had a wonderful idea. He asked if the mice could help rescue the Cowardly Lion, who was still asleep in the poppy flowers. The Queen was a little scared of lions, but the Scarecrow promised this lion was very gentle. Thousands of mice came with bits of string. They worked together to pull the big sleeping Lion on a wooden cart away from the flowers. Dorothy thanked the kind mice, and the Queen said they would always come if their new friends ever needed help again.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="10" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-9"><span>Previous</span>Chapter 9</a><a class="next" href="#chapter-11"><span>Next</span>Chapter 11</a></nav>
 </section>
-<section class="chapter" id="chapter-11" data-num="11" data-free="false">
+<section class="chapter" id="chapter-11" data-num="11" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_11.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_11.webp" alt="The Green Land and Its Mysteries illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">11</div>
@@ -1241,12 +1246,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Green Land and Its Mysteries</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The Cowardly Lion woke up after a long sleep. He was so surprised that tiny mice had saved him! He laughed because such small friends had helped someone so big. The Lion felt much better, and the friends walked on together.</p>
-<p>Soon everything around them turned green. The fences were green. The houses were green. Even the people wore green clothes! Dorothy knew they must be close to the Land of Oz. They stopped at a farmhouse where a kind family gave them supper and a cozy place to sleep. The family told them about the Great Oz. He lived in the Emerald City but nobody ever got to see him. He might look like a bird or a cat or something else. Nobody knew for sure. But maybe Oz could help them with their wishes.</p>
-<p>The next morning, the friends walked until they saw a beautiful green glow in the sky. They reached a great wall with a sparkling gate covered in emeralds. A friendly little green man met them there. He gave everyone special green glasses to wear because the city was so bright and shiny. Then he opened the gate, and they stepped into the most dazzling place they had ever seen.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="11" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-10"><span>Previous</span>Chapter 10</a><a class="next" href="#chapter-12"><span>Next</span>Chapter 12</a></nav>
 </section>
-<section class="chapter" id="chapter-12" data-num="12" data-free="false">
+<section class="chapter" id="chapter-12" data-num="12" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_12.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_12.webp" alt="A City Bathed in Emerald Light illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">12</div>
@@ -1255,12 +1258,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A City Bathed in Emerald Light</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy and her friends finally reached the Emerald City, and everything was green! Green houses sparkled with jewels along green stone streets. The shops sold green candy and green lemonade. Even the sky looked a little bit green. All the people wore green clothes and seemed very happy. Some children hid behind their mothers when they saw the big Lion walking by.</p>
-<p>A helper led them to a beautiful palace right in the middle of the city. Each friend got their own cozy room to rest in. Dorothy had silk sheets and a little fountain that smelled like flowers. That night, the Lion curled up like a cat and purred himself to sleep.</p>
-<p>The next day, Dorothy went to meet the great Wizard of Oz all by herself. She felt a little scared, but she was brave. She told him she just wanted to go home to Kansas. The Wizard said he would help, but first they had to do something very hard. Dorothy felt worried, but her friends promised to stay with her. Together, they decided to be brave and help each other on their next big adventure.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="12" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-11"><span>Previous</span>Chapter 11</a><a class="next" href="#chapter-13"><span>Next</span>Chapter 13</a></nav>
 </section>
-<section class="chapter" id="chapter-13" data-num="13" data-free="false">
+<section class="chapter" id="chapter-13" data-num="13" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_13.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_13.webp" alt="The Witch&#x27;s Wrath Unleashed illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">13</div>
@@ -1269,12 +1270,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Witch&#x27;s Wrath Unleashed</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy and her friends left the Emerald City to find the Wicked Witch of the West. The kind gatekeeper warned them to be careful. He said the Witch was mean and would try to stop them. They walked through pretty fields full of daisies and buttercups. Dorothy&#x27;s dress had turned from green to snowy white!</p>
-<p>The Wicked Witch had a magic eye that could see very far. She spotted Dorothy and her friends and felt angry. She sent wolves and crows and bees to scare them away. But the Tin Woodman and the Scarecrow were very brave. They kept everyone safe each time. Then the Witch sent flying monkeys who captured the friends. But they could not hurt Dorothy because the Good Witch had kissed her forehead.</p>
-<p>The Witch made Dorothy work in her castle kitchen. Dorothy was brave and kind. She secretly brought food to the Lion every night. One day, Dorothy splashed water on the mean Witch. The Witch melted away like sugar! Dorothy and the Lion were free at last.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="13" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-12"><span>Previous</span>Chapter 12</a><a class="next" href="#chapter-14"><span>Next</span>Chapter 14</a></nav>
 </section>
-<section class="chapter" id="chapter-14" data-num="14" data-free="false">
+<section class="chapter" id="chapter-14" data-num="14" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_14.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_14.webp" alt="Reunited at the Yellow Castle illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">14</div>
@@ -1283,12 +1282,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Reunited at the Yellow Castle</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy let the Cowardly Lion out of his cage, and they were so happy to be together again. The little yellow people called Winkies were happy too because Dorothy had helped them become free. They had a big party with dancing and yummy food to celebrate.</p>
-<p>But the Lion felt sad because the Scarecrow and Tin Woodman were still missing. Dorothy asked if they could find their friends, and the kind Winkies said they would help. They searched and searched until they found the Tin Woodman lying on the ground, all dented and broken. Some clever Winkies who were good at fixing things worked for days to make him better. When he was all fixed, everyone cried happy tears.</p>
-<p>Then they found the Scarecrow&#x27;s clothes up in a tall tree. The Tin Woodman chopped down the tree, and the Winkies stuffed the clothes with fresh straw. The Scarecrow was back! Now all four friends were together again. The Winkies gave them beautiful gifts, and soon the travelers set off toward the Emerald City to see the Wizard.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="14" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-13"><span>Previous</span>Chapter 13</a><a class="next" href="#chapter-15"><span>Next</span>Chapter 15</a></nav>
 </section>
-<section class="chapter" id="chapter-15" data-num="15" data-free="false">
+<section class="chapter" id="chapter-15" data-num="15" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_15.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_15.webp" alt="Lost in Fields of Yellow Flowers illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">15</div>
@@ -1297,11 +1294,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Lost in Fields of Yellow Flowers</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy and her friends wanted to go back to the Emerald City. But they got very lost in big fields of yellow flowers! The flowers smelled so sweet and stretched out everywhere they looked. They walked and walked, but every direction looked the same. At night they slept in the soft flowers under the bright moon. The Scarecrow and Tin Woodman stayed awake to watch over everyone.</p>
-<p>After many days, Dorothy remembered her special silver whistle. She blew it, and tiny gray mice came running! The kind Mouse Queen told them a secret. They had been walking the wrong way the whole time! She also noticed Dorothy&#x27;s golden cap had magic inside it. Dorothy read the funny magic words out loud, and suddenly the sky filled with Winged Monkeys! The friendly Monkey King carried Dorothy and all her friends through the air. Soon they could see the beautiful green walls of the Emerald City below them.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="15" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-14"><span>Previous</span>Chapter 14</a><a class="next" href="#chapter-16"><span>Next</span>Chapter 16</a></nav>
 </section>
-<section class="chapter" id="chapter-16" data-num="16" data-free="false">
+<section class="chapter" id="chapter-16" data-num="16" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_16.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_16.webp" alt="The Man Behind the Screen illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">16</div>
@@ -1310,11 +1306,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Man Behind the Screen</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy and her friends came back to Emerald City as heroes. The Guardian of the Gates was so surprised to see them safe. He bowed down very low to Dorothy because she had stopped the Wicked Witch. Everyone in the city cheered for them. But the Great Oz would not see them. They waited and waited for days. Finally the Scarecrow said they would ask the Winged Monkeys for help if Oz did not meet them soon. That worked, and they were called to the Throne Room.</p>
-<p>The room seemed empty, but a big Voice spoke from above. Then the Lion gave a loud roar that made Toto jump and bump into a screen. Behind it stood a little old man with no hair and a wrinkly face. He looked quite scared. He said he was really Oz, but he was not magic at all. He was just a man who came to this land in a balloon long ago. The people thought he was powerful, so he let them believe it. The Scarecrow felt sad and called him a humbug. But Oz promised to help them all the very next morning. Dorothy would have to wait a little longer. They left feeling hopeful.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="16" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-15"><span>Previous</span>Chapter 15</a><a class="next" href="#chapter-17"><span>Next</span>Chapter 17</a></nav>
 </section>
-<section class="chapter" id="chapter-17" data-num="17" data-free="false">
+<section class="chapter" id="chapter-17" data-num="17" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_17.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_17.webp" alt="Bran, Silk, and Bottled Courage illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">17</div>
@@ -1323,11 +1318,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Bran, Silk, and Bottled Courage</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The Scarecrow had waited so long for this special day. He was finally going to see Oz and get his brains. Dorothy told him she liked him just the way he was. But the Scarecrow wanted to think big thoughts, so off he went.</p>
-<p>Oz filled the Scarecrow&#x27;s head with bran and pins and needles. He called them &quot;bran-new&quot; brains! The Scarecrow came back feeling very wise indeed. His friends could see the pins poking out and said he must be very sharp now. Next, the Tin Woodman got a pretty silk heart placed inside his chest. It was stuffed with soft sawdust, and Oz promised it was very kind. Last came the Lion, who drank a green liquid from a fancy bottle. Oz said courage was always inside him, and now he felt so brave. Oz smiled to himself afterward. His friends were all so happy with their gifts. But helping Dorothy get home would be much, much harder.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="17" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-16"><span>Previous</span>Chapter 16</a><a class="next" href="#chapter-18"><span>Next</span>Chapter 18</a></nav>
 </section>
-<section class="chapter" id="chapter-18" data-num="18" data-free="false">
+<section class="chapter" id="chapter-18" data-num="18" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_18.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_18.webp" alt="Oz and Dorothy Build Their Escape illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">18</div>
@@ -1336,11 +1330,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Oz and Dorothy Build Their Escape</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy felt sad for three days while she waited for news. Her friends were all very happy now. The Scarecrow loved having wonderful thoughts in his new brain. The Tin Woodman felt his heart beating softly and said it was the kindest heart ever. The Cowardly Lion was not afraid of anything anymore. But Dorothy still missed Kansas and Aunt Em so much.</p>
-<p>Then Oz called her to share exciting news. He knew how to help her leave this land! He would make a big balloon from silk, just like the one that brought him here long ago. Together they worked for three days, sewing green silk strips and painting them with glue. Oz wanted to go home too! When the balloon was ready, everyone in the Emerald City came to watch. Oz climbed into the basket and called for Dorothy to hurry. But little Toto had run off to chase a kitten! Dorothy grabbed him and ran back, but the ropes broke and the balloon floated away without her. Poor Dorothy watched her chance to go home drift up into the sky.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="18" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-17"><span>Previous</span>Chapter 17</a><a class="next" href="#chapter-19"><span>Next</span>Chapter 19</a></nav>
 </section>
-<section class="chapter" id="chapter-19" data-num="19" data-free="false">
+<section class="chapter" id="chapter-19" data-num="19" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_19.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_19.webp" alt="A New Hope in the South illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">19</div>
@@ -1349,12 +1342,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A New Hope in the South</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy felt very sad when the Wizard floated away in his balloon. She cried a little, but her good friends stayed right by her side. The Tin Woodman even shed a few tears himself, and Dorothy carefully wiped them away so he would not rust.</p>
-<p>Now the Scarecrow was the new ruler of the Emerald City! The people were so proud of him. But Dorothy still missed her home in Kansas. She missed Aunt Em and Uncle Henry very much. She tried asking the Winged Monkeys for help, but they could not take her across the desert.</p>
-<p>Then a kind soldier told them about Glinda, the Good Witch of the South. She was very wise and might know a way to help Dorothy get home. The road would be long, but Dorothy&#x27;s three dear friends would not let her go alone. They all agreed to set out together the very next morning.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="19" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-18"><span>Previous</span>Chapter 18</a><a class="next" href="#chapter-20"><span>Next</span>Chapter 20</a></nav>
 </section>
-<section class="chapter" id="chapter-20" data-num="20" data-free="false">
+<section class="chapter" id="chapter-20" data-num="20" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_20.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_20.webp" alt="Journey South Through Enchanted Forests illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">20</div>
@@ -1363,12 +1354,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Journey South Through Enchanted Forests</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>It was time to say goodbye to the Emerald City. Dorothy hugged her friends at the gate, and everyone shook hands with the kind soldier they had come to know. The Guardian took back their green spectacles and wished them well on their journey. He reminded the Scarecrow to come back soon to be the new ruler, but the Scarecrow said he would help Dorothy get home first.</p>
-<p>The little group walked into the sunshine, heading south to find Glinda the Good. Dorothy felt hopeful she would reach Kansas at last. The Lion was so happy to be outdoors again, swishing his tail in the fresh air. Little Toto ran around chasing butterflies and barking with joy. They walked through pretty green fields full of flowers and slept under the stars that night.</p>
-<p>The next morning they came to a thick forest. When the Scarecrow tried to walk under a big tree, its branches grabbed him and tossed him back! The Tin Woodman used his axe to make the trees let them through safely. On the other side, they found a tall white wall, smooth and shiny like a dish. The Tin Woodman said he would build a ladder so they could climb over and see what was on the other side.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="20" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-19"><span>Previous</span>Chapter 19</a><a class="next" href="#chapter-21"><span>Next</span>Chapter 21</a></nav>
 </section>
-<section class="chapter" id="chapter-21" data-num="21" data-free="false">
+<section class="chapter" id="chapter-21" data-num="21" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_21.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_21.webp" alt="A Fragile Land of Living Porcelain illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">21</div>
@@ -1377,11 +1366,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">A Fragile Land of Living Porcelain</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>While the Tin Woodman built a tall ladder from wood, Dorothy took a nap. The Lion curled up beside her, and little Toto snuggled close. When the ladder was ready, everyone climbed up the big wall. At the top, they all said, &quot;Oh, my!&quot; because they saw something wonderful below.</p>
-<p>It was a tiny country made entirely of china! The floor was smooth and white like a fancy plate. Little houses painted in bright colors dotted the land. Tiny barns held little china cows, sheep, and horses. Best of all were the tiny china people! There were milkmaids and princesses and clowns, all smaller than Dorothy&#x27;s knee. The travelers climbed down carefully and tiptoed through this delicate place. Dorothy met a beautiful china Princess and wanted to take her home. But the Princess said no thank you. In her own country, she could move and talk. Anywhere else, she would have to stand still forever. Dorothy understood and said goodbye. The friends walked very gently until they reached another wall and continued on their way.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="21" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-20"><span>Previous</span>Chapter 20</a><a class="next" href="#chapter-22"><span>Next</span>Chapter 22</a></nav>
 </section>
-<section class="chapter" id="chapter-22" data-num="22" data-free="false">
+<section class="chapter" id="chapter-22" data-num="22" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_22.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_22.webp" alt="The Lion Claims His Forest Throne illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">22</div>
@@ -1390,11 +1378,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">The Lion Claims His Forest Throne</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The friends climbed down from the china wall and found themselves in a soggy, muddy place. Tall grass hid wet holes, so they walked very carefully. Finally they reached dry ground and pushed through thick bushes. Then they found an amazing forest with the biggest, oldest trees they had ever seen!</p>
-<p>The Lion loved it right away. &quot;This forest is wonderful!&quot; he said happily. He liked the soft leaves and the pretty green moss. They walked until it got dark, then Dorothy, Toto, and the Lion went to sleep. The Tin Woodman and Scarecrow watched over them all night. In the morning, they heard growling sounds and found hundreds of animals gathered together. There were tigers, elephants, bears, and foxes. A big tiger bowed to the Lion and asked for help with a scary creature bothering them. The brave Lion went off alone and found the creature sleeping. He was so brave and strong that he chased it away forever! All the animals cheered and made him their King. The Lion promised to come back and take care of them after he helped Dorothy get home safely.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="22" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-21"><span>Previous</span>Chapter 21</a><a class="next" href="#chapter-23"><span>Next</span>Chapter 23</a></nav>
 </section>
-<section class="chapter" id="chapter-23" data-num="23" data-free="false">
+<section class="chapter" id="chapter-23" data-num="23" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_23.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_23.webp" alt="Over the Hill to Glinda&#x27;s Castle illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">23</div>
@@ -1403,10 +1390,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Over the Hill to Glinda&#x27;s Castle</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>The four friends walked out of the dark forest and into bright open country. But a big rocky hill stood in their way. The Scarecrow said they must climb over it. When they started up, a strange little man appeared on the rocks. He had a flat head and a very thick neck, but no arms at all. He told them they could not cross his hill. The Scarecrow tried to walk past him anyway. Then something surprising happened—the little man&#x27;s head shot forward on his stretchy neck and bumped the Scarecrow right down the hill! Many more of these funny creatures popped up from behind the rocks. The Lion tried to get past them too, but he got bumped and tumbled down as well. Dorothy knew just what to do. She put on her Golden Cap and called the Winged Monkeys one last time. The kind monkeys lifted everyone up and flew them right over the hill. They landed safely in the lovely country of the Quadlings, where everything was painted cheerful red. The Quadlings were friendly little people who gave the travelers a yummy dinner. Then they walked on until they saw a beautiful castle ahead, where the Good Witch Glinda lived and was waiting to meet them.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="23" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-22"><span>Previous</span>Chapter 22</a><a class="next" href="#chapter-24"><span>Next</span>Chapter 24</a></nav>
 </section>
-<section class="chapter" id="chapter-24" data-num="24" data-free="false">
+<section class="chapter" id="chapter-24" data-num="24" data-free="false" data-locked="1">
     <figure class="chapter-figure" data-full="../../wizard_of_oz/images_anime/chapter_24.webp"><img class="chapter-image" src="../../wizard_of_oz/images_anime/chapter_24.webp" alt="Glinda&#x27;s Gift and Farewell Blessings illustration" loading="lazy"></figure>
     <header class="chapter-heading">
         <div class="chapter-bignum" aria-hidden="true">24</div>
@@ -1415,7 +1402,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
             <h2 class="chapter-title">Glinda&#x27;s Gift and Farewell Blessings</h2>
         </div>
     </header>
-    <div class="chapter-summary"><p>Dorothy and her friends got ready to meet Glinda, the Good Witch of the South. Dorothy washed her face and fixed her hair. The Lion shook his mane, the Scarecrow fluffed his straw, and the Tin Woodman polished himself until he sparkled. Glinda sat on a beautiful throne made of red rubies. She had lovely red curls and the kindest blue eyes. Dorothy told Glinda everything about her adventures and asked to go home. Glinda smiled and said she could help. She would use magic to send each friend to his own kingdom. The Scarecrow would rule the Emerald City, the Tin Woodman would lead the Winkies, and the Lion would be King of the forest. Then Glinda shared a wonderful secret. Dorothy&#x27;s Silver Shoes could take her home in just three steps! Dorothy hugged each dear friend goodbye with happy tears. She picked up Toto, clicked her heels three times, and whooshed through the air. She landed right in Kansas near the new farmhouse. The Silver Shoes had slipped off during the journey, but Dorothy did not mind. Someone special came running from the door, and Dorothy felt the happiest she had ever been.</p></div>
+    <div class="chapter-summary chapter-locked" data-locked="1" data-slug="wizard_of_oz" data-n="24" data-audience="kids"><p class="chapter-locked-hint">Subscribe to read this chapter.</p></div>
     <nav class="chapter-jump"><a class="prev" href="#chapter-23"><span>Previous</span>Chapter 23</a><span></span></nav>
 </section>
 <img class="back-cover" src="../../wizard_of_oz/images_anime/back_cover.webp" alt="Back cover">
@@ -1641,6 +1628,39 @@ async function syncState() {
     body.setAttribute('data-entitled', entitled ? '1' : '0');
     updateTopbar(me || { authenticated: true, user: { email: session.user.email } }, entitled);
     updatePaywall(entitled);
+    if (entitled) unlockChapters(session.access_token);
+}
+
+const _loadedChapters = new Set();
+
+async function unlockChapters(token) {
+    const locked = document.querySelectorAll('[data-locked="1"]');
+    for (const el of locked) {
+        const slug = el.dataset.slug;
+        const n = el.dataset.n;
+        const audience = el.dataset.audience || 'adult';
+        const k = audience + '/' + slug + '/' + n;
+        if (_loadedChapters.has(k)) continue;
+        _loadedChapters.add(k);
+        el.setAttribute('data-loading', '1');
+        try {
+            const r = await fetch(API + '/classics/chapter/' + audience + '/' + slug + '/' + n, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (!r.ok) throw new Error('gate ' + r.status);
+            const { url } = await r.json();
+            const cr = await fetch(url);
+            if (!cr.ok) throw new Error('fetch ' + cr.status);
+            const data = await cr.json();
+            el.innerHTML = data.body_html || '';
+            el.removeAttribute('data-locked');
+            el.removeAttribute('data-loading');
+        } catch (e) {
+            el.removeAttribute('data-loading');
+            const hint = el.querySelector('.chapter-locked-hint');
+            if (hint) hint.textContent = 'Could not load chapter. Refresh to retry.';
+        }
+    }
 }
 
 function updatePaywall(entitled) {
