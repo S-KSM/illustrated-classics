@@ -302,6 +302,59 @@ body::before {
     color: var(--ink);
 }
 
+/* Story panel — shared layout for acts 2-coda matching Act 1's text block */
+.story {
+    max-width: 760px;
+    margin: 8px auto 28px;
+    padding: 8px 12px;
+    text-align: center;
+}
+.story-fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+    line-height: 1.9;
+    color: var(--crimson);
+    direction: rtl;
+    margin-bottom: 14px;
+}
+.story-en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    padding: 0 18px;
+    position: relative;
+}
+.story-en::before, .story-en::after {
+    content: "❦";
+    color: var(--gold-deep);
+    margin: 0 10px;
+    font-size: 0.85rem;
+    font-style: normal;
+    vertical-align: 1px;
+}
+.story-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    color: var(--ink);
+    text-align: left;
+    max-width: 62ch;
+    margin: 0 auto;
+}
+.story-body .drop {
+    float: left;
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 3.4rem;
+    line-height: 0.85;
+    margin: 4px 9px 0 0;
+    color: var(--crimson);
+}
+
 /* ACT 2 — Eleven birds grid */
 .birds-grid {
     display: grid;
@@ -558,6 +611,12 @@ body::before {
         <div class="act-fa">عذر آوردن مرغان</div>
     </section>
 
+    <div class="story">
+        <div class="story-fa">چون شنودند این سخن مرغان همه<br>آن زمان گفتند ترک جان همه</div>
+        <div class="story-en">The Hoopoe called the flock to journey. One by one, each bird found a reason to stay.</div>
+        <p class="story-body"><span class="drop">E</span>leven birds rose to speak. The Nightingale could not leave the rose. The Parrot loved her gilded cage. The Peacock mourned a paradise she barely remembered. The Duck would not risk muddy water. The Owl preferred his ruins; the Heron, his sea. Each excuse was the same excuse, dressed differently — the fear of losing the small thing each had already mistaken for a life.</p>
+    </div>
+
     <div class="birds-grid">
         <figure class="panel bird-card">
             <img class="panel-img" src="images_cinematic/chapter_2.webp" alt="The Nightingale">
@@ -658,6 +717,12 @@ body::before {
         <div class="act-fa">جواب هدهد</div>
     </section>
 
+    <div class="story">
+        <div class="story-fa">هر که او را در دل از حق ذرّه‌ای‌ست<br>از سرِ کویش به جانش غرّه‌ای‌ست</div>
+        <div class="story-en">The Hoopoe did not argue. He told stories instead.</div>
+        <p class="story-body"><span class="drop">A</span> holy man fell in love with a Christian girl and lost everything — his cloak, his name, his place among the faithful. In the losing, he found the Beloved. The point of every parable was the same: the road is harder than you think, and shorter.</p>
+    </div>
+
     <div class="spread-hoopoe">
         <figure class="panel side">
             <img class="panel-img" src="images_cinematic/chapter_13.webp" alt="Sheikh San'an">
@@ -682,13 +747,6 @@ body::before {
                 <em>عذر آوردن مرغان</em>
             </figcaption>
         </figure>
-        <div class="hoopoe-quote">
-            <div class="fa">
-                هر که او را در دل از حق ذرّه‌ای‌ست<br>
-                از سرِ کویش به جانش غرّه‌ای‌ست
-            </div>
-            <div class="en">A single grain of the Real in your heart, says the Hoopoe, will get you to His door.</div>
-        </div>
     </div>
 
     <div class="divider"></div>
@@ -699,6 +757,12 @@ body::before {
         <div class="act-title">The Seven Valleys</div>
         <div class="act-fa">هفت وادی</div>
     </section>
+
+    <div class="story">
+        <div class="story-fa">چون فرو آیی به وادی طلب<br>پیشت آید هر زمانی صدتعب</div>
+        <div class="story-en">Seven valleys lie between the seeker and the sought. None can be flown over.</div>
+        <p class="story-body"><span class="drop">T</span>hey crossed Search, then Love, then Knowing, Detachment, Unity, Wonder, and at the end, Annihilation. In each valley something was set down and not taken up again. By the seventh, almost nothing of the original flock remained.</p>
+    </div>
 
     <div class="valleys">
         <figure class="panel valley">
@@ -761,6 +825,12 @@ body::before {
         <div class="act-fa">سی‌مرغ در پیشگاه سیمرغ</div>
     </section>
 
+    <div class="story">
+        <div class="story-fa">زین سخن مرغان وادی سر به سر<br>سرنگون گشتند در خون جگر</div>
+        <div class="story-en">Of the thousands who began, thirty arrived. They lifted their faces and saw.</div>
+        <p class="story-body"><span class="drop">W</span>hat they had crossed the world to find was waiting in a polished surface. The bird they had searched for wore their own faces, multiplied. The ending was a pun in a language they had only just begun to hear.</p>
+    </div>
+
     <div class="reveal">
         <figure class="panel">
             <img class="panel-img" src="images_cinematic/chapter_23.webp" alt="Thirty birds reach the Simorgh">
@@ -786,6 +856,12 @@ body::before {
         <div class="act-fa">فی وصف حاله</div>
     </section>
 
+    <div class="story">
+        <div class="story-fa">کردی ای عطّار بر عالم نثار<br>نافهٔ اسرار هر دم صد هزار</div>
+        <div class="story-en">Attar set down his pen. He gave the map away.</div>
+        <p class="story-body"><span class="drop">N</span>ot as a guide — as a feather, dropped where someone might find it. Eight centuries later, you found it.</p>
+    </div>
+
     <div class="farewell">
         <figure class="panel">
             <img class="panel-img" src="images_cinematic/chapter_24.webp" alt="Attar with quill">
@@ -794,12 +870,7 @@ body::before {
             </figcaption>
         </figure>
         <div class="farewell-text">
-            <div class="fa">
-                کردی ای عطّار بر عالم نثار<br>
-                نافهٔ اسرار هر دم صد هزار
-            </div>
-            <p>This map of the heart, by Attar of Nishapur, completed. He gives it to whoever comes after — not as a guidebook but as a feather, dropped where someone might find it.</p>
-            <p>Eight centuries later, you found it.</p>
+            <p>This map of the heart, by Attar of Nishapur, completed.</p>
             <div class="sig">— Farīd ud-Dīn ʿAṭṭār</div>
         </div>
     </div>
