@@ -120,6 +120,26 @@ body::before {
     }
 }
 
+/* Side-edge vines — vertical repeating arabesque pattern, subtle */
+.manuscript::before, .manuscript::after {
+    content: "";
+    position: absolute;
+    top: 140px;
+    bottom: 140px;
+    width: 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 220' preserveAspectRatio='xMidYMin slice'><g stroke='%237d5a20' stroke-width='0.7' fill='none' stroke-linecap='round'><path d='M11 0 C 5 20 17 40 11 60 C 5 80 17 100 11 120 C 5 140 17 160 11 180 C 5 200 17 218 11 220'/></g><g><circle cx='11' cy='30' r='2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='11' cy='30' r='0.7' fill='%231f3a6e'/><circle cx='11' cy='90' r='2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='11' cy='90' r='0.7' fill='%231f3a6e'/><circle cx='11' cy='150' r='2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='11' cy='150' r='0.7' fill='%231f3a6e'/></g><g fill='%23c89a48' stroke='%237d5a20' stroke-width='0.45' opacity='0.85'><path d='M11 60 C 4 56 2 62 6 66 C 9 64 11 62 11 60 Z'/><path d='M11 60 C 18 56 20 62 16 66 C 13 64 11 62 11 60 Z'/><path d='M11 120 C 4 116 2 122 6 126 C 9 124 11 122 11 120 Z'/><path d='M11 120 C 18 116 20 122 16 126 C 13 124 11 122 11 120 Z'/><path d='M11 180 C 4 176 2 182 6 186 C 9 184 11 182 11 180 Z'/><path d='M11 180 C 18 176 20 182 16 186 C 13 184 11 182 11 180 Z'/></g></svg>");
+    background-repeat: repeat-y;
+    background-size: 22px 220px;
+    pointer-events: none;
+    opacity: 0.55;
+    z-index: 0;
+}
+.manuscript::before { left: 14px; }
+.manuscript::after  { right: 14px; }
+@media (max-width: 700px) {
+    .manuscript::before, .manuscript::after { display: none; }
+}
+
 /* Corner flourishes — Persian arabesque (vine + saz leaves + quatrefoil rosette) */
 .corner {
     position: absolute;
@@ -336,15 +356,15 @@ body::before {
     content: "";
     position: absolute;
     top: 50%;
-    width: 36px;
-    height: 16px;
+    width: 56px;
+    height: 22px;
     transform: translateY(-50%);
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 16'><path d='M2 8 C 8 2 18 4 28 7 C 32 9 32 12 26 13 C 16 13 8 11 2 9 Z' fill='%23c89a48' stroke='%237d5a20' stroke-width='0.6'/><path d='M6 9 C 12 10 20 11 26 11' fill='none' stroke='%237d5a20' stroke-width='0.4' opacity='0.55'/><circle cx='30' cy='8' r='1.6' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.3'/><circle cx='30' cy='8' r='0.7' fill='%231f3a6e'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 22'><path d='M2 12 C 10 4 22 4 36 7 C 46 9 50 13 48 17 C 42 19 32 18 22 16 C 12 14 4 14 2 12 Z' fill='%23c89a48' stroke='%237d5a20' stroke-width='0.7'/><path d='M6 12 C 16 13 28 14 40 13' fill='none' stroke='%237d5a20' stroke-width='0.5' opacity='0.6'/><path d='M14 11 L16 14 M22 11 L24 14 M30 11 L32 14' stroke='%237d5a20' stroke-width='0.35' opacity='0.5'/><path d='M48 17 C 52 19 50 22 46 21' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.5'/><circle cx='44' cy='12' r='2.2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.35'/><circle cx='44' cy='12' r='0.9' fill='%231f3a6e'/><circle cx='10' cy='15' r='0.7' fill='%238a2a1f' opacity='0.6'/><path d='M2 12 C 0 10 -1 8 1 6' fill='none' stroke='%237d5a20' stroke-width='0.4' opacity='0.55'/></svg>");
     background-repeat: no-repeat;
     background-size: contain;
 }
-.act-num::before { right: 100%; margin-right: 12px; transform: translateY(-50%) scaleX(-1); }
-.act-num::after  { left: 100%;  margin-left: 12px; }
+.act-num::before { right: 100%; margin-right: 14px; transform: translateY(-50%) scaleX(-1); }
+.act-num::after  { left: 100%;  margin-left: 14px; }
 
 .act-title {
     font-family: 'Fraunces', serif;
@@ -389,7 +409,7 @@ body::before {
     opacity: 0.75;
 }
 
-/* Generic illuminated panel — gold frame, parchment back, caption strip */
+/* Generic illuminated panel — gold frame, inner crimson rule, parchment back, caption strip */
 .panel {
     position: relative;
     background: #fff;
@@ -401,6 +421,30 @@ body::before {
     overflow: hidden;
     transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
 }
+/* thin inner crimson rule overlaid 4px inside the gold edge */
+.panel::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid var(--crimson);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+}
+/* tiny gold corner glints just inside the rule */
+.panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background-image:
+        radial-gradient(circle at 7px 7px, var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at calc(100% - 7px) 7px, var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at 7px calc(100% - 7px), var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), var(--gold-bright) 1.6px, transparent 2.2px);
+}
 .panel:hover {
     transform: translateY(-3px);
     box-shadow:
@@ -408,6 +452,7 @@ body::before {
         0 0 0 5px var(--crimson),
         0 24px 36px -18px rgba(42, 29, 16, 0.55);
 }
+.panel:hover::before { opacity: 1; border-color: var(--crimson); }
 .panel-img {
     width: 100%;
     aspect-ratio: 4 / 3;
@@ -479,15 +524,6 @@ body::before {
     border-left: 3px solid var(--gold);
     padding-left: 18px;
 }
-.feather-text .drop {
-    float: left;
-    font-family: 'Fraunces', serif;
-    font-weight: 800;
-    font-size: 4.5rem;
-    line-height: 0.8;
-    margin: 6px 10px 0 0;
-    color: var(--crimson);
-}
 .feather-text .body {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
@@ -539,14 +575,54 @@ body::before {
     max-width: 62ch;
     margin: 0 auto;
 }
-.story-body .drop {
+.story-body .drop,
+.feather-text .body .drop,
+.feather-text .drop {
     float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.6em;
+    height: 3.6em;
     font-family: 'Fraunces', serif;
-    font-weight: 800;
-    font-size: 3.4rem;
-    line-height: 0.85;
-    margin: 4px 9px 0 0;
+    font-weight: 900;
+    font-size: 1.6rem;
+    line-height: 1;
     color: var(--crimson);
+    margin: 6px 14px 4px 0;
+    padding: 0;
+    background:
+        radial-gradient(ellipse at 30% 30%, #fff5d8 0%, #f4e6c2 45%, #e8c878 90%);
+    border: 1.5px solid var(--gold-deep);
+    box-shadow:
+        inset 0 0 0 1px var(--crimson),
+        inset 0 0 0 3px var(--parchment),
+        inset 0 0 0 4px var(--gold),
+        0 4px 14px -6px rgba(42, 29, 16, 0.4);
+    position: relative;
+    text-shadow: 0 1px 0 rgba(253, 243, 220, 0.4);
+}
+/* lapis dots in the four corners of the illuminated drop-cap */
+.story-body .drop::before,
+.feather-text .body .drop::before,
+.feather-text .drop::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border-radius: 2px;
+    background-image:
+        radial-gradient(circle at 0 0, var(--crimson) 1.4px, transparent 1.8px),
+        radial-gradient(circle at 100% 0, var(--crimson) 1.4px, transparent 1.8px),
+        radial-gradient(circle at 0 100%, var(--crimson) 1.4px, transparent 1.8px),
+        radial-gradient(circle at 100% 100%, var(--crimson) 1.4px, transparent 1.8px);
+    pointer-events: none;
+}
+@media (max-width: 700px) {
+    .story-body .drop, .feather-text .body .drop, .feather-text .drop {
+        font-size: 1.4rem;
+        width: 3.2em;
+        height: 3.2em;
+    }
 }
 
 /* ACT 2 — Eleven birds grid */
