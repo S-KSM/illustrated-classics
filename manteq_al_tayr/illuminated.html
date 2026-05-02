@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Conference of the Birds — Illuminated</title>
+<meta name="description" content="An illuminated single-page retelling of Attar's Manteq al-Tayr — the journey of thirty birds across seven valleys to the Simorgh.">
+<link rel="canonical" href="https://ai-may-i.com/classics/manteq_al_tayr/illuminated.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Conference of the Birds — Illuminated Edition">
+<meta property="og:description" content="Attar's Manteq al-Tayr as an illuminated manuscript page. Thirty birds. Seven valleys. One Simorgh.">
+<meta property="og:image" content="https://ai-may-i.com/classics/manteq_al_tayr/images_cinematic/cover.webp">
+<meta property="og:url" content="https://ai-may-i.com/classics/manteq_al_tayr/illuminated.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Conference of the Birds — Illuminated Edition">
+<meta name="twitter:description" content="Attar's Manteq al-Tayr as an illuminated manuscript page.">
+<meta name="twitter:image" content="https://ai-may-i.com/classics/manteq_al_tayr/images_cinematic/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,400,0;9..144,600,0;9..144,800,0;9..144,400,1;9..144,700,1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@500;700&family=Vazirmatn:wght@400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:root {
+    --parchment: #f4e6c2;
+    --parchment-deep: #ead7a8;
+    --parchment-shadow: #c9b282;
+    --ink: #2a1d10;
+    --ink-soft: #5a4326;
+    --gold: #b8893a;
+    --gold-bright: #d4a94a;
+    --gold-deep: #8a6324;
+    --crimson: #8a2a1f;
+    --indigo: #1f3a6e;
+    --teal: #2c6e6a;
+    --rose: #b85450;
+    --frame: #6e4c1f;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(184, 137, 58, 0.12), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(138, 42, 31, 0.08), transparent 60%),
+        var(--parchment);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+}
+
+/* Subtle paper grain */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 0;
+    background-image:
+        radial-gradient(circle at 20% 35%, rgba(110, 76, 31, 0.06) 0, transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(110, 76, 31, 0.05) 0, transparent 40%),
+        repeating-linear-gradient(45deg, transparent 0 8px, rgba(110, 76, 31, 0.018) 8px 9px);
+}
+
+.topbar {
+    position: relative;
+    z-index: 10;
+    max-width: 1480px;
+    margin: 0 auto 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 20px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+}
+.topbar a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.topbar a:hover { color: var(--crimson); border-color: var(--crimson); }
+
+.manuscript {
+    position: relative;
+    z-index: 1;
+    max-width: 1480px;
+    margin: 0 auto;
+    background: var(--parchment);
+    box-shadow:
+        0 0 0 1px var(--gold-deep),
+        0 0 0 8px var(--parchment),
+        0 0 0 9px var(--gold-deep),
+        0 30px 80px -30px rgba(42, 29, 16, 0.55),
+        inset 0 0 80px rgba(110, 76, 31, 0.12);
+    padding: 56px clamp(28px, 4vw, 72px) 72px;
+}
+
+/* Ornate corner ornaments */
+.manuscript::before,
+.manuscript::after {
+    content: "";
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='none' stroke='%238a6324' stroke-width='1.5'><path d='M5 5 L5 95 M5 5 L95 5'/><path d='M15 15 Q 30 15, 30 30 Q 15 30, 15 15 Z' fill='%23b8893a' fill-opacity='0.45'/><circle cx='30' cy='30' r='3' fill='%238a2a1f'/><path d='M40 15 L 60 15 M40 18 L 60 18' /><path d='M15 40 L 15 60 M18 40 L 18 60' /><path d='M40 30 Q 50 35, 60 30' /><path d='M30 40 Q 35 50, 30 60' /></g></svg>");
+}
+.manuscript::before { top: -2px; left: -2px; }
+.manuscript::after { bottom: -2px; right: -2px; transform: rotate(180deg); }
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 32px 12px 36px;
+    border-bottom: 2px solid var(--gold);
+    position: relative;
+    margin-bottom: 48px;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -7px; left: 50%;
+    transform: translateX(-50%);
+    width: 12px; height: 12px;
+    background: var(--gold-bright);
+    border: 2px solid var(--parchment);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--gold);
+}
+.hero-kicker {
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: var(--gold-deep);
+    margin-bottom: 22px;
+}
+.hero-fa {
+    font-family: 'Amiri', 'Vazirmatn', serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height: 1;
+    color: var(--crimson);
+    margin-bottom: 18px;
+    direction: rtl;
+}
+.hero-en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+}
+.hero-author {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+}
+
+/* Section heading band */
+.act {
+    margin: 64px 0 28px;
+    text-align: center;
+    position: relative;
+}
+.act-num {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    padding: 4px 16px;
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+    margin-bottom: 14px;
+}
+.act-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var(--ink);
+    margin-bottom: 6px;
+}
+.act-fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    color: var(--crimson);
+    direction: rtl;
+}
+
+/* Generic illuminated panel — gold frame, parchment back, caption strip */
+.panel {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--gold-deep);
+    box-shadow:
+        0 0 0 4px var(--parchment),
+        0 0 0 5px var(--gold),
+        0 12px 24px -16px rgba(42, 29, 16, 0.45);
+    overflow: hidden;
+}
+.panel-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+.panel-caption {
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-deep) 100%);
+    border-top: 1px solid var(--gold);
+    padding: 10px 14px;
+    font-family: 'Fraunces', serif;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--ink);
+    text-align: center;
+}
+.panel-caption strong {
+    display: block;
+    font-style: italic;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+.panel-caption em {
+    font-family: 'Amiri', serif;
+    font-style: normal;
+    font-size: 0.95rem;
+    color: var(--crimson);
+    direction: rtl;
+    display: block;
+    margin-top: 4px;
+}
+
+/* ACT 1 — Feather */
+.spread-feather {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 32px;
+    align-items: center;
+}
+.spread-feather .panel {
+    aspect-ratio: 4 / 3;
+}
+.spread-feather .panel-img { aspect-ratio: auto; height: 100%; }
+.feather-text {
+    padding: 12px;
+}
+.feather-text .pull-fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    line-height: 1.7;
+    color: var(--crimson);
+    direction: rtl;
+    margin-bottom: 24px;
+    border-right: 3px solid var(--gold);
+    padding-right: 18px;
+}
+.feather-text .pull-en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    border-left: 3px solid var(--gold);
+    padding-left: 18px;
+}
+.feather-text .drop {
+    float: left;
+    font-family: 'Fraunces', serif;
+    font-weight: 800;
+    font-size: 4.5rem;
+    line-height: 0.8;
+    margin: 6px 10px 0 0;
+    color: var(--crimson);
+}
+.feather-text .body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    margin-top: 24px;
+    color: var(--ink);
+}
+
+/* ACT 2 — Eleven birds grid */
+.birds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 22px;
+    margin-top: 12px;
+}
+.bird-card .panel-img { aspect-ratio: 1 / 1; }
+
+/* ACT 3 — Hoopoe parables */
+.spread-hoopoe {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+}
+.spread-hoopoe .center .panel-img { aspect-ratio: 4 / 5; }
+.spread-hoopoe .side .panel-img { aspect-ratio: 4 / 5; }
+.hoopoe-quote {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 24px;
+    padding: 18px 24px;
+    background: linear-gradient(180deg, var(--parchment-deep), var(--parchment));
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    position: relative;
+}
+.hoopoe-quote::before, .hoopoe-quote::after {
+    content: "❦";
+    color: var(--gold-deep);
+    margin: 0 12px;
+    font-size: 1rem;
+}
+.hoopoe-quote .fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 1.9;
+    color: var(--crimson);
+    direction: rtl;
+    margin-bottom: 6px;
+}
+.hoopoe-quote .en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+}
+
+/* ACT 4 — Seven valleys */
+.valleys {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+.valley .panel-img { aspect-ratio: 2 / 3; }
+.valley .panel-caption { padding: 8px 6px; font-size: 0.72rem; }
+.valley .panel-caption strong { font-size: 0.85rem; }
+.valley .panel-caption em { font-size: 0.85rem; margin-top: 2px; }
+@media (max-width: 1100px) {
+    .valleys { grid-template-columns: repeat(4, 1fr); }
+    .valley:nth-child(8) { display: none; }
+}
+@media (max-width: 700px) {
+    .valleys { grid-template-columns: repeat(2, 1fr); }
+    .spread-feather { grid-template-columns: 1fr; }
+    .spread-hoopoe { grid-template-columns: 1fr; }
+}
+
+/* ACT 5 — Si Morgh reveal */
+.reveal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+}
+.reveal .panel-img { aspect-ratio: 4 / 5; }
+.reveal-text {
+    padding: 12px;
+}
+.reveal-text .si-morgh {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    color: var(--crimson);
+    direction: rtl;
+    text-align: center;
+    margin: 8px 0 6px;
+    line-height: 1;
+}
+.reveal-text .si-morgh-sub {
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--gold-deep);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-bottom: 22px;
+}
+.reveal-text .play {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem;
+    line-height: 1.5;
+    color: var(--ink);
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 16px;
+}
+.reveal-text .play strong { color: var(--crimson); font-style: normal; font-weight: 600; }
+.reveal-text .meaning {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    text-align: center;
+    line-height: 1.6;
+    border-top: 1px solid var(--gold);
+    padding-top: 14px;
+}
+@media (max-width: 700px) {
+    .reveal { grid-template-columns: 1fr; }
+}
+
+/* ACT 6 — Farewell */
+.farewell {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 32px;
+    align-items: center;
+}
+.farewell .panel-img { aspect-ratio: 1 / 1; }
+.farewell-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--ink);
+    padding: 12px;
+}
+.farewell-text .sig {
+    margin-top: 22px;
+    font-family: 'Caveat', cursive;
+    font-size: 2rem;
+    color: var(--crimson);
+    text-align: right;
+}
+.farewell-text .fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--crimson);
+    direction: rtl;
+    text-align: right;
+    margin-bottom: 18px;
+    line-height: 1.8;
+}
+@media (max-width: 700px) {
+    .farewell { grid-template-columns: 1fr; }
+}
+
+/* Footer */
+.colophon {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+}
+.colophon::before {
+    content: "❦  ❦  ❦";
+    display: block;
+    color: var(--gold-deep);
+    margin-bottom: 14px;
+    letter-spacing: 0.4em;
+}
+.colophon a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    color: var(--crimson);
+}
+
+/* Section divider */
+.divider {
+    margin: 56px auto;
+    width: 60%;
+    height: 28px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 28' preserveAspectRatio='none'><g stroke='%23b8893a' stroke-width='1.2' fill='none'><line x1='0' y1='14' x2='80' y2='14'/><line x1='120' y1='14' x2='200' y2='14'/><circle cx='100' cy='14' r='6' fill='%23d4a94a' fill-opacity='0.3'/><path d='M88 14 Q 100 4, 112 14 Q 100 24, 88 14 Z' fill='%238a2a1f' fill-opacity='0.6'/></g></svg>");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+}
+
+@media print {
+    body { padding: 0; background: white; }
+    .topbar { display: none; }
+    .manuscript { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<nav class="topbar">
+    <a href="index.html">← Cinematic edition</a>
+    <span>Illuminated · Manteq al-Tayr</span>
+    <a href="../index.html">Catalog</a>
+</nav>
+
+<article class="manuscript">
+
+    <header class="hero">
+        <div class="hero-kicker">An Illuminated Page</div>
+        <div class="hero-fa">منطق‌الطّیر</div>
+        <h1 class="hero-en">The Conference of the Birds</h1>
+        <div class="hero-author">Farīd ud-Dīn ʿAṭṭār of Nishapur · circa 1177</div>
+    </header>
+
+    <!-- ACT 1: The Feather -->
+    <section class="act">
+        <span class="act-num">Act One</span>
+        <div class="act-title">A Feather Falls in China</div>
+        <div class="act-fa">پر سیمرغ بر چین می‌افتد</div>
+    </section>
+
+    <div class="spread-feather">
+        <figure class="panel">
+            <img class="panel-img" src="images_cinematic/chapter_1.webp" alt="The feather of the Simorgh falls in China">
+            <figcaption class="panel-caption">
+                <strong>The Feather</strong>
+                Midnight. A great bird passes over China.
+            </figcaption>
+        </figure>
+        <div class="feather-text">
+            <div class="pull-fa">
+                در میان چین فتاد از وی پری<br>
+                لاجرم پُرشور شد هر کشوری
+            </div>
+            <div class="pull-en">
+                A single feather slipped from her wing.<br>
+                Every country has been arguing about beauty since.
+            </div>
+            <p class="body"><span class="drop">A</span> weaver asked for the deepest red. A poet who had stopped writing scratched a line on a forgotten letter. A child showed her father a drawing she could not explain. <em>Where did this come from?</em> She shrugged. <em>From inside.</em></p>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ACT 2: Eleven Birds Speak -->
+    <section class="act">
+        <span class="act-num">Act Two</span>
+        <div class="act-title">The Birds Make Excuses</div>
+        <div class="act-fa">عذر آوردن مرغان</div>
+    </section>
+
+    <div class="birds-grid">
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_2.webp" alt="The Nightingale">
+            <figcaption class="panel-caption">
+                <strong>Nightingale</strong>
+                Bound by the rose.
+                <em>بلبل شیدا</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_3.webp" alt="The Parrot">
+            <figcaption class="panel-caption">
+                <strong>Parrot</strong>
+                Wants forever in a comfortable cage.
+                <em>طوطی</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_4.webp" alt="The Peacock">
+            <figcaption class="panel-caption">
+                <strong>Peacock</strong>
+                Lost from paradise; cannot let it go.
+                <em>طاووس</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_5.webp" alt="The Duck">
+            <figcaption class="panel-caption">
+                <strong>Duck</strong>
+                Refuses to leave clean water.
+                <em>بط</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_6.webp" alt="The Partridge">
+            <figcaption class="panel-caption">
+                <strong>Partridge</strong>
+                In love with stones — counting jewels.
+                <em>کبک</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_7.webp" alt="The Homa">
+            <figcaption class="panel-caption">
+                <strong>Homa</strong>
+                Lives by giving shadows to kings.
+                <em>همای</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_8.webp" alt="The Falcon">
+            <figcaption class="panel-caption">
+                <strong>Falcon</strong>
+                Already serves a king he can see.
+                <em>باز</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_9.webp" alt="The Heron">
+            <figcaption class="panel-caption">
+                <strong>Heron</strong>
+                Spends his life mourning the sea.
+                <em>بوتیمار</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_10.webp" alt="The Owl">
+            <figcaption class="panel-caption">
+                <strong>Owl</strong>
+                Digs through ruins for buried gold.
+                <em>کوف</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_11.webp" alt="The Finch">
+            <figcaption class="panel-caption">
+                <strong>Finch</strong>
+                Too small. Too tired. Too afraid.
+                <em>صعوه</em>
+            </figcaption>
+        </figure>
+        <figure class="panel bird-card">
+            <img class="panel-img" src="images_cinematic/chapter_12.webp" alt="The birds ask real questions">
+            <figcaption class="panel-caption">
+                <strong>The Real Questions</strong>
+                When the excuses run out.
+                <em>پرسش مرغان</em>
+            </figcaption>
+        </figure>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ACT 3: Hoopoe parables -->
+    <section class="act">
+        <span class="act-num">Act Three</span>
+        <div class="act-title">The Hoopoe Answers in Parables</div>
+        <div class="act-fa">جواب هدهد</div>
+    </section>
+
+    <div class="spread-hoopoe">
+        <figure class="panel side">
+            <img class="panel-img" src="images_cinematic/chapter_13.webp" alt="Sheikh San'an">
+            <figcaption class="panel-caption">
+                <strong>Sheikh Sanʿān</strong>
+                A holy man falls in love with a Christian girl.
+            </figcaption>
+        </figure>
+        <figure class="panel center">
+            <img class="panel-img" src="images_cinematic/chapter_14.webp" alt="Departure">
+            <figcaption class="panel-caption">
+                <strong>Departure</strong>
+                The Hoopoe leads. The flock crosses into desert.
+                <em>عزم راه کردن مرغان</em>
+            </figcaption>
+        </figure>
+        <figure class="panel side">
+            <img class="panel-img" src="images_cinematic/chapter_15.webp" alt="A hundred excuses">
+            <figcaption class="panel-caption">
+                <strong>A Hundred Excuses</strong>
+                Even at the threshold, hesitation.
+                <em>عذر آوردن مرغان</em>
+            </figcaption>
+        </figure>
+        <div class="hoopoe-quote">
+            <div class="fa">
+                هر که او را در دل از حق ذرّه‌ای‌ست<br>
+                از سرِ کویش به جانش غرّه‌ای‌ست
+            </div>
+            <div class="en">A single grain of the Real in your heart, says the Hoopoe, will get you to His door.</div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ACT 4: Seven Valleys -->
+    <section class="act">
+        <span class="act-num">Act Four</span>
+        <div class="act-title">The Seven Valleys</div>
+        <div class="act-fa">هفت وادی</div>
+    </section>
+
+    <div class="valleys">
+        <figure class="panel valley">
+            <img class="panel-img" src="images_cinematic/chapter_16.webp" alt="Valley of Search">
+            <figcaption class="panel-caption">
+                <strong>I · Search</strong>
+                <em>طلب</em>
+            </figcaption>
+        </figure>
+        <figure class="panel valley">
+            <img class="panel-img" src="images_cinematic/chapter_17.webp" alt="Valley of Love">
+            <figcaption class="panel-caption">
+                <strong>II · Love</strong>
+                <em>عشق</em>
+            </figcaption>
+        </figure>
+        <figure class="panel valley">
+            <img class="panel-img" src="images_cinematic/chapter_18.webp" alt="Valley of Knowing">
+            <figcaption class="panel-caption">
+                <strong>III · Knowing</strong>
+                <em>معرفت</em>
+            </figcaption>
+        </figure>
+        <figure class="panel valley">
+            <img class="panel-img" src="images_cinematic/chapter_19.webp" alt="Valley of Detachment">
+            <figcaption class="panel-caption">
+                <strong>IV · Detachment</strong>
+                <em>استغنا</em>
+            </figcaption>
+        </figure>
+        <figure class="panel valley">
+            <img class="panel-img" src="images_cinematic/chapter_20.webp" alt="Valley of Unity">
+            <figcaption class="panel-caption">
+                <strong>V · Unity</strong>
+                <em>توحید</em>
+            </figcaption>
+        </figure>
+        <figure class="panel valley">
+            <img class="panel-img" src="images_cinematic/chapter_21.webp" alt="Valley of Bewilderment">
+            <figcaption class="panel-caption">
+                <strong>VI · Wonder</strong>
+                <em>حیرت</em>
+            </figcaption>
+        </figure>
+        <figure class="panel valley">
+            <img class="panel-img" src="images_cinematic/chapter_22.webp" alt="Valley of Annihilation">
+            <figcaption class="panel-caption">
+                <strong>VII · Annihilation</strong>
+                <em>فقر و فنا</em>
+            </figcaption>
+        </figure>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ACT 5: Si Morgh -->
+    <section class="act">
+        <span class="act-num">Act Five</span>
+        <div class="act-title">The Thirty Birds Before the Simorgh</div>
+        <div class="act-fa">سی‌مرغ در پیشگاه سیمرغ</div>
+    </section>
+
+    <div class="reveal">
+        <figure class="panel">
+            <img class="panel-img" src="images_cinematic/chapter_23.webp" alt="Thirty birds reach the Simorgh">
+            <figcaption class="panel-caption">
+                <strong>The Mirror</strong>
+                Of the thousands who began, thirty arrive.
+            </figcaption>
+        </figure>
+        <div class="reveal-text">
+            <div class="si-morgh">سی‌مرغ ⟷ سیمرغ</div>
+            <div class="si-morgh-sub">Si-Morgh · Thirty Birds  ·  Sī-morgh · The Simorgh</div>
+            <p class="play">They had walked across the world to find <strong>Sīmorgh</strong>, and at the end of the path they were <strong>sī morgh</strong> — thirty birds. The same word. The same body of feathers.</p>
+            <p class="meaning">In Persian the pun is the point. The seeker and the sought share a name. The mirror is what was always carried.</p>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ACT 6: Farewell -->
+    <section class="act">
+        <span class="act-num">Coda</span>
+        <div class="act-title">Attar's Farewell</div>
+        <div class="act-fa">فی وصف حاله</div>
+    </section>
+
+    <div class="farewell">
+        <figure class="panel">
+            <img class="panel-img" src="images_cinematic/chapter_24.webp" alt="Attar with quill">
+            <figcaption class="panel-caption">
+                <strong>The Author Sets Down His Pen</strong>
+            </figcaption>
+        </figure>
+        <div class="farewell-text">
+            <div class="fa">
+                کردی ای عطّار بر عالم نثار<br>
+                نافهٔ اسرار هر دم صد هزار
+            </div>
+            <p>This map of the heart, by Attar of Nishapur, completed. He gives it to whoever comes after — not as a guidebook but as a feather, dropped where someone might find it.</p>
+            <p>Eight centuries later, you found it.</p>
+            <div class="sig">— Farīd ud-Dīn ʿAṭṭār</div>
+        </div>
+    </div>
+
+    <footer class="colophon">
+        Read the full retelling: <a href="index.html">Cinematic edition</a> · <a href="index_anime.html">Anime edition</a>
+        <br><br>
+        Source: Manteq al-Tayr, Farīd ud-Dīn ʿAṭṭār of Nishapur · 12th century · Public domain
+    </footer>
+
+</article>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22ce75db169a4525ae1cbe0d381c1fa5"}'></script>
+</body>
+</html>
