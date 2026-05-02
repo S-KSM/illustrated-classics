@@ -106,21 +106,23 @@ body::before {
     padding: 56px clamp(28px, 4vw, 72px) 72px;
 }
 
-/* Corner flourishes — cleaner Persian-style vine in 4 corners */
+/* Corner flourishes — Persian arabesque (vine + saz leaves + quatrefoil rosette) */
 .corner {
     position: absolute;
-    width: 92px;
-    height: 92px;
+    width: 124px;
+    height: 124px;
     pointer-events: none;
-    opacity: 0.85;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='none' stroke='%238a6324' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'><path d='M0 18 Q 14 18 22 26 Q 30 34 30 48' /><path d='M18 0 Q 18 14 26 22 Q 34 30 48 30' /><path d='M30 48 Q 24 48 22 54 Q 22 60 28 62 Q 34 60 34 54 Q 32 50 30 48 Z' fill='%23b8893a' fill-opacity='0.5'/><path d='M48 30 Q 48 24 54 22 Q 60 22 62 28 Q 60 34 54 34 Q 50 32 48 30 Z' fill='%23b8893a' fill-opacity='0.5'/><circle cx='30' cy='30' r='3.2' fill='%238a2a1f'/><path d='M30 30 Q 38 38 50 50' /><path d='M50 50 Q 56 56 56 64' opacity='0.6'/><path d='M50 50 Q 56 56 64 56' opacity='0.6'/></g></svg>");
+    opacity: 0.9;
+    color: var(--gold-deep);
 }
-.corner.tl { top: 8px; left: 8px; }
-.corner.tr { top: 8px; right: 8px; transform: scaleX(-1); }
-.corner.bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
-.corner.br { bottom: 8px; right: 8px; transform: scale(-1, -1); }
+.corner svg { width: 100%; height: 100%; display: block; }
+.corner.tl { top: 6px; left: 6px; }
+.corner.tr { top: 6px; right: 6px; transform: scaleX(-1); }
+.corner.bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+.corner.br { bottom: 6px; right: 6px; transform: scale(-1, -1); }
+@media (max-width: 700px) {
+    .corner { width: 78px; height: 78px; }
+}
 
 /* Reading progress bar */
 .progress-rail {
@@ -717,6 +719,74 @@ body::before {
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+        <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e8c878"/>
+            <stop offset="55%" stop-color="#b8893a"/>
+            <stop offset="100%" stop-color="#7d5a20"/>
+        </linearGradient>
+        <linearGradient id="goldGrad2" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#d4a94a"/>
+            <stop offset="100%" stop-color="#8a6324"/>
+        </linearGradient>
+        <symbol id="corner-motif" viewBox="0 0 120 120">
+            <!-- main S-curve vines tracing the two edges -->
+            <path d="M28 14 C 46 8, 60 22, 80 14 C 96 10, 110 18, 118 26"
+                  fill="none" stroke="#8a6324" stroke-width="1.1" stroke-linecap="round"/>
+            <path d="M14 28 C 8 46, 22 60, 14 80 C 10 96, 18 110, 26 118"
+                  fill="none" stroke="#8a6324" stroke-width="1.1" stroke-linecap="round"/>
+            <!-- secondary vines weaving inward -->
+            <path d="M30 30 C 42 38, 50 56, 60 78 C 64 90, 72 96, 80 100"
+                  fill="none" stroke="#8a6324" stroke-width="0.85" stroke-linecap="round" opacity="0.85"/>
+            <!-- saz leaf cascading along top -->
+            <path d="M44 16 C 56 10, 74 16, 86 22 C 80 28, 68 28, 58 26 C 50 24, 46 20, 44 16 Z"
+                  fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.55"/>
+            <path d="M50 18 C 60 22, 72 24, 80 24" fill="none" stroke="#7d5a20" stroke-width="0.4" opacity="0.55"/>
+            <!-- saz leaf cascading along left -->
+            <path d="M16 44 C 10 56, 16 74, 22 86 C 28 80, 28 68, 26 58 C 24 50, 20 46, 16 44 Z"
+                  fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.55"/>
+            <path d="M18 50 C 22 60, 24 72, 24 80" fill="none" stroke="#7d5a20" stroke-width="0.4" opacity="0.55"/>
+            <!-- second saz leaf, inner -->
+            <path d="M62 28 C 70 26, 78 32, 80 40 C 74 42, 66 38, 62 32 C 60 30, 60 28, 62 28 Z"
+                  fill="url(#goldGrad2)" stroke="#7d5a20" stroke-width="0.5" opacity="0.85"/>
+            <path d="M28 62 C 26 70, 32 78, 40 80 C 42 74, 38 66, 32 62 C 30 60, 28 60, 28 62 Z"
+                  fill="url(#goldGrad2)" stroke="#7d5a20" stroke-width="0.5" opacity="0.85"/>
+            <!-- central quatrefoil rosette at the corner intersection -->
+            <g transform="translate(30 30)">
+                <path d="M0 -12 Q -9 -9 -12 0 Q -9 9 0 12 Q 9 9 12 0 Q 9 -9 0 -12 Z"
+                      fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.7"/>
+                <path d="M0 -7 Q -5 -5 -7 0 Q -5 5 0 7 Q 5 5 7 0 Q 5 -5 0 -7 Z"
+                      fill="#fdf3dc" opacity="0.55"/>
+                <circle r="2.4" fill="#1f3a6e"/>
+                <circle r="0.8" cx="0" cy="-1" fill="#fdf3dc"/>
+            </g>
+            <!-- secondary mini-rosette deeper inside -->
+            <g transform="translate(70 70)">
+                <path d="M0 -7 Q -5 -5 -7 0 Q -5 5 0 7 Q 5 5 7 0 Q 5 -5 0 -7 Z"
+                      fill="#b8893a" stroke="#7d5a20" stroke-width="0.5" opacity="0.85"/>
+                <circle r="1.6" fill="#1f3a6e"/>
+            </g>
+            <!-- terminal accent leaf at vine end -->
+            <path d="M76 96 Q 84 94 88 100 Q 90 108 84 110 Q 78 106 76 96 Z"
+                  fill="url(#goldGrad2)" stroke="#7d5a20" stroke-width="0.45"/>
+            <!-- small buds along the main vines -->
+            <circle cx="50" cy="14" r="2.2" fill="#b8893a" stroke="#7d5a20" stroke-width="0.3"/>
+            <circle cx="14" cy="50" r="2.2" fill="#b8893a" stroke="#7d5a20" stroke-width="0.3"/>
+            <circle cx="92" cy="14" r="1.6" fill="#b8893a" stroke="#7d5a20" stroke-width="0.3" opacity="0.9"/>
+            <circle cx="14" cy="92" r="1.6" fill="#b8893a" stroke="#7d5a20" stroke-width="0.3" opacity="0.9"/>
+            <!-- small lapis blue dots (echoing the manuscript reference) -->
+            <circle cx="42" cy="18" r="1.1" fill="#1f3a6e"/>
+            <circle cx="18" cy="42" r="1.1" fill="#1f3a6e"/>
+            <circle cx="64" cy="22" r="1" fill="#1f3a6e" opacity="0.85"/>
+            <circle cx="22" cy="64" r="1" fill="#1f3a6e" opacity="0.85"/>
+            <!-- tiny tendrils -->
+            <path d="M30 30 Q 26 22 18 18" fill="none" stroke="#7d5a20" stroke-width="0.6"/>
+            <path d="M30 30 Q 22 26 18 18" fill="none" stroke="#7d5a20" stroke-width="0.5" opacity="0.6"/>
+        </symbol>
+    </defs>
+</svg>
+
 <div class="progress-rail" aria-hidden="true"><div class="progress-fill"></div></div>
 
 <nav class="topbar">
@@ -735,10 +805,10 @@ body::before {
 </aside>
 
 <article class="manuscript">
-    <span class="corner tl" aria-hidden="true"></span>
-    <span class="corner tr" aria-hidden="true"></span>
-    <span class="corner bl" aria-hidden="true"></span>
-    <span class="corner br" aria-hidden="true"></span>
+    <span class="corner tl" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#corner-motif"/></svg></span>
+    <span class="corner tr" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#corner-motif"/></svg></span>
+    <span class="corner bl" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#corner-motif"/></svg></span>
+    <span class="corner br" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#corner-motif"/></svg></span>
 
     <header class="hero reveal-on-scroll">
         <svg class="hero-feather" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
