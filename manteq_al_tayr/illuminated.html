@@ -363,6 +363,20 @@ body::before {
     margin-top: 12px;
 }
 .bird-card .panel-img { aspect-ratio: 1 / 1; }
+.bird-card .panel-caption,
+.spread-hoopoe .panel-caption,
+.valley .panel-caption {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+.bird-card .panel-caption { min-height: 5em; }
+.spread-hoopoe .panel-caption { min-height: 5em; }
+.valley .panel-caption { min-height: 4em; }
+.bird-card .panel-caption strong,
+.spread-hoopoe .panel-caption strong,
+.valley .panel-caption strong { margin-bottom: 0; }
 
 /* ACT 3 — Hoopoe parables */
 .spread-hoopoe {
@@ -630,7 +644,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_3.webp" alt="The Parrot">
             <figcaption class="panel-caption">
                 <strong>Parrot</strong>
-                Wants forever in a comfortable cage.
+                Locked in her cage.
                 <em>طوطی</em>
             </figcaption>
         </figure>
@@ -638,7 +652,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_4.webp" alt="The Peacock">
             <figcaption class="panel-caption">
                 <strong>Peacock</strong>
-                Lost from paradise; cannot let it go.
+                Mourns lost paradise.
                 <em>طاووس</em>
             </figcaption>
         </figure>
@@ -646,7 +660,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_5.webp" alt="The Duck">
             <figcaption class="panel-caption">
                 <strong>Duck</strong>
-                Refuses to leave clean water.
+                Bound to clean water.
                 <em>بط</em>
             </figcaption>
         </figure>
@@ -654,7 +668,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_6.webp" alt="The Partridge">
             <figcaption class="panel-caption">
                 <strong>Partridge</strong>
-                In love with stones — counting jewels.
+                Counting her jewels.
                 <em>کبک</em>
             </figcaption>
         </figure>
@@ -662,7 +676,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_7.webp" alt="The Homa">
             <figcaption class="panel-caption">
                 <strong>Homa</strong>
-                Lives by giving shadows to kings.
+                Shades the heads of kings.
                 <em>همای</em>
             </figcaption>
         </figure>
@@ -670,7 +684,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_8.webp" alt="The Falcon">
             <figcaption class="panel-caption">
                 <strong>Falcon</strong>
-                Already serves a king he can see.
+                Serves a visible king.
                 <em>باز</em>
             </figcaption>
         </figure>
@@ -678,7 +692,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_9.webp" alt="The Heron">
             <figcaption class="panel-caption">
                 <strong>Heron</strong>
-                Spends his life mourning the sea.
+                Mourning the sea.
                 <em>بوتیمار</em>
             </figcaption>
         </figure>
@@ -686,7 +700,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_10.webp" alt="The Owl">
             <figcaption class="panel-caption">
                 <strong>Owl</strong>
-                Digs through ruins for buried gold.
+                Digging through ruins.
                 <em>کوف</em>
             </figcaption>
         </figure>
@@ -694,7 +708,7 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_11.webp" alt="The Finch">
             <figcaption class="panel-caption">
                 <strong>Finch</strong>
-                Too small. Too tired. Too afraid.
+                Too small. Too afraid.
                 <em>صعوه</em>
             </figcaption>
         </figure>
@@ -728,23 +742,24 @@ body::before {
             <img class="panel-img" src="images_cinematic/chapter_13.webp" alt="Sheikh San'an">
             <figcaption class="panel-caption">
                 <strong>Sheikh Sanʿān</strong>
-                A holy man falls in love with a Christian girl.
+                A holy man, undone by love.
+                <em>شیخ صنعان</em>
             </figcaption>
         </figure>
         <figure class="panel center">
             <img class="panel-img" src="images_cinematic/chapter_14.webp" alt="Departure">
             <figcaption class="panel-caption">
                 <strong>Departure</strong>
-                The Hoopoe leads. The flock crosses into desert.
-                <em>عزم راه کردن مرغان</em>
+                The flock takes flight at last.
+                <em>عزم راه</em>
             </figcaption>
         </figure>
         <figure class="panel side">
             <img class="panel-img" src="images_cinematic/chapter_15.webp" alt="A hundred excuses">
             <figcaption class="panel-caption">
                 <strong>A Hundred Excuses</strong>
-                Even at the threshold, hesitation.
-                <em>عذر آوردن مرغان</em>
+                Even at the threshold, fear.
+                <em>عذر آوردن</em>
             </figcaption>
         </figure>
     </div>
