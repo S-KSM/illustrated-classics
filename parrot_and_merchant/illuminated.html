@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Story of the Parrot and the Merchant — Illuminated</title>
+<meta name="description" content="An illuminated single-page retelling of Rūmī's تاجر و طوطی from the Masnavi — a merchant, a caged parrot, and a message that becomes a death and a flight.">
+<link rel="canonical" href="https://ai-may-i.com/classics/parrot_and_merchant/illuminated.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Parrot and the Merchant — Illuminated Edition">
+<meta property="og:description" content="Rūmī's tale of a merchant, a caged parrot, and a single message that crossed the world and came back as a death and a flight. Persian-miniature illuminated edition.">
+<meta property="og:image" content="https://ai-may-i.com/classics/parrot_and_merchant/images_persian/cover.webp">
+<meta property="og:url" content="https://ai-may-i.com/classics/parrot_and_merchant/illuminated.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Parrot and the Merchant — Illuminated Edition">
+<meta name="twitter:description" content="Rūmī's tale of a caged parrot's secret message — illuminated.">
+<meta name="twitter:image" content="https://ai-may-i.com/classics/parrot_and_merchant/images_persian/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,400,0;9..144,600,0;9..144,800,0;9..144,400,1;9..144,700,1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@500;700&family=Vazirmatn:wght@400;500;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:root {
+    --parchment: #f4e6c2;
+    --parchment-deep: #ead7a8;
+    --parchment-shadow: #c9b282;
+    --ink: #2a1d10;
+    --ink-soft: #5a4326;
+    --gold: #b8893a;
+    --gold-bright: #d4a94a;
+    --gold-deep: #8a6324;
+    --crimson: #8a2a1f;
+    --indigo: #1f3a6e;
+    --teal: #2c6e6a;
+    --rose: #b85450;
+    --frame: #6e4c1f;
+    --emerald: #1f6e3a;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(184, 137, 58, 0.12), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(31, 110, 58, 0.08), transparent 60%),
+        var(--parchment);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 0;
+    background-image:
+        radial-gradient(circle at 20% 35%, rgba(110, 76, 31, 0.06) 0, transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(110, 76, 31, 0.05) 0, transparent 40%),
+        repeating-linear-gradient(45deg, transparent 0 8px, rgba(110, 76, 31, 0.018) 8px 9px);
+}
+
+.topbar {
+    position: relative;
+    z-index: 10;
+    max-width: 1480px;
+    margin: 0 auto 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 20px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+}
+.topbar a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.topbar a:hover { color: var(--crimson); border-color: var(--crimson); }
+
+.manuscript {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--parchment);
+    box-shadow:
+        0 0 0 1px var(--crimson),
+        0 0 0 5px var(--gold),
+        0 0 0 6px var(--crimson),
+        0 0 0 14px var(--parchment),
+        0 0 0 15px var(--gold-deep),
+        0 30px 80px -30px rgba(42, 29, 16, 0.55),
+        inset 0 0 80px rgba(110, 76, 31, 0.12);
+    padding: 60px clamp(28px, 4vw, 72px) 76px;
+}
+@media (max-width: 700px) {
+    .manuscript {
+        box-shadow:
+            0 0 0 1px var(--crimson),
+            0 0 0 3px var(--gold),
+            0 0 0 4px var(--crimson),
+            0 0 0 9px var(--parchment),
+            0 0 0 10px var(--gold-deep),
+            0 20px 50px -20px rgba(42, 29, 16, 0.5);
+    }
+}
+
+.manuscript::before, .manuscript::after {
+    content: "";
+    position: absolute;
+    top: 140px;
+    bottom: 140px;
+    width: 22px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 220' preserveAspectRatio='xMidYMin slice'><g stroke='%237d5a20' stroke-width='0.7' fill='none' stroke-linecap='round'><path d='M11 0 C 5 20 17 40 11 60 C 5 80 17 100 11 120 C 5 140 17 160 11 180 C 5 200 17 218 11 220'/></g><g><circle cx='11' cy='30' r='2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='11' cy='30' r='0.7' fill='%231f3a6e'/><circle cx='11' cy='90' r='2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='11' cy='90' r='0.7' fill='%231f3a6e'/><circle cx='11' cy='150' r='2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='11' cy='150' r='0.7' fill='%231f3a6e'/></g><g fill='%23c89a48' stroke='%237d5a20' stroke-width='0.45' opacity='0.85'><path d='M11 60 C 4 56 2 62 6 66 C 9 64 11 62 11 60 Z'/><path d='M11 60 C 18 56 20 62 16 66 C 13 64 11 62 11 60 Z'/><path d='M11 120 C 4 116 2 122 6 126 C 9 124 11 122 11 120 Z'/><path d='M11 120 C 18 116 20 122 16 126 C 13 124 11 122 11 120 Z'/><path d='M11 180 C 4 176 2 182 6 186 C 9 184 11 182 11 180 Z'/><path d='M11 180 C 18 176 20 182 16 186 C 13 184 11 182 11 180 Z'/></g></svg>");
+    background-repeat: repeat-y;
+    background-size: 22px 220px;
+    pointer-events: none;
+    opacity: 0.55;
+    z-index: 0;
+}
+.manuscript::before { left: 14px; }
+.manuscript::after  { right: 14px; }
+@media (max-width: 700px) {
+    .manuscript::before, .manuscript::after { display: none; }
+}
+
+.corner {
+    position: absolute;
+    width: 124px;
+    height: 124px;
+    pointer-events: none;
+    opacity: 0.9;
+    color: var(--gold-deep);
+}
+.corner svg { width: 100%; height: 100%; display: block; }
+.corner.tl { top: 6px; left: 6px; }
+.corner.tr { top: 6px; right: 6px; transform: scaleX(-1); }
+.corner.bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+.corner.br { bottom: 6px; right: 6px; transform: scale(-1, -1); }
+@media (max-width: 700px) {
+    .corner { width: 78px; height: 78px; }
+}
+
+.progress-rail {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(184, 137, 58, 0.15);
+    z-index: 50;
+}
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold-bright), var(--crimson));
+    transition: width 0.1s ease-out;
+    box-shadow: 0 0 8px rgba(212, 169, 74, 0.6);
+}
+
+.act-nav {
+    position: fixed;
+    right: clamp(12px, 2vw, 24px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 8px;
+    background: rgba(244, 230, 194, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--gold);
+    border-radius: 30px;
+    box-shadow: 0 8px 24px -12px rgba(42, 29, 16, 0.4);
+    opacity: 0;
+    transform: translateY(-50%) translateX(20px);
+    transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+}
+.act-nav.show { opacity: 1; transform: translateY(-50%) translateX(0); }
+.act-nav a {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid var(--gold-deep);
+    transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    text-decoration: none;
+}
+.act-nav a::after {
+    content: attr(data-label);
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(8px);
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Fraunces', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.act-nav a:hover { background: var(--gold-bright); border-color: var(--crimson); transform: scale(1.2); }
+.act-nav a:hover::after { opacity: 1; transform: translateY(-50%) translateX(0); }
+.act-nav a.current { background: var(--crimson); border-color: var(--crimson); box-shadow: 0 0 0 4px rgba(138, 42, 31, 0.18); }
+@media (max-width: 700px) { .act-nav { display: none; } }
+
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: opacity, transform;
+}
+.reveal-on-scroll.in { opacity: 1; transform: translateY(0); }
+.reveal-on-scroll.delay-1 { transition-delay: 80ms; }
+.reveal-on-scroll.delay-2 { transition-delay: 160ms; }
+.reveal-on-scroll.delay-3 { transition-delay: 240ms; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-on-scroll, .reveal-on-scroll.in {
+        opacity: 1; transform: none; transition: none;
+    }
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 22px 12px 32px;
+    border-bottom: 2px solid var(--gold);
+    position: relative;
+    margin-bottom: 36px;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -7px; left: 50%;
+    transform: translateX(-50%);
+    width: 12px; height: 12px;
+    background: var(--gold-bright);
+    border: 2px solid var(--parchment);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--gold);
+}
+.hero-cage {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 10px;
+    color: var(--crimson);
+    animation: cageSway 7s ease-in-out infinite;
+    transform-origin: 50% 6px;
+}
+@keyframes cageSway {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+}
+.hero-kicker {
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: var(--gold-deep);
+    margin-bottom: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+.hero-kicker::before, .hero-kicker::after {
+    content: "";
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold-deep);
+}
+.hero-fa {
+    font-family: 'Amiri', 'Vazirmatn', serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height: 1;
+    color: var(--crimson);
+    margin-bottom: 18px;
+    direction: rtl;
+}
+.hero-en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.7rem, 3.6vw, 2.7rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 14px;
+}
+.hero-author {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+}
+
+/* Act header */
+.act {
+    margin: 72px 0 32px;
+    text-align: center;
+    position: relative;
+}
+.act-num {
+    position: relative;
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    padding: 7px 28px;
+    margin-bottom: 18px;
+    background:
+        linear-gradient(var(--gold), var(--gold)) center top / 100% 1px no-repeat,
+        linear-gradient(var(--crimson), var(--crimson)) center 4px / 60% 0.5px no-repeat,
+        linear-gradient(var(--crimson), var(--crimson)) center calc(100% - 4px) / 60% 0.5px no-repeat,
+        linear-gradient(var(--gold), var(--gold)) center bottom / 100% 1px no-repeat;
+}
+.act-num::before, .act-num::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 56px;
+    height: 22px;
+    transform: translateY(-50%);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 22'><path d='M2 12 C 10 4 22 4 36 7 C 46 9 50 13 48 17 C 42 19 32 18 22 16 C 12 14 4 14 2 12 Z' fill='%23c89a48' stroke='%237d5a20' stroke-width='0.7'/><path d='M6 12 C 16 13 28 14 40 13' fill='none' stroke='%237d5a20' stroke-width='0.5' opacity='0.6'/><path d='M14 11 L16 14 M22 11 L24 14 M30 11 L32 14' stroke='%237d5a20' stroke-width='0.35' opacity='0.5'/><path d='M48 17 C 52 19 50 22 46 21' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.5'/><circle cx='44' cy='12' r='2.2' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.35'/><circle cx='44' cy='12' r='0.9' fill='%231f3a6e'/></svg>");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.act-num::before { right: 100%; margin-right: 14px; transform: translateY(-50%) scaleX(-1); }
+.act-num::after  { left: 100%;  margin-left: 14px; }
+
+.act-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var(--ink);
+    margin-bottom: 10px;
+}
+.act-title::after {
+    content: "";
+    display: block;
+    margin: 14px auto 0;
+    width: 110px;
+    height: 8px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 8'><line x1='0' y1='4' x2='44' y2='4' stroke='%23b8893a' stroke-width='1'/><line x1='66' y1='4' x2='110' y2='4' stroke='%23b8893a' stroke-width='1'/><circle cx='55' cy='4' r='2.6' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='55' cy='4' r='1' fill='%231f3a6e'/><circle cx='44' cy='4' r='0.9' fill='%238a2a1f'/><circle cx='66' cy='4' r='0.9' fill='%238a2a1f'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 110px 8px;
+    opacity: 0.85;
+}
+.act-fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    color: var(--crimson);
+    direction: rtl;
+}
+.act-fa::after {
+    content: "";
+    display: block;
+    margin: 14px auto 0;
+    width: 56px;
+    height: 12px;
+    direction: ltr;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 12'><path d='M4 6 C 14 0 24 4 28 6 C 32 4 42 0 52 6' fill='none' stroke='%23b8893a' stroke-width='0.9' stroke-linecap='round'/><circle cx='28' cy='6' r='1.6' fill='%23b8893a' stroke='%237d5a20' stroke-width='0.4'/><circle cx='28' cy='6' r='0.6' fill='%231f3a6e'/><circle cx='10' cy='6' r='0.7' fill='%238a2a1f' opacity='0.7'/><circle cx='46' cy='6' r='0.7' fill='%238a2a1f' opacity='0.7'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 56px 12px;
+    opacity: 0.75;
+}
+
+/* Panel */
+.panel {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--gold-deep);
+    box-shadow:
+        0 0 0 4px var(--parchment),
+        0 0 0 5px var(--gold),
+        0 12px 24px -16px rgba(42, 29, 16, 0.45);
+    overflow: hidden;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+}
+.panel::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid var(--crimson);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+}
+.panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background-image:
+        radial-gradient(circle at 7px 7px, var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at calc(100% - 7px) 7px, var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at 7px calc(100% - 7px), var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), var(--gold-bright) 1.6px, transparent 2.2px);
+}
+.panel:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 0 0 4px var(--parchment),
+        0 0 0 5px var(--crimson),
+        0 24px 36px -18px rgba(42, 29, 16, 0.55);
+}
+.panel:hover::before { opacity: 1; border-color: var(--crimson); }
+.panel-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
+}
+.panel:hover .panel-img {
+    transform: scale(1.04);
+    filter: saturate(1.08) brightness(1.04);
+}
+.panel-caption {
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-deep) 100%);
+    border-top: 1px solid var(--gold);
+    padding: 10px 14px;
+    font-family: 'Fraunces', serif;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--ink);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-height: 4.6em;
+}
+.panel-caption strong {
+    display: block;
+    font-style: italic;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+.panel-caption em {
+    font-family: 'Amiri', serif;
+    font-style: normal;
+    font-size: 0.95rem;
+    color: var(--crimson);
+    direction: rtl;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Spread layout for an act with text + image */
+.spread {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+    align-items: center;
+}
+.spread.reverse { grid-template-columns: 1fr 1.2fr; }
+.spread.reverse .text-block { order: 2; }
+.spread.reverse .panel-block { order: 1; }
+@media (max-width: 800px) {
+    .spread, .spread.reverse { grid-template-columns: 1fr; }
+    .spread.reverse .text-block { order: 1; }
+    .spread.reverse .panel-block { order: 2; }
+}
+
+.text-block { padding: 12px; }
+.text-block .pull-fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+    line-height: 1.9;
+    color: var(--crimson);
+    direction: rtl;
+    margin-bottom: 22px;
+    border-right: 3px solid var(--gold);
+    padding-right: 18px;
+}
+.text-block .pull-en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    border-left: 3px solid var(--gold);
+    padding-left: 18px;
+    margin-bottom: 22px;
+}
+.text-block .body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin-top: 8px;
+    color: var(--ink);
+}
+
+/* Two-image grid for acts that need both */
+.image-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-top: 28px;
+}
+@media (max-width: 700px) {
+    .image-pair { grid-template-columns: 1fr; }
+}
+
+/* Drop-cap */
+.drop {
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.6em;
+    height: 3.6em;
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--crimson);
+    margin: 6px 14px 4px 0;
+    padding: 0;
+    background:
+        radial-gradient(ellipse at 30% 30%, #fff5d8 0%, #f4e6c2 45%, #e8c878 90%);
+    border: 1.5px solid var(--gold-deep);
+    box-shadow:
+        inset 0 0 0 1px var(--crimson),
+        inset 0 0 0 3px var(--parchment),
+        inset 0 0 0 4px var(--gold),
+        0 4px 14px -6px rgba(42, 29, 16, 0.4);
+    position: relative;
+    text-shadow: 0 1px 0 rgba(253, 243, 220, 0.4);
+}
+.drop::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border-radius: 2px;
+    background-image:
+        radial-gradient(circle at 0 0, var(--crimson) 1.4px, transparent 1.8px),
+        radial-gradient(circle at 100% 0, var(--crimson) 1.4px, transparent 1.8px),
+        radial-gradient(circle at 0 100%, var(--crimson) 1.4px, transparent 1.8px),
+        radial-gradient(circle at 100% 100%, var(--crimson) 1.4px, transparent 1.8px);
+    pointer-events: none;
+}
+@media (max-width: 700px) {
+    .drop { font-size: 1.4rem; width: 3.2em; height: 3.2em; }
+}
+
+/* Coda / farewell */
+.coda {
+    margin-top: 60px;
+    padding: 36px 28px;
+    background: linear-gradient(180deg, var(--parchment-deep), var(--parchment));
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    text-align: center;
+    position: relative;
+}
+.coda .coda-fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--crimson);
+    direction: rtl;
+    line-height: 1.9;
+    margin-bottom: 18px;
+}
+.coda .coda-en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ink);
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+.coda .coda-meaning {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 auto 18px;
+    line-height: 1.65;
+}
+.coda .sig {
+    margin-top: 22px;
+    font-family: 'Caveat', cursive;
+    font-size: 2rem;
+    color: var(--crimson);
+}
+
+/* Colophon */
+.colophon {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+}
+.colophon::before {
+    content: "❦  ❦  ❦";
+    display: block;
+    color: var(--gold-deep);
+    margin-bottom: 14px;
+    letter-spacing: 0.4em;
+}
+.colophon a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    color: var(--crimson);
+}
+
+.divider {
+    margin: 64px auto;
+    width: 76%;
+    max-width: 620px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-deep);
+}
+.divider svg { width: 100%; height: 100%; display: block; }
+
+@media print {
+    body { padding: 0; background: white; }
+    .topbar { display: none; }
+    .manuscript { box-shadow: none; }
+    .act-nav, .progress-rail { display: none; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+        <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f4d889"/>
+            <stop offset="40%" stop-color="#d4a94a"/>
+            <stop offset="75%" stop-color="#a47830"/>
+            <stop offset="100%" stop-color="#6e4c1f"/>
+        </linearGradient>
+        <linearGradient id="goldGrad2" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e8c270"/>
+            <stop offset="55%" stop-color="#b8893a"/>
+            <stop offset="100%" stop-color="#6e4c1f"/>
+        </linearGradient>
+        <radialGradient id="rosetteCore" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5d8"/>
+            <stop offset="60%" stop-color="#e8c878"/>
+            <stop offset="100%" stop-color="#a47830"/>
+        </radialGradient>
+        <radialGradient id="petalGrad" cx="35%" cy="35%" r="70%">
+            <stop offset="0%" stop-color="#f4d889"/>
+            <stop offset="55%" stop-color="#c89a48"/>
+            <stop offset="100%" stop-color="#7d5a20"/>
+        </radialGradient>
+
+        <symbol id="rosette" viewBox="-14 -14 28 28">
+            <ellipse cx="5" cy="-5" rx="3" ry="5" transform="rotate(45 5 -5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <ellipse cx="-5" cy="-5" rx="3" ry="5" transform="rotate(-45 -5 -5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <ellipse cx="5" cy="5" rx="3" ry="5" transform="rotate(-45 5 5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <ellipse cx="-5" cy="5" rx="3" ry="5" transform="rotate(45 -5 5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <ellipse cx="0" cy="-7" rx="4" ry="6.5" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <ellipse cx="7" cy="0" rx="6.5" ry="4" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <ellipse cx="0" cy="7" rx="4" ry="6.5" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <ellipse cx="-7" cy="0" rx="6.5" ry="4" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <circle r="5" fill="url(#rosetteCore)" stroke="#7d5a20" stroke-width="0.55"/>
+            <circle r="2.8" fill="#1f3a6e"/>
+            <circle r="1.6" cx="-0.7" cy="-0.7" fill="#3a5a9a" opacity="0.7"/>
+            <circle r="0.7" cx="-1" cy="-1" fill="#fdf3dc" opacity="0.95"/>
+        </symbol>
+
+        <symbol id="corner-motif" viewBox="0 0 120 120">
+            <path d="M28 14 C 46 8, 60 22, 80 14 C 96 10, 110 18, 118 26"
+                  fill="none" stroke="#8a6324" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M14 28 C 8 46, 22 60, 14 80 C 10 96, 18 110, 26 118"
+                  fill="none" stroke="#8a6324" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M30 30 C 44 36, 52 52, 56 70 C 60 86, 70 96, 86 102"
+                  fill="none" stroke="#8a6324" stroke-width="0.95" stroke-linecap="round" opacity="0.9"/>
+            <path d="M44 16 C 56 9, 74 14, 88 22 C 92 26, 90 30, 84 30 C 74 30, 62 26, 50 22 C 46 20, 44 18, 44 16 Z"
+                  fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.55"/>
+            <path d="M16 44 C 9 56, 14 74, 22 88 C 26 92, 30 90, 30 84 C 30 74, 26 62, 22 50 C 20 46, 18 44, 16 44 Z"
+                  fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.55"/>
+            <path d="M60 28 C 70 26, 80 30, 84 38 C 82 44, 74 42, 66 36 C 62 32, 60 30, 60 28 Z"
+                  fill="url(#goldGrad2)" stroke="#7d5a20" stroke-width="0.5" opacity="0.92"/>
+            <path d="M28 60 C 26 70, 30 80, 38 84 C 44 82, 42 74, 36 66 C 32 62, 30 60, 28 60 Z"
+                  fill="url(#goldGrad2)" stroke="#7d5a20" stroke-width="0.5" opacity="0.92"/>
+            <g transform="translate(30 30)"><use href="#rosette" width="28" height="28" x="-14" y="-14"/></g>
+            <g transform="translate(74 74) scale(0.62)"><use href="#rosette" width="28" height="28" x="-14" y="-14"/></g>
+            <g transform="translate(98 98) scale(0.42)"><use href="#rosette" width="28" height="28" x="-14" y="-14"/></g>
+            <circle cx="56" cy="11" r="2.4" fill="#b8893a" stroke="#7d5a20" stroke-width="0.4"/>
+            <circle cx="11" cy="56" r="2.4" fill="#b8893a" stroke="#7d5a20" stroke-width="0.4"/>
+            <circle cx="44" cy="18" r="1.3" fill="#1f3a6e"/>
+            <circle cx="18" cy="44" r="1.3" fill="#1f3a6e"/>
+            <circle cx="68" cy="20" r="1" fill="#1f3a6e" opacity="0.9"/>
+            <circle cx="20" cy="68" r="1" fill="#1f3a6e" opacity="0.9"/>
+        </symbol>
+
+        <symbol id="divider-cluster" viewBox="0 0 620 56">
+            <line x1="40" y1="28" x2="240" y2="28" stroke="#b8893a" stroke-width="1"/>
+            <line x1="40" y1="32" x2="240" y2="32" stroke="#b8893a" stroke-width="0.5" opacity="0.6"/>
+            <circle cx="120" cy="28" r="1.6" fill="#8a2a1f"/>
+            <circle cx="200" cy="28" r="1.6" fill="#8a2a1f"/>
+            <circle cx="160" cy="28" r="2" fill="#b8893a" stroke="#7d5a20" stroke-width="0.4"/>
+            <path d="M240 28 C 250 22, 258 28, 262 32" fill="none" stroke="#7d5a20" stroke-width="0.7"/>
+            <g transform="translate(310 28)"><use href="#rosette" width="50" height="50" x="-25" y="-25"/></g>
+            <path d="M380 28 C 370 22, 362 28, 358 32" fill="none" stroke="#7d5a20" stroke-width="0.7"/>
+            <line x1="380" y1="28" x2="580" y2="28" stroke="#b8893a" stroke-width="1"/>
+            <line x1="380" y1="32" x2="580" y2="32" stroke="#b8893a" stroke-width="0.5" opacity="0.6"/>
+            <circle cx="500" cy="28" r="1.6" fill="#8a2a1f"/>
+            <circle cx="420" cy="28" r="1.6" fill="#8a2a1f"/>
+            <circle cx="460" cy="28" r="2" fill="#b8893a" stroke="#7d5a20" stroke-width="0.4"/>
+        </symbol>
+
+        <symbol id="hero-cage" viewBox="0 0 64 64">
+            <path d="M32 6 L40 14 L24 14 Z" fill="#b8893a" stroke="#7d5a20" stroke-width="0.8"/>
+            <circle cx="32" cy="6" r="2.5" fill="#d4a94a" stroke="#7d5a20" stroke-width="0.6"/>
+            <path d="M14 16 Q32 8 50 16 L50 50 L14 50 Z" fill="none" stroke="#8a2a1f" stroke-width="1.4"/>
+            <line x1="20" y1="14" x2="20" y2="50" stroke="#8a2a1f" stroke-width="0.7"/>
+            <line x1="26" y1="13" x2="26" y2="50" stroke="#8a2a1f" stroke-width="0.7"/>
+            <line x1="32" y1="12" x2="32" y2="50" stroke="#8a2a1f" stroke-width="0.7"/>
+            <line x1="38" y1="13" x2="38" y2="50" stroke="#8a2a1f" stroke-width="0.7"/>
+            <line x1="44" y1="14" x2="44" y2="50" stroke="#8a2a1f" stroke-width="0.7"/>
+            <ellipse cx="32" cy="36" rx="6" ry="8" fill="#1f6e3a" stroke="#0e3a1c" stroke-width="0.5"/>
+            <circle cx="34" cy="32" r="1" fill="#1a1a1a"/>
+            <path d="M30 32 L26 30 L30 34 Z" fill="#d4a94a"/>
+            <line x1="14" y1="50" x2="50" y2="50" stroke="#7d5a20" stroke-width="1.5"/>
+            <line x1="12" y1="52" x2="52" y2="52" stroke="#b8893a" stroke-width="2"/>
+        </symbol>
+    </defs>
+</svg>
+
+<div class="progress-rail"><div class="progress-fill" id="progress"></div></div>
+<nav class="act-nav" id="actNav" aria-label="Acts">
+    <a href="#act-1" data-label="I — Departure"></a>
+    <a href="#act-2" data-label="II — The Plea"></a>
+    <a href="#act-3" data-label="III — Hindustan"></a>
+    <a href="#act-4" data-label="IV — The Return"></a>
+    <a href="#act-5" data-label="V — Cage Goes Quiet"></a>
+    <a href="#act-6" data-label="VI — The Flight"></a>
+</nav>
+
+<div class="topbar">
+    <a href="../index.html">← All Classics</a>
+    <span style="letter-spacing: 0.3em;">ILLUMINATED EDITION</span>
+    <a href="kids/index.html" style="text-transform:none;letter-spacing:0.04em;">Kids version →</a>
+</div>
+
+<article class="manuscript">
+    <span class="corner tl"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#corner-motif"/></svg></span>
+    <span class="corner tr"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#corner-motif"/></svg></span>
+    <span class="corner bl"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#corner-motif"/></svg></span>
+    <span class="corner br"><svg viewBox="0 0 120 120" aria-hidden="true"><use href="#corner-motif"/></svg></span>
+
+    <header class="hero">
+        <svg class="hero-cage" viewBox="0 0 64 64" aria-hidden="true"><use href="#hero-cage"/></svg>
+        <div class="hero-kicker">From the Masnavi · Daftar I</div>
+        <h1 class="hero-fa">قِصّهٔ بازرگان و طوطی</h1>
+        <p class="hero-en">The Story of the Parrot and the Merchant</p>
+        <p class="hero-author">Mawlānā Jalāl ad-Dīn Rūmī · 13th century · Konya</p>
+    </header>
+
+    <!-- ACT I — Departure -->
+    <section class="act reveal-on-scroll" id="act-1">
+        <div class="act-num">Act I</div>
+        <h2 class="act-title">The Generous Merchant</h2>
+        <div class="act-fa">رفتنِ خواجه</div>
+    </section>
+
+    <div class="spread reveal-on-scroll">
+        <div class="text-block">
+            <div class="pull-fa">
+                بود بازرگان و او را طوطیی<br>
+                در قفس محبوس زیبا طوطیی
+            </div>
+            <div class="pull-en">
+                There was a merchant, and his bird —<br>
+                a beautiful parrot in a fine cage.
+            </div>
+            <p class="body"><span class="drop">T</span>here was once a merchant in old Persia, and in his house there was a parrot — a beautiful green parrot kept all its life in a fine gilded cage on the windowsill. The bird could speak. It spoke kindly. The household loved its small voice in the morning.</p>
+            <p class="body" style="margin-top: 14px;">When the merchant prepared to journey east to Hindustan to trade, he was a generous man. Before he left he went room by room asking each servant — every page-boy, every kitchen girl — what souvenir they would like him to bring back. To each one he listened. To each he made a promise. At last he came to the parrot. <em>"And you, little friend?"</em></p>
+        </div>
+        <div class="panel-block">
+            <div class="panel">
+                <img class="panel-img" src="images_persian/chapter_1.webp" alt="Merchant in Persian courtyard taking requests, with parrot in gilded cage on windowsill">
+                <div class="panel-caption"><strong>The merchant takes his promises</strong><em>هر یکی از وی مرادی خواست کرد</em></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider reveal-on-scroll" aria-hidden="true"><svg viewBox="0 0 620 56"><use href="#divider-cluster"/></svg></div>
+
+    <!-- ACT II — The Plea -->
+    <section class="act reveal-on-scroll" id="act-2">
+        <div class="act-num">Act II</div>
+        <h2 class="act-title">The Parrot's Only Request</h2>
+        <div class="act-fa">پیغامِ طوطی</div>
+    </section>
+
+    <div class="spread reverse reveal-on-scroll">
+        <div class="text-block">
+            <div class="pull-fa">
+                گفتش آن طوطی که آنجا طوطیان<br>
+                چون ببینی کن ز حال من بیان
+            </div>
+            <div class="pull-en">
+                "When you see the parrots over there,<br>
+                tell them, please, of how I am."
+            </div>
+            <p class="body"><span class="drop">T</span>he parrot did not ask for a thing. <em>"When you are there in Hindustan,"</em> it said, <em>"and you see a flock of parrots in some great tree — green like me, every one of them — give them this message from me. Say: there is a parrot in a city far away who longs for you. By the decree of heaven I am held in a cage. I sent my greetings. I asked for a way out."</em></p>
+            <p class="body" style="margin-top: 14px;">It paused. Its small head tilted. <em>"Tell them: is this how it is between friends? That I sit in iron and you sit in the rose-garden? When you drink the morning, drink one cup in memory of this poor caged bird."</em> The merchant gave his word. He did not know yet what he had agreed to carry.</p>
+        </div>
+        <div class="panel-block">
+            <div class="panel">
+                <img class="panel-img" src="images_persian/chapter_2.webp" alt="Close on parrot at the cage door, the merchant kneeling to listen">
+                <div class="panel-caption"><strong>The parrot's confiding</strong><em>بر شما کرد او سلام و داد خواست</em></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider reveal-on-scroll" aria-hidden="true"><svg viewBox="0 0 620 56"><use href="#divider-cluster"/></svg></div>
+
+    <!-- ACT III — Hindustan -->
+    <section class="act reveal-on-scroll" id="act-3">
+        <div class="act-num">Act III</div>
+        <h2 class="act-title">Among the Free Parrots of Hindustan</h2>
+        <div class="act-fa">در هندوستان</div>
+    </section>
+
+    <div class="spread reveal-on-scroll">
+        <div class="text-block">
+            <div class="pull-fa">
+                آن یکی طوطی ز دردت بوی برد<br>
+                زهره‌اش بدرید و لرزید و بمرد
+            </div>
+            <div class="pull-en">
+                One parrot caught the scent of your pain —<br>
+                its courage burst. It trembled. It fell.
+            </div>
+            <p class="body"><span class="drop">T</span>he road was long. He crossed mountains. He sold his goods at the bazaar of Hindustan. The work of the journey took the days, and the parrot's message slept folded inside him like a letter inside a coat.</p>
+            <p class="body" style="margin-top: 14px;">Then one afternoon, riding home through forest at the edge of the trade road, he looked up — and the trees above him were full of parrots. A whole company of them, green as the one in his window. He climbed down. He stood beneath the canopy with his face turned up to them. He repeated every word the caged parrot had asked him to say. He was still speaking when one bird — one out of all that bright crowd — went still, trembled, and fell straight down through the dappled green light. It struck the soft earth at his feet and did not move.</p>
+        </div>
+        <div class="panel-block">
+            <div class="panel">
+                <img class="panel-img" src="images_persian/chapter_3.webp" alt="Merchant under a tree of green parrots, calling up to them">
+                <div class="panel-caption"><strong>He delivers the message</strong><em>سوی هندستان شدن آغاز کرد</em></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="image-pair reveal-on-scroll">
+        <div class="panel">
+            <img class="panel-img" src="images_persian/chapter_4.webp" alt="A single parrot tumbling through dappled green light from the canopy">
+            <div class="panel-caption"><strong>The wild parrot falls</strong><em>زهره‌اش بدرید و لرزید و بمرد</em></div>
+        </div>
+        <div class="panel">
+            <img class="panel-img" src="images_persian/chapter_5.webp" alt="The merchant home, kneeling at the cage, hand at his face in regret">
+            <div class="panel-caption"><strong>He returns and confesses</strong><em>کرد بازرگان تجارت را تمام</em></div>
+        </div>
+    </div>
+
+    <div class="divider reveal-on-scroll" aria-hidden="true"><svg viewBox="0 0 620 56"><use href="#divider-cluster"/></svg></div>
+
+    <!-- ACT IV — The Return -->
+    <section class="act reveal-on-scroll" id="act-4">
+        <div class="act-num">Act IV</div>
+        <h2 class="act-title">The Return and the Confession</h2>
+        <div class="act-fa">باز گفتنِ خواجه</div>
+    </section>
+
+    <div class="spread reverse reveal-on-scroll">
+        <div class="text-block">
+            <div class="pull-fa">
+                نکته‌ای کان جست ناگه از زبان<br>
+                همچو تیری دان که آن جست از کمان
+            </div>
+            <div class="pull-en">
+                A word that has leapt from the tongue —<br>
+                count it an arrow already gone from the bow.
+            </div>
+            <p class="body"><span class="drop">H</span>e came back to his own city after many months. He gave the silk for one, the spices for another, the sandalwood beads for a third. Every promise paid. Then he climbed the stairs to the windowsill where the parrot was waiting in the same gilded cage.</p>
+            <p class="body" style="margin-top: 14px;"><em>"And my gift, master?"</em> the bird said. The merchant put his hand to his face. <em>"Don't ask me. I bite my own fingers when I think of it. I had no idea what I was carrying. I told them about you, and one of them — the moment it heard your name — trembled and fell at my feet. I have wished a thousand times I had kept silent. But the word once said cannot be unsaid."</em></p>
+        </div>
+        <div class="panel-block">
+            <div class="panel">
+                <img class="panel-img" src="images_persian/chapter_6.webp" alt="Inside the gold cage: the parrot lies on its side, merchant collapsed at the bars">
+                <div class="panel-caption"><strong>The cage goes quiet</strong><em>پس بلرزید، اوفتاد و گشت سرد</em></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider reveal-on-scroll" aria-hidden="true"><svg viewBox="0 0 620 56"><use href="#divider-cluster"/></svg></div>
+
+    <!-- ACT V — The Cage Goes Quiet -->
+    <section class="act reveal-on-scroll" id="act-5">
+        <div class="act-num">Act V</div>
+        <h2 class="act-title">The Body Cast from the Window</h2>
+        <div class="act-fa">برون افکندنِ طوطی</div>
+    </section>
+
+    <div class="spread reveal-on-scroll">
+        <div class="text-block">
+            <div class="pull-fa">
+                مرد غرقه گشته جانی می‌کند<br>
+                دست را در هر گیاهی می‌زند
+            </div>
+            <div class="pull-en">
+                A drowning man fights for his life —<br>
+                his hand reaches for any blade of grass.
+            </div>
+            <p class="body"><span class="drop">T</span>he parrot in the cage listened to the whole story. When the merchant finished, the parrot trembled — exactly the same tremble. The shudder ran from its small head down through its tail. Then it fell. It dropped from the perch onto the floor of the cage and lay on its side and did not move.</p>
+            <p class="body" style="margin-top: 14px;">The merchant could not understand what he had just seen. He cried out. He struck himself on the head. The household crowded into the doorway. At last he opened the cage. He lifted the small green body out, with both hands, the way you carry something that has just stopped being alive. He carried it to the open window. He bent his head and let it slip from his fingers down onto the wide stone sill.</p>
+        </div>
+        <div class="panel-block">
+            <div class="panel">
+                <img class="panel-img" src="images_persian/chapter_7.webp" alt="The merchant at the window, having laid the limp parrot on the windowsill">
+                <div class="panel-caption"><strong>He cannot bear it any longer</strong><em>بعد از آنَش از قفس بیرون فکند</em></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider reveal-on-scroll" aria-hidden="true"><svg viewBox="0 0 620 56"><use href="#divider-cluster"/></svg></div>
+
+    <!-- ACT VI — The Flight + Coda -->
+    <section class="act reveal-on-scroll" id="act-6">
+        <div class="act-num">Act VI</div>
+        <h2 class="act-title">Up to the Highest Branch</h2>
+        <div class="act-fa">پروازِ طوطی</div>
+    </section>
+
+    <div class="spread reverse reveal-on-scroll">
+        <div class="text-block">
+            <div class="pull-fa">
+                طوطی مرده چنان پرواز کرد<br>
+                کآفتاب شرق، تُرکی‌تاز کرد
+            </div>
+            <div class="pull-en">
+                That dead parrot took such a flight —<br>
+                like the eastern sun loosed across the sky.
+            </div>
+            <p class="body"><span class="drop">T</span>he parrot opened its wings. It rose from the sill in a clean upward curve, and in two beats of its wings it had crossed the courtyard, and in three more it was up among the highest branches of a tall plane tree across the street, where it stood looking down at him.</p>
+            <p class="body" style="margin-top: 14px;">The merchant could not move. He stood at his own window with his empty hands open at his sides. <em>"Oh, sweet singer,"</em> he called up at last, <em>"what did that other parrot do, that you learned this from?"</em></p>
+            <p class="body" style="margin-top: 14px;">The parrot looked down. <em>"He gave me my answer in the only way he could. His message was: let go of the sweetness of your voice. Your singing is the bar of your cage. He died in front of you so that I would understand. I have died here in front of you so that I could fly. That is the only way out."</em></p>
+        </div>
+        <div class="panel-block">
+            <div class="panel">
+                <img class="panel-img" src="images_persian/chapter_8.webp" alt="The freed parrot perched in a high plane-tree branch, the merchant watching from his window">
+                <div class="panel-caption"><strong>The parting blessing</strong><em>سلامٌ، الفِراق</em></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Coda -->
+    <section class="coda reveal-on-scroll">
+        <div class="coda-fa">
+            یک دو پندش داد طوطی، بی‌نفاق<br>
+            بعد از آن گفتش: «سلامٌ، الفِراق»
+        </div>
+        <div class="coda-en">
+            "I have given you the only counsel I had — and now: peace, and parting."
+        </div>
+        <p class="coda-meaning">
+            What the merchant had been mourning was not a death. It was the only message a caged bird can send to the one who keeps it: <em>moutu qabla an tamutu</em> — die before you die. Become so empty that no cage can hold you. Then go.
+        </p>
+        <p class="coda-meaning" style="margin-top:6px;">
+            <em>"My own soul cannot be less than a parrot's,"</em> the merchant said quietly. <em>"A soul too should know how to fly like that."</em>
+        </p>
+        <div class="sig">— مولانا</div>
+    </section>
+
+    <footer class="colophon">
+        <div>From <em>The Masnavi-ye Ma'navi</em>, Daftar I · sections 84, 89, 90, 92, 93, 94</div>
+        <div style="margin-top:8px;">Persian text from <a href="https://ganjoor.net/moulavi/masnavi/daftar1/sh84">ganjoor.net</a> · public domain</div>
+        <div style="margin-top:14px;"><a href="kids/index.html">Read the kids' version →</a></div>
+    </footer>
+</article>
+
+<script>
+// Reveal-on-scroll
+const revealEls = document.querySelectorAll('.reveal-on-scroll');
+const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+revealEls.forEach(el => io.observe(el));
+
+// Progress bar
+const progress = document.getElementById('progress');
+function updateProgress() {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    progress.style.width = Math.max(0, Math.min(100, pct)) + '%';
+}
+document.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+// Act-nav show after hero
+const actNav = document.getElementById('actNav');
+function toggleActNav() {
+    const heroBottom = document.querySelector('.hero').getBoundingClientRect().bottom;
+    if (heroBottom < 40) actNav.classList.add('show');
+    else actNav.classList.remove('show');
+}
+document.addEventListener('scroll', toggleActNav, { passive: true });
+toggleActNav();
+
+// Act-nav active dot
+const navLinks = document.querySelectorAll('.act-nav a');
+const acts = document.querySelectorAll('.act[id]');
+function updateActive() {
+    let current = '';
+    acts.forEach(a => {
+        const r = a.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.4) current = a.id;
+    });
+    navLinks.forEach(l => {
+        const href = l.getAttribute('href').replace('#', '');
+        l.classList.toggle('current', href === current);
+    });
+}
+document.addEventListener('scroll', updateActive, { passive: true });
+updateActive();
+</script>
+</body>
+</html>
