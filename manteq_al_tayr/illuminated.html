@@ -97,13 +97,27 @@ body::before {
     max-width: 1480px;
     margin: 0 auto;
     background: var(--parchment);
+    /* Triple rule frame: thin crimson + gold band + thin crimson, then parchment margin, then gold outer */
     box-shadow:
-        0 0 0 1px var(--gold-deep),
-        0 0 0 8px var(--parchment),
-        0 0 0 9px var(--gold-deep),
+        0 0 0 1px var(--crimson),
+        0 0 0 5px var(--gold),
+        0 0 0 6px var(--crimson),
+        0 0 0 14px var(--parchment),
+        0 0 0 15px var(--gold-deep),
         0 30px 80px -30px rgba(42, 29, 16, 0.55),
         inset 0 0 80px rgba(110, 76, 31, 0.12);
-    padding: 56px clamp(28px, 4vw, 72px) 72px;
+    padding: 60px clamp(28px, 4vw, 72px) 76px;
+}
+@media (max-width: 700px) {
+    .manuscript {
+        box-shadow:
+            0 0 0 1px var(--crimson),
+            0 0 0 3px var(--gold),
+            0 0 0 4px var(--crimson),
+            0 0 0 9px var(--parchment),
+            0 0 0 10px var(--gold-deep),
+            0 20px 50px -20px rgba(42, 29, 16, 0.5);
+    }
 }
 
 /* Corner flourishes — Persian arabesque (vine + saz leaves + quatrefoil rosette) */
@@ -722,23 +736,47 @@ body::before {
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
         <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#e8c878"/>
-            <stop offset="55%" stop-color="#b8893a"/>
-            <stop offset="100%" stop-color="#7d5a20"/>
+            <stop offset="0%" stop-color="#f4d889"/>
+            <stop offset="40%" stop-color="#d4a94a"/>
+            <stop offset="75%" stop-color="#a47830"/>
+            <stop offset="100%" stop-color="#6e4c1f"/>
         </linearGradient>
         <linearGradient id="goldGrad2" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0%" stop-color="#d4a94a"/>
-            <stop offset="100%" stop-color="#8a6324"/>
+            <stop offset="0%" stop-color="#e8c270"/>
+            <stop offset="55%" stop-color="#b8893a"/>
+            <stop offset="100%" stop-color="#6e4c1f"/>
         </linearGradient>
+        <radialGradient id="rosetteCore" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fff5d8"/>
+            <stop offset="60%" stop-color="#e8c878"/>
+            <stop offset="100%" stop-color="#a47830"/>
+        </radialGradient>
+        <radialGradient id="petalGrad" cx="35%" cy="35%" r="70%">
+            <stop offset="0%" stop-color="#f4d889"/>
+            <stop offset="55%" stop-color="#c89a48"/>
+            <stop offset="100%" stop-color="#7d5a20"/>
+        </radialGradient>
         <symbol id="rosette" viewBox="-14 -14 28 28">
-            <!-- 4-lobed flower built from 4 ellipse petals + center -->
-            <ellipse cx="0" cy="-7" rx="4" ry="6.5" fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.5"/>
-            <ellipse cx="7" cy="0" rx="6.5" ry="4" fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.5"/>
-            <ellipse cx="0" cy="7" rx="4" ry="6.5" fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.5"/>
-            <ellipse cx="-7" cy="0" rx="6.5" ry="4" fill="url(#goldGrad)" stroke="#7d5a20" stroke-width="0.5"/>
-            <circle r="4.5" fill="#fdf3dc" stroke="#7d5a20" stroke-width="0.5"/>
-            <circle r="2.6" fill="#1f3a6e"/>
-            <circle r="0.9" cx="-0.6" cy="-0.6" fill="#fdf3dc" opacity="0.85"/>
+            <!-- diagonal accent petals (smaller, behind cardinal) -->
+            <ellipse cx="5" cy="-5" rx="3" ry="5" transform="rotate(45 5 -5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <ellipse cx="-5" cy="-5" rx="3" ry="5" transform="rotate(-45 -5 -5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <ellipse cx="5" cy="5" rx="3" ry="5" transform="rotate(-45 5 5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <ellipse cx="-5" cy="5" rx="3" ry="5" transform="rotate(45 -5 5)" fill="url(#petalGrad)" opacity="0.7"/>
+            <!-- 4 cardinal ellipse petals -->
+            <ellipse cx="0" cy="-7" rx="4" ry="6.5" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <ellipse cx="7" cy="0" rx="6.5" ry="4" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <ellipse cx="0" cy="7" rx="4" ry="6.5" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <ellipse cx="-7" cy="0" rx="6.5" ry="4" fill="url(#petalGrad)" stroke="#7d5a20" stroke-width="0.5"/>
+            <!-- petal vein highlights -->
+            <path d="M0 -10 L0 -3.5" stroke="#fdf3dc" stroke-width="0.4" opacity="0.55"/>
+            <path d="M0 10 L0 3.5" stroke="#fdf3dc" stroke-width="0.4" opacity="0.55"/>
+            <path d="M-10 0 L-3.5 0" stroke="#fdf3dc" stroke-width="0.4" opacity="0.55"/>
+            <path d="M10 0 L3.5 0" stroke="#fdf3dc" stroke-width="0.4" opacity="0.55"/>
+            <!-- center disc with gradient depth -->
+            <circle r="5" fill="url(#rosetteCore)" stroke="#7d5a20" stroke-width="0.55"/>
+            <circle r="2.8" fill="#1f3a6e"/>
+            <circle r="1.6" cx="-0.7" cy="-0.7" fill="#3a5a9a" opacity="0.7"/>
+            <circle r="0.7" cx="-1" cy="-1" fill="#fdf3dc" opacity="0.95"/>
         </symbol>
 
         <symbol id="corner-motif" viewBox="0 0 120 120">
@@ -799,6 +837,41 @@ body::before {
             <path d="M14 14 Q 18 22 26 26" fill="none" stroke="#7d5a20" stroke-width="0.5" opacity="0.6"/>
             <path d="M30 30 Q 38 32 42 38" fill="none" stroke="#7d5a20" stroke-width="0.5" opacity="0.5"/>
             <path d="M30 30 Q 32 38 38 42" fill="none" stroke="#7d5a20" stroke-width="0.5" opacity="0.5"/>
+            <!-- extra micro saz leaves filling sparse spaces -->
+            <path d="M38 14 C 44 12, 50 14, 50 18 C 46 20, 40 18, 38 14 Z"
+                  fill="#b8893a" stroke="#7d5a20" stroke-width="0.35" opacity="0.85"/>
+            <path d="M14 38 C 12 44, 14 50, 18 50 C 20 46, 18 40, 14 38 Z"
+                  fill="#b8893a" stroke="#7d5a20" stroke-width="0.35" opacity="0.85"/>
+            <path d="M72 22 C 78 22, 82 26, 80 30 C 76 30, 72 26, 72 22 Z"
+                  fill="#a47830" stroke="#7d5a20" stroke-width="0.3" opacity="0.8"/>
+            <path d="M22 72 C 22 78, 26 82, 30 80 C 30 76, 26 72, 22 72 Z"
+                  fill="#a47830" stroke="#7d5a20" stroke-width="0.3" opacity="0.8"/>
+            <!-- almond/teardrop bud (classic Persian motif) along diagonal -->
+            <path d="M50 50 Q 56 46, 60 52 Q 56 58, 52 56 Q 49 53, 50 50 Z"
+                  fill="url(#goldGrad2)" stroke="#7d5a20" stroke-width="0.45"/>
+            <circle cx="55" cy="52" r="0.9" fill="#1f3a6e" opacity="0.8"/>
+            <!-- spiraling tendril into the corner depth -->
+            <path d="M62 62 C 70 70, 80 70, 86 78 C 88 86, 80 88, 76 84"
+                  fill="none" stroke="#7d5a20" stroke-width="0.65" stroke-linecap="round" opacity="0.85"/>
+            <circle cx="76" cy="84" r="1.2" fill="#b8893a" stroke="#7d5a20" stroke-width="0.3"/>
+            <!-- secondary tendril -->
+            <path d="M40 40 C 46 44, 48 50, 46 56" fill="none" stroke="#7d5a20" stroke-width="0.5" opacity="0.7"/>
+            <circle cx="46" cy="56" r="0.9" fill="#a47830"/>
+            <!-- micro leaves along outer vines -->
+            <path d="M72 12 C 76 10, 80 14, 76 18 C 72 16, 70 14, 72 12 Z"
+                  fill="#b8893a" stroke="#7d5a20" stroke-width="0.3" opacity="0.85"/>
+            <path d="M12 72 C 10 76, 14 80, 18 76 C 16 72, 14 70, 12 72 Z"
+                  fill="#b8893a" stroke="#7d5a20" stroke-width="0.3" opacity="0.85"/>
+            <!-- additional lapis specks scattered -->
+            <circle cx="36" cy="14" r="0.7" fill="#1f3a6e" opacity="0.8"/>
+            <circle cx="14" cy="36" r="0.7" fill="#1f3a6e" opacity="0.8"/>
+            <circle cx="60" cy="46" r="0.6" fill="#1f3a6e" opacity="0.7"/>
+            <circle cx="46" cy="60" r="0.6" fill="#1f3a6e" opacity="0.7"/>
+            <!-- fine cross-hatch on saz leaves for texture -->
+            <path d="M58 22 L62 26 M64 22 L68 26 M70 24 L74 26"
+                  stroke="#7d5a20" stroke-width="0.3" opacity="0.4"/>
+            <path d="M22 58 L26 62 M22 64 L26 68 M24 70 L26 74"
+                  stroke="#7d5a20" stroke-width="0.3" opacity="0.4"/>
         </symbol>
     </defs>
 </svg>
