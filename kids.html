@@ -753,7 +753,7 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
 </style>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "22ce75db169a4525ae1cbe0d381c1fa5"}'></script>
 </head>
-<body>
+<body data-kids-landing="1">
 <div class="bg-shapes" aria-hidden="true">
     <svg class="shape s1" viewBox="0 0 100 100"><path d="M50 10 L61 39 L92 39 L67 57 L77 86 L50 68 L23 86 L33 57 L8 39 L39 39 Z" fill="#ffd43b"/></svg>
     <svg class="shape s2" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#51cf66" stroke-width="6"/></svg>
@@ -1081,7 +1081,8 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
         function applyStyle(newStyle) {
             html.setAttribute('data-style', newStyle);
             localStorage.setItem('site-style', newStyle);
-            // Landing cards: swap cover img + primary Read link
+            // Landing cards: swap cover img only. Kids cards always link to kids/<slug>/index.html (no anime variant).
+            const isKidsLanding = document.body.dataset.kids === '1' || document.body.dataset.kidsLanding === '1';
             document.querySelectorAll('.card').forEach(card => {
                 const img = card.querySelector('.cover-link img');
                 const link = card.querySelector('.cover-link');
@@ -1090,8 +1091,9 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
                 const ani = card.dataset.anime;
                 const hasAni = ani && ani !== '';
                 const target = (newStyle === 'anime' && hasAni) ? ani : cin;
-                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
                 if (img && target) img.src = target;
+                if (isKidsLanding) return; // don't rewrite hrefs on kids landing
+                const href = (newStyle === 'anime' && hasAni) ? (card.dataset.slug + '/index_anime.html') : (card.dataset.slug + '/index.html');
                 if (link && href) link.href = href;
                 if (readBtn && href) readBtn.href = href;
             });
