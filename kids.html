@@ -163,8 +163,8 @@ body {
 .audience-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 4px 4px 4px 12px;
+    gap: 4px;
+    padding: 4px;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--card);
@@ -173,16 +173,22 @@ body {
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
-.audience-current { color: var(--muted); }
-.audience-swap {
+.audience-toggle .audience-current,
+.audience-toggle .audience-swap {
     padding: 6px 14px;
     border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.audience-current {
     background: var(--text);
     color: var(--bg) !important;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
+    cursor: default;
 }
-.audience-swap:hover { opacity: 0.88; }
+.audience-swap {
+    color: var(--muted);
+}
+.audience-swap:hover { background: var(--card); color: var(--text); }
 @media (max-width: 600px) {
     .mode-toggle button, .style-toggle button {
         padding: 5px 10px;
@@ -758,9 +764,10 @@ html[data-mode="astro-nomad"] .signin-msg.show { color: var(--anom-coral); }
 <header class="topbar">
     <div class="topbar-brand"><a href="kids.html">Illustrated Classics</a></div>
     <div class="topbar-toggles">
-        <div class="audience-toggle" role="group" aria-label="Audience">
+        <div class="audience-toggle" role="group" aria-label="Section">
+            <a class="audience-swap" href="index.html">Adults</a>
             <span class="audience-current">Kids</span>
-            <a class="audience-swap" href="index.html">Switch to Adults</a>
+            <a class="audience-swap" href="illuminated.html">Illuminated</a>
         </div>
         
         <div class="mode-toggle" role="group" aria-label="Visual mode">

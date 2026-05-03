@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Illuminated Editions — Illustrated Classics</title>
+<meta name="description" content="Illuminated single-page editions of cultural classics: Persian Sufi tales rendered as virtual manuscript pages. Free to read, in the visual tradition of the source.">
+<link rel="canonical" href="https://ai-may-i.com/classics/illuminated.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Illuminated Editions — Illustrated Classics">
+<meta property="og:description" content="Single-page illuminated retellings of cultural classics — Persian-miniature, free to read.">
+<meta property="og:image" content="https://ai-may-i.com/classics/manteq_al_tayr/images_cinematic/cover.webp">
+<meta property="og:url" content="https://ai-may-i.com/classics/illuminated.html">
+<meta property="og:site_name" content="ai, may I?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Illuminated Editions — Illustrated Classics">
+<meta name="twitter:description" content="Single-page illuminated retellings of cultural classics — free to read.">
+<meta name="twitter:image" content="https://ai-may-i.com/classics/manteq_al_tayr/images_cinematic/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,400,0;9..144,600,0;9..144,800,0;9..144,400,1;9..144,700,1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:root {
+    --parchment: #f4e6c2;
+    --parchment-deep: #ead7a8;
+    --ink: #2a1d10;
+    --ink-soft: #5a4326;
+    --gold: #b8893a;
+    --gold-bright: #d4a94a;
+    --gold-deep: #8a6324;
+    --crimson: #8a2a1f;
+    --indigo: #1f3a6e;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(184, 137, 58, 0.12), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(138, 42, 31, 0.08), transparent 60%),
+        var(--parchment);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+}
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    z-index: 0;
+    background-image:
+        radial-gradient(circle at 20% 35%, rgba(110, 76, 31, 0.06) 0, transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(110, 76, 31, 0.05) 0, transparent 40%),
+        repeating-linear-gradient(45deg, transparent 0 8px, rgba(110, 76, 31, 0.018) 8px 9px);
+}
+
+.topbar {
+    position: relative;
+    z-index: 10;
+    max-width: 1280px;
+    margin: 0 auto 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 20px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+}
+.topbar-brand {
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+}
+.topbar-brand a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 1px;
+}
+
+.audience-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    background: rgba(244, 230, 194, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.audience-toggle a, .audience-toggle .current {
+    padding: 6px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-family: 'Fraunces', serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.audience-toggle a:hover { background: rgba(184, 137, 58, 0.15); color: var(--ink); }
+.audience-toggle .current {
+    background: var(--ink);
+    color: var(--parchment);
+    cursor: default;
+}
+
+.manuscript {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--parchment);
+    box-shadow:
+        0 0 0 1px var(--crimson),
+        0 0 0 5px var(--gold),
+        0 0 0 6px var(--crimson),
+        0 0 0 14px var(--parchment),
+        0 0 0 15px var(--gold-deep),
+        0 30px 80px -30px rgba(42, 29, 16, 0.55),
+        inset 0 0 80px rgba(110, 76, 31, 0.12);
+    padding: 60px clamp(28px, 4vw, 72px) 76px;
+}
+@media (max-width: 700px) {
+    .manuscript {
+        box-shadow:
+            0 0 0 1px var(--crimson),
+            0 0 0 3px var(--gold),
+            0 0 0 4px var(--crimson),
+            0 0 0 9px var(--parchment),
+            0 0 0 10px var(--gold-deep),
+            0 20px 50px -20px rgba(42, 29, 16, 0.5);
+    }
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 16px 12px 40px;
+    border-bottom: 2px solid var(--gold);
+    position: relative;
+    margin-bottom: 56px;
+}
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: -7px; left: 50%;
+    transform: translateX(-50%);
+    width: 12px; height: 12px;
+    background: var(--gold-bright);
+    border: 2px solid var(--parchment);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--gold);
+}
+.hero-kicker {
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4em;
+    color: var(--gold-deep);
+    margin-bottom: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+.hero-kicker::before, .hero-kicker::after {
+    content: "";
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold-deep);
+}
+.hero-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-bottom: 18px;
+}
+.hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 auto;
+    line-height: 1.55;
+}
+
+/* Card grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 36px;
+    margin-top: 12px;
+}
+@media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+.card {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--gold-deep);
+    box-shadow:
+        0 0 0 4px var(--parchment),
+        0 0 0 5px var(--gold),
+        0 16px 36px -22px rgba(42, 29, 16, 0.45);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+}
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid var(--crimson);
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+}
+.card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background-image:
+        radial-gradient(circle at 7px 7px, var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at calc(100% - 7px) 7px, var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at 7px calc(100% - 7px), var(--gold-bright) 1.6px, transparent 2.2px),
+        radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), var(--gold-bright) 1.6px, transparent 2.2px);
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 0 0 4px var(--parchment),
+        0 0 0 5px var(--crimson),
+        0 28px 48px -22px rgba(42, 29, 16, 0.55);
+}
+.card:hover::before { opacity: 1; border-color: var(--crimson); }
+.card-img-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--parchment-deep);
+}
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.5s ease;
+}
+.card:hover .card-img {
+    transform: scale(1.04);
+    filter: saturate(1.08) brightness(1.04);
+}
+.card-body {
+    padding: 24px 28px 28px;
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-deep) 100%);
+    border-top: 1px solid var(--gold);
+}
+.card-fa {
+    font-family: 'Amiri', serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+    color: var(--crimson);
+    direction: rtl;
+    text-align: right;
+    line-height: 1.2;
+    margin-bottom: 8px;
+}
+.card-en {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 6px;
+}
+.card-author {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+}
+.card-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 18px;
+    max-width: 50ch;
+}
+.card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    border-bottom: 1px solid var(--crimson);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+.card:hover .card-cta { color: var(--gold-deep); border-color: var(--gold-deep); }
+
+.colophon {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gold);
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+}
+.colophon::before {
+    content: "❦  ❦  ❦";
+    display: block;
+    color: var(--gold-deep);
+    margin-bottom: 14px;
+    letter-spacing: 0.4em;
+}
+.colophon p { margin-bottom: 6px; }
+.colophon a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    color: var(--crimson);
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+    <div class="topbar-brand"><a href="index.html">Illustrated Classics</a></div>
+    <nav class="audience-toggle" role="group" aria-label="Section">
+        <a href="index.html">Adults</a>
+        <a href="kids.html">Kids</a>
+        <span class="current">Illuminated</span>
+    </nav>
+</header>
+
+<article class="manuscript">
+    <header class="hero">
+        <div class="hero-kicker">Illuminated Editions</div>
+        <h1 class="hero-title">Single pages, in the language of the source.</h1>
+        <p class="hero-sub">Free single-page retellings of cultural classics, rendered in the visual tradition of the original — Persian miniature, illuminated manuscript, gold leaf and lapis. The full books are paywalled. These are open to read.</p>
+    </header>
+
+    <section class="grid">
+        <a class="card" href="manteq_al_tayr/illuminated.html" aria-label="The Conference of the Birds — Illuminated Edition">
+            <div class="card-img-wrap">
+                <img class="card-img" src="manteq_al_tayr/images_cinematic/cover.webp" alt="The Conference of the Birds — illuminated edition cover" loading="lazy">
+            </div>
+            <div class="card-body">
+                <div class="card-fa">منطق‌الطّیر</div>
+                <h2 class="card-en">The Conference of the Birds</h2>
+                <p class="card-author">Farīd ud-Dīn ʿAṭṭār · 12th c.</p>
+                <p class="card-desc">Thirty birds journey across seven valleys to find their true sovereign — the Simorgh. A single illuminated page from one of Persian Sufism's defining works.</p>
+                <span class="card-cta">Read the spread →</span>
+            </div>
+        </a>
+
+        <a class="card" href="parrot_and_merchant/illuminated.html" aria-label="The Parrot and the Merchant — Illuminated Edition">
+            <div class="card-img-wrap">
+                <img class="card-img" src="parrot_and_merchant/images_persian/cover.webp" alt="The Parrot and the Merchant — illuminated edition cover" loading="lazy">
+            </div>
+            <div class="card-body">
+                <div class="card-fa">قِصّهٔ بازرگان و طوطی</div>
+                <h2 class="card-en">The Parrot and the Merchant</h2>
+                <p class="card-author">Mawlānā Jalāl ad-Dīn Rūmī · 13th c.</p>
+                <p class="card-desc">A merchant bound for India, a caged parrot, and a single message that crossed the world and came back as a death and a flight — from Rūmī's <em>Masnavi</em>, Daftar I.</p>
+                <span class="card-cta">Read the spread →</span>
+            </div>
+        </a>
+    </section>
+
+    <footer class="colophon">
+        <p>More illuminated editions in progress.</p>
+        <p style="margin-top:8px;"><a href="index.html">← Back to all classics</a></p>
+    </footer>
+</article>
+</body>
+</html>
