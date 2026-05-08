@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zhuangzi: The Inner Chapters — Illuminated</title>
+<meta name="description" content="An illuminated single-page retelling of the Inner Chapters of Zhuangzi — Peng the great bird, the cook whose blade never dulls, the butterfly who may be dreaming the man.">
+<link rel="canonical" href="https://ai-may-i.com/classics/zhuangzi/illuminated.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zhuangzi: The Inner Chapters — Illuminated Edition">
+<meta property="og:description" content="The seven Inner Chapters of Zhuangzi, told as a single scrolling shan-shui scroll.">
+<meta property="og:image" content="https://ai-may-i.com/classics/zhuangzi/images_cinematic/cover.webp">
+<meta property="og:url" content="https://ai-may-i.com/classics/zhuangzi/illuminated.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zhuangzi: The Inner Chapters — Illuminated Edition">
+<meta name="twitter:description" content="The Inner Chapters as a single shan-shui scroll.">
+<meta name="twitter:image" content="https://ai-may-i.com/classics/zhuangzi/images_cinematic/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,400,0;9..144,600,0;9..144,800,0;9..144,400,1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:root {
+    --rice: #efe7d3;
+    --rice-deep: #e3d6b0;
+    --rice-shadow: #c4b48a;
+    --ink: #1a1411;
+    --ink-soft: #3d2f24;
+    --ink-mid: #5e4a36;
+    --cinnabar: #9c2a1f;
+    --cinnabar-deep: #6a1d15;
+    --jade: #2d6e57;
+    --jade-deep: #1d4a3a;
+    --gold: #a8814a;
+    --gold-bright: #c69a55;
+    --indigo: #2a3d6a;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(168, 129, 74, 0.10), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(45, 110, 87, 0.06), transparent 60%),
+        var(--rice);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.45;
+    z-index: 0;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(60, 40, 25, 0.05) 0, transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(60, 40, 25, 0.04) 0, transparent 40%),
+        repeating-linear-gradient(45deg, transparent 0 9px, rgba(60, 40, 25, 0.014) 9px 10px);
+}
+
+.topbar {
+    position: relative; z-index: 10;
+    max-width: 1480px; margin: 0 auto 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 20px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+}
+.topbar a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.topbar a:hover { color: var(--cinnabar); border-color: var(--cinnabar); }
+
+.manuscript {
+    position: relative; z-index: 1;
+    max-width: 1280px; margin: 0 auto;
+    background: var(--rice);
+    box-shadow:
+        0 0 0 1px var(--cinnabar),
+        0 0 0 5px var(--ink),
+        0 0 0 6px var(--cinnabar),
+        0 0 0 14px var(--rice),
+        0 0 0 15px var(--ink-mid),
+        0 30px 80px -30px rgba(26, 20, 17, 0.55),
+        inset 0 0 80px rgba(60, 40, 25, 0.10);
+    padding: 60px clamp(28px, 4vw, 72px) 76px;
+}
+@media (max-width: 700px) {
+    .manuscript { box-shadow:
+        0 0 0 1px var(--cinnabar), 0 0 0 3px var(--ink),
+        0 0 0 4px var(--cinnabar), 0 0 0 9px var(--rice),
+        0 0 0 10px var(--ink-mid), 0 20px 50px -20px rgba(26, 20, 17, 0.5);
+    }
+}
+
+/* hero */
+.hero { text-align: center; padding: 18px 0 36px; position: relative; }
+.hero .chinese {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(72px, 12vw, 156px);
+    color: var(--ink);
+    line-height: 1; letter-spacing: 0.06em;
+    text-shadow: 0 2px 0 rgba(168, 129, 74, 0.18);
+    margin-bottom: 18px; font-weight: 900;
+}
+.hero .pinyin {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--cinnabar);
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+}
+.hero .english-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 16px;
+}
+.hero .author {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+}
+.hero .author span { color: var(--gold); }
+.hero .seal {
+    display: inline-block;
+    margin-top: 22px;
+    width: 64px; height: 64px;
+    background: var(--cinnabar);
+    border-radius: 6px;
+    color: var(--rice);
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 64px;
+    transform: rotate(-3deg);
+    box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+}
+
+.intro {
+    max-width: 720px;
+    margin: 0 auto 56px;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    text-align: center;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+/* divider */
+.divider {
+    display: flex; justify-content: center; align-items: center;
+    gap: 18px; margin: 48px auto;
+    color: var(--gold);
+}
+.divider::before, .divider::after {
+    content: ""; height: 1px; flex: 0 1 180px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.divider svg { width: 22px; height: 22px; }
+
+/* acts */
+.act {
+    margin: 56px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+}
+@media (min-width: 900px) {
+    .act { grid-template-columns: 0.95fr 1.05fr; gap: 56px; align-items: center; }
+    .act.flip { grid-template-columns: 1.05fr 0.95fr; }
+    .act.flip .act-text { order: 2; }
+    .act.flip .act-image { order: 1; }
+}
+.act-image figure {
+    margin: 0;
+    box-shadow:
+        0 0 0 1px var(--gold),
+        0 0 0 5px var(--rice),
+        0 0 0 6px var(--ink-mid),
+        0 16px 36px -16px rgba(26, 20, 17, 0.45);
+    overflow: hidden;
+}
+.act-image img {
+    width: 100%; height: auto;
+    display: block;
+    filter: contrast(1.04) saturate(0.95);
+}
+
+.act-text .chapter-num {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.3rem;
+    color: var(--cinnabar);
+    letter-spacing: 0.18em;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+.act-text .chinese-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--ink);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 8px;
+}
+.act-text .english-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--ink-mid);
+    margin-bottom: 22px;
+    letter-spacing: 0.02em;
+}
+.act-text blockquote {
+    border-left: 3px solid var(--cinnabar);
+    padding: 6px 0 6px 18px;
+    margin: 0 0 22px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+}
+.act-text .body p {
+    font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--ink);
+}
+.act-text .body p:not(:last-child) { margin-bottom: 14px; }
+.act-text .body p::first-letter,
+.act-text .body p.dropcap::first-letter {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 3.6em;
+    float: left;
+    line-height: 0.9;
+    margin: 6px 12px 0 0;
+    color: var(--cinnabar);
+    font-weight: 700;
+    padding: 4px 8px;
+    background: linear-gradient(135deg, rgba(168, 129, 74, 0.08), transparent);
+    border: 1px solid var(--gold);
+}
+
+/* coda */
+.coda {
+    text-align: center;
+    margin-top: 96px;
+    padding-top: 48px;
+    border-top: 1px solid var(--gold);
+}
+.coda .signature {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2.2rem;
+    color: var(--ink);
+    margin: 16px 0 6px;
+    letter-spacing: 0.18em;
+}
+.coda .by {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+}
+.coda .source {
+    margin-top: 28px;
+    font-family: 'Fraunces', serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-mid);
+}
+.coda .source a { color: var(--cinnabar); text-decoration: none; border-bottom: 1px dotted var(--cinnabar); }
+
+/* fade-up */
+.fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { .fade-up { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+    <a href="/classics/">← All Classics</a>
+    <a href="index.html">Cinematic Edition</a>
+</nav>
+
+<article class="manuscript">
+
+    <header class="hero fade-up">
+        <div class="chinese">莊子</div>
+        <div class="pinyin">Zhuāngzǐ · Inner Chapters · 內篇</div>
+        <h1 class="english-title">The Inner Chapters</h1>
+        <div class="author">by <span>Zhuang Zhou</span> · c. 4th century BCE</div>
+        <div class="seal" aria-hidden="true">道</div>
+    </header>
+
+    <p class="intro fade-up">
+        Seven chapters of parable and paradox, considered the canonical core
+        of the Daoist classic. The other twenty-six chapters of the received
+        text are widely judged later additions; what follows is the work
+        most likely to bear Zhuang Zhou's own hand.
+    </p>
+
+    <div class="divider" aria-hidden="true">
+        <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="4"/><circle cx="11" cy="11" r="9"/></svg>
+    </div>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第一</div>
+            <h2 class="chinese-title">逍遙遊</h2>
+            <p class="english-title">Free and Easy Wandering</p>
+            <blockquote>In the dark waters of the northern ocean lives a fish called Kun. No one knows how many thousand miles it stretches.</blockquote>
+            <div class="body">
+                <p class="dropcap">Kun changes — its scales become feathers, its tail a great spreading sail — and rises from the sea as the bird Peng. A cicada and a small dove laugh from the bushes: what is all this talk of ninety thousand miles? But the cicada knows only the elm. To be free is not to fly far; it is to depend on nothing.</p>
+                <p>Hui Shi complains of a giant gourd, a knotted tree — both useless. Plant them in the village of Nothing-Whatever, Zhuangzi answers. No axe will come. Where is the trouble in being of no use?</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_1.webp" alt="The bird Peng rising over the northern sea" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第二</div>
+            <h2 class="chinese-title">齊物論</h2>
+            <p class="english-title">The Equality of Things</p>
+            <blockquote>Today I have lost myself. Do you understand what that means?</blockquote>
+            <div class="body">
+                <p class="dropcap">Master Ziqi sits against his armrest, breathing slowly. He has heard the piping of men, and the piping of earth — wind through the great forest, every hollow giving its own cry — but the piping of heaven is something else. It blows on the ten thousand things, and each gives its own sound. Who is the one blowing?</p>
+                <p>Once Zhuang Zhou dreamed he was a butterfly, fluttering and content. Suddenly he woke. He was solidly Zhou again. But could he tell? Was Zhou dreaming the butterfly? Or the butterfly dreaming Zhou? This is the transformation of things.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_2.webp" alt="Master Ziqi and the wind in the forest" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第三</div>
+            <h2 class="chinese-title">養生主</h2>
+            <p class="english-title">The Secret of Caring for Life</p>
+            <blockquote>I have used this blade for nineteen years. It has carved thousands of oxen. The edge is as fresh as if it just came off the whetstone.</blockquote>
+            <div class="body">
+                <p class="dropcap">Cook Ding works in rhythm with the dance of the Mulberry Grove. What I love, he says, is the Way. It goes beyond skill. He no longer sees the whole ox — he works with mind, not eyes. The joints have spaces. The blade has no thickness. To enter the spaces with no thickness leaves room to move freely.</p>
+                <p>Lord Wenhui hears him: I listened to my cook and learned how to live.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_3.webp" alt="Cook Ding at the ox" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第四</div>
+            <h2 class="chinese-title">人間世</h2>
+            <p class="english-title">In the World of Men</p>
+            <blockquote>Where is the trouble in being of no use?</blockquote>
+            <div class="body">
+                <p class="dropcap">A great oak stands at the village shrine. Carpenter Shi walks past without a glance. That tree is useless wood, he tells his apprentice. No boat, no coffin, no door. That night the oak comes to him in a dream. The cherry, the pear, the orange — when their fruit ripens, they are stripped, broken. Their gift kills them. I have spent my whole life trying to be useless. Now, near the end, I have it.</p>
+                <p>Crippled Shu lives long because no army wants him. The body crippled keeps its years. The man crippled in virtue may do better still.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_4.webp" alt="The useless oak at the village shrine" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第五</div>
+            <h2 class="chinese-title">德充符</h2>
+            <p class="english-title">The Sign of Virtue Complete</p>
+            <blockquote>From the standpoint of difference, even the liver and gallbladder are as far apart as Chu and Yue. From the standpoint of sameness, the ten thousand things are one.</blockquote>
+            <div class="body">
+                <p class="dropcap">Wang Tai is missing a foot, yet his students rival Confucius's. He does not lecture. People come empty and leave full. He has located what is unborrowed in himself; he sees the missing foot as a clod of earth fallen from his shoe.</p>
+                <p>Ai-tai-tuo is so ugly he startles the world, yet men will not leave him and women beg to be his concubine. The signs are inward. When virtue is large, the body is forgotten.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_5.webp" alt="Wang Tai the one-footed sage" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第六</div>
+            <h2 class="chinese-title">大宗師</h2>
+            <p class="english-title">The Great and Venerable Teacher</p>
+            <blockquote>The True Man breathes from the heels. Crowded men breathe from the throat.</blockquote>
+            <div class="body">
+                <p class="dropcap">The True Man of old slept without dreams and woke without worries. He did not cling to life or recoil from death. He arrived calmly. He departed calmly. Yan Hui makes progress: I have forgotten benevolence. Then ritual. Then I sit and forget — limbs and body fall away, hearing and sight go silent. I am one with the Great Open.</p>
+                <p>Sir Lai lies dying and his friend leans against the door. How great is the Maker of Things, the friend says. What will it make of you next? A rat's liver? An insect's leg?</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_6.webp" alt="The True Man at dawn above a sea of cloud" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第七</div>
+            <h2 class="chinese-title">應帝王</h2>
+            <p class="english-title">Fit for Emperors and Kings</p>
+            <blockquote>All men have seven openings — to see, to hear, to eat, to breathe. Hundun has none. Let us bore him some.</blockquote>
+            <div class="body">
+                <p class="dropcap">The emperor of the South Sea was Light. The emperor of the North Sea was Sudden. The emperor of the Middle was Hundun, which means Chaos. They wanted to repay his hospitality. They bored one opening each day. On the seventh day, Hundun was no more.</p>
+                <p>Do not be eager to add to the world. The Way fills it already.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_7.webp" alt="The death of Hundun" loading="lazy"></figure></div>
+    </section>
+
+    <footer class="coda fade-up">
+        <div class="signature">莊周</div>
+        <div class="by">— Zhuang Zhou, c. 369–286 BCE</div>
+        <div class="source">
+            Source: <a href="https://ctext.org/zhuangzi" target="_blank" rel="noopener">ctext.org · Chinese Text Project</a>
+        </div>
+    </footer>
+
+</article>
+
+<script>
+(function() {
+    var els = document.querySelectorAll('.fade-up');
+    if (!('IntersectionObserver' in window)) { els.forEach(function(e){ e.classList.add('visible'); }); return; }
+    var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(en) { if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(function(e){ io.observe(e); });
+})();
+</script>
+
+</body>
+</html>
