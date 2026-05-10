@@ -18,7 +18,7 @@
 <meta name="twitter:image" content="https://ai-may-i.com/classics/manteq_al_tayr/images_cinematic/cover.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,400,0;9..144,600,0;9..144,800,0;9..144,400,1;9..144,700,1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,400,0;9..144,600,0;9..144,800,0;9..144,400,1;9..144,700,1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -299,6 +299,15 @@ body::before {
     line-height: 1.2;
     margin-bottom: 8px;
 }
+.card-ko {
+    font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    color: var(--crimson);
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+}
 .card-en {
     font-family: 'Fraunces', serif;
     font-style: italic;
@@ -378,7 +387,7 @@ body::before {
     <header class="hero">
         <div class="hero-kicker">Illuminated Editions</div>
         <h1 class="hero-title">Single pages, in the language of the source.</h1>
-        <p class="hero-sub">Free single-page retellings of cultural classics, rendered in the visual tradition of the original — Persian miniature, Song-dynasty shan-shui ink-wash, gold leaf and lapis. The full books are paywalled. These are open to read.</p>
+        <p class="hero-sub">Free single-page retellings of cultural classics, rendered in the visual tradition of the original — Persian miniature, Song-dynasty shan-shui ink-wash, Korean minhwa folk-painting, gold leaf and lapis. The full books are paywalled. These are open to read.</p>
     </header>
 
     <section class="grid">
@@ -417,6 +426,19 @@ body::before {
                 <h2 class="card-en">Zhuangzi: The Inner Chapters</h2>
                 <p class="card-author">Zhuang Zhou · 4th c. BCE</p>
                 <p class="card-desc">Peng the great bird, the cook whose blade never dulls, the butterfly who may be dreaming the man — the seven Inner Chapters of the Daoist classic, told as a single shan-shui scroll.</p>
+                <span class="card-cta">Read the spread →</span>
+            </div>
+        </a>
+
+        <a class="card" href="haenim_dalnim/illuminated.html" aria-label="Haenim Dalnim — Illuminated Edition">
+            <div class="card-img-wrap">
+                <img class="card-img" src="haenim_dalnim/images_cinematic/cover.webp" alt="Haenim Dalnim — illuminated edition cover" loading="lazy">
+            </div>
+            <div class="card-body">
+                <div class="card-ko">햇님 달님</div>
+                <h2 class="card-en">Haenim Dalnim: Sun and Moon</h2>
+                <p class="card-author">Korean folktale · oral tradition · Joseon era</p>
+                <p class="card-desc">A widow's road, a tiger that asks ridge by ridge, two children climbing a great pine, a silver rope and a rotten one, the red root of the sorghum stalk — the canonical Korean folktale of the brother and sister who became the sun and the moon.</p>
                 <span class="card-cta">Read the spread →</span>
             </div>
         </a>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haenim Dalnim — Illuminated</title>
+<meta name="description" content="An illuminated single-page retelling of the Korean folktale of the Brother and Sister Who Became the Sun and Moon — a widow's road, a tiger on the ridges, two ropes from heaven, the red root of the sorghum stalk.">
+<link rel="canonical" href="https://ai-may-i.com/classics/haenim_dalnim/illuminated.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Haenim Dalnim — Illuminated Edition">
+<meta property="og:description" content="A Korean folktale told as a single illuminated minhwa-style scroll. Free to read.">
+<meta property="og:image" content="https://ai-may-i.com/classics/haenim_dalnim/images_cinematic/cover.webp">
+<meta property="og:url" content="https://ai-may-i.com/classics/haenim_dalnim/illuminated.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Haenim Dalnim — Illuminated Edition">
+<meta name="twitter:description" content="The Korean folktale of the Sun and Moon told as a single scroll. Free to read.">
+<meta name="twitter:image" content="https://ai-may-i.com/classics/haenim_dalnim/images_cinematic/cover.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,400,0;9..144,600,0;9..144,800,0;9..144,400,1&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;700;900&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:root {
+    --hanji: #f3e8cf;
+    --hanji-deep: #e6d6ac;
+    --ink: #1a1411;
+    --ink-soft: #3d2f24;
+    --ink-mid: #5e4a36;
+    --vermilion: #c83b2e;
+    --vermilion-deep: #8c2519;
+    --indigo: #1d2f5a;
+    --indigo-bright: #2a4884;
+    --gold: #b08840;
+    --gold-bright: #d4a94a;
+    --jade: #2d6e57;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(176, 136, 64, 0.12), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(29, 47, 90, 0.08), transparent 60%),
+        var(--hanji);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+}
+body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.45; z-index: 0;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(60, 40, 25, 0.05) 0, transparent 35%),
+        radial-gradient(circle at 80% 70%, rgba(60, 40, 25, 0.04) 0, transparent 40%),
+        repeating-linear-gradient(45deg, transparent 0 9px, rgba(60, 40, 25, 0.014) 9px 10px);
+}
+
+.topbar {
+    position: relative; z-index: 10;
+    max-width: 1480px; margin: 0 auto 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 20px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--ink-soft);
+}
+.topbar a { text-decoration: none; border-bottom: 1px solid var(--gold); padding-bottom: 1px; transition: 0.2s; }
+.topbar a:hover { color: var(--vermilion); border-color: var(--vermilion); }
+
+.manuscript {
+    position: relative; z-index: 1;
+    max-width: 1280px; margin: 0 auto;
+    background: var(--hanji);
+    box-shadow:
+        0 0 0 1px var(--vermilion), 0 0 0 5px var(--indigo),
+        0 0 0 6px var(--vermilion), 0 0 0 14px var(--hanji),
+        0 0 0 15px var(--ink-mid),
+        0 30px 80px -30px rgba(26, 20, 17, 0.55),
+        inset 0 0 80px rgba(60, 40, 25, 0.10);
+    padding: 60px clamp(28px, 4vw, 72px) 76px;
+}
+@media (max-width: 700px) {
+    .manuscript { box-shadow:
+        0 0 0 1px var(--vermilion), 0 0 0 3px var(--indigo),
+        0 0 0 4px var(--vermilion), 0 0 0 9px var(--hanji),
+        0 0 0 10px var(--ink-mid), 0 20px 50px -20px rgba(26, 20, 17, 0.5);
+    }
+}
+
+/* Hero */
+.hero { text-align: center; padding: 18px 0 36px; position: relative; }
+.hero .korean {
+    font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+    font-size: clamp(60px, 11vw, 132px);
+    color: var(--ink);
+    line-height: 1; letter-spacing: 0.06em; font-weight: 800;
+    text-shadow: 0 2px 0 rgba(176, 136, 64, 0.18);
+    margin-bottom: 22px;
+}
+.hero .romanized {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 1.4rem; color: var(--vermilion);
+    letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.hero .english-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    font-weight: 600; color: var(--ink); margin-bottom: 16px;
+    line-height: 1.2;
+}
+.hero .author {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 1.05rem; color: var(--ink-soft);
+}
+.hero .seal {
+    display: inline-block; margin-top: 24px;
+    width: 74px; height: 74px;
+    background: var(--vermilion); border-radius: 8px;
+    color: var(--hanji);
+    font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+    font-weight: 800; font-size: 22px; line-height: 1.05;
+    padding: 14px 8px;
+    transform: rotate(-3deg); box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+}
+
+.intro {
+    max-width: 720px; margin: 0 auto 56px;
+    font-size: 1.05rem; line-height: 1.75;
+    text-align: center; color: var(--ink-soft); font-style: italic;
+}
+
+.divider {
+    display: flex; justify-content: center; align-items: center;
+    gap: 18px; margin: 48px auto; color: var(--gold);
+}
+.divider::before, .divider::after {
+    content: ""; height: 1px; flex: 0 1 180px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.divider svg { width: 24px; height: 24px; }
+
+.act {
+    margin: 56px 0;
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px;
+}
+@media (min-width: 900px) {
+    .act { grid-template-columns: 0.95fr 1.05fr; gap: 56px; align-items: center; }
+    .act.flip { grid-template-columns: 1.05fr 0.95fr; }
+    .act.flip .act-text { order: 2; }
+    .act.flip .act-image { order: 1; }
+}
+.act-image figure {
+    margin: 0;
+    box-shadow:
+        0 0 0 1px var(--gold),
+        0 0 0 5px var(--hanji),
+        0 0 0 6px var(--ink-mid),
+        0 16px 36px -16px rgba(26, 20, 17, 0.45);
+    overflow: hidden;
+}
+.act-image img { width: 100%; height: auto; filter: contrast(1.04) saturate(0.98); }
+
+.act-text .chapter-num {
+    font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+    font-size: 1.3rem; color: var(--vermilion);
+    letter-spacing: 0.18em; margin-bottom: 6px; font-weight: 500;
+}
+.act-text .korean-title {
+    font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    color: var(--ink); font-weight: 700; line-height: 1.18;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+}
+.act-text .english-title {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 1.2rem; color: var(--ink-mid);
+    margin-bottom: 22px; letter-spacing: 0.02em;
+}
+.act-text blockquote {
+    border-left: 3px solid var(--vermilion);
+    padding: 6px 0 6px 18px; margin: 0 0 22px;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 1.12rem; color: var(--ink-soft); line-height: 1.55;
+}
+.act-text .body p {
+    font-family: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+    font-size: 1.04rem; line-height: 1.75; color: var(--ink);
+}
+.act-text .body p:not(:last-child) { margin-bottom: 14px; }
+.act-text .body p::first-letter,
+.act-text .body p.dropcap::first-letter {
+    font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+    font-size: 3.6em; float: left; line-height: 0.9;
+    margin: 6px 12px 0 0; color: var(--vermilion); font-weight: 800;
+    padding: 4px 8px;
+    background: linear-gradient(135deg, rgba(176, 136, 64, 0.10), transparent);
+    border: 1px solid var(--gold);
+}
+
+.coda {
+    text-align: center; margin-top: 96px;
+    padding-top: 48px; border-top: 1px solid var(--gold);
+}
+.coda .signature {
+    font-family: 'Nanum Myeongjo', 'Noto Serif KR', serif;
+    font-size: 2.2rem; color: var(--ink);
+    margin: 16px 0 6px; letter-spacing: 0.2em; font-weight: 800;
+}
+.coda .by {
+    font-family: 'Fraunces', serif; font-style: italic;
+    color: var(--ink-soft); font-size: 0.95rem;
+    line-height: 1.55; max-width: 56ch; margin: 0 auto;
+}
+.coda .source {
+    margin-top: 28px;
+    font-family: 'Fraunces', serif; font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-mid);
+}
+.coda .source a { color: var(--vermilion); text-decoration: none; border-bottom: 1px dotted var(--vermilion); }
+
+.fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { .fade-up { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+    <a href="/classics/">← All Classics</a>
+    <a href="index.html">Cinematic Edition</a>
+</nav>
+
+<article class="manuscript">
+
+    <header class="hero fade-up">
+        <div class="korean">햇님 달님</div>
+        <div class="romanized">Haenim Dalnim · Sun and Moon</div>
+        <h1 class="english-title">The Brother and Sister Who Became the Sun and Moon</h1>
+        <div class="author">Korean folktale · oral tradition · Joseon era</div>
+        <div class="seal" aria-hidden="true">햇<br>달</div>
+    </header>
+
+    <p class="intro fade-up">
+        One of Korea's oldest oral folktales — a widow on a mountain road, a
+        tiger that asks ridge by ridge, two children climbing a great pine,
+        a silver rope and a rotten one, the red root of the sorghum stalk,
+        and the brother and sister who in the end became the sun and the
+        moon. Twelve scenes told as a single hanji-paper scroll.
+    </p>
+
+    <div class="divider" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="12" cy="12" r="3"/>
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3 L12 21 M3 12 L21 12" stroke-dasharray="2 4" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第一</div>
+            <h2 class="korean-title">엄마와 떡 보따리</h2>
+            <p class="english-title">The Widow and the Rice Cakes</p>
+            <blockquote>"Don't open the door for anyone. Wait for my voice."</blockquote>
+            <div class="body">
+                <p class="dropcap">A widow lived at the foot of a long mountain pass with two small children — an older sister and a younger brother. Each morning before dawn she crossed the pass to work in another village's kitchen; each evening she came home with rice cakes wrapped in a square of indigo linen tied at her hip.</p>
+                <p>The bolt on her door was always on the inside. The girl had been told to remember things on the boy's behalf. The boy had been told to wait for his mother's voice through the wood. So the days went on. The persimmons ripened. The pass grew familiar.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_1.webp" alt="The widow at the door of her cottage with her two children" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第二</div>
+            <h2 class="korean-title">첫 번째 고개</h2>
+            <p class="english-title">The First Ridge</p>
+            <blockquote>"Old woman, give me a rice cake, and I will not eat you."</blockquote>
+            <div class="body">
+                <p class="dropcap">One late autumn evening, with the first stars pricking through, a tiger stepped into the path on the first ridge. He was very large. He stood with the unhurried weight of something that had decided long ago that the road belonged to him. His tail moved once, like a brush stroke.</p>
+                <p>The widow opened the wrap-cloth. A cake left her hand and disappeared into the tiger's jaws as cleanly as a coin dropped into deep water. He stepped aside. She walked on.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_2.webp" alt="The tiger and the widow on the first ridge" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第三</div>
+            <h2 class="korean-title">고개마다 떡 하나</h2>
+            <p class="english-title">One Cake Per Hill</p>
+            <blockquote>The bundle grew lighter. The sky grew darker. She did not run.</blockquote>
+            <div class="body">
+                <p class="dropcap">At the second ridge he was waiting again. At the third. At the fourth. Each time the same words, in the same calm voice, as if he were a toll-keeper who happened to be a tiger; as if he had every right to ask. Each time a cake left her hand.</p>
+                <p>She walked at her ordinary speed — the speed of a woman going home — and counted the ridges. She knew that running would only make him patient and sure. The wrap-cloth grew slack against her thigh. The mountain held still.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_3.webp" alt="The widow and the tiger across successive ridges" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第四</div>
+            <h2 class="korean-title">빈 보자기</h2>
+            <p class="english-title">The Empty Wrap-Cloth</p>
+            <blockquote>The wrap-cloth fell to the path, empty. The tiger was alone on the road.</blockquote>
+            <div class="body">
+                <p class="dropcap">At the last ridge there was one cake left. The widow gave it to him. He sat down on the path and looked at her with slow yellow eyes. The bargain had only ever sounded like a bargain. A tiger who has sat on a road since the world was young will eat a woman in the order he chooses.</p>
+                <p>She thought of the children. She thought of the door. She thought of her own voice through the wood. The mountain held very still. The stars came out one by one above the pines. The pass at the end was empty of all but the cloth and the great striped silhouette walking down toward a thatched roof in a valley.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_4.webp" alt="The empty wrap-cloth on the mountain path" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第五</div>
+            <h2 class="korean-title">호랑이의 변장</h2>
+            <p class="english-title">The Tiger Wears Her Clothes</p>
+            <blockquote>His great paws fell in the woman's footprints, one beside the other.</blockquote>
+            <div class="body">
+                <p class="dropcap">In the empty pass, in the dark, the tiger did a careful and terrible thing. He gathered her indigo wrap-cloth, her hemp jacket, her white head-scarf, and put them on. The cloth was thin over his shoulders. The scarf would not sit right. But in the dark, on a road, from inside a small bolted door, none of that would matter.</p>
+                <p>He set off down the pass. A late owl watched him pass and said nothing. The mountain knows the shape of what was happening and said nothing, because the mountain has watched this kind of going for ten thousand years and knows that the watching is not the saving.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_5.webp" alt="The tiger walking the path in the widow's clothes" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第六</div>
+            <h2 class="korean-title">문 앞의 목소리</h2>
+            <p class="english-title">The Voice at the Door</p>
+            <blockquote>"Mother, your voice sounds strange tonight."</blockquote>
+            <div class="body">
+                <p class="dropcap">A footstep on the threshold. A weight against the door. "Children — open up. Mother is home." The voice was almost right. It was nearly right. It was off by a single shadow — a low rasp like wind moving through pine needles, a thing that had been a long time on a cold mountain.</p>
+                <p>The boy started toward the door. The girl caught his sleeve. She had been told to remember things on the boy's behalf. She remembered now: their mother's voice through the wood, the warm low word that was always her name. "Mother," she said, "if you are mother, show us your hand."</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_6.webp" alt="The children inside, the shadow at the door" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第七</div>
+            <h2 class="korean-title">문 밑의 발</h2>
+            <p class="english-title">The Paw Under the Door</p>
+            <blockquote>A single yellow claw, very still, lay just outside the wood.</blockquote>
+            <div class="body">
+                <p class="dropcap">A hand slid under the gap at the bottom of the door. It was thick. It was matted with dark fur. The pads were broad and hard and dark as river-stone. The girl did not scream. She only looked, and remembered, and understood — irreversibly, instantly — that her mother was not coming home tonight.</p>
+                <p>She rose. She lifted the boy. She went to the small back window, and out — toward the kitchen-garden, toward the persimmon tree, toward the great old tree behind it whose top no one had ever climbed. "Don't look at the door," she whispered.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_7.webp" alt="The tiger's paw under the door" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第八</div>
+            <h2 class="korean-title">큰 소나무</h2>
+            <p class="english-title">The Tree Behind the House</p>
+            <blockquote>Above him, very high in the pine, two small shapes were still climbing.</blockquote>
+            <div class="body">
+                <p class="dropcap">Beyond the kitchen-garden stood the grandfather-tree — a great old pine, the tallest tree in the village, whose lowest branches were the height of a roof and whose top was lost. The girl carried the boy on her hip to the trunk. She found the first knot, then the second, and climbed. The bark scraped her hands. The boy held to her neck.</p>
+                <p>Behind them, the hut's bolt broke. A long animal exhale of disappointment. The tiger came out into the garden and looked up. He set his paws against the trunk. He smiled, in the way that tigers smile, with all of his teeth.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_8.webp" alt="Children climbing the great pine, tiger below" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第九</div>
+            <h2 class="korean-title">참기름과 도끼</h2>
+            <p class="english-title">Sesame Oil and the Axe</p>
+            <blockquote>"With sesame oil. We rubbed sesame oil on the trunk." "Or with an axe. You could try an axe."</blockquote>
+            <div class="body">
+                <p class="dropcap">The boy answered before the girl could stop him. The tiger went into the kitchen and came out with a clay jar of sesame oil and poured it down the trunk. The bark grew slick. He slipped. He fell back. The sister exhaled.</p>
+                <p>Then the boy, trying to be helpful, called down again. "Or with an axe." She put her hand over his mouth, but the words had already gone. The tiger went to the woodshed. He came back to the foot of the grandfather-tree with the widow's small woodcutting axe. The first chip of bark fell into the snow.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_9.webp" alt="Tiger pouring sesame oil and chopping the trunk" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第十</div>
+            <h2 class="korean-title">하늘에서 내려온 두 줄</h2>
+            <p class="english-title">Two Ropes from Heaven</p>
+            <blockquote>"If you mean us to live, send a strong rope. If you mean us to die, send a rotten one."</blockquote>
+            <div class="body">
+                <p class="dropcap">High in the branches the children clung to one another. The cold sky was so vast it was almost cruel — no roof, no door, no mother. Only stars. The girl lifted her face to them and prayed with her whole heart. Through the cold dark above the pine, something silver began to come down — slow, hand over hand, as if a long thread of moonlight were being lowered through the air.</p>
+                <p>She wound it around the boy and around herself. The rope began to draw them upward. Below, the tiger paused mid-stroke. He set down the axe. He lifted his face to the stars and made the same asking. A second rope came down out of the dark. He seized it and began to climb.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_10.webp" alt="Silver rope and rotten rope descending from heaven" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第十一</div>
+            <h2 class="korean-title">붉은 수수밭</h2>
+            <p class="english-title">The Red Stalks</p>
+            <blockquote>To this day, the sorghum stalks in Korean fields run red at the base.</blockquote>
+            <div class="body">
+                <p class="dropcap">The rope began to fray. It had been frayed already, in the way of all rotten things — quietly, where no one could see, before the question was even asked. The tiger felt the threads give beneath his paws. He looked up. He looked down. He understood, in the calm way of a creature that had decided already, that this was the answer his asking had earned.</p>
+                <p>He fell. He fell a long way, and where he came down — into the field of ripe sorghum below the hut — the stalks went red, root to stem, as if the field itself were keeping the record. The grandmothers will tell you why if you ask them. They will tell you to bolt the door at night and to know your mother's voice through the wood.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_11.webp" alt="The red-rooted sorghum field at night" loading="lazy"></figure></div>
+    </section>
+
+    <section class="act flip fade-up">
+        <div class="act-text">
+            <div class="chapter-num">第十二</div>
+            <h2 class="korean-title">해님과 달님</h2>
+            <p class="english-title">Sun and Moon</p>
+            <blockquote>"Take the sun. The day is full of warmth and noise. I will take the moon."</blockquote>
+            <div class="body">
+                <p class="dropcap">The silver rope drew the two children all the way up into heaven. The Sky-King sat them in his courtyard. "You cannot go back," he said gently. "But the world below still needs you. There is a place open in the day, and a place open in the night."</p>
+                <p>The sister, being older, took the day. The brother, being smaller, took the night. But that first night the boy was afraid — the dark above the world was so much bigger than the dark above the grandfather-tree. He cried. The sister, hearing, came to him and traded. Brother became the sun; sister became the moon. And because she was a shy girl, the sun's gaze stings the eyes of any who look up. We look down. We look away. We get on with our day. We know she is up there. We know who watched out for whom.</p>
+            </div>
+        </div>
+        <div class="act-image"><figure><img src="images_cinematic/chapter_12.webp" alt="Brother as the sun, sister as the moon, crossing the sky" loading="lazy"></figure></div>
+    </section>
+
+    <footer class="coda fade-up">
+        <div class="signature">햇님 달님</div>
+        <div class="by">— Korean folktale, oral tradition. Recorded variants in Joseon-era folk collections; version retold here from the canonical pansori-adjacent oral form.</div>
+        <div class="source">
+            On cold autumn evenings, when the persimmons hang bare and the sorghum runs red at the root, the grandmothers tell their children once again to bolt the door, and to know their mother's voice through the wood, and to remember that even in the worst dark, when the only thing left is your own asking, heaven sometimes lets down a strong rope.
+        </div>
+    </footer>
+
+</article>
+
+<script>
+(function() {
+    var els = document.querySelectorAll('.fade-up');
+    if (!('IntersectionObserver' in window)) { els.forEach(function(e){ e.classList.add('visible'); }); return; }
+    var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(en) { if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(function(e){ io.observe(e); });
+})();
+</script>
+
+</body>
+</html>
